@@ -241,7 +241,6 @@ class PhysicalCountController extends Controller
             'runTime'    => $runTime,
             'data' => $result
         );
-        // dd($header);
 
         return $header;
     }
