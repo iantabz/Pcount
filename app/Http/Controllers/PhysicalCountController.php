@@ -14,7 +14,6 @@ class PhysicalCountController extends Controller
 {
     public function getResults()
     {
-        // dd(request()->all());
         $user = auth()->user()->id;
         $bu = request()->bu;
         $dept = request()->dept;
@@ -24,8 +23,6 @@ class PhysicalCountController extends Controller
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
         $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
-
-        // dd($vendors);
 
         $query = TblAppCountdata::selectRaw('
         tbl_app_countdata.id,
