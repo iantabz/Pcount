@@ -27,14 +27,14 @@ class ImportNavPcount implements ToCollection, WithHeadingRow, WithChunkReading
     public function __construct($finalDate, $vendor, $category, $countType, $batchDate)
     {
         $this->finalDate = $finalDate;
-        TblNavCount::create([
-            'byCategory' =>  $category ? 'True' : 'False',
-            'categoryName' => $category,
-            'byVendor' => $vendor ? 'True' : 'False',
-            'vendorName' => $vendor,
-            'type' => $countType,
-            'batchDate' => $batchDate
-        ]);
+        // TblNavCount::create([
+        //     'byCategory' =>  $category ? 'True' : 'False',
+        //     'categoryName' => $category,
+        //     'byVendor' => $vendor ? 'True' : 'False',
+        //     'vendorName' => $vendor,
+        //     'type' => $countType,
+        //     'batchDate' => $batchDate
+        // ]);
     }
 
     public function collection(Collection $rows)
@@ -59,6 +59,7 @@ class ImportNavPcount implements ToCollection, WithHeadingRow, WithChunkReading
         foreach ($rows as $row) {
 
             $row = $row->values();
+            // dd($row);
             $qty = (float) str_replace(',', '', $row[4]);
             $cost_no_vat = (float) str_replace(',', '', $row[5]);
             $amt = (float) str_replace(',', '', $row[6]);

@@ -617,7 +617,7 @@ class ReportsController extends Controller
         //  tbl_nav_countdata.uom as nav_uom,
         //  tbl_nav_countdata.qty as nav_qty, 
         $result = TblAppCountdata::selectRaw('
-        tbl_app_countdata.id,
+                tbl_app_countdata.id,
                 tbl_app_countdata.itemcode, 
                 tbl_app_countdata.barcode, 
                 tbl_item_masterfile.extended_desc,
@@ -626,7 +626,7 @@ class ReportsController extends Controller
                 SUM(tbl_app_countdata.conversion_qty) as total_conv_qty,
                 vendor_name,
                 tbl_item_masterfile.group
-                ')
+        ')
             ->join('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
             ->join('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
             ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
@@ -729,13 +729,11 @@ class ReportsController extends Controller
         $vendors = base64_decode(request()->vendors);
         $category = request()->category;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
-        // $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
         $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
         $bu = explode(',', $bu);
         $runDate = Carbon::parse(now())->toFormattedDateString();
         $runTime =  Carbon::parse(now())->format('h:i A');
-        // dd($vendors);
         $stores = TblNavCountdata::select('tbl_nav_countdata.business_unit', 'acroname')
             ->join('business_unit', 'business_unit.business_unit', 'tbl_nav_countdata.business_unit')
             ->whereIn('tbl_nav_countdata.business_unit', $bu)
@@ -743,9 +741,17 @@ class ReportsController extends Controller
             ->get()
             ->toArray();
 
-        // dd($stores);
+        $query = TblNavCountdata::selectRaw('distinct(uom), itemcode')->whereBetween('date', [$date, $dateAsOf])
+            // ->where('itemcode', '100458')
+        ;
 
-        $query = TblNavCountdata::whereBetween('date', [$date, $dateAsOf]);
+        // dd($query->get());
+
+        // dd($query->where('uom', 'PPACK')->pluck('uom'));
+
+        // dd($query->distinct('itemcode')->dd());
+
+
         if ($bu != 'null') {
 
             $query->whereIn('business_unit', $bu);
@@ -760,11 +766,19 @@ class ReportsController extends Controller
             $query->WHERE('section', $section);
         }
 
+        // dd($query->limit(2000)->pluck('itemcode'));
+        // dd($query->pluck('uom'));
+
         $masterFiles = DB::table('tbl_item_masterfile')
-            ->SelectRaw('item_code, extended_desc, uom, vendor_name, tbl_item_masterfile.group')
-            ->whereIn('uom', $query->pluck('uom'))
+            ->selectRaw('distinct(item_code), extended_desc, tbl_item_masterfile.uom, vendor_name, tbl_item_masterfile.group')
+            // ->join('tbl_nav_countdata', function ($join) {
+            //     $join->on('tbl_nav_countdata.itemcode', 'tbl_item_masterfile.item_code');
+            //     $join->on('tbl_nav_countdata.uom', 'tbl_item_masterfile.uom');
+            // })
+            ->whereIn('tbl_item_masterfile.uom', $query->pluck('uom'))
             ->whereIn('item_code', $query->limit(2000)->pluck('itemcode'));
-        // ->where('item_code', 100458)
+        // ->where('item_code', 100458);
+        // ->distinct('item_code');
         // ->get();
 
         if ($vendors) {
@@ -780,18 +794,11 @@ class ReportsController extends Controller
 
         $masterFiles = $masterFiles->get()->groupBy(['vendor_name', 'group']);
 
-        // dd($masterFiles);
+        // dump($);
 
-        foreach ($masterFiles as $vendor => $categories) {
-            // dd($items);
-
-            foreach ($categories as $category => $items) {
-                // dd($items);
-
-                $test = $items->map(function ($item) use ($stores) {
-
-                    // dd($item);
-
+        $masterFiles = $masterFiles->map(function ($masterfile) use ($stores) {
+            return $masterfile->map(function ($items) use ($stores) {
+                return $items->unique('item_code')->values()->map(function ($item) use ($stores) {
                     $itemStores = [];
                     $totalQty = 0;
 
@@ -802,7 +809,7 @@ class ReportsController extends Controller
                         $qty = TblNavCountdata::where([
                             ['itemcode', $item->item_code],
                             ['uom', 'LIKE', "%$item->uom%"],
-                            ['business_unit', $storeName]
+                            ['business_unit', $storeName],
                         ])->sum('qty');
 
                         $itemStores[$storeAcroname] = $qty;
@@ -822,8 +829,55 @@ class ReportsController extends Controller
 
                     return $item;
                 });
-            }
-        }
+            });
+        });
+
+        // dd($masterfil);
+
+        // foreach ($masterFiles as $vendor => $categories) {
+        //     // dd($items);
+
+        //     foreach ($categories as $category => $items) {
+
+        //         // dd($items);
+
+        //         // $x = $items->firstWhere('item_code', '100027');
+
+        //         // if ($x) dd($items);
+
+        //         $items->map(function ($item) use ($stores) {
+        //             $itemStores = [];
+        //             $totalQty = 0;
+
+        //             foreach ($stores as $store) {
+        //                 $storeName = array_values($store)[0];
+        //                 $storeAcroname = $store['acroname'];
+        //                 // dd($item->uom);
+        //                 $qty = TblNavCountdata::where([
+        //                     ['itemcode', $item->item_code],
+        //                     ['uom', 'LIKE', "%$item->uom%"],
+        //                     ['business_unit', $storeName]
+        //                 ])->sum('qty');
+
+        //                 $itemStores[$storeAcroname] = $qty;
+        //                 $totalQty += $qty;
+        //             }
+        //             // }
+
+
+
+
+        //             // $uom = TblNavCountdata::where('itemcode', $item->item_code)->first()->uom;
+
+        //             // $item->uom = $uom;
+        //             $item->totalQty = $totalQty;
+        //             $item->stores = $itemStores;
+
+
+        //             return $item;
+        //         });
+        //     }
+        // }
 
 
         // dd($masterFiles);

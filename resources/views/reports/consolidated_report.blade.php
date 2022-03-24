@@ -194,7 +194,7 @@
     <header>
         <h4 style="margin-bottom: 3px;">INVENTORY COUNT CONSOLIDATION SYSTEM </h4>
         <h4 style="margin: 0px;">As of {{ $data['date']}}</h4>
-        <h4 style="margin: 0px;">Batch Date: {{ $data['date']}}</h4>
+        {{-- <h4 style="margin: 0px;">Batch Date: {{ $data['date']}}</h4> --}}
         <div class="title1">
             Consolidated Report
         </div>
@@ -202,20 +202,19 @@
     {{-- {{dd($data)}} --}}
 
     @foreach ($data['data'] as $vendor_name => $categories)
-
     {{-- {{dd($vendor)}} --}}
-
-
-    <div>
-        <h4 style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</h4>
-    </div>
+    {{-- <div> --}}
+        <h4 style="text-align: left; font-size: 12px; margin-block-end: 0px;">Vendor: {{ $vendor_name }}</h4>
+        {{--
+    </div> --}}
 
 
     @foreach ($categories as $category => $items)
     {{-- {{dd($items->first()->stores)}} --}}
-    <div>
-        <h4 style="text-align: left; font-size: 12px">Category: {{ $category }}</h4>
-    </div>
+    {{-- <div> --}}
+        <h4 style="text-align: left; font-size: 12px; margin-block-start: 1em">Category: {{ $category }}</h4>
+        {{--
+    </div> --}}
     <table class="body1">
         <thead>
             <tr>

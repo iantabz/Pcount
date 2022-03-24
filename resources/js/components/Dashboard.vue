@@ -346,7 +346,7 @@
                 style="font-size: 20px;/* padding: 15px 0px 0px 25px; */"
               >
                 <i class="demo-pli-male icon-lg"></i>
-                App Users
+                Web Users
               </h3>
             </div>
             <div class="table-responsive">

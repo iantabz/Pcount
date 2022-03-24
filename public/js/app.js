@@ -4286,6 +4286,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4309,7 +4333,9 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       deptList: [],
       department: null,
       sectionList: [],
-      section: null
+      section: null,
+      companyList: [],
+      company: null
     };
   },
   watch: {
@@ -4375,7 +4401,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
                 url = window.URL.createObjectURL(new Blob([data]));
                 link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', "Consolidated Report.pdf");
+                link.setAttribute('download', "Consolidated Report as of ".concat(_this.date, ".pdf"));
                 document.body.appendChild(link);
                 link.click();
                 thisButton.disabled = false;
@@ -4416,7 +4442,18 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       var bu = this.buList.filter(function (sm) {
         return sm.business_unit == _this2.business_unit;
       })[0];
-      axios.get("/setup/location/getSection/?bu=".concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
+      var url = null;
+
+      if (this.company) {
+        var company = this.companyList.find(function (e) {
+          return e.acroname == _this2.company;
+        });
+        url = "/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code);
+      } else {
+        url = "/setup/location/getSection/?bu=".concat(bu.bunit_code, "&dept=").concat(department.dept_code);
+      }
+
+      axios.get(url).then(function (response) {
         _this2.sectionList = response.data;
       })["catch"](function (response) {
         console.log('error');
@@ -4427,13 +4464,43 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
 
       this.department = null;
       this.section = null;
+      var url = null;
 
       if (val) {
         var bu = this.buList.filter(function (sm) {
           return sm.business_unit == val;
         })[0];
-        axios.get("/setup/location/getDept/?bu=".concat(bu.bunit_code)).then(function (response) {
+
+        if (this.company) {
+          var company = this.companyList.find(function (e) {
+            return e.acroname == _this3.company;
+          });
+          url = "/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code);
+        } else {
+          url = "/setup/location/getDept/?bu=".concat(bu.bunit_code);
+        }
+
+        axios // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
+        .get(url).then(function (response) {
           _this3.deptList = response.data;
+        })["catch"](function (response) {
+          console.log('error');
+        });
+      }
+    },
+    companySelected: function companySelected(val) {
+      var _this4 = this;
+
+      this.business_unit = null;
+      this.department = null;
+      this.section = null; // console.log(val)
+
+      if (val) {
+        var comp = this.companyList.filter(function (sm) {
+          return sm.acroname == val;
+        })[0];
+        axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
+          _this4.buList = response.data;
         })["catch"](function (response) {
           console.log('error');
         });
@@ -4478,12 +4545,13 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       }
     }, 1000),
     getResults: function getResults() {
-      var _this4 = this;
+      var _this5 = this;
 
-      Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(function (response) {
-        _this4.vendorList = response[0].data;
-        _this4.categoryList = response[1].data;
-        _this4.buList = response[2].data;
+      Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
+        _this5.vendorList = response[0].data;
+        _this5.categoryList = response[1].data;
+        _this5.buList = response[2].data;
+        _this5.companyList = response[3].data;
       });
     },
     getCategory: function getCategory() {
@@ -4544,6 +4612,26 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
             }
           }
         }, _callee4);
+      }))();
+    },
+    getCompany: function getCompany() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return axios.get('/uploading/nav_upload/getCompany');
+
+              case 2:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     }
   },
@@ -47558,6 +47646,47 @@ var render = function() {
                           [
                             _c("v-select", {
                               attrs: {
+                                options: _vm.companyList,
+                                reduce: function(companyList) {
+                                  return companyList.acroname
+                                },
+                                label: "acroname",
+                                placeholder: "Company"
+                              },
+                              on: {
+                                input: function($event) {
+                                  return _vm.companySelected($event)
+                                }
+                              },
+                              model: {
+                                value: _vm.company,
+                                callback: function($$v) {
+                                  _vm.company = $$v
+                                },
+                                expression: "company"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row",
+                        staticStyle: { padding: "10px 15px 15px 10px" }
+                      },
+                      [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-7" },
+                          [
+                            _c("v-select", {
+                              attrs: {
                                 label: "business_unit",
                                 options: _vm.buList,
                                 placeholder: "Search for Business Unit",
@@ -47592,7 +47721,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(1),
+                        _vm._m(2),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -47634,7 +47763,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(2),
+                        _vm._m(3),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -47699,7 +47828,7 @@ var render = function() {
                         staticStyle: { "padding-left": "10px" }
                       },
                       [
-                        _vm._m(3),
+                        _vm._m(4),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-7" }, [
                           _c("input", {
@@ -47744,7 +47873,9 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
-                    _vm._m(4),
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -47753,7 +47884,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(5),
+                        _vm._m(7),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -47790,7 +47921,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(6),
+                        _vm._m(8),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -47886,6 +48017,19 @@ var staticRenderFns = [
         staticClass: "col-md-4 control-label text-bold",
         staticStyle: { "text-align": "right" }
       },
+      [_c("h5", [_vm._v("Company :")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-4 control-label text-bold",
+        staticStyle: { "text-align": "right" }
+      },
       [_c("h5", [_vm._v("Business Unit :")])]
     )
   },
@@ -47925,6 +48069,22 @@ var staticRenderFns = [
         _vm._v(" Date\n                      as of :\n                    ")
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
+      [
+        _c("label", { staticClass: "col-md-4 control-label text-bold" }, [
+          _c("h5")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6 pad-all" })
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -50355,7 +50515,7 @@ var staticRenderFns = [
         },
         [
           _c("i", { staticClass: "demo-pli-male icon-lg" }),
-          _vm._v("\n              App Users\n            ")
+          _vm._v("\n              Web Users\n            ")
         ]
       )
     ])

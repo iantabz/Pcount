@@ -37,6 +37,24 @@
                       class="col-md-4 control-label text-bold"
                       style="text-align: right"
                     >
+                      <h5>Company :</h5></label
+                    >
+                    <div class="col-md-7">
+                      <v-select
+                        :options="companyList"
+                        :reduce="companyList => companyList.acroname"
+                        label="acroname"
+                        v-model="company"
+                        placeholder="Company"
+                        @input="companySelected($event)"
+                      ></v-select>
+                    </div>
+                  </div>
+                  <div class="row" style="padding: 10px 15px 15px 10px">
+                    <label
+                      class="col-md-4 control-label text-bold"
+                      style="text-align: right"
+                    >
                       <h5>Business Unit :</h5></label
                     >
                     <div class="col-md-7">
@@ -146,6 +164,12 @@
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
+                    <label class="col-md-4 control-label text-bold">
+                      <h5></h5>
+                    </label>
+                    <div class="col-md-6 pad-all"></div>
+                  </div>
+                  <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-4 control-label text-bold"
                       style="text-align: right"
@@ -234,7 +258,9 @@ export default {
       deptList: [],
       department: null,
       sectionList: [],
-      section: null
+      section: null,
+      companyList: [],
+      company: null
     }
   },
   watch: {
@@ -303,7 +329,10 @@ export default {
       const url = window.URL.createObjectURL(new Blob([data]))
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', `Consolidated Report.pdf`)
+      link.setAttribute(
+        'download',
+        `Consolidated Report as of ${this.date}.pdf`
+      )
       document.body.appendChild(link)
       link.click()
 
@@ -336,11 +365,15 @@ export default {
       const bu = this.buList.filter(
         sm => sm.business_unit == this.business_unit
       )[0]
-
+      let url = null
+      if (this.company) {
+        const company = this.companyList.find(e => e.acroname == this.company)
+        url = `/uploading/nav_upload/getSection/?code=${company.company_code}&bu=${bu.bunit_code}&dept=${department.dept_code}`
+      } else {
+        url = `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
+      }
       axios
-        .get(
-          `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
-        )
+        .get(url)
         .then(response => {
           this.sectionList = response.data
         })
@@ -351,12 +384,38 @@ export default {
     buSelected(val) {
       this.department = null
       this.section = null
+      let url = null
       if (val) {
         const bu = this.buList.filter(sm => sm.business_unit == val)[0]
+        if (this.company) {
+          const company = this.companyList.find(e => e.acroname == this.company)
+          url = `/setup/location/getDept/?code=${company.company_code}&bu=${bu.bunit_code}`
+        } else {
+          url = `/setup/location/getDept/?bu=${bu.bunit_code}`
+        }
+
         axios
-          .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
+          // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
+          .get(url)
           .then(response => {
             this.deptList = response.data
+          })
+          .catch(response => {
+            console.log('error')
+          })
+      }
+    },
+    companySelected(val) {
+      this.business_unit = null
+      this.department = null
+      this.section = null
+      // console.log(val)
+      if (val) {
+        const comp = this.companyList.filter(sm => sm.acroname == val)[0]
+        axios
+          .get(`/uploading/nav_upload/getBU/?code=${comp.company_code}`)
+          .then(response => {
+            this.buList = response.data
           })
           .catch(response => {
             console.log('error')
@@ -406,13 +465,17 @@ export default {
       }
     }, 1000),
     getResults() {
-      Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(
-        response => {
-          this.vendorList = response[0].data
-          this.categoryList = response[1].data
-          this.buList = response[2].data
-        }
-      )
+      Promise.all([
+        this.getVendor(),
+        this.getCategory(),
+        this.getBU(),
+        this.getCompany()
+      ]).then(response => {
+        this.vendorList = response[0].data
+        this.categoryList = response[1].data
+        this.buList = response[2].data
+        this.companyList = response[3].data
+      })
     },
     async getCategory() {
       return await axios.get('/uploading/nav_upload/getCategory')
@@ -422,6 +485,9 @@ export default {
     },
     async getBU() {
       return await axios.get('/setup/location/getBU')
+    },
+    async getCompany() {
+      return await axios.get('/uploading/nav_upload/getCompany')
     }
   },
   mounted() {

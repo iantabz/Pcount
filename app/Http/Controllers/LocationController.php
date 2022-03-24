@@ -51,21 +51,37 @@ class LocationController extends Controller
 
     public function getDept()
     {
-        return department::where([
-            ['company_code', request()->code],
-            ['bunit_code', request()->bu],
-            ['status', 'active']
-        ])->get();
+        if (!request()->code) {
+            return department::where([
+                ['bunit_code', request()->bu],
+                ['status', 'active']
+            ])->get();
+        } else {
+            return department::where([
+                ['company_code', request()->code],
+                ['bunit_code', request()->bu],
+                ['status', 'active']
+            ])->get();
+        }
     }
 
     public function getSection()
     {
-        return section::where(
-            [
-                ['company_code', request()->code],
-                ['bunit_code', request()->bu],
-                ['dept_code', request()->dept],
-            ]
-        )->get();
+        if (!request()->code) {
+            return section::where(
+                [
+                    ['bunit_code', request()->bu],
+                    ['dept_code', request()->dept],
+                ]
+            )->get();
+        } else {
+            return section::where(
+                [
+                    ['company_code', request()->code],
+                    ['bunit_code', request()->bu],
+                    ['dept_code', request()->dept],
+                ]
+            )->get();
+        }
     }
 }
