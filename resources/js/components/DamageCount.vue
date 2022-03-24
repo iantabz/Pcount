@@ -262,8 +262,8 @@
                       {{ data.qty }}
                     </td>
                     <td class="text-main text-normal text-center">
-                      <span v-if="data.nav_uom">{{ data.nav_uom }}</span>
-                      <span v-else>{{ data.uom }}</span>
+                      <!-- <span v-if="data.nav_uom">{{ data.nav_uom }}</span> -->
+                      <span>{{ data.uom }}</span>
                     </td>
                     <td class="text-main text-normal text-center">
                       {{ data.total_conv_qty }}

@@ -343,11 +343,11 @@
                 <td style="text-align: center;">{{ $item['uom'] }}</td>
                 <td style="text-align: center;">{{ number_format($item['total_qty'], 0) }}</td>
                 <td style="text-align: center;">
-                    @if ($item['nav_uom'])
+                    {{-- @if ($item['nav_uom'])
                     {{ $item['nav_uom'] }}
-                    @else
+                    @else --}}
                     {{ $item['uom'] }}
-                    @endif
+                    {{-- @endif --}}
                 </td>
 
                 <td style="text-align: center;">{{ number_format($item['total_conv_qty'], 0) }}</td>

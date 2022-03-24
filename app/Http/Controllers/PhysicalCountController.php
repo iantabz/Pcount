@@ -283,7 +283,6 @@ class PhysicalCountController extends Controller
                 tbl_app_countdata.barcode, 
                 tbl_app_countdata.description,
                 tbl_app_countdata.uom, 
-                tbl_nav_countdata.uom as nav_uom,
                 SUM(tbl_app_countdata.qty) as total_qty,
                 SUM(tbl_app_countdata.conversion_qty) as total_conv_qty,
                 tbl_app_countdata.rack_desc,
@@ -299,6 +298,7 @@ class PhysicalCountController extends Controller
                 tbl_app_audit.position AS audit_position,
                 tbl_app_countdata.audit_signature AS audit_user_sign
                 ')
+            // tbl_nav_countdata.uom as nav_uom,
             // vendor_name
             // tbl_item_masterfile.extended_desc,
             // tbl_item_masterfile.group
@@ -310,7 +310,7 @@ class PhysicalCountController extends Controller
             //     $join->orOn('tbl_item_masterfile.extended_desc', 'tbl_app_countdata.description');
             //     // $join->orOn('tbl_item_masterfile.uom', 'tbl_app_countdata.uom');
             // })
-            ->LEFTJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode')
+            // ->LEFTJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode')
             ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
         // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'rack_desc'])->toArray());

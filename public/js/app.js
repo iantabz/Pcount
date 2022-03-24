@@ -49828,11 +49828,7 @@ var render = function() {
                             {
                               staticClass: "text-main text-normal text-center"
                             },
-                            [
-                              data.nav_uom
-                                ? _c("span", [_vm._v(_vm._s(data.nav_uom))])
-                                : _c("span", [_vm._v(_vm._s(data.uom))])
-                            ]
+                            [_c("span", [_vm._v(_vm._s(data.uom))])]
                           ),
                           _vm._v(" "),
                           _c(
