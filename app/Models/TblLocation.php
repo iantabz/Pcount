@@ -22,4 +22,9 @@ class TblLocation extends Model
     {
         return $this->hasOne(TblAppAudit::class, 'location_id', 'location_id');
     }
+
+    public function nav_count()
+    {
+        return $this->hasOne(TblNavCount::class, 'location_id', 'location_id');
+    }
 }

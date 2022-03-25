@@ -519,7 +519,7 @@
 
     @endforeach
     {{-- {{dd(current($items))}} --}}
-    {{-- {{dd($data)}} --}}
+    {{dd($data)}}
 </body>
 
 </html>

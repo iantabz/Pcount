@@ -7281,12 +7281,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.es.js");
+var _methods;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7771,6 +7815,10 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       showModal: null,
       employees: [],
       audit: [],
+      categoryList: [],
+      category: null,
+      vendorList: [],
+      vendor: null,
       locationForm: new vform__WEBPACK_IMPORTED_MODULE_7__.default({
         location_id: null,
         selectedEmp: null,
@@ -7779,8 +7827,12 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         business_unit: null,
         department: null,
         section: null,
-        rack_desc: null
-      })
+        rack_desc: null,
+        forPrintCategory: [],
+        forPrintVendor: []
+      }),
+      forPrintCategory: [],
+      forPrintVendor: []
     };
   },
   components: {
@@ -7801,9 +7853,63 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     },
     section: function section() {
       this.getResults();
+    },
+    vendor: function vendor(newValue) {
+      var value = [];
+      newValue.forEach(function (element, index) {
+        value.push(element.vendor_name);
+      });
+      this.forPrintVendor = value.join("' , '");
+    },
+    category: function category(newValue) {
+      if (newValue) {
+        var value = [];
+        newValue.forEach(function (element, index) {
+          value.push(element.category);
+        });
+        this.forPrintCategory = value.join("' , '");
+      }
     }
   },
-  methods: {
+  methods: (_methods = {
+    retrieveCategory: function retrieveCategory(search, loading) {
+      loading(true);
+      this.search2(search, loading, this);
+    },
+    search2: (0,lodash__WEBPACK_IMPORTED_MODULE_6__.debounce)(function (search, loading, vm) {
+      if (search.trim().length > 0) {
+        axios.get("/uploading/nav_upload/getCategory?category=".concat(search)).then(function (_ref) {
+          var data = _ref.data;
+          vm.categoryList = data;
+          loading(false);
+        })["catch"](function (error) {
+          vm.categoryList = [];
+          loading(false);
+        });
+      } else {
+        vm.categoryList = [];
+        loading(false);
+      }
+    }, 1000),
+    retrieveVendor: function retrieveVendor(search, loading) {
+      loading(true);
+      this.search(search, loading, this);
+    },
+    search: (0,lodash__WEBPACK_IMPORTED_MODULE_6__.debounce)(function (search, loading, vm) {
+      if (search.trim().length > 0) {
+        axios.get("/uploading/nav_upload/getVendor?vendor=".concat(search)).then(function (_ref2) {
+          var data = _ref2.data;
+          vm.vendorList = data;
+          loading(false);
+        })["catch"](function (error) {
+          vm.vendorList = [];
+          loading(false);
+        });
+      } else {
+        vm.vendorList = [];
+        loading(false);
+      }
+    }, 1000),
     submitBtn: function submitBtn() {
       var _this = this;
 
@@ -7811,9 +7917,10 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       this.locationForm.business_unit = this.business_unit;
       this.locationForm.department = this.department;
       this.locationForm.section = this.section;
-      this.locationForm.post('/setup/location/createLocation').then(function (_ref) {
-        var data = _ref.data,
-            status = _ref.status;
+      this.locationForm.forPrintCategory = this.forPrintCategory;
+      this.locationForm.post('/setup/location/createLocation').then(function (_ref3) {
+        var data = _ref3.data,
+            status = _ref3.status;
 
         if (status == 200) {
           _this.getResults();
@@ -7844,8 +7951,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
             timer: 5000
           });
         }
-      })["catch"](function (_ref2) {
-        var response = _ref2.response;
+      })["catch"](function (_ref4) {
+        var response = _ref4.response;
         var status = response.status,
             data = response.data;
         console.log(status, data);
@@ -7858,8 +7965,14 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         });
       });
     },
+    assignBtn: function assignBtn(data) {
+      console.log(data);
+      var loc_id = data.location_id;
+      $('#demo-default-modal').modal('show');
+    },
     editBtn: function editBtn(data) {
-      this.getCompany(); // const comp = this.companyList.find(sm => (sm.acroname = data.company))
+      // this.getCompany()
+      console.log(data); // const comp = this.companyList.find(sm => (sm.acroname = data.company))
 
       var bunit_code = data.business_unit,
           business_unit = data.business_unit,
@@ -7896,6 +8009,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         name: name,
         position: position
       };
+      if (data.nav_count.byCategory === 'True') this.category = data.nav_count.categoryName.split("' , '");
       this.company = data.company;
       this.business_unit = data.business_unit;
       this.department = data.department;
@@ -7911,6 +8025,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       // this.department = null
       // this.section = null
 
+      this.category = null;
+      this.vendor = null;
       this.companyList = [];
       this.buList = [];
       this.deptList = [];
@@ -7922,8 +8038,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     },
     searchAudit: (0,lodash__WEBPACK_IMPORTED_MODULE_6__.debounce)(function (search, loading, vm) {
       if (search.trim().length > 0) {
-        axios.get("/employee/search?lastname=".concat(search)).then(function (_ref3) {
-          var data = _ref3.data;
+        axios.get("/employee/search?lastname=".concat(search)).then(function (_ref5) {
+          var data = _ref5.data;
           vm.audit = data;
           loading(false);
         })["catch"](function (error) {
@@ -7938,184 +8054,175 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     retrieveEmp: function retrieveEmp(search, loading) {
       loading(true);
       this.search(search, loading, this);
-    },
-    search: (0,lodash__WEBPACK_IMPORTED_MODULE_6__.debounce)(function (search, loading, vm) {
-      if (search.trim().length > 0) {
-        axios.get("/employee/search?lastname=".concat(search)).then(function (_ref4) {
-          var data = _ref4.data;
-          vm.employees = data;
-          loading(false);
-        })["catch"](function (error) {
-          vm.employees = [];
-          loading(false);
-        });
-      } else {
+    }
+  }, _defineProperty(_methods, "search", (0,lodash__WEBPACK_IMPORTED_MODULE_6__.debounce)(function (search, loading, vm) {
+    if (search.trim().length > 0) {
+      axios.get("/employee/search?lastname=".concat(search)).then(function (_ref6) {
+        var data = _ref6.data;
+        vm.employees = data;
+        loading(false);
+      })["catch"](function (error) {
         vm.employees = [];
         loading(false);
-      }
-    }, 1000),
-    departmentSelected: function departmentSelected(val) {
-      var _this2 = this;
+      });
+    } else {
+      vm.employees = [];
+      loading(false);
+    }
+  }, 1000)), _defineProperty(_methods, "departmentSelected", function departmentSelected(val) {
+    var _this2 = this;
 
-      var department = this.deptList.filter(function (sm) {
-        return sm.dept_name == val;
-      })[0];
+    var department = this.deptList.filter(function (sm) {
+      return sm.dept_name == val;
+    })[0];
+    var bu = this.buList.filter(function (sm) {
+      return sm.business_unit == _this2.business_unit;
+    })[0];
+    var company = this.companyList.find(function (e) {
+      return e.acroname == _this2.company;
+    });
+    axios.get("/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
+      _this2.sectionList = response.data;
+    })["catch"](function (response) {
+      console.log('error');
+    });
+  }), _defineProperty(_methods, "buSelected", function buSelected(val) {
+    var _this3 = this;
+
+    this.department = null;
+    this.section = null;
+
+    if (val) {
       var bu = this.buList.filter(function (sm) {
-        return sm.business_unit == _this2.business_unit;
+        return sm.business_unit == val;
       })[0];
       var company = this.companyList.find(function (e) {
-        return e.acroname == _this2.company;
+        return e.acroname == _this3.company;
       });
-      axios.get("/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
-        _this2.sectionList = response.data;
+      axios.get("/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
+        _this3.deptList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
-    },
-    buSelected: function buSelected(val) {
-      var _this3 = this;
-
-      this.department = null;
-      this.section = null;
-
-      if (val) {
-        var bu = this.buList.filter(function (sm) {
-          return sm.business_unit == val;
-        })[0];
-        var company = this.companyList.find(function (e) {
-          return e.acroname == _this3.company;
-        });
-        axios.get("/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
-          _this3.deptList = response.data;
-        })["catch"](function (response) {
-          console.log('error');
-        });
-      }
-    },
-    companySelected: function companySelected(val) {
-      var _this4 = this;
-
-      this.business_unit = null;
-      this.department = null;
-      this.section = null;
-
-      if (val) {
-        var comp = this.companyList.filter(function (sm) {
-          return sm.acroname == val;
-        })[0];
-        axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
-          _this4.buList = response.data;
-        })["catch"](function (response) {
-          console.log('error');
-        });
-      }
-    },
-    getBU: function getBU() {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return axios.get('/setup/location/getBU');
-
-              case 2:
-                return _context.abrupt("return", _context.sent);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    getCategory: function getCategory() {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return axios.get('/uploading/nav_upload/getCategory');
-
-              case 2:
-                return _context2.abrupt("return", _context2.sent);
-
-              case 3:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
-    },
-    getVendor: function getVendor() {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _context3.next = 2;
-                return axios.get('/uploading/nav_upload/getVendor');
-
-              case 2:
-                return _context3.abrupt("return", _context3.sent);
-
-              case 3:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }))();
-    },
-    getCompany: function getCompany() {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                _context4.next = 2;
-                return axios.get('/uploading/nav_upload/getCompany');
-
-              case 2:
-                return _context4.abrupt("return", _context4.sent);
-
-              case 3:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
-      }))();
-    },
-    getResults2: function getResults2() {
-      var _this5 = this;
-
-      Promise.all([this.getCompany(), this.getBU()]).then(function (response) {
-        _this5.companyList = response[0].data; // this.buList = response[1].data
-      });
-    },
-    getFormattedDateToday: function getFormattedDateToday() {
-      return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
-    },
-    getResults: function getResults() {
-      var _this6 = this;
-
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      var url = null; // `/setup/location/getResults/?page=`
-
-      url = "/setup/location/getResults/?company=".concat(this.company, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
-
-      if (this.business_unit && this.department && this.section) {
-        axios.get(url + page).then(function (response) {
-          _this6.data = response.data;
-          _this6.total_result = response.data.total;
-        });
-      }
     }
-  },
+  }), _defineProperty(_methods, "companySelected", function companySelected(val) {
+    var _this4 = this;
+
+    this.business_unit = null;
+    this.department = null;
+    this.section = null;
+
+    if (val) {
+      var comp = this.companyList.filter(function (sm) {
+        return sm.acroname == val;
+      })[0];
+      axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
+        _this4.buList = response.data;
+      })["catch"](function (response) {
+        console.log('error');
+      });
+    }
+  }), _defineProperty(_methods, "getBU", function getBU() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios.get('/setup/location/getBU');
+
+            case 2:
+              return _context.abrupt("return", _context.sent);
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  }), _defineProperty(_methods, "getCategory", function getCategory() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios.get('/uploading/nav_upload/getCategory');
+
+            case 2:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  }), _defineProperty(_methods, "getVendor", function getVendor() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return axios.get('/uploading/nav_upload/getVendor');
+
+            case 2:
+              return _context3.abrupt("return", _context3.sent);
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  }), _defineProperty(_methods, "getCompany", function getCompany() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return axios.get('/uploading/nav_upload/getCompany');
+
+            case 2:
+              return _context4.abrupt("return", _context4.sent);
+
+            case 3:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }))();
+  }), _defineProperty(_methods, "getResults2", function getResults2() {
+    var _this5 = this;
+
+    Promise.all([this.getCompany(), this.getCategory(), this.getVendor()]).then(function (response) {
+      _this5.companyList = response[0].data;
+      _this5.categoryList = response[1].data;
+      _this5.vendorList = response[2].data;
+    });
+  }), _defineProperty(_methods, "getFormattedDateToday", function getFormattedDateToday() {
+    return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+  }), _defineProperty(_methods, "getResults", function getResults() {
+    var _this6 = this;
+
+    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var url = null; // `/setup/location/getResults/?page=`
+
+    url = "/setup/location/getResults/?company=".concat(this.company, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+
+    if (this.business_unit && this.department && this.section) {
+      axios.get(url + page).then(function (response) {
+        _this6.data = response.data;
+        _this6.total_result = response.data.total;
+      });
+    }
+  }), _methods),
   mounted: function mounted() {
     this.$root.currentPage = this.$route.meta.name;
     this.name = this.$root.authUser.name;
@@ -50779,7 +50886,7 @@ var render = function() {
                               },
                               [
                                 _c("i", {
-                                  staticClass: "fa fa-pencil-square-o"
+                                  staticClass: "demo-pli-gear icon-lg icon-fw"
                                 })
                               ]
                             )
@@ -50851,7 +50958,31 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(7),
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
+                  [_vm._v("Location Information")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    },
+                    on: { click: _vm.closeBtn }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c(
@@ -50930,7 +51061,7 @@ var render = function() {
                               })
                             : _vm._e(),
                           _vm._v(" "),
-                          _vm._m(8)
+                          _vm._m(7)
                         ],
                         1
                       )
@@ -51020,7 +51151,7 @@ var render = function() {
                                 })
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(9)
+                            _vm._m(8)
                           ],
                           1
                         )
@@ -51048,53 +51179,136 @@ var render = function() {
                           [_vm._v("Rack Description")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model.trim",
-                                value: _vm.locationForm.rack_desc,
-                                expression: "locationForm.rack_desc",
-                                modifiers: { trim: true }
-                              }
-                            ],
-                            staticClass: "form-control",
-                            staticStyle: { "font-size": "12px" },
-                            attrs: {
-                              type: "text",
-                              placeholder: "Location",
-                              id: "location"
-                            },
-                            domProps: { value: _vm.locationForm.rack_desc },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col-sm-9",
+                            staticStyle: { "margin-bottom": "10px" }
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model.trim",
+                                  value: _vm.locationForm.rack_desc,
+                                  expression: "locationForm.rack_desc",
+                                  modifiers: { trim: true }
                                 }
-                                _vm.$set(
-                                  _vm.locationForm,
-                                  "rack_desc",
-                                  $event.target.value.trim()
-                                )
+                              ],
+                              staticClass: "form-control",
+                              staticStyle: { "font-size": "12px" },
+                              attrs: {
+                                type: "text",
+                                placeholder: "Location",
+                                id: "location"
                               },
-                              blur: function($event) {
-                                return _vm.$forceUpdate()
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.locationForm.errors.has("rack_desc")
-                            ? _c("small", {
-                                staticClass: "help-block text-danger",
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    _vm.locationForm.errors.get("rack_desc")
+                              domProps: { value: _vm.locationForm.rack_desc },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.locationForm,
+                                    "rack_desc",
+                                    $event.target.value.trim()
                                   )
+                                },
+                                blur: function($event) {
+                                  return _vm.$forceUpdate()
                                 }
-                              })
-                            : _vm._e()
-                        ])
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.locationForm.errors.has("rack_desc")
+                              ? _c("small", {
+                                  staticClass: "help-block text-danger",
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.locationForm.errors.get("rack_desc")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group pad-top",
+                        staticStyle: { "margin-top": "30px" }
+                      },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "col-sm-3 control-label text-main text-semibold",
+                            staticStyle: {
+                              "text-align": "right",
+                              "padding-top": "5px"
+                            },
+                            attrs: { for: "location" }
+                          },
+                          [_vm._v("Filter by Category")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-sm-9" },
+                          [
+                            _c(
+                              "v-select",
+                              {
+                                attrs: {
+                                  filterable: false,
+                                  label: "category",
+                                  options: _vm.categoryList,
+                                  placeholder: "Search for Category",
+                                  multiple: ""
+                                },
+                                on: { search: _vm.retrieveCategory },
+                                scopedSlots: _vm._u([
+                                  {
+                                    key: "option",
+                                    fn: function(option) {
+                                      return [
+                                        _vm._v(_vm._s("" + option.category))
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    key: "selected-option",
+                                    fn: function(option) {
+                                      return [
+                                        _vm._v(_vm._s("" + option.category))
+                                      ]
+                                    }
+                                  }
+                                ]),
+                                model: {
+                                  value: _vm.category,
+                                  callback: function($$v) {
+                                    _vm.category =
+                                      typeof $$v === "string" ? $$v.trim() : $$v
+                                  },
+                                  expression: "category"
+                                }
+                              },
+                              [
+                                _c("template", { slot: "no-options" }, [
+                                  _c("strong", [_vm._v("Search for Category")])
+                                ])
+                              ],
+                              2
+                            )
+                          ],
+                          1
+                        )
                       ]
                     )
                   ]
@@ -51254,29 +51468,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-main text-center" }, [_vm._v("Action")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title", attrs: { id: "mdlTitle" } }, [
-        _vm._v("Location Information")
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
     ])
   },
   function() {

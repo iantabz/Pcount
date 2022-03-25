@@ -9,6 +9,7 @@ use App\Models\TblAppAudit;
 use App\Models\TblAppUser;
 use App\Models\TblItemCategoryMasterfile;
 use App\Models\TblLocation;
+use App\Models\TblNavCount;
 use App\Models\TblUser;
 use App\Models\TblUsertype;
 use App\Models\TblVendorMasterfile;
@@ -26,7 +27,7 @@ class SetupController extends Controller
         $dept = request()->dept;
         $section = request()->section;
 
-        return TblLocation::with(['app_users', 'app_audit'])
+        return TblLocation::with(['app_users', 'app_audit', 'nav_count'])
             ->where([
                 ['company', 'LIKE', "%$company%"],
                 ['business_unit', 'LIKE', "$bu"],
@@ -101,8 +102,21 @@ class SetupController extends Controller
 
     public function createLocation(CreateLocationRequest $request)
     {
+        // dd(request()->all());
         $validated = $request->validated();
         // dd(request()->section);
+        if (!request()->forPrintVendor) {
+            $vendor = 'null';
+        } else {
+            $vendor = request()->forPrintVendor;
+        }
+        if (!request()->forPrintCategory) {
+            $category = 'null';
+        } else {
+            $category = request()->forPrintCategory;
+        }
+        // dd($vendor);
+
         if (!request()->section) {
             $section = 'null';
         } else {
@@ -114,7 +128,7 @@ class SetupController extends Controller
             $dept = request()->department;
         }
         if (!request()->location_id) {
-            DB::transaction(function () use ($validated, $section, $dept) {
+            DB::transaction(function () use ($validated, $section, $dept, $vendor, $category) {
                 // // dd($validated);
 
                 $location = TblLocation::create([
@@ -149,11 +163,21 @@ class SetupController extends Controller
                     'location_id' => $location->id,
                     'date_register' => now()
                 ]);
+
+                TblNavCount::create([
+                    'byCategory' =>  $category === 'null' ? 'False' : 'True',
+                    'categoryName' => $category,
+                    'byVendor' => $vendor === 'null' ? 'False' : 'True',
+                    'vendorName' => $vendor,
+                    'location_id' => $location->id
+                    // 'type' => $countType,
+                    // 'batchDate' => $batchDate
+                ]);
             });
             return response()->json(['message' => 'User created successfully!'], 200);
         }
 
-        // dd($validated);
+        // dd(request()->all());
         DB::transaction(function () use ($validated, $section, $dept) {
             TblLocation::where('location_id', request()->location_id)->update([
                 'company' => $validated['company'],

@@ -87,8 +87,6 @@ class PhysicalCountController extends Controller
 
     public function generateAppDataExcel()
     {
-        set_time_limit(0);
-        ini_set('memory_limit', '-1');
         session(['data' => $this->data()]);
         return Excel::download(new PcountAppCountData, 'invoices.xlsx');
     }
@@ -132,6 +130,8 @@ class PhysicalCountController extends Controller
 
     public function data()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
         $company = auth()->user()->company;
         $bu = request()->bu;
         $dept = request()->dept;
@@ -175,6 +175,7 @@ class PhysicalCountController extends Controller
             ->join('tbl_app_audit', 'tbl_app_audit.location_id', 'tbl_app_countdata.location_id')
             ->join('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
             ->LEFTJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode')
+            ->LEFTJOIN('tbl_app_nfitem', 'tbl_app_nfitem.barcode', 'tbl_app_countdata.barcode')
             ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
         // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name'])->toArray());
@@ -200,7 +201,7 @@ class PhysicalCountController extends Controller
             $category = implode(", ", $category);
         }
 
-        // dd($result->groupBy('itemcode')->get()->groupBy(['app_user', 'audit_user']));
+        // dd($result->groupBy('itemcode')->get()->groupBy(['app_user', 'audit_user']))->toArray();
 
         $result = $result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray();
 
@@ -225,6 +226,8 @@ class PhysicalCountController extends Controller
 
         //     // return $data;
         // })->toArray();
+
+        dd($result);
 
         $header = array(
             'company' => $company,

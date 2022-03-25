@@ -165,8 +165,14 @@
                         @click="editBtn(data)"
                         class="btn btn-info btn-xs"
                       >
-                        <i class="fa fa-pencil-square-o"></i>
+                        <i class="demo-pli-gear icon-lg icon-fw"></i>
                       </button>
+                      <!-- <button
+                        @click="assignBtn(data)"
+                        class="btn btn-info btn-xs"
+                      >
+                        <i class="demo-pli-gear icon-lg icon-fw"></i>
+                      </button> -->
                     </td>
                   </tr>
                 </tbody>
@@ -220,6 +226,7 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              @click="closeBtn"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -401,7 +408,7 @@
                   for="location"
                   >Rack Description</label
                 >
-                <div class="col-sm-9">
+                <div class="col-sm-9" style="margin-bottom: 10px;">
                   <input
                     type="text"
                     placeholder="Location"
@@ -415,6 +422,39 @@
                     v-if="locationForm.errors.has('rack_desc')"
                     v-html="locationForm.errors.get('rack_desc')"
                   />
+                </div>
+              </div>
+              <div class="form-group pad-top" style="margin-top: 30px">
+                <label
+                  style="text-align: right; padding-top: 5px"
+                  class="col-sm-3 control-label text-main text-semibold"
+                  for="location"
+                  >Filter by Category</label
+                >
+                <div class="col-sm-9">
+                  <v-select
+                    v-model.trim="category"
+                    :filterable="false"
+                    @search="retrieveCategory"
+                    label="category"
+                    :options="categoryList"
+                    placeholder="Search for Category"
+                    multiple
+                    ><template slot="no-options">
+                      <strong>Search for Category</strong>
+                    </template>
+                    <template slot="option" slot-scope="option">{{
+                      `${option.category}`
+                    }}</template>
+                    <template slot="selected-option" slot-scope="option">{{
+                      `${option.category}`
+                    }}</template>
+                  </v-select>
+                  <!-- <small
+                    class="help-block text-danger"
+                    v-if="locationForm.errors.has('rack_desc')"
+                    v-html="locationForm.errors.get('rack_desc')"
+                  /> -->
                 </div>
               </div>
             </div>
@@ -484,6 +524,10 @@ export default {
       showModal: null,
       employees: [],
       audit: [],
+      categoryList: [],
+      category: null,
+      vendorList: [],
+      vendor: null,
       locationForm: new Form({
         location_id: null,
         selectedEmp: null,
@@ -492,8 +536,12 @@ export default {
         business_unit: null,
         department: null,
         section: null,
-        rack_desc: null
-      })
+        rack_desc: null,
+        forPrintCategory: [],
+        forPrintVendor: []
+      }),
+      forPrintCategory: [],
+      forPrintVendor: []
     }
   },
   components: {
@@ -514,14 +562,73 @@ export default {
     },
     section() {
       this.getResults()
+    },
+    vendor(newValue) {
+      let value = []
+      newValue.forEach((element, index) => {
+        value.push(element.vendor_name)
+      })
+      this.forPrintVendor = value.join("' , '")
+    },
+    category(newValue) {
+      if (newValue) {
+        let value = []
+        newValue.forEach((element, index) => {
+          value.push(element.category)
+        })
+        this.forPrintCategory = value.join("' , '")
+      }
     }
   },
   methods: {
+    retrieveCategory(search, loading) {
+      loading(true)
+      this.search2(search, loading, this)
+    },
+    search2: debounce((search, loading, vm) => {
+      if (search.trim().length > 0) {
+        axios
+          .get(`/uploading/nav_upload/getCategory?category=${search}`)
+          .then(({ data }) => {
+            vm.categoryList = data
+            loading(false)
+          })
+          .catch(error => {
+            vm.categoryList = []
+            loading(false)
+          })
+      } else {
+        vm.categoryList = []
+        loading(false)
+      }
+    }, 1000),
+    retrieveVendor(search, loading) {
+      loading(true)
+      this.search(search, loading, this)
+    },
+    search: debounce((search, loading, vm) => {
+      if (search.trim().length > 0) {
+        axios
+          .get(`/uploading/nav_upload/getVendor?vendor=${search}`)
+          .then(({ data }) => {
+            vm.vendorList = data
+            loading(false)
+          })
+          .catch(error => {
+            vm.vendorList = []
+            loading(false)
+          })
+      } else {
+        vm.vendorList = []
+        loading(false)
+      }
+    }, 1000),
     submitBtn() {
       this.locationForm.company = this.company
       this.locationForm.business_unit = this.business_unit
       this.locationForm.department = this.department
       this.locationForm.section = this.section
+      this.locationForm.forPrintCategory = this.forPrintCategory
 
       this.locationForm
         .post('/setup/location/createLocation')
@@ -565,8 +672,14 @@ export default {
           })
         })
     },
+    assignBtn(data) {
+      console.log(data)
+      var loc_id = data.location_id
+      $('#demo-default-modal').modal('show')
+    },
     editBtn(data) {
-      this.getCompany()
+      // this.getCompany()
+      console.log(data)
       // const comp = this.companyList.find(sm => (sm.acroname = data.company))
       var bunit_code = data.business_unit,
         business_unit = data.business_unit,
@@ -609,6 +722,9 @@ export default {
         position
       }
 
+      if (data.nav_count.byCategory === 'True')
+        this.category = data.nav_count.categoryName.split("' , '")
+
       this.company = data.company
       this.business_unit = data.business_unit
       this.department = data.department
@@ -624,6 +740,8 @@ export default {
       // this.business_unit = null
       // this.department = null
       // this.section = null
+      this.category = null
+      this.vendor = null
       this.companyList = []
       this.buList = []
       this.deptList = []
@@ -735,9 +853,14 @@ export default {
       return await axios.get('/uploading/nav_upload/getCompany')
     },
     getResults2() {
-      Promise.all([this.getCompany(), this.getBU()]).then(response => {
+      Promise.all([
+        this.getCompany(),
+        this.getCategory(),
+        this.getVendor()
+      ]).then(response => {
         this.companyList = response[0].data
-        // this.buList = response[1].data
+        this.categoryList = response[1].data
+        this.vendorList = response[2].data
       })
     },
     getFormattedDateToday() {
