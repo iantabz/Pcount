@@ -59,19 +59,18 @@
                     >
                     <div class="col-md-7">
                       <v-select
-                        v-model="business_unit"
                         label="business_unit"
                         :options="buList"
                         placeholder="Search for Business Unit"
                         :reduce="buList => buList.business_unit"
-                        @input="buSelected($event)"
                         multiple
+                        @input="buSelected($event)"
                       >
                       </v-select>
                     </div>
                   </div>
 
-                  <div class="row" style="padding: 10px 15px 15px 10px">
+                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-4 control-label text-bold"
                       style="text-align: right"
@@ -90,7 +89,7 @@
                       >
                       </v-select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-4 control-label text-bold"
@@ -169,7 +168,7 @@
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
-                  <div class="row" style="padding: 10px 15px 15px 10px">
+                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-4 control-label text-bold"
                       style="text-align: right"
@@ -186,7 +185,7 @@
                         :disabled="!department"
                       ></v-select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-4 control-label text-bold"
@@ -281,6 +280,7 @@ export default {
     }
   },
   methods: {
+    
     async generateBtn(e) {
       Swal.fire({
         html: "Please wait, don't close the browser.",
@@ -329,9 +329,13 @@ export default {
       const url = window.URL.createObjectURL(new Blob([data]))
       const link = document.createElement('a')
       link.href = url
+      // link.setAttribute(
+      //   'download',
+      //   `Consolidated Report as of ${this.date}.pdf`
+      // )
       link.setAttribute(
         'download',
-        `Consolidated Report as of ${this.date}.pdf`
+        `Consolidated Report as of ${this.date}.xlsx`
       )
       document.body.appendChild(link)
       link.click()
@@ -382,31 +386,38 @@ export default {
         })
     },
     buSelected(val) {
-      this.department = null
-      this.section = null
-      let url = null
-      if (val) {
-        const bu = this.buList.filter(sm => sm.business_unit == val)[0]
-        if (this.company) {
-          const company = this.companyList.find(e => e.acroname == this.company)
-          url = `/setup/location/getDept/?code=${company.company_code}&bu=${bu.bunit_code}`
-        } else {
-          url = `/setup/location/getDept/?bu=${bu.bunit_code}`
-        }
+      let value = []
+      val.forEach(element => {
+        value.push(element)
+      })
+      // console.log(value)
+      this.business_unit = value.join('|')
 
-        axios
-          // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
-          .get(url)
-          .then(response => {
-            this.deptList = response.data
-          })
-          .catch(response => {
-            console.log('error')
-          })
-      }
+      // this.department = null
+      // this.section = null
+      // let url = null
+      // if (val) {
+      //   const bu = this.buList.filter(sm => sm.business_unit == val)[0]
+      //   if (this.company) {
+      //     const company = this.companyList.find(e => e.acroname == this.company)
+      //     url = `/setup/location/getDept/?code=${company.company_code}&bu=${bu.bunit_code}`
+      //   } else {
+      //     url = `/setup/location/getDept/?bu=${bu.bunit_code}`
+      //   }
+
+      //   axios
+      //     // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
+      //     .get(url)
+      //     .then(response => {
+      //       this.deptList = response.data
+      //     })
+      //     .catch(response => {
+      //       console.log('error')
+      //     })
+      // }
     },
     companySelected(val) {
-      this.business_unit = null
+      // this.business_unit = null
       this.department = null
       this.section = null
       // console.log(val)

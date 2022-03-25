@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use \PDF;
+use App\Exports\ConsolidatedReportExport;
 use App\Exports\PcountAppCountCost;
 use App\Models\BusinessUnit;
 use App\Models\TblAppCountdata;
@@ -713,15 +714,17 @@ class ReportsController extends Controller
 
     public function generateConsolidateReport()
     {
-        set_time_limit(0);
-        ini_set('memory_limit', '-1');
-        $pdf = PDF::loadView('reports.consolidated_report', ['data' => $this->getResultsConsolidateReport()]);
+        // $pdf = PDF::loadView('reports.consolidated_report', ['data' => $this->getResultsConsolidateReport()]);
 
-        return $pdf->setPaper('legal', 'landscape')->download('Consolidatedreport.pdf');
+        // return $pdf->setPaper('legal', 'landscape')->download('Consolidatedreport.pdf');
+        session(['data' => $this->getResultsConsolidateReport()]);
+        return Excel::download(new ConsolidatedReportExport, 'ConsolidatedReport.xlsx');
     }
 
     public function getResultsConsolidateReport()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
         // dd(request()->all(), base64_decode(request()->date), base64_decode(request()->date2));
         $bu = request()->bu;
         $dept = request()->dept;
@@ -731,9 +734,11 @@ class ReportsController extends Controller
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
         $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
-        $bu = explode(',', $bu);
+        $bu = explode('|', $bu);
         $runDate = Carbon::parse(now())->toFormattedDateString();
         $runTime =  Carbon::parse(now())->format('h:i A');
+
+        // dd($bu);
         $stores = TblNavCountdata::select('tbl_nav_countdata.business_unit', 'acroname')
             ->join('business_unit', 'business_unit.business_unit', 'tbl_nav_countdata.business_unit')
             ->whereIn('tbl_nav_countdata.business_unit', $bu)
@@ -1042,13 +1047,13 @@ class ReportsController extends Controller
             $result->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
         }
 
-        if ($dept != 'null') {
-            $result->WHERE('tbl_app_countdata.department', 'LIKE', "%$dept%");
-        }
+        // if ($dept != 'null') {
+        //     $result->WHERE('tbl_app_countdata.department', 'LIKE', "%$dept%");
+        // }
 
-        if ($section != 'null') {
-            $result->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
-        }
+        // if ($section != 'null') {
+        //     $result->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
+        // }
 
         if ($vendors) {
             $vendors = explode('|', $vendors);

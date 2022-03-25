@@ -4309,7 +4309,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -4400,8 +4399,12 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
                 _file$split = file.split('='), _file$split2 = _slicedToArray(_file$split, 2), key = _file$split2[0], fileName = _file$split2[1];
                 url = window.URL.createObjectURL(new Blob([data]));
                 link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', "Consolidated Report as of ".concat(_this.date, ".pdf"));
+                link.href = url; // link.setAttribute(
+                //   'download',
+                //   `Consolidated Report as of ${this.date}.pdf`
+                // )
+
+                link.setAttribute('download', "Consolidated Report as of ".concat(_this.date, ".xlsx"));
                 document.body.appendChild(link);
                 link.click();
                 thisButton.disabled = false;
@@ -4460,38 +4463,37 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       });
     },
     buSelected: function buSelected(val) {
-      var _this3 = this;
+      var value = [];
+      val.forEach(function (element) {
+        value.push(element);
+      }); // console.log(value)
 
-      this.department = null;
-      this.section = null;
-      var url = null;
-
-      if (val) {
-        var bu = this.buList.filter(function (sm) {
-          return sm.business_unit == val;
-        })[0];
-
-        if (this.company) {
-          var company = this.companyList.find(function (e) {
-            return e.acroname == _this3.company;
-          });
-          url = "/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code);
-        } else {
-          url = "/setup/location/getDept/?bu=".concat(bu.bunit_code);
-        }
-
-        axios // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
-        .get(url).then(function (response) {
-          _this3.deptList = response.data;
-        })["catch"](function (response) {
-          console.log('error');
-        });
-      }
+      this.business_unit = value.join('|'); // this.department = null
+      // this.section = null
+      // let url = null
+      // if (val) {
+      //   const bu = this.buList.filter(sm => sm.business_unit == val)[0]
+      //   if (this.company) {
+      //     const company = this.companyList.find(e => e.acroname == this.company)
+      //     url = `/setup/location/getDept/?code=${company.company_code}&bu=${bu.bunit_code}`
+      //   } else {
+      //     url = `/setup/location/getDept/?bu=${bu.bunit_code}`
+      //   }
+      //   axios
+      //     // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
+      //     .get(url)
+      //     .then(response => {
+      //       this.deptList = response.data
+      //     })
+      //     .catch(response => {
+      //       console.log('error')
+      //     })
+      // }
     },
     companySelected: function companySelected(val) {
-      var _this4 = this;
+      var _this3 = this;
 
-      this.business_unit = null;
+      // this.business_unit = null
       this.department = null;
       this.section = null; // console.log(val)
 
@@ -4500,7 +4502,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
           return sm.acroname == val;
         })[0];
         axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
-          _this4.buList = response.data;
+          _this3.buList = response.data;
         })["catch"](function (response) {
           console.log('error');
         });
@@ -4545,13 +4547,13 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       }
     }, 1000),
     getResults: function getResults() {
-      var _this5 = this;
+      var _this4 = this;
 
       Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
-        _this5.vendorList = response[0].data;
-        _this5.categoryList = response[1].data;
-        _this5.buList = response[2].data;
-        _this5.companyList = response[3].data;
+        _this4.vendorList = response[0].data;
+        _this4.categoryList = response[1].data;
+        _this4.buList = response[2].data;
+        _this4.companyList = response[3].data;
       });
     },
     getCategory: function getCategory() {
@@ -47699,13 +47701,6 @@ var render = function() {
                                 input: function($event) {
                                   return _vm.buSelected($event)
                                 }
-                              },
-                              model: {
-                                value: _vm.business_unit,
-                                callback: function($$v) {
-                                  _vm.business_unit = $$v
-                                },
-                                expression: "business_unit"
                               }
                             })
                           ],
@@ -47722,48 +47717,6 @@ var render = function() {
                       },
                       [
                         _vm._m(2),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-7" },
-                          [
-                            _c("v-select", {
-                              attrs: {
-                                options: _vm.deptList,
-                                reduce: function(deptList) {
-                                  return deptList.dept_name
-                                },
-                                label: "dept_name",
-                                placeholder: "Department",
-                                disabled: !_vm.business_unit
-                              },
-                              on: {
-                                input: function($event) {
-                                  return _vm.departmentSelected($event)
-                                }
-                              },
-                              model: {
-                                value: _vm.department,
-                                callback: function($$v) {
-                                  _vm.department = $$v
-                                },
-                                expression: "department"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(3),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -47828,7 +47781,7 @@ var render = function() {
                         staticStyle: { "padding-left": "10px" }
                       },
                       [
-                        _vm._m(4),
+                        _vm._m(3),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-7" }, [
                           _c("input", {
@@ -47873,10 +47826,10 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
+                    _vm._m(4),
+                    _vm._v(" "),
                     _vm._m(5),
                     _vm._v(" "),
-                    _vm._m(6),
-                    _vm._v(" "),
                     _c(
                       "div",
                       {
@@ -47884,44 +47837,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(7),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-7" },
-                          [
-                            _c("v-select", {
-                              attrs: {
-                                options: _vm.sectionList,
-                                reduce: function(sectionList) {
-                                  return sectionList.section_name
-                                },
-                                label: "section_name",
-                                placeholder: "Section",
-                                disabled: !_vm.department
-                              },
-                              model: {
-                                value: _vm.section,
-                                callback: function($$v) {
-                                  _vm.section = $$v
-                                },
-                                expression: "section"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(8),
+                        _vm._m(6),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -48043,19 +47959,6 @@ var staticRenderFns = [
         staticClass: "col-md-4 control-label text-bold",
         staticStyle: { "text-align": "right" }
       },
-      [_c("h5", [_vm._v("Department :")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-4 control-label text-bold",
-        staticStyle: { "text-align": "right" }
-      },
       [_c("h5", [_vm._v("Vendor Name :")])]
     )
   },
@@ -48100,19 +48003,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("div", { staticClass: "col-md-6 pad-all" })
       ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-4 control-label text-bold",
-        staticStyle: { "text-align": "right" }
-      },
-      [_c("h5", [_vm._v("Section :")])]
     )
   },
   function() {
