@@ -985,14 +985,15 @@ class ReportsController extends Controller
 
     public function generatePcountCostExcel()
     {
-        set_time_limit(0);
-        ini_set('memory_limit', '-1');
         session(['data' => $this->dataPcountCost()]);
         return Excel::download(new PcountAppCountCost, 'invoices.xlsx');
     }
 
     public function dataPcountCost()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+
         $company = auth()->user()->company;
         $bu = request()->bu;
         $dept = request()->dept;
