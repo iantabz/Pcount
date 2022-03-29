@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/getResults', [PhysicalCountController::class, 'getResults']);
             Route::get('/generate', [PhysicalCountController::class, 'generate']);
             Route::get('/generateAppDataExcel', [PhysicalCountController::class, 'generateAppDataExcel']);
+            Route::get('/getNotFound', [PhysicalCountController::class, 'getNotFound']);
+            Route::get('/generateNotFound', [PhysicalCountController::class, 'generateNotFound']);
         });
         Route::prefix('damageCount')->group(function () {
             // Route::get('/getResults', [PhysicalCountController::class, 'getResults']);

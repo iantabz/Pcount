@@ -222,18 +222,27 @@
                   </div>
                   <div class="row pad-all">
                     <button
+                      data-v-6200eafe=""
+                      class="btn btn-danger btn-rounded pull-right mar-lft"
+                      :disabled="!notFoundItems || notFoundItems == 0"
+                      @click="generateBtnEXCEL($event, 'NotFound')"
+                    >
+                      <i data-v-6200eafe="" class="demo-pli-printer icon-lg"></i
+                      >&nbsp; Items Not Found({{ notFoundItems }})
+                    </button>
+                    <button
                       class="btn btn-info btn-rounded pull-right mar-lft"
                       :disabled="!data.data.length"
                       @click="generateBtn($event)"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Report
+                      PDF
                     </button>
 
                     <button
                       class="btn btn-info btn-rounded pull-right"
                       :disabled="!data.data.length"
-                      @click="generateBtnEXCEL($event)"
+                      @click="generateBtnEXCEL($event, 'CountData')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
                       Excel
@@ -381,7 +390,8 @@ export default {
       forPrintVendor: [],
       forPrintCategory: [],
       countType: null,
-      countTypes: ['ANNUAL', 'CYCLICAL']
+      countTypes: ['ANNUAL', 'CYCLICAL'],
+      notFoundItems: 0
     }
   },
   components: {
@@ -424,7 +434,7 @@ export default {
     }
   },
   methods: {
-    async generateBtnEXCEL(e) {
+    async generateBtnEXCEL(e, reportType) {
       Swal.fire({
         html: "Please wait, don't close the browser.",
         title: 'Generating report in progress',
@@ -443,17 +453,23 @@ export default {
       const thisButton = e.target
       const oldHTML = thisButton.innerHTML
 
+      let pass = null,
+        report = null
+      if (reportType == 'CountData') {
+        pass = '/reports/appdata/generateAppDataExcel'
+      } else {
+        pass = '/reports/appdata/generateNotFound'
+      }
       thisButton.disabled = true
       thisButton.innerHTML =
         '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
       const { headers, data } = await axios.get(
-        `/reports/appdata/generateAppDataExcel?date=${btoa(
-          this.date
-        )}&date2=${btoa(this.date2)}&vendors=${btoa(
-          this.forPrintVendor
-        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
-          this.department
-        }&section=${this.section}&countType=${this.countType}`,
+        pass +
+          `?date=${btoa(this.date)}&date2=${btoa(this.date2)}&vendors=${btoa(
+            this.forPrintVendor
+          )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+            this.department
+          }&section=${this.section}&countType=${this.countType}`,
         {
           responseType: 'blob'
         }
@@ -470,9 +486,13 @@ export default {
       // console.log(fileName)
       this.section ? (section = '-' + this.section) : (section = '')
 
+      let title = 'Actual Count (APP)'
+      if (reportType == 'NotFound') {
+        title = 'Actual Count (APP) Items Not Found'
+      }
       link.setAttribute(
         'download',
-        `Actual Count (APP) as of ${this.date}  ${this.business_unit} ${this.department}${section}.xlsx`
+        `${title} as of ${this.date}  ${this.business_unit} ${this.department}${section}.xlsx`
       )
       // console.log(link)
       document.body.appendChild(link)
@@ -675,7 +695,18 @@ export default {
         .slice(0, 10)
         .replace(/-/g, '-')
     },
-    getResults(page = 1) {
+    async getNotFound() {
+      return await axios.get(
+        `/reports/appdata/getNotFound/?date=${btoa(this.date)}&date2=${btoa(
+          this.date2
+        )}&vendors=${btoa(this.forPrintVendor)}&category=${
+          this.forPrintCategory
+        }&bu=${this.business_unit}&dept=${this.department}&section=${
+          this.section
+        }`
+      )
+    },
+    async getCountData(page = 1) {
       let url = null
       url = `/reports/appdata/getResults/?date=${btoa(this.date)}&date2=${btoa(
         this.date2
@@ -685,11 +716,22 @@ export default {
         this.section
       }&page=`
       if (this.business_unit && this.department && this.section) {
-        axios.get(url + page).then(response => {
-          this.data = response.data
-          this.total_result = response.data.total
-        })
+        // axios.get(url + page).then(response => {
+        //   this.data = response.data
+        //   this.total_result = response.data.total
+        // })
+        return await axios.get(url + page)
       }
+    },
+    getResults() {
+      Promise.all([this.getCountData(), this.getNotFound()]).then(response => {
+        if (this.business_unit && this.department && this.section) {
+          this.data = response[0].data
+          this.total_result = response[0].data.total
+        }
+        console.log(response[1].data.total)
+        this.notFoundItems = response[1].data.total
+      })
     }
   },
   mounted() {

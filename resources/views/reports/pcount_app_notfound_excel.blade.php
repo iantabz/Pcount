@@ -219,6 +219,11 @@
                     Actual Count (APP)
                 </th>
             </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Items Not Found Report
+                </th>
+            </tr>
             @if($data['business_unit'] != 'null')
             <tr>
                 <th style="text-align: left; font-size: 12px;">
@@ -295,28 +300,13 @@
         <thead>
             <tr>
                 <th class="text-center" style="vertical-align: middle;">
-                    Item Code
-                </th>
-                <th class="text-center" style="vertical-align: middle;">
                     Barcode
-                </th>
-                <th class="text-center" style="vertical-align: middle;">
-                    Description
                 </th>
                 <th class="text-center" style="vertical-align: middle;">
                     Uom
                 </th>
                 <th class="text-center" style="vertical-align: middle;">
                     Count
-                </th>
-                <th class="text-center" style="vertical-align: middle;">
-                    Smallest SKU
-                </th>
-                <th class="text-center" style="vertical-align: middle;">
-                    Conv. Qty
-                </th>
-                <th class="text-center" style="vertical-align: middle;">
-                    Rack
                 </th>
                 <th class="text-center" style="vertical-align: middle;">
                     Date Scanned
@@ -355,25 +345,17 @@
             $timeDiff = date_diff($timeStartCount, $timeEndCount);
             $countTime = $timeDiff->format("%H:%I:%S");
             $grandTotal += $item['total_qty'];
-            $grandTotalConvQty += $item['total_conv_qty'];
             // $countStart
             @endphp
             <tr>
-                <td style="text-align: center;">{{ $item['itemcode'] }}
-                </td>
                 <td style="text-align: center;">{{ $item['barcode'] }}</td>
-                <td style="text-align: left;">{{ $item['extended_desc'] }}</td>
                 <td style="text-align: center;">{{ $item['uom'] }}</td>
                 <td style="text-align: center;">{{ number_format($item['total_qty'], 0) }}</td>
-                <td style="text-align: center;">{{ $item['nav_uom'] }}</td>
-                <td style="text-align: center;">{{ number_format($item['total_conv_qty'], 0) }}</td>
-                <td style="text-align: center;">{{ $item['rack_desc'] }}</td>
                 <td style="text-align: center;">{{ $item['datetime_scanned'] }}</td>
-                {{-- <td style="text-align: center;">{{ $item['date_expiry'] }}</td> --}}
             </tr>
             @endforeach
             <tr>
-                <td colspan="4"
+                <td colspan="2"
                     style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
                     GRAND TOTAL >>>>
                 </td>
@@ -382,8 +364,6 @@
                     {{ number_format($grandTotal, 0)}}</td>
                 <td style="text-align:center; border-bottom-style: none;">
                 </td>
-                <td style="text-align:center; border-bottom-style: none; border-top-style: double;">
-                    {{ number_format($grandTotalConvQty, 0)}}</td>
             </tr>
         </tbody>
     </table>

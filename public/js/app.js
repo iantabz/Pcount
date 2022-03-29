@@ -5547,6 +5547,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5587,7 +5596,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       forPrintVendor: [],
       forPrintCategory: [],
       countType: null,
-      countTypes: ['ANNUAL', 'CYCLICAL']
+      countTypes: ['ANNUAL', 'CYCLICAL'],
+      notFoundItems: 0
     };
   },
   components: {
@@ -5630,11 +5640,11 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     }
   },
   methods: {
-    generateBtnEXCEL: function generateBtnEXCEL(e) {
+    generateBtnEXCEL: function generateBtnEXCEL(e, reportType) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var thisButton, oldHTML, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section;
+        var thisButton, oldHTML, pass, report, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -5656,14 +5666,22 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
                 thisButton = e.target;
                 oldHTML = thisButton.innerHTML;
+                pass = null, report = null;
+
+                if (reportType == 'CountData') {
+                  pass = '/reports/appdata/generateAppDataExcel';
+                } else {
+                  pass = '/reports/appdata/generateNotFound';
+                }
+
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
-                _context.next = 7;
-                return axios.get("/reports/appdata/generateAppDataExcel?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType), {
+                _context.next = 9;
+                return axios.get(pass + "?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType), {
                   responseType: 'blob'
                 });
 
-              case 7:
+              case 9:
                 _yield$axios$get = _context.sent;
                 headers = _yield$axios$get.headers;
                 data = _yield$axios$get.data;
@@ -5677,7 +5695,13 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 section = null; // console.log(fileName)
 
                 _this.section ? section = '-' + _this.section : section = '';
-                link.setAttribute('download', "Actual Count (APP) as of ".concat(_this.date, "  ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx")); // console.log(link)
+                title = 'Actual Count (APP)';
+
+                if (reportType == 'NotFound') {
+                  title = 'Actual Count (APP) Items Not Found';
+                }
+
+                link.setAttribute('download', "".concat(title, " as of ").concat(_this.date, "  ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx")); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -5692,7 +5716,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                   timer: 5000
                 });
 
-              case 25:
+              case 29:
               case "end":
                 return _context.stop();
             }
@@ -5957,19 +5981,73 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     getFormattedDateToday: function getFormattedDateToday() {
       return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
     },
-    getResults: function getResults() {
+    getNotFound: function getNotFound() {
       var _this7 = this;
 
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      var url = null;
-      url = "/reports/appdata/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return axios.get("/reports/appdata/getNotFound/?date=".concat(btoa(_this7.date), "&date2=").concat(btoa(_this7.date2), "&vendors=").concat(btoa(_this7.forPrintVendor), "&category=").concat(_this7.forPrintCategory, "&bu=").concat(_this7.business_unit, "&dept=").concat(_this7.department, "&section=").concat(_this7.section));
 
-      if (this.business_unit && this.department && this.section) {
-        axios.get(url + page).then(function (response) {
-          _this7.data = response.data;
-          _this7.total_result = response.data.total;
-        });
-      }
+              case 2:
+                return _context7.abrupt("return", _context7.sent);
+
+              case 3:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }))();
+    },
+    getCountData: function getCountData() {
+      var _arguments = arguments,
+          _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8() {
+        var page, url;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
+                url = null;
+                url = "/reports/appdata/getResults/?date=".concat(btoa(_this8.date), "&date2=").concat(btoa(_this8.date2), "&vendors=").concat(btoa(_this8.forPrintVendor), "&category=").concat(_this8.forPrintCategory, "&bu=").concat(_this8.business_unit, "&dept=").concat(_this8.department, "&section=").concat(_this8.section, "&page=");
+
+                if (!(_this8.business_unit && _this8.department && _this8.section)) {
+                  _context8.next = 7;
+                  break;
+                }
+
+                _context8.next = 6;
+                return axios.get(url + page);
+
+              case 6:
+                return _context8.abrupt("return", _context8.sent);
+
+              case 7:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }))();
+    },
+    getResults: function getResults() {
+      var _this9 = this;
+
+      Promise.all([this.getCountData(), this.getNotFound()]).then(function (response) {
+        if (_this9.business_unit && _this9.department && _this9.section) {
+          _this9.data = response[0].data;
+          _this9.total_result = response[0].data.total;
+        }
+
+        console.log(response[1].data.total);
+        _this9.notFoundItems = response[1].data.total;
+      });
     }
   },
   mounted: function mounted() {
@@ -49046,6 +49124,35 @@ var render = function() {
                         "button",
                         {
                           staticClass:
+                            "btn btn-danger btn-rounded pull-right mar-lft",
+                          attrs: {
+                            "data-v-6200eafe": "",
+                            disabled:
+                              !_vm.notFoundItems || _vm.notFoundItems == 0
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.generateBtnEXCEL($event, "NotFound")
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "demo-pli-printer icon-lg",
+                            attrs: { "data-v-6200eafe": "" }
+                          }),
+                          _vm._v(
+                            "  Items Not Found(" +
+                              _vm._s(_vm.notFoundItems) +
+                              ")\n                  "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
                             "btn btn-info btn-rounded pull-right mar-lft",
                           attrs: { disabled: !_vm.data.data.length },
                           on: {
@@ -49057,7 +49164,7 @@ var render = function() {
                         [
                           _c("i", { staticClass: "demo-pli-printer icon-lg" }),
                           _vm._v(
-                            "  Generate\n                    Report\n                  "
+                            "  Generate\n                    PDF\n                  "
                           )
                         ]
                       ),
@@ -49069,7 +49176,7 @@ var render = function() {
                           attrs: { disabled: !_vm.data.data.length },
                           on: {
                             click: function($event) {
-                              return _vm.generateBtnEXCEL($event)
+                              return _vm.generateBtnEXCEL($event, "CountData")
                             }
                           }
                         },

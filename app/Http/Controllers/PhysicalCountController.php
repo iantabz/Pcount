@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use \PDF;
+use App\Exports\ItemsNotFound;
 use App\Exports\PcountAppCountData;
 use App\Exports\PcountDamageExport;
 use App\Models\TblAppCountdata;
+use App\Models\TblAppNfitem;
 use Carbon\Carbon;
+use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -75,6 +78,15 @@ class PhysicalCountController extends Controller
         // ])
         //     ->whereBetween('datetime_saved', [$date, $date2])
         //     ->paginate(10);
+    }
+
+    public function getNotFound()
+    {
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
+
+        // dd($date, $dateAsOf, request()->all());
+        return TblAppNfitem::whereBetween('datetime_scanned', [$date, $dateAsOf])->paginate(10);
     }
 
     public function generate()
@@ -227,7 +239,7 @@ class PhysicalCountController extends Controller
         //     // return $data;
         // })->toArray();
 
-        dd($result);
+        // dd($result);
 
         $header = array(
             'company' => $company,
@@ -356,6 +368,123 @@ class PhysicalCountController extends Controller
             'data' => $result
         );
         // dd($header['data']['Apa-ap, Bendion Paul Pocot']);
+
+        return $header;
+    }
+
+    public function generateNotFound()
+    {
+        $type = "ExcelReport";
+        session(['data' => $this->itemsNotFoundData($type)]);
+        return Excel::download(new ItemsNotFound, 'invoices.xlsx');
+    }
+
+    public function itemsNotFoundData($type)
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        $company = auth()->user()->company;
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+        $vendors = base64_decode(request()->vendors);
+        $category = request()->category;
+        $countType = request()->countType;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
+
+        $result = TblAppNfitem::selectRaw('
+        tbl_app_nfitem.barcode,
+        tbl_app_nfitem.uom, 
+        SUM(tbl_app_nfitem.qty) as total_qty,
+        tbl_app_nfitem.business_unit,
+        tbl_app_nfitem.department,
+        tbl_app_nfitem.section,
+        tbl_app_nfitem.datetime_scanned,
+        tbl_app_nfitem.datetime_exported,
+        tbl_app_nfitem.rack_desc,
+        tbl_app_user.name AS app_user,
+        tbl_app_user.position AS app_user_position,
+        tbl_app_nfitem.user_signature as app_user_sign,
+        tbl_app_audit.name AS audit_user,
+        tbl_app_audit.position AS audit_position,
+        tbl_app_nfitem.audit_signature AS audit_user_sign,
+        vendor_name, 
+        tbl_item_masterfile.group')
+            ->join('tbl_app_user', 'tbl_app_user.location_id', 'tbl_app_nfitem.location_id')
+            ->join('tbl_app_audit', 'tbl_app_audit.location_id', 'tbl_app_nfitem.location_id')
+            ->join('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_nfitem.barcode')
+            ->whereBetween('datetime_scanned', [$date, $dateAsOf])->orderBy('datetime_scanned');
+
+        // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray());
+
+        if ($bu != 'null') {
+            $result->WHERE('tbl_app_nfitem.business_unit',  'LIKE', "%$bu%");
+        }
+        if ($dept != 'null') {
+            $result->WHERE('tbl_app_nfitem.department', 'LIKE', "%$dept%");
+        }
+        if ($section != 'null') {
+            $result->WHERE('tbl_app_nfitem.section', 'LIKE', "%$section%");
+        }
+        if ($vendors) {
+            $vendors = explode('|', $vendors);
+            $result = $result->whereIn('vendor_name', $vendors);
+            $vendors = implode(", ", $vendors);
+        }
+
+        if ($category) {
+            $category = explode('|', $category);
+            $result = $result->whereIn('group', $category);
+            $category = implode(", ", $category);
+        }
+
+        // dd($result->groupBy('itemcode')->get()->groupBy(['app_user', 'audit_user']))->toArray();
+
+        $result = $result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray();
+
+        // $appCount = TblAppCountdata::whereIn('itemcode', $result->pluck('itemcode'));
+        // $appCount->get()->groupBy('itemcode')->map(function ($data) use ($appCount) {
+        //     foreach ($appCount as $key => $value) {
+        //         return array(
+        //             "id"  => $data->id,
+        //             "itemcode"  => $data->itemcode,
+        //             "barcode"  => $data->barcode,
+        //             "description"  => $data->description,
+        //             "uom"  => $data->uom,
+        //             "qty"  => $data->total_qty,
+        //             "rack_desc"  => $data->rack_desc,
+        //             "empno"  => $data->empno,
+        //             "datetime_scanned"  => $data->datetime_scanned,
+        //             "datetime_saved"  => $data->datetime_saved,
+        //             "datetime_exported"  => $data->datetime_exported
+        //         );
+        //     }
+        //     // dump($data);
+
+        //     // return $data;
+        // })->toArray();
+
+        // dd($result);
+
+        $header = array(
+            'company' => $company,
+            'business_unit' => $bu,
+            'department' => $dept,
+            'section' => $section,
+            'vendors' => $vendors,
+            'category' => $category,
+            'date' => $printDate,
+            'countType' => $countType,
+            'user' => auth()->user()->name,
+            'user_position' => auth()->user()->position,
+            'runDate'   => $runDate,
+            'runTime'    => $runTime,
+            'data' => $result
+        );
 
         return $header;
     }
