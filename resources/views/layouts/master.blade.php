@@ -799,7 +799,7 @@
                         @auth
                         <p class="mnp-name">{{ Auth::user()->name }}</p>
                         @endauth
-                        <span class="mnp-desc">aaron.cha@themeon.net</span>
+                        <span class="mnp-desc"> {{Auth::user()->position }}</span>
                       </a>
                     </div>
                     <div id="profile-nav" class="collapse list-group bg-trans">

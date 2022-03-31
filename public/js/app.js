@@ -7302,9 +7302,9 @@ __webpack_require__.r(__webpack_exports__);
         total: null,
         per_page: null
       },
-      name: null,
       date: this.getFormattedDateToday(),
-      total_result: 0
+      total_result: 0,
+      user: []
     };
   },
   components: {
@@ -7328,7 +7328,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.$root.currentPage = this.$route.meta.name;
-    this.name = this.$root.authUser.name;
+    this.user = this.$root.authUser;
+    console.log(this.user);
     this.getResults();
   }
 });
@@ -50192,7 +50193,7 @@ var render = function() {
                 [
                   _vm._v(
                     "\n              Welcome back, " +
-                      _vm._s(_vm.name) +
+                      _vm._s(_vm.user.name) +
                       "!\n            "
                   )
                 ]
@@ -50464,13 +50465,15 @@ var render = function() {
                     [
                       _vm._v(
                         "\n                  " +
-                          _vm._s(_vm.name) +
+                          _vm._s(_vm.user.name) +
                           "\n                "
                       )
                     ]
                   ),
                   _vm._v(" "),
-                  _c("p", { staticClass: "text-muted" }, [_vm._v("ADMIN")]),
+                  _c("p", { staticClass: "text-muted" }, [
+                    _vm._v(_vm._s(_vm.user.position))
+                  ]),
                   _vm._v(" "),
                   _vm._m(0)
                 ])

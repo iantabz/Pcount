@@ -10,7 +10,7 @@
                 INVENTORY COUNT CONSOLIDATION SYSTEM
               </h3>
               <h3 class="text-main text-normal text-2x mar-no">
-                Welcome back, {{ name }}!
+                Welcome back, {{ user.name }}!
               </h3>
               <h5 class="text-uppercase text-muted text-normal">
                 {{ date | DashboardTime }}
@@ -326,9 +326,9 @@
                     class="text-semibold mar-no text-main"
                     style="font-size: 1.2em;"
                   >
-                    {{ name }}
+                    {{ user.name }}
                   </p>
-                  <p class="text-muted">ADMIN</p>
+                  <p class="text-muted">{{ user.position }}</p>
                   <div class="mar-top">
                     <button class="btn btn-mint">Follow</button>
                     <button class="btn btn-mint">Message</button>
@@ -431,9 +431,9 @@ export default {
         total: null,
         per_page: null
       },
-      name: null,
       date: this.getFormattedDateToday(),
-      total_result: 0
+      total_result: 0,
+      user: []
     }
   },
   components: {
@@ -457,7 +457,8 @@ export default {
   },
   mounted() {
     this.$root.currentPage = this.$route.meta.name
-    this.name = this.$root.authUser.name
+    this.user = this.$root.authUser
+    console.log(this.user)
     this.getResults()
   }
 }
