@@ -388,7 +388,7 @@
 
                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
                   <ul class="head-list">
-                    <li>
+                    {{-- <li>
                       <a href="#"><i class="demo-pli-male icon-lg icon-fw"></i> Profile</a>
                     </li>
                     <li>
@@ -402,7 +402,7 @@
                     <li>
                       <a href="#"><i class="demo-pli-computer-secure icon-lg icon-fw"></i> Lock
                         screen</a>
-                    </li>
+                    </li> --}}
                     <li>
                       <a href="{{ route('logout') }}" onclick="event.preventDefault();
                       document.getElementById('logout-form').submit();"><i class="demo-pli-unlock icon-lg icon-fw"></i>
@@ -803,7 +803,7 @@
                       </a>
                     </div>
                     <div id="profile-nav" class="collapse list-group bg-trans">
-                      <a href="#" class="list-group-item">
+                      {{-- <a href="#" class="list-group-item">
                         <i class="demo-pli-male icon-lg icon-fw"></i> View Profile
                       </a>
                       <a href="#" class="list-group-item">
@@ -811,7 +811,7 @@
                       </a>
                       <a href="#" class="list-group-item">
                         <i class="demo-pli-information icon-lg icon-fw"></i> Help
-                      </a>
+                      </a> --}}
                       <a href="#" class="list-group-item">
                         <i class="demo-pli-unlock icon-lg icon-fw"></i> Logout
                       </a>
