@@ -7934,17 +7934,17 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     vendor: function vendor(newValue) {
       var value = [];
       newValue.forEach(function (element, index) {
-        value.push(element.vendor_name);
+        value.push("'" + element.vendor_name + "'");
       });
-      this.forPrintVendor = value.join("' , '");
+      this.forPrintVendor = value.join(' , ');
     },
     category: function category(newValue) {
       if (newValue) {
         var value = [];
         newValue.forEach(function (element, index) {
-          value.push(element.category);
+          value.push("'" + element.category + "'");
         });
-        this.forPrintCategory = value.join("' , '");
+        this.forPrintCategory = value.join(' , '); // console.log(this.forPrintCategory)
       }
     }
   },
@@ -8048,9 +8048,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       $('#demo-default-modal').modal('show');
     },
     editBtn: function editBtn(data) {
-      // this.getCompany()
-      console.log(data); // const comp = this.companyList.find(sm => (sm.acroname = data.company))
-
+      // console.log(data)
+      // const comp = this.companyList.find(sm => (sm.acroname = data.company))
       var bunit_code = data.business_unit,
           business_unit = data.business_unit,
           dept_code = data.department,
@@ -8086,7 +8085,9 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         name: name,
         position: position
       };
-      if (data.nav_count.byCategory === 'True') this.category = data.nav_count.categoryName.split("' , '");
+      if (data.nav_count.byCategory === 'True') this.category = data.nav_count.categoryName.replaceAll("'", '').split(' , '); // console.log(data.nav_count.categoryName.replaceAll("'", '').split(' , '))
+
+      console.log(this.category);
       this.company = data.company;
       this.business_unit = data.business_unit;
       this.department = data.department;

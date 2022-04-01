@@ -566,17 +566,18 @@ export default {
     vendor(newValue) {
       let value = []
       newValue.forEach((element, index) => {
-        value.push(element.vendor_name)
+        value.push("'" + element.vendor_name + "'")
       })
-      this.forPrintVendor = value.join("' , '")
+      this.forPrintVendor = value.join(' , ')
     },
     category(newValue) {
       if (newValue) {
         let value = []
         newValue.forEach((element, index) => {
-          value.push(element.category)
+          value.push("'" + element.category + "'")
         })
-        this.forPrintCategory = value.join("' , '")
+        this.forPrintCategory = value.join(' , ')
+        // console.log(this.forPrintCategory)
       }
     }
   },
@@ -678,8 +679,7 @@ export default {
       $('#demo-default-modal').modal('show')
     },
     editBtn(data) {
-      // this.getCompany()
-      console.log(data)
+      // console.log(data)
       // const comp = this.companyList.find(sm => (sm.acroname = data.company))
       var bunit_code = data.business_unit,
         business_unit = data.business_unit,
@@ -723,8 +723,13 @@ export default {
       }
 
       if (data.nav_count.byCategory === 'True')
-        this.category = data.nav_count.categoryName.split("' , '")
+        this.category = data.nav_count.categoryName
+          .replaceAll("'", '')
+          .split(' , ')
 
+      // console.log(data.nav_count.categoryName.replaceAll("'", '').split(' , '))
+
+      console.log(this.category)
       this.company = data.company
       this.business_unit = data.business_unit
       this.department = data.department
