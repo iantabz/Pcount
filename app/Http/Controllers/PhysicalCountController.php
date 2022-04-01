@@ -400,12 +400,12 @@ class PhysicalCountController extends Controller
         tbl_app_nfitem.barcode,
         tbl_app_nfitem.uom, 
         SUM(tbl_app_nfitem.qty) as total_qty,
-        tbl_app_nfitem.business_unit,
-        tbl_app_nfitem.department,
+        business_unit,
+        department,
         tbl_app_nfitem.section,
-        tbl_app_nfitem.datetime_scanned,
-        tbl_app_nfitem.datetime_exported,
-        tbl_app_nfitem.rack_desc,
+        datetime_scanned,
+        datetime_exported,
+        rack_desc,
         tbl_app_user.name AS app_user,
         tbl_app_user.position AS app_user_position,
         tbl_app_nfitem.user_signature as app_user_sign,
@@ -416,7 +416,7 @@ class PhysicalCountController extends Controller
         tbl_item_masterfile.group')
             ->join('tbl_app_user', 'tbl_app_user.location_id', 'tbl_app_nfitem.location_id')
             ->join('tbl_app_audit', 'tbl_app_audit.location_id', 'tbl_app_nfitem.location_id')
-            ->join('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_nfitem.barcode')
+            ->leftjoin('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_nfitem.barcode')
             ->whereBetween('datetime_scanned', [$date, $dateAsOf])->orderBy('datetime_scanned');
 
         // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray());
@@ -442,7 +442,7 @@ class PhysicalCountController extends Controller
             $category = implode(", ", $category);
         }
 
-        // dd($result->groupBy('itemcode')->get()->groupBy(['app_user', 'audit_user']))->toArray();
+        // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group']))->toArray();
 
         $result = $result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray();
 

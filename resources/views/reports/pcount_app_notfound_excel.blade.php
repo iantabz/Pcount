@@ -220,7 +220,7 @@
                 </th>
             </tr>
             <tr>
-                <th style="text-align: left; font-size: 12px;">
+                <th style="text-align: left; font-size: 12px; font-weight: bold;">
                     Items Not Found Report
                 </th>
             </tr>
@@ -281,13 +281,18 @@
     </table> --}}
 
     @foreach ($categories as $category => $items)
+
     <table>
+        @if($vendor_name)
         <tr>
             <th style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</th>
         </tr>
+        @endif
+        @if($category)
         <tr>
             <th style="text-align: left; font-size: 12px">Category: {{ $category }}</th>
         </tr>
+        @endif
     </table>
     @php
     $grandTotal = 0;

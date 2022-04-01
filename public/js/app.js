@@ -6015,20 +6015,19 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
                 url = null;
-                url = "/reports/appdata/getResults/?date=".concat(btoa(_this8.date), "&date2=").concat(btoa(_this8.date2), "&vendors=").concat(btoa(_this8.forPrintVendor), "&category=").concat(_this8.forPrintCategory, "&bu=").concat(_this8.business_unit, "&dept=").concat(_this8.department, "&section=").concat(_this8.section, "&page=");
+                url = "/reports/appdata/getResults/?date=".concat(btoa(_this8.date), "&date2=").concat(btoa(_this8.date2), "&vendors=").concat(btoa(_this8.forPrintVendor), "&category=").concat(_this8.forPrintCategory, "&bu=").concat(_this8.business_unit, "&dept=").concat(_this8.department, "&section=").concat(_this8.section, "&page="); // if (this.business_unit && this.department && this.section) {
+                // axios.get(url + page).then(response => {
+                //   this.data = response.data
+                //   this.total_result = response.data.total
+                // })
 
-                if (!(_this8.business_unit && _this8.department && _this8.section)) {
-                  _context8.next = 7;
-                  break;
-                }
-
-                _context8.next = 6;
+                _context8.next = 5;
                 return axios.get(url + page);
 
-              case 6:
+              case 5:
                 return _context8.abrupt("return", _context8.sent);
 
-              case 7:
+              case 6:
               case "end":
                 return _context8.stop();
             }
@@ -6043,10 +6042,9 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         if (_this9.business_unit && _this9.department && _this9.section) {
           _this9.data = response[0].data;
           _this9.total_result = response[0].data.total;
+          console.log(response[1].data.total);
+          _this9.notFoundItems = response[1].data.total;
         }
-
-        console.log(response[1].data.total);
-        _this9.notFoundItems = response[1].data.total;
       });
     }
   },

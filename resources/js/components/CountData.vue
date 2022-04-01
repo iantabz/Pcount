@@ -715,22 +715,22 @@ export default {
       }&bu=${this.business_unit}&dept=${this.department}&section=${
         this.section
       }&page=`
-      if (this.business_unit && this.department && this.section) {
-        // axios.get(url + page).then(response => {
-        //   this.data = response.data
-        //   this.total_result = response.data.total
-        // })
-        return await axios.get(url + page)
-      }
+      // if (this.business_unit && this.department && this.section) {
+      // axios.get(url + page).then(response => {
+      //   this.data = response.data
+      //   this.total_result = response.data.total
+      // })
+      return await axios.get(url + page)
+      // }
     },
     getResults() {
       Promise.all([this.getCountData(), this.getNotFound()]).then(response => {
         if (this.business_unit && this.department && this.section) {
           this.data = response[0].data
           this.total_result = response[0].data.total
+          console.log(response[1].data.total)
+          this.notFoundItems = response[1].data.total
         }
-        console.log(response[1].data.total)
-        this.notFoundItems = response[1].data.total
       })
     }
   },
