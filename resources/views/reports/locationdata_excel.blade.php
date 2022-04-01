@@ -207,21 +207,21 @@
     <table>
         <thead>
             <tr>
-                <th style="text-align: center; font-size: 12px; font-weight: bold;" colspan="4">
+                <th style="text-align: center; font-size: 12px; font-weight: bold;" colspan="5">
                     INVENTORY COUNT CONSOLIDATION SYSTEM
                 </th>
             </tr>
 
             @if($data['business_unit'] != 'null')
             <tr>
-                <th style="text-align: left; font-size: 12px;" colspan="4">
+                <th style="text-align: left; font-size: 12px;" colspan="5">
                     {{ $data['business_unit']}}
                 </th>
             </tr>
             @endif
             @if($data['department'] != 'null')
             <tr>
-                <th style="text-align: left; font-size: 12px;" colspan="4">
+                <th style="text-align: left; font-size: 12px;" colspan="5">
                     {{$data['department']}}
 
                     @if($data['section'] != 'null')
@@ -283,7 +283,6 @@
         </tbody>
         @endforeach
     </table>
-    {{-- {{dd($x)}} --}}
 </body>
 
 </html>
