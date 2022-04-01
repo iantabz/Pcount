@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LocationData;
 use App\Http\Requests\CreateLocationRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Employee;
@@ -16,6 +17,7 @@ use App\Models\TblVendorMasterfile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SetupController extends Controller
 {
@@ -236,5 +238,39 @@ class SetupController extends Controller
                 ->orWhere('dept_code', $search)
                 ->paginate(10);
         }
+    }
+
+    public function generateLocation()
+    {
+        session(['data' => $this->LocationData()]);
+        return Excel::download(new LocationData, 'LocationData.xlsx');
+    }
+
+    public function LocationData()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+
+        $query =  TblLocation::with(['app_users', 'app_audit', 'nav_count'])
+            ->where([
+                ['business_unit', 'LIKE', "$bu"],
+                ['department', 'LIKE', "$dept"],
+                ['section', 'LIKE', "$section"],
+                ['done', 'LIKE', "false"]
+            ])->get()->toArray();
+        // dd($query);
+
+        $header = array(
+            'business_unit' => $bu,
+            'department' => $dept,
+            'section' => $section,
+            'data' => $query
+        );
+
+        return $header;
     }
 }

@@ -7364,10 +7364,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7949,6 +7983,85 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     }
   },
   methods: (_methods = {
+    generate: function generate(e, reportType) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var thisButton, oldHTML, pass, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                Swal.fire({
+                  html: "Please wait, don't close the browser.",
+                  title: 'Generating report in progress',
+                  timerProgressBar: true,
+                  allowOutsideClick: false,
+                  showConfirmButton: false,
+                  willOpen: function willOpen() {
+                    Swal.showLoading();
+                  },
+                  willClose: function willClose() {}
+                }).then(function (result) {
+                  if (result.isConfirmed) {}
+                });
+                thisButton = e.target;
+                oldHTML = thisButton.innerHTML;
+                pass = null;
+
+                if (reportType == 'Excel') {
+                  pass = '/setup/location/generateLocation';
+                } else {// pass = '/reports/appdata/generateNotFound'
+                }
+
+                thisButton.disabled = true;
+                thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
+                _context.next = 9;
+                return axios.get(pass + "?bu=".concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section), {
+                  responseType: 'blob'
+                });
+
+              case 9:
+                _yield$axios$get = _context.sent;
+                headers = _yield$axios$get.headers;
+                data = _yield$axios$get.data;
+                contentDisposition = headers['content-disposition'];
+                _contentDisposition$s = contentDisposition.split(' '), _contentDisposition$s2 = _slicedToArray(_contentDisposition$s, 2), attachment = _contentDisposition$s2[0], file = _contentDisposition$s2[1];
+                _file$split = file.split('='), _file$split2 = _slicedToArray(_file$split, 2), key = _file$split2[0], fileName = _file$split2[1];
+                url = window.URL.createObjectURL(new Blob([data]));
+                link = document.createElement('a');
+                link.href = url;
+                section = null;
+                _this.section ? section = '-' + _this.section : section = '';
+                title = 'Actual Count (APP)';
+
+                if (reportType == 'NotFound') {
+                  title = 'Actual Count (APP) Items Not Found';
+                }
+
+                link.setAttribute('download', "".concat(title, " as of ").concat(_this.date, "  ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx"));
+                document.body.appendChild(link);
+                link.click();
+                thisButton.disabled = false;
+                thisButton.innerHTML = oldHTML;
+                Swal.close();
+                $.niftyNoty({
+                  type: 'success',
+                  icon: 'pli-cross icon-2x',
+                  message: '<i class="fa fa-check"></i> Generate successful!',
+                  container: 'floating',
+                  timer: 5000
+                });
+
+              case 29:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
     retrieveCategory: function retrieveCategory(search, loading) {
       loading(true);
       this.search2(search, loading, this);
@@ -7988,7 +8101,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       }
     }, 1000),
     submitBtn: function submitBtn() {
-      var _this = this;
+      var _this2 = this;
 
       this.locationForm.company = this.company;
       this.locationForm.business_unit = this.business_unit;
@@ -8000,9 +8113,9 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
             status = _ref3.status;
 
         if (status == 200) {
-          _this.getResults();
+          _this2.getResults();
 
-          _this.closeBtn();
+          _this2.closeBtn();
 
           $('#demo-default-modal').modal('hide');
           $.niftyNoty({
@@ -8015,9 +8128,9 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         }
 
         if (status == 201) {
-          _this.getResults();
+          _this2.getResults();
 
-          _this.closeBtn();
+          _this2.closeBtn();
 
           $('#demo-default-modal').modal('hide');
           $.niftyNoty({
@@ -8148,24 +8261,24 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       loading(false);
     }
   }, 1000)), _defineProperty(_methods, "departmentSelected", function departmentSelected(val) {
-    var _this2 = this;
+    var _this3 = this;
 
     var department = this.deptList.filter(function (sm) {
       return sm.dept_name == val;
     })[0];
     var bu = this.buList.filter(function (sm) {
-      return sm.business_unit == _this2.business_unit;
+      return sm.business_unit == _this3.business_unit;
     })[0];
     var company = this.companyList.find(function (e) {
-      return e.acroname == _this2.company;
+      return e.acroname == _this3.company;
     });
     axios.get("/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
-      _this2.sectionList = response.data;
+      _this3.sectionList = response.data;
     })["catch"](function (response) {
       console.log('error');
     });
   }), _defineProperty(_methods, "buSelected", function buSelected(val) {
-    var _this3 = this;
+    var _this4 = this;
 
     this.department = null;
     this.section = null;
@@ -8175,16 +8288,16 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         return sm.business_unit == val;
       })[0];
       var company = this.companyList.find(function (e) {
-        return e.acroname == _this3.company;
+        return e.acroname == _this4.company;
       });
       axios.get("/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
-        _this3.deptList = response.data;
+        _this4.deptList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     }
   }), _defineProperty(_methods, "companySelected", function companySelected(val) {
-    var _this4 = this;
+    var _this5 = this;
 
     this.business_unit = null;
     this.department = null;
@@ -8195,38 +8308,19 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         return sm.acroname == val;
       })[0];
       axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
-        _this4.buList = response.data;
+        _this5.buList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     }
   }), _defineProperty(_methods, "getBU", function getBU() {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return axios.get('/setup/location/getBU');
-
-            case 2:
-              return _context.abrupt("return", _context.sent);
-
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  }), _defineProperty(_methods, "getCategory", function getCategory() {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return axios.get('/uploading/nav_upload/getCategory');
+              return axios.get('/setup/location/getBU');
 
             case 2:
               return _context2.abrupt("return", _context2.sent);
@@ -8238,14 +8332,14 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         }
       }, _callee2);
     }))();
-  }), _defineProperty(_methods, "getVendor", function getVendor() {
+  }), _defineProperty(_methods, "getCategory", function getCategory() {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return axios.get('/uploading/nav_upload/getVendor');
+              return axios.get('/uploading/nav_upload/getCategory');
 
             case 2:
               return _context3.abrupt("return", _context3.sent);
@@ -8257,14 +8351,14 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         }
       }, _callee3);
     }))();
-  }), _defineProperty(_methods, "getCompany", function getCompany() {
+  }), _defineProperty(_methods, "getVendor", function getVendor() {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
               _context4.next = 2;
-              return axios.get('/uploading/nav_upload/getCompany');
+              return axios.get('/uploading/nav_upload/getVendor');
 
             case 2:
               return _context4.abrupt("return", _context4.sent);
@@ -8276,18 +8370,37 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         }
       }, _callee4);
     }))();
+  }), _defineProperty(_methods, "getCompany", function getCompany() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return axios.get('/uploading/nav_upload/getCompany');
+
+            case 2:
+              return _context5.abrupt("return", _context5.sent);
+
+            case 3:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }))();
   }), _defineProperty(_methods, "getResults2", function getResults2() {
-    var _this5 = this;
+    var _this6 = this;
 
     Promise.all([this.getCompany(), this.getCategory(), this.getVendor()]).then(function (response) {
-      _this5.companyList = response[0].data;
-      _this5.categoryList = response[1].data;
-      _this5.vendorList = response[2].data;
+      _this6.companyList = response[0].data;
+      _this6.categoryList = response[1].data;
+      _this6.vendorList = response[2].data;
     });
   }), _defineProperty(_methods, "getFormattedDateToday", function getFormattedDateToday() {
     return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
   }), _defineProperty(_methods, "getResults", function getResults() {
-    var _this6 = this;
+    var _this7 = this;
 
     var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
     var url = null; // `/setup/location/getResults/?page=`
@@ -8296,8 +8409,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
 
     if (this.business_unit && this.department && this.section) {
       axios.get(url + page).then(function (response) {
-        _this6.data = response.data;
-        _this6.total_result = response.data.total;
+        _this7.data = response.data;
+        _this7.total_result = response.data.total;
       });
     }
   }), _methods),
@@ -50887,6 +51000,23 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-info btn-rounded mar-lft",
+                          attrs: { disabled: !_vm.data.data },
+                          on: {
+                            click: function($event) {
+                              return _vm.generate($event, "Excel")
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                          _vm._v("  Print\n                  ")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-info btn-rounded mar-lft",
                           attrs: {
                             disabled:
                               !_vm.company ||
@@ -50981,6 +51111,42 @@ var render = function() {
                                 "\n                  "
                             )
                           ]),
+                          _vm._v(" "),
+                          data.done == "false"
+                            ? _c(
+                                "td",
+                                {
+                                  staticClass: "text-main text-normal",
+                                  staticStyle: {
+                                    "font-size": "13px",
+                                    "text-align": "center"
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "label label-warning" },
+                                    [_vm._v("On going")]
+                                  )
+                                ]
+                              )
+                            : _c(
+                                "td",
+                                {
+                                  staticClass: "text-main text-normal",
+                                  staticStyle: {
+                                    "font-size": "13px",
+                                    "text-align": "center"
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "label label-success" },
+                                    [_vm._v("Done")]
+                                  )
+                                ]
+                              ),
                           _vm._v(" "),
                           _c("td", [
                             _c(
@@ -51574,6 +51740,8 @@ var staticRenderFns = [
         _c("th", { staticClass: "text-main text-center" }, [
           _vm._v("Date Added")
         ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-main text-center" }, [_vm._v("Status")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-main text-center" }, [_vm._v("Action")])
       ])

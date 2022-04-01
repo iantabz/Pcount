@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/getResults', [SetupController::class, 'getResultsLocation']);
             Route::post('/toggleStatus', [SetupController::class, 'toggleStatusLocation']);
             Route::post('/createLocation', [SetupController::class, 'createLocation']);
+            Route::get('generateLocation', [SetupController::class, 'generateLocation']);
             Route::get('/getCompany', [LocationController::class, 'getCompany']);
             Route::get('/getBU', [LocationController::class, 'getBU']);
             Route::get('/getDept', [LocationController::class, 'getDept']);

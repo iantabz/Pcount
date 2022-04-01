@@ -115,6 +115,13 @@
                   <div class="row pad-all">
                     <button
                       class="btn btn-info btn-rounded mar-lft"
+                      :disabled="!data.data"
+                      @click="generate($event, 'Excel')"
+                    >
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Print
+                    </button>
+                    <button
+                      class="btn btn-info btn-rounded mar-lft"
                       :disabled="
                         !company || !business_unit || !department || !section
                       "
@@ -135,6 +142,7 @@
                     <th class="text-main text-center">IAD Audit</th>
                     <th class="text-main text-center">Rack Description</th>
                     <th class="text-main text-center">Date Added</th>
+                    <th class="text-main text-center">Status</th>
                     <th class="text-main text-center">Action</th>
                   </tr>
                 </thead>
@@ -159,6 +167,20 @@
                     </td>
                     <td class="text-main text-normal">
                       {{ data.date_added | formatDate }}
+                    </td>
+                    <td
+                      class="text-main text-normal"
+                      v-if="data.done == 'false'"
+                      style="font-size: 13px; text-align: center"
+                    >
+                      <span class="label label-warning">On going</span>
+                    </td>
+                    <td
+                      class="text-main text-normal"
+                      style="font-size: 13px; text-align: center"
+                      v-else
+                    >
+                      <span class="label label-success">Done</span>
                     </td>
                     <td>
                       <button
@@ -582,6 +604,72 @@ export default {
     }
   },
   methods: {
+    async generate(e, reportType) {
+      Swal.fire({
+        html: "Please wait, don't close the browser.",
+        title: 'Generating report in progress',
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+          Swal.showLoading()
+        },
+        willClose: () => {}
+      }).then(result => {
+        if (result.isConfirmed) {
+        }
+      })
+      const thisButton = e.target
+      const oldHTML = thisButton.innerHTML
+
+      let pass = null
+      if (reportType == 'Excel') {
+        pass = '/setup/location/generateLocation'
+      } else {
+        // pass = '/reports/appdata/generateNotFound'
+      }
+      thisButton.disabled = true
+      thisButton.innerHTML =
+        '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
+      const { headers, data } = await axios.get(
+        pass +
+          `?bu=${this.business_unit}&dept=${this.department}&section=${this.section}`,
+        {
+          responseType: 'blob'
+        }
+      )
+      const { 'content-disposition': contentDisposition } = headers
+      const [attachment, file] = contentDisposition.split(' ')
+      const [key, fileName] = file.split('=')
+
+      const url = window.URL.createObjectURL(new Blob([data]))
+      const link = document.createElement('a')
+      link.href = url
+      let section = null
+      this.section ? (section = '-' + this.section) : (section = '')
+
+      let title = 'Actual Count (APP)'
+      if (reportType == 'NotFound') {
+        title = 'Actual Count (APP) Items Not Found'
+      }
+      link.setAttribute(
+        'download',
+        `${title} as of ${this.date}  ${this.business_unit} ${this.department}${section}.xlsx`
+      )
+      document.body.appendChild(link)
+      link.click()
+
+      thisButton.disabled = false
+      thisButton.innerHTML = oldHTML
+      Swal.close()
+      $.niftyNoty({
+        type: 'success',
+        icon: 'pli-cross icon-2x',
+        message: '<i class="fa fa-check"></i> Generate successful!',
+        container: 'floating',
+        timer: 5000
+      })
+    },
     retrieveCategory(search, loading) {
       loading(true)
       this.search2(search, loading, this)
