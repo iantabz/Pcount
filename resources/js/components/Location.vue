@@ -115,10 +115,11 @@
                   <div class="row pad-all">
                     <button
                       class="btn btn-info btn-rounded mar-lft"
-                      :disabled="!data.data"
+                      :disabled="!data.data.length"
                       @click="generate($event, 'Excel')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Print
+                      Location Setup
                     </button>
                     <button
                       class="btn btn-info btn-rounded mar-lft"
@@ -134,7 +135,10 @@
                   </div>
                 </div>
               </div>
-              <table class="table table-striped table-vcenter" id="data-table">
+              <table
+                class="table table-striped table-vcenter table-hover"
+                id="data-table"
+              >
                 <thead>
                   <tr>
                     <th class="text-main text-center">Location ID</th>
@@ -513,7 +517,6 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import { DateTime } from 'luxon'
 import vSelect from 'vue-select'
-
 import Modal from './modals/location-modal.vue'
 import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
@@ -648,13 +651,13 @@ export default {
       let section = null
       this.section ? (section = '-' + this.section) : (section = '')
 
-      let title = 'Actual Count (APP)'
+      let title = 'Location Setup'
       if (reportType == 'NotFound') {
         title = 'Actual Count (APP) Items Not Found'
       }
       link.setAttribute(
         'download',
-        `${title} as of ${this.date}  ${this.business_unit} ${this.department}${section}.xlsx`
+        `${title} ${this.business_unit} ${this.department}${section}.xlsx`
       )
       document.body.appendChild(link)
       link.click()
@@ -1007,5 +1010,9 @@ export default {
 <style scoped>
 #container .table td {
   font-size: 1.1em;
+}
+
+#container .table-hover > tbody > tr:hover {
+  background-color: rgb(2 2 2 / 5%);
 }
 </style>

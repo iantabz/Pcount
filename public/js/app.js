@@ -7889,6 +7889,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -8034,13 +8038,13 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
                 link.href = url;
                 section = null;
                 _this.section ? section = '-' + _this.section : section = '';
-                title = 'Actual Count (APP)';
+                title = 'Location Setup';
 
                 if (reportType == 'NotFound') {
                   title = 'Actual Count (APP) Items Not Found';
                 }
 
-                link.setAttribute('download', "".concat(title, " as of ").concat(_this.date, "  ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx"));
+                link.setAttribute('download', "".concat(title, " ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx"));
                 document.body.appendChild(link);
                 link.click();
                 thisButton.disabled = false;
@@ -14341,7 +14345,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-6200eafe] {\r\n  font-size: 1.1em;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-6200eafe] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-6200eafe]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -14389,7 +14393,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-16b5d2a0] {\r\n  font-size: 1.1em;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-16b5d2a0] {\r\n  font-size: 1.1em;\n}\n#container .table-hover > tbody > tr[data-v-16b5d2a0]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -51000,7 +51004,7 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-info btn-rounded mar-lft",
-                          attrs: { disabled: !_vm.data.data },
+                          attrs: { disabled: !_vm.data.data.length },
                           on: {
                             click: function($event) {
                               return _vm.generate($event, "Excel")
@@ -51009,7 +51013,9 @@ var render = function() {
                         },
                         [
                           _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                          _vm._v("  Print\n                  ")
+                          _vm._v(
+                            "  Print\n                    Location Setup\n                  "
+                          )
                         ]
                       ),
                       _vm._v(" "),
@@ -51044,7 +51050,7 @@ var render = function() {
               _c(
                 "table",
                 {
-                  staticClass: "table table-striped table-vcenter",
+                  staticClass: "table table-striped table-vcenter table-hover",
                   attrs: { id: "data-table" }
                 },
                 [
