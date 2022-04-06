@@ -86,7 +86,12 @@ class PhysicalCountController extends Controller
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
 
         // dd($date, $dateAsOf, request()->all());
-        return TblAppNfitem::whereBetween('datetime_scanned', [$date, $dateAsOf])->paginate(10);
+        return TblAppNfitem::where([
+            ['business_unit', 'LIKE', request()->bu],
+            ['department', 'LIKE', request()->dept],
+            ['section', 'LIKE', request()->section]
+        ])
+            ->whereBetween('datetime_scanned', [$date, $dateAsOf])->paginate(10);
     }
 
     public function generate()
