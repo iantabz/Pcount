@@ -207,6 +207,11 @@
     --$countSize
     @endphp
 
+    @foreach ($audit as $auditor => $vendor)
+
+
+    @foreach ($vendor as $vendor_name => $categories)
+
     <header>
         <div class="container" style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
@@ -241,10 +246,7 @@
         </div>
     </header>
 
-    @foreach ($audit as $auditor => $vendor)
 
-
-    @foreach ($vendor as $vendor_name => $categories)
     <div>
         <h4 style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</h4>
     </div>

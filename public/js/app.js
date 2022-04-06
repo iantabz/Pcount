@@ -5769,7 +5769,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 link = document.createElement('a');
                 link.href = url; // console.log(fileName)
 
-                link.setAttribute('download', "Actual Count (APP) as of ".concat(_this2.date, ".pdf")); // console.log(link)
+                link.setAttribute('download', "Actual Count (APP) as of ".concat(_this2.date, " ").concat(_this2.business_unit, " ").concat(_this2.department, " ").concat(section, ".pdf")); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();

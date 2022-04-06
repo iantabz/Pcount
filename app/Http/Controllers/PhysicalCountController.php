@@ -435,17 +435,17 @@ class PhysicalCountController extends Controller
         if ($section != 'null') {
             $result->WHERE('tbl_app_nfitem.section', 'LIKE', "%$section%");
         }
-        if ($vendors) {
-            $vendors = explode('|', $vendors);
-            $result = $result->whereIn('vendor_name', $vendors);
-            $vendors = implode(", ", $vendors);
-        }
+        // if ($vendors) {
+        //     $vendors = explode('|', $vendors);
+        //     $result = $result->whereIn('vendor_name', $vendors);
+        //     $vendors = implode(", ", $vendors);
+        // }
 
-        if ($category) {
-            $category = explode('|', $category);
-            $result = $result->whereIn('group', $category);
-            $category = implode(", ", $category);
-        }
+        // if ($category) {
+        //     $category = explode('|', $category);
+        //     $result = $result->whereIn('group', $category);
+        //     $category = implode(", ", $category);
+        // }
 
         // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group']))->toArray();
 

@@ -552,7 +552,11 @@ export default {
       const link = document.createElement('a')
       link.href = url
       // console.log(fileName)
-      link.setAttribute('download', `Actual Count (APP) as of ${this.date}.pdf`)
+      link.setAttribute(
+        'download',
+        `Actual Count (APP) as of ${this.date} ${this.business_unit} ${this.department} ${section}.pdf`
+      )
+
       // console.log(link)
       document.body.appendChild(link)
       link.click()
