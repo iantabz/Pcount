@@ -24,7 +24,6 @@ class SetupController extends Controller
 {
     public function getResultsLocation()
     {
-        // dd(request()->all());
         $company = request()->company;
         $bu = request()->bu;
         $dept = request()->dept;
@@ -49,9 +48,7 @@ class SetupController extends Controller
 
     public function toggleStatusLocation()
     {
-        // dd(request()->all());
         $result = TblLocation::where('location_id', request()->id)->update(['status' => request()->status]);
-
         if ($result)  return response()->json(['message' => 'Status updated successfully'], 200);
     }
 
@@ -110,8 +107,8 @@ class SetupController extends Controller
     public function createLocation(CreateLocationRequest $request)
     {
         // dd(request()->all());
+        $batchDate = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
         $validated = $request->validated();
-        // dd(request()->section);
         if (!request()->forPrintVendor) {
             $vendor = 'null';
         } else {
@@ -122,7 +119,6 @@ class SetupController extends Controller
         } else {
             $category = request()->forPrintCategory;
         }
-        // dd($vendor);
 
         if (!request()->section) {
             $section = 'null';
@@ -135,8 +131,7 @@ class SetupController extends Controller
             $dept = request()->department;
         }
         if (!request()->location_id) {
-            DB::transaction(function () use ($validated, $section, $dept, $vendor, $category) {
-                // // dd($validated);
+            DB::transaction(function () use ($validated, $section, $dept, $vendor, $category, $batchDate) {
 
                 $location = TblLocation::create([
                     'company' => $validated['company'],
@@ -176,9 +171,9 @@ class SetupController extends Controller
                     'categoryName' => $category,
                     'byVendor' => $vendor === 'null' ? 'False' : 'True',
                     'vendorName' => $vendor,
-                    'location_id' => $location->id
+                    'location_id' => $location->id,
                     // 'type' => $countType,
-                    // 'batchDate' => $batchDate
+                    'batchDate' => $batchDate
                 ]);
             });
             return response()->json(['message' => 'User created successfully!'], 200);

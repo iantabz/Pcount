@@ -438,10 +438,10 @@
                   />
                   <small class="help-block" style=""
                     ><em
-                      >IAD is responsible in observing the inventory operation
-                      in compliance to the management's instructions for
-                      inventory control, verifies the inventory's existence &
-                      accuracy of count results.</em
+                      >IAD Audit is responsible in observing the inventory
+                      operation in compliance to the management's instructions
+                      for inventory control, verifies the inventory's existence
+                      & accuracy of count results.</em
                     >
                   </small>
                 </div>
@@ -581,6 +581,7 @@ export default {
         department: null,
         section: null,
         rack_desc: null,
+        countDate: null,
         forPrintCategory: [],
         forPrintVendor: []
       }),
@@ -740,6 +741,7 @@ export default {
       this.locationForm.department = this.department
       this.locationForm.section = this.section
       this.locationForm.forPrintCategory = this.forPrintCategory
+      this.locationForm.countDate = btoa(this.date)
 
       this.locationForm
         .post('/setup/location/createLocation')
@@ -789,7 +791,6 @@ export default {
       $('#demo-default-modal').modal('show')
     },
     editBtn(data) {
-      // console.log(data)
       // const comp = this.companyList.find(sm => (sm.acroname = data.company))
       var bunit_code = data.business_unit,
         business_unit = data.business_unit,
@@ -857,10 +858,10 @@ export default {
       // this.section = null
       this.category = null
       this.vendor = null
-      this.companyList = []
-      this.buList = []
-      this.deptList = []
-      this.sectionList = []
+      // this.companyList = []
+      // this.buList = []
+      // this.deptList = []
+      // this.sectionList = []
     },
     retrieveAudit(search, loading) {
       loading(true)
@@ -986,7 +987,11 @@ export default {
     },
     getResults(page = 1) {
       let url = null
-      url = `/setup/location/getResults/?date=${btoa(this.date)}&company=${this.company}&bu=${this.business_unit}&dept=${this.department}&section=${this.section}&page=`
+      url = `/setup/location/getResults/?date=${btoa(this.date)}&company=${
+        this.company
+      }&bu=${this.business_unit}&dept=${this.department}&section=${
+        this.section
+      }&page=`
       if (this.business_unit && this.department && this.section) {
         axios.get(url + page).then(response => {
           this.data = response.data

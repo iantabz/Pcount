@@ -7962,6 +7962,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         department: null,
         section: null,
         rack_desc: null,
+        countDate: null,
         forPrintCategory: [],
         forPrintVendor: []
       }),
@@ -8131,6 +8132,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       this.locationForm.department = this.department;
       this.locationForm.section = this.section;
       this.locationForm.forPrintCategory = this.forPrintCategory;
+      this.locationForm.countDate = btoa(this.date);
       this.locationForm.post('/setup/location/createLocation').then(function (_ref3) {
         var data = _ref3.data,
             status = _ref3.status;
@@ -8184,7 +8186,6 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       $('#demo-default-modal').modal('show');
     },
     editBtn: function editBtn(data) {
-      // console.log(data)
       // const comp = this.companyList.find(sm => (sm.acroname = data.company))
       var bunit_code = data.business_unit,
           business_unit = data.business_unit,
@@ -8240,11 +8241,10 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       // this.section = null
 
       this.category = null;
-      this.vendor = null;
-      this.companyList = [];
-      this.buList = [];
-      this.deptList = [];
-      this.sectionList = [];
+      this.vendor = null; // this.companyList = []
+      // this.buList = []
+      // this.deptList = []
+      // this.sectionList = []
     },
     retrieveAudit: function retrieveAudit(search, loading) {
       loading(true);
@@ -51863,7 +51863,7 @@ var staticRenderFns = [
     return _c("small", { staticClass: "help-block" }, [
       _c("em", [
         _vm._v(
-          "IAD is responsible in observing the inventory operation\n                    in compliance to the management's instructions for\n                    inventory control, verifies the inventory's existence &\n                    accuracy of count results."
+          "IAD Audit is responsible in observing the inventory\n                    operation in compliance to the management's instructions\n                    for inventory control, verifies the inventory's existence\n                    & accuracy of count results."
         )
       ])
     ])
