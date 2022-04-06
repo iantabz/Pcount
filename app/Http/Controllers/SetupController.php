@@ -34,7 +34,8 @@ class SetupController extends Controller
                 ['company', 'LIKE', "%$company%"],
                 ['business_unit', 'LIKE', "$bu"],
                 ['department', 'LIKE', "$dept"],
-                ['section', 'LIKE', "$section"]
+                ['section', 'LIKE', "$section"],
+                ['done', 'LIKE', "false"]
             ])
             ->paginate(10);
         // $query =  TblLocation::groupBy(['company', 'business_unit', 'section']);
