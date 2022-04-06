@@ -73,6 +73,25 @@
                       </v-select>
                     </div>
                   </div>
+                  <div class="row pad-all" style="padding-left: 10px;">
+                    <label class="col-lg-3 control-label text-bold">
+                      <h5>
+                        <i class="icon-lg demo-pli-calendar-4 icon-fw"></i>
+                        Count Date :
+                      </h5>
+                    </label>
+                    <div class="col-lg-6">
+                      <input
+                        class="form-control"
+                        v-model="date"
+                        type="date"
+                        name="dateFrom"
+                        id="dateFrom"
+                        style="border-radius: 4px"
+                        :disabled="!business_unit || !department || !section"
+                      />
+                    </div>
+                  </div>
                   <div class="row" style="padding: 10px 15px 15px 10px"></div>
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
@@ -106,12 +125,12 @@
                       ></v-select>
                     </div>
                   </div>
-                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
+                  <div class="row" style="padding: 10px 15px 15px 10px">
                     <label class="col-md-3 control-label text-bold">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
-                  </div> -->
+                  </div>
                   <div class="row pad-all">
                     <button
                       class="btn btn-info btn-rounded mar-lft"
@@ -967,8 +986,7 @@ export default {
     },
     getResults(page = 1) {
       let url = null
-      // `/setup/location/getResults/?page=`
-      url = `/setup/location/getResults/?company=${this.company}&bu=${this.business_unit}&dept=${this.department}&section=${this.section}&page=`
+      url = `/setup/location/getResults/?date=${btoa(this.date)}&company=${this.company}&bu=${this.business_unit}&dept=${this.department}&section=${this.section}&page=`
       if (this.business_unit && this.department && this.section) {
         axios.get(url + page).then(response => {
           this.data = response.data

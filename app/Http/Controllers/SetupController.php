@@ -15,6 +15,7 @@ use App\Models\TblUser;
 use App\Models\TblUsertype;
 use App\Models\TblVendorMasterfile;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -28,18 +29,21 @@ class SetupController extends Controller
         $bu = request()->bu;
         $dept = request()->dept;
         $section = request()->section;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
 
         return TblLocation::with(['app_users', 'app_audit', 'nav_count'])
+            ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
             ->where([
                 ['company', 'LIKE', "%$company%"],
                 ['business_unit', 'LIKE', "$bu"],
                 ['department', 'LIKE', "$dept"],
                 ['section', 'LIKE', "$section"],
-                ['done', 'LIKE', "false"]
+                ['done', 'LIKE', "false"],
+                ['batchDate', '=', $date]
             ])
             ->paginate(10);
-        // $query =  TblLocation::groupBy(['company', 'business_unit', 'section']);
-        // dd($query->get());
+        // $query =  TblLocation::groupBy([ 'company', 'business_unit', 'section']);
+        // dd($query->get());   
         // return $query->paginate(10);
     }
 

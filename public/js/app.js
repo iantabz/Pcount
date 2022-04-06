@@ -7893,6 +7893,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8407,9 +8426,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     var _this7 = this;
 
     var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-    var url = null; // `/setup/location/getResults/?page=`
-
-    url = "/setup/location/getResults/?company=".concat(this.company, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+    var url = null;
+    url = "/setup/location/getResults/?date=".concat(btoa(this.date), "&company=").concat(this.company, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
     if (this.business_unit && this.department && this.section) {
       axios.get(url + page).then(function (response) {
@@ -50945,6 +50963,50 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row pad-all",
+                        staticStyle: { "padding-left": "10px" }
+                      },
+                      [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.date,
+                                expression: "date"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            staticStyle: { "border-radius": "4px" },
+                            attrs: {
+                              type: "date",
+                              name: "dateFrom",
+                              id: "dateFrom",
+                              disabled:
+                                !_vm.business_unit ||
+                                !_vm.department ||
+                                !_vm.section
+                            },
+                            domProps: { value: _vm.date },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.date = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
                     _c("div", {
                       staticClass: "row",
                       staticStyle: { padding: "10px 15px 15px 10px" }
@@ -50958,9 +51020,9 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
-                    _vm._m(3),
-                    _vm._v(" "),
                     _vm._m(4),
+                    _vm._v(" "),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -50969,7 +51031,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(5),
+                        _vm._m(6),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -50998,6 +51060,8 @@ var render = function() {
                         )
                       ]
                     ),
+                    _vm._v(" "),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("div", { staticClass: "row pad-all" }, [
                       _c(
@@ -51054,7 +51118,7 @@ var render = function() {
                   attrs: { id: "data-table" }
                 },
                 [
-                  _vm._m(6),
+                  _vm._m(8),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -51342,7 +51406,7 @@ var render = function() {
                               })
                             : _vm._e(),
                           _vm._v(" "),
-                          _vm._m(7)
+                          _vm._m(9)
                         ],
                         1
                       )
@@ -51432,7 +51496,7 @@ var render = function() {
                                 })
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(8)
+                            _vm._m(10)
                           ],
                           1
                         )
@@ -51680,6 +51744,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+      _c("h5", [
+        _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
+        _vm._v("\n                      Count Date :\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
@@ -51719,6 +51794,22 @@ var staticRenderFns = [
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
+      [
+        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+          _c("h5")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6 pad-all" })
+      ]
     )
   },
   function() {
