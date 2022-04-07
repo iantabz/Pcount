@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>Actual Count (APP)</title>
     <style media="screen">
         body {
@@ -12,13 +12,15 @@
             font-size: 12px;
         }
 
-        /*
-            These next two styles are apparently the modern way to clear a float. This allows the logo
-            and the word "Invoice" to remain above the From and To sections. Inserting an empty div
-            between them with clear:both also works but is bad style.
-            Reference:
-            http://stackoverflow.com/questions/490184/what-is-the-best-way-to-clear-the-css-style-float
-        */
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+        }
+
         header:before,
         header:after {
             content: " ";
@@ -27,6 +29,10 @@
 
         header:after {
             clear: both;
+        }
+
+        header {
+            display: block;
         }
 
         .title1 {
@@ -166,8 +172,8 @@
         }
 
         .page-break:last-child {
-            page-break-after: avoid;
             page-break-before: avoid;
+            page-break-after: avoid;
         }
 
 
@@ -194,6 +200,48 @@
             position: absolute;
             z-index: 1;
         }
+
+        div {
+            display: block;
+        }
+
+        table {
+            display: table;
+            border-collapse: separate;
+            box-sizing: border-box;
+            text-indent: initial;
+            border-spacing: 2px;
+            border-color: grey;
+        }
+
+        thead {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        th {
+            display: table-cell;
+            vertical-align: inherit;
+            font-weight: bold;
+            text-align: -internal-center;
+        }
+
+        td {
+            display: table-cell;
+            vertical-align: inherit;
+        }
+
+        span.span-text {
+            position: absolute;
+            z-index: 1;
+        }
     </style>
 </head>
 
@@ -209,13 +257,12 @@
 
     @foreach ($audit as $auditor => $vendor)
 
-
     @foreach ($vendor as $vendor_name => $categories)
 
     <header>
-        <div class="container" style="max-width: 100%">
+        <div style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
-                <div class=""
+                <div
                     style="text-align: left; width: 400px; flex-basis: 0; flex-grow: 1; float: left; margin-bottom: 10px;">
                     <h4>INVENTORY COUNT CONSOLIDATION SYSTEM </h4>
                     @if($data['business_unit'] != 'null')
@@ -236,12 +283,12 @@
                     <h4>Count Type: {{$data['countType']}}</h4>
                     @endif
                 </div>
-                <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
+                <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
                         ACTUAL COUNT (APP)
                     </div>
                 </div>
-                <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
+                <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
             </div>
         </div>
     </header>
@@ -271,34 +318,34 @@
     <table class="body1">
         <thead>
             <tr>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Item Code
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Barcode
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Description
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Uom
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Count
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Smallest SKU
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Conv. Qty
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Rack
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     Date Scanned
                 </th>
-                {{-- <th class="text-center" style="vertical-align: middle;">
+                {{-- <th style="vertical-align: middle; text-align: center;">
                     Date Expiry
                 </th> --}}
             </tr>
@@ -492,7 +539,6 @@
     <div class="page-break"></div>
 
     @endforeach
-    @endforeach
     {{-- {{dd($timeStartCount, $timeEndCount, $timeDiff, $countTime)}} --}}
     {{-- {{dd($countStart->diff($countEnd))}} --}}
     {{-- {{dd($countStart, $countEnd, join(", ",array_unique($skus)))}} --}}
@@ -503,6 +549,7 @@
     @if($loop->last == false)
     <div class="page-break"></div>
     @endif
+    @endforeach
     @endforeach
     {{-- {{dd(current($items))}} --}}
     {{-- {{dd($data)}} --}}

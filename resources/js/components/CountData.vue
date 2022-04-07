@@ -551,12 +551,11 @@ export default {
       const url = window.URL.createObjectURL(new Blob([data]))
       const link = document.createElement('a')
       link.href = url
+        let section = null
       // console.log(fileName)
-      link.setAttribute(
-        'download',
-        `Actual Count (APP) as of ${this.date} ${this.business_unit} ${this.department} ${section}.pdf`
-      )
-
+      this.section ? (section = '-' + this.section) : (section = '')
+      // console.log(fileName)
+      link.setAttribute('download', `Actual Count (APP) as of ${this.date} ${this.business_unit} ${this.department}${section}.pdf`)
       // console.log(link)
       document.body.appendChild(link)
       link.click()

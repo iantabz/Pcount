@@ -192,7 +192,6 @@ class PhysicalCountController extends Controller
             ->join('tbl_app_audit', 'tbl_app_audit.location_id', 'tbl_app_countdata.location_id')
             ->join('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
             ->LEFTJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode')
-            ->LEFTJOIN('tbl_app_nfitem', 'tbl_app_nfitem.barcode', 'tbl_app_countdata.barcode')
             ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
         // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name'])->toArray());

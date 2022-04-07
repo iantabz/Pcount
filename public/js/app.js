@@ -5728,7 +5728,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var thisButton, oldHTML, _yield$axios$get2, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link;
+        var thisButton, oldHTML, _yield$axios$get2, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link, section;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
@@ -5767,9 +5767,12 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 _file$split3 = file.split('='), _file$split4 = _slicedToArray(_file$split3, 2), key = _file$split4[0], fileName = _file$split4[1];
                 url = window.URL.createObjectURL(new Blob([data]));
                 link = document.createElement('a');
-                link.href = url; // console.log(fileName)
+                link.href = url;
+                section = null; // console.log(fileName)
 
-                link.setAttribute('download', "Actual Count (APP) as of ".concat(_this2.date, " ").concat(_this2.business_unit, " ").concat(_this2.department, " ").concat(section, ".pdf")); // console.log(link)
+                _this2.section ? section = '-' + _this2.section : section = ''; // console.log(fileName)
+
+                link.setAttribute('download', "Actual Count (APP) as of ".concat(_this2.date, " ").concat(_this2.business_unit, " ").concat(_this2.department).concat(section, ".pdf")); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -5784,7 +5787,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                   timer: 5000
                 });
 
-              case 23:
+              case 25:
               case "end":
                 return _context2.stop();
             }
