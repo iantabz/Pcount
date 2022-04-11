@@ -742,7 +742,7 @@ export default {
       this.locationForm.section = this.section
       this.locationForm.forPrintCategory = this.forPrintCategory
       this.locationForm.countDate = btoa(this.date)
-
+      console.log(this.date)
       this.locationForm
         .post('/setup/location/createLocation')
         .then(({ data, status }) => {

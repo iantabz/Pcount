@@ -60,6 +60,13 @@
                         <span class="text-gray-300 font-normal">User Credentials</span>
                         <span class="h-px w-16 bg-gray-200"></span>
                     </div>
+
+                    <!-- Session Status -->
+                    <x-auth-session-status class="mb-4" :status="session('status')" />
+
+                    <!-- Validation Errors -->
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
                     <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}">
                         @csrf
                         <input type="hidden" name="remember" value="true">
