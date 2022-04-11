@@ -8136,6 +8136,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       this.locationForm.section = this.section;
       this.locationForm.forPrintCategory = this.forPrintCategory;
       this.locationForm.countDate = btoa(this.date);
+      console.log(this.date);
       this.locationForm.post('/setup/location/createLocation').then(function (_ref3) {
         var data = _ref3.data,
             status = _ref3.status;
