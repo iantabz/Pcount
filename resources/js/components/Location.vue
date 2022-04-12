@@ -745,10 +745,9 @@ export default {
       this.locationForm.section = this.section
       this.locationForm.forPrintCategory = this.forPrintCategory
       this.locationForm.countDate = btoa(this.date)
-      console.log(this.date)
       this.locationForm
         .post('/setup/location/createLocation')
-        .then(({ data, status }) => {
+        .then(({ data, status, text }) => {
           if (status == 200) {
             this.getResults()
             this.closeBtn()
@@ -774,7 +773,16 @@ export default {
               container: 'floating',
               timer: 5000
             })
-          }
+          } 
+          // else {
+          //   $.niftyNoty({
+          //     type: 'danger',
+          //     icon: 'pli-cross icon-2x',
+          //     message: `<i class="fa fa-check"></i> ${$text}!`,
+          //     container: 'floating',
+          //     timer: 5000
+          //   })
+          // }
         })
         .catch(({ response }) => {
           const { status, data } = response

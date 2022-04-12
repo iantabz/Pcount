@@ -96,12 +96,13 @@ class SetupController extends Controller
 
     public function searchEmployee()
     {
-        // dd(request()->all());
         $last_name = request()->lastname;
-        return Employee::selectRaw('emp_id, emp_no, emp_pins as emp_pin, name, position')->where([['name', 'LIKE', "%$last_name%"], ['current_status', 'Active']])->get();
-        // dd($result);
+        return Employee::selectRaw('emp_id, emp_no, emp_pins as emp_pin, name, position')
+            ->where([
+                ['name', 'LIKE', "%$last_name%"],
+                ['current_status', 'Active']
+            ])->get();
     }
-
 
     public function createLocation(CreateLocationRequest $request)
     {
@@ -130,52 +131,105 @@ class SetupController extends Controller
             $dept = request()->department;
         }
         if (!request()->location_id) {
-            DB::transaction(function () use ($validated, $section, $dept, $vendor, $category, $batchDate) {
+            // dd($validated['selectedEmp']['emp_id']);
+            $comp = $validated['company'];
+            $bu = $validated['business_unit'];
+            $app_user = $validated['selectedEmp']['emp_id'];
+            $app_audit = $validated['selectedAudit']['emp_id'];
 
-                $location = TblLocation::create([
-                    'company' => $validated['company'],
-                    'business_unit' => $validated['business_unit'],
-                    // 'department' => $validated['department'],
-                    'department' => $dept,
-                    'section' => $section,
-                    'rack_desc' => $validated['rack_desc'],
-                    'date_added' => now(),
-                    'status' => 'true'
-                ]);
+            $ifAppUserExists = TblLocation::join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_location.location_id')
+                ->join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_location.location_id')
+                ->where([
+                    ['company', 'LIKE', "%$comp%"],
+                    ['business_unit', 'LIKE', "%$bu%"],
+                    ['department', 'LIKE', "%$dept%"],
+                    ['section', 'LIKE', "$section"],
+                    ['tbl_app_user.emp_id', 'LIKE', "%$app_user%"],
+                    ['tbl_app_user.done', false]
+                ])
+                ->orwhere([
+                    ['company', 'LIKE', "%$comp%"],
+                    ['business_unit', 'LIKE', "%$bu%"],
+                    ['department', 'LIKE', "%$dept%"],
+                    ['section', 'LIKE', "$section"],
+                    ['tbl_app_audit.emp_id', 'LIKE', "%$app_user%"],
+                    ['tbl_app_audit.done', false]
+                ])
+                ->exists();
 
-                TblAppUser::create([
-                    'emp_id' => $validated['selectedEmp']['emp_id'],
-                    'emp_no' => $validated['selectedEmp']['emp_no'],
-                    'emp_pin' => $validated['selectedEmp']['emp_pin'],
-                    'name' => $validated['selectedEmp']['name'],
-                    'position' => $validated['selectedEmp']['position'],
-                    'location_id' => $location->id,
-                    'date_register' => now(),
-                    'done' => 'false',
-                    'locked' => 'false'
-                ]);
+            $ifAppAuditExists = TblLocation::join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_location.location_id')
+                ->join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_location.location_id')
+                ->where([
+                    ['company', 'LIKE', "%$comp%"],
+                    ['business_unit', 'LIKE', "%$bu%"],
+                    ['department', 'LIKE', "%$dept%"],
+                    ['section', 'LIKE', "$section"],
+                    ['tbl_app_audit.emp_id', 'LIKE', "%$app_audit%"],
+                    ['tbl_app_audit.done', false]
+                ])
+                ->orwhere([
+                    ['company', 'LIKE', "%$comp%"],
+                    ['business_unit', 'LIKE', "%$bu%"],
+                    ['department', 'LIKE', "%$dept%"],
+                    ['section', 'LIKE', "$section"],
+                    ['tbl_app_user.emp_id', 'LIKE', "%$app_audit%"],
+                    ['tbl_app_user.done', false]
+                ])
+                ->exists();
+            // dd($ifAppUserExists, $ifAppAuditExists);
 
-                TblAppAudit::create([
-                    'emp_id' => $validated['selectedAudit']['emp_id'],
-                    'emp_no' => $validated['selectedAudit']['emp_no'],
-                    'emp_pin' => $validated['selectedAudit']['emp_pin'],
-                    'name' => $validated['selectedAudit']['name'],
-                    'position' => $validated['selectedAudit']['position'],
-                    'location_id' => $location->id,
-                    'date_register' => now()
-                ]);
+            if (!$ifAppUserExists && !$ifAppAuditExists) {
+                DB::transaction(function () use ($validated, $section, $dept, $vendor, $category, $batchDate) {
+                    $location = TblLocation::create([
+                        'company' => $validated['company'],
+                        'business_unit' => $validated['business_unit'],
+                        // 'department' => $validated['department'],
+                        'department' => $dept,
+                        'section' => $section,
+                        'rack_desc' => $validated['rack_desc'],
+                        'date_added' => now(),
+                        'status' => 'true'
+                    ]);
 
-                TblNavCount::create([
-                    'byCategory' =>  $category === 'null' ? 'False' : 'True',
-                    'categoryName' => $category,
-                    'byVendor' => $vendor === 'null' ? 'False' : 'True',
-                    'vendorName' => $vendor,
-                    'location_id' => $location->id,
-                    // 'type' => $countType,
-                    'batchDate' => $batchDate
-                ]);
-            });
-            return response()->json(['message' => 'User created successfully!'], 200);
+                    TblAppUser::create([
+                        'emp_id' => $validated['selectedEmp']['emp_id'],
+                        'emp_no' => $validated['selectedEmp']['emp_no'],
+                        'emp_pin' => $validated['selectedEmp']['emp_pin'],
+                        'name' => $validated['selectedEmp']['name'],
+                        'position' => $validated['selectedEmp']['position'],
+                        'location_id' => $location->id,
+                        'date_register' => now(),
+                        'done' => 'false',
+                        'locked' => 'false'
+                    ]);
+
+                    TblAppAudit::create([
+                        'emp_id' => $validated['selectedAudit']['emp_id'],
+                        'emp_no' => $validated['selectedAudit']['emp_no'],
+                        'emp_pin' => $validated['selectedAudit']['emp_pin'],
+                        'name' => $validated['selectedAudit']['name'],
+                        'position' => $validated['selectedAudit']['position'],
+                        'location_id' => $location->id,
+                        'date_register' => now()
+                    ]);
+
+                    TblNavCount::create([
+                        'byCategory' =>  $category === 'null' ? 'False' : 'True',
+                        'categoryName' => $category,
+                        'byVendor' => $vendor === 'null' ? 'False' : 'True',
+                        'vendorName' => $vendor,
+                        'location_id' => $location->id,
+                        // 'type' => $countType,
+                        'batchDate' => $batchDate
+                    ]);
+                });
+
+                return response()->json(['message' => 'User created successfully!'], 200);
+            } else if ($ifAppUserExists) {
+                return response()->json(['message' => 'Inventory Clerk already exists!'], 406);
+            } else if ($ifAppAuditExists) {
+                return response()->json(['message' => 'IAD Audit already exists!'], 406);
+            }
         }
 
         // dd(request()->all());
