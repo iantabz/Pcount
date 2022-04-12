@@ -29,7 +29,6 @@ class SetupController extends Controller
         $dept = request()->dept;
         $section = request()->section;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
-
         return TblLocation::with(['app_users', 'app_audit', 'nav_count'])
             ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
             ->where([
@@ -37,9 +36,9 @@ class SetupController extends Controller
                 ['business_unit', 'LIKE', "$bu"],
                 ['department', 'LIKE', "$dept"],
                 ['section', 'LIKE', "$section"],
-                ['done', 'LIKE', "false"],
-                ['batchDate', '=', $date]
+                ['done', 'LIKE', "false"]
             ])
+            ->whereDate('batchDate', '=', $date)
             ->paginate(10);
         // $query =  TblLocation::groupBy([ 'company', 'business_unit', 'section']);
         // dd($query->get());   
@@ -107,7 +106,7 @@ class SetupController extends Controller
     public function createLocation(CreateLocationRequest $request)
     {
         // dd(request()->all());
-        $batchDate = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
+        $batchDate = Carbon::parse(base64_decode(request()->countDate))->startOfDay()->toDateString();
         $validated = $request->validated();
         if (!request()->forPrintVendor) {
             $vendor = 'null';
@@ -251,23 +250,31 @@ class SetupController extends Controller
         set_time_limit(0);
         ini_set('memory_limit', '-1');
 
+        $comp = request()->company;
         $bu = request()->bu;
         $dept = request()->dept;
         $section = request()->section;
+        $date = Carbon::parse(base64_decode(request()->countdate))->startOfDay()->toDateString();
 
         $query =  TblLocation::with(['app_users', 'app_audit', 'nav_count'])
+            ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
             ->where([
+                ['company', 'LIKE', "%$comp%"],
                 ['business_unit', 'LIKE', "$bu"],
                 ['department', 'LIKE', "$dept"],
                 ['section', 'LIKE', "$section"],
                 ['done', 'LIKE', "false"]
-            ])->get()->toArray();
-        // dd($query);
+
+            ])
+            ->whereDate('batchDate', '=', $date)
+            ->get()
+            ->toArray();
 
         $header = array(
             'business_unit' => $bu,
             'department' => $dept,
             'section' => $section,
+            'countDate' => $date,
             'data' => $query
         );
 

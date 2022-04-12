@@ -25,6 +25,7 @@ class TblLocation extends Model
 
     public function nav_count()
     {
+        // dd($batchDate);
         return $this->hasOne(TblNavCount::class, 'location_id', 'location_id');
     }
 }

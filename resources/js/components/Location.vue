@@ -88,6 +88,7 @@
                         name="dateFrom"
                         id="dateFrom"
                         style="border-radius: 4px"
+                        min="dateToday"
                         :disabled="!business_unit || !department || !section"
                       />
                     </div>
@@ -555,7 +556,7 @@ export default {
       },
       name: null,
       date: this.getFormattedDateToday(),
-      date2: this.getFormattedDateToday(),
+      dateToday: this.getFormattedDateToday(),
       total_result: null,
       companyList: [],
       company: null,
@@ -656,7 +657,9 @@ export default {
         '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
       const { headers, data } = await axios.get(
         pass +
-          `?bu=${this.business_unit}&dept=${this.department}&section=${this.section}`,
+          `?company=${this.company}&bu=${this.business_unit}&dept=${
+            this.department
+          }&section=${this.section}&countdate=${btoa(this.date)}`,
         {
           responseType: 'blob'
         }
@@ -1004,6 +1007,8 @@ export default {
     this.$root.currentPage = this.$route.meta.name
     this.name = this.$root.authUser.name
     this.getResults2()
+
+    document.getElementById('dateFrom').setAttribute('min', this.dateToday)
 
     setTimeout(() => {
       $('#toggleBtn')

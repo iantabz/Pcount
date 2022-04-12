@@ -7915,6 +7915,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -7939,7 +7940,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       },
       name: null,
       date: this.getFormattedDateToday(),
-      date2: this.getFormattedDateToday(),
+      dateToday: this.getFormattedDateToday(),
       total_result: null,
       companyList: [],
       company: null,
@@ -8045,7 +8046,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
                 _context.next = 9;
-                return axios.get(pass + "?bu=".concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section), {
+                return axios.get(pass + "?company=".concat(_this.company, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countdate=").concat(btoa(_this.date)), {
                   responseType: 'blob'
                 });
 
@@ -8444,6 +8445,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     this.$root.currentPage = this.$route.meta.name;
     this.name = this.$root.authUser.name;
     this.getResults2();
+    document.getElementById('dateFrom').setAttribute('min', this.dateToday);
     setTimeout(function () {
       $('#toggleBtn').niftyOverlay({
         iconClass: 'demo-psi-repeat-2 spin-anim icon-2x',
@@ -50992,6 +50994,7 @@ var render = function() {
                               type: "date",
                               name: "dateFrom",
                               id: "dateFrom",
+                              min: "dateToday",
                               disabled:
                                 !_vm.business_unit ||
                                 !_vm.department ||

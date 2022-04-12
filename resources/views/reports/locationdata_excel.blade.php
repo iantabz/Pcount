@@ -201,7 +201,6 @@
     {{-- {{dd($data)}} --}}
     @php
     $x = 0;
-
     @endphp
 
     <table>
@@ -230,6 +229,12 @@
                 </th>
             </tr>
             @endif
+
+            <tr>
+                <th style="text-align: left; font-size: 12px;" colspan="5">
+                    Count Date: {{date('F d Y', strtotime($data['countDate']))}}
+                </th>
+            </tr>
         </thead>
     </table>
 
