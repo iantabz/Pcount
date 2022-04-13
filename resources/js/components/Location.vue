@@ -149,8 +149,8 @@
                       data-target="#demo-default-modal"
                       data-toggle="modal"
                     >
-                      <i class="demo-pli-add-user-star icon-lg"></i> New
-                      App User Setup
+                      <i class="demo-pli-add-user-star icon-lg"></i> New App
+                      User Setup
                     </button>
                   </div>
                 </div>
@@ -491,11 +491,6 @@
                       `${option.category}`
                     }}</template>
                   </v-select>
-                  <!-- <small
-                    class="help-block text-danger"
-                    v-if="locationForm.errors.has('rack_desc')"
-                    v-html="locationForm.errors.get('rack_desc')"
-                  /> -->
                 </div>
               </div>
             </div>
@@ -770,15 +765,6 @@ export default {
               timer: 5000
             })
           }
-          // else {
-          //   $.niftyNoty({
-          //     type: 'danger',
-          //     icon: 'pli-cross icon-2x',
-          //     message: `<i class="fa fa-check"></i> ${$text}!`,
-          //     container: 'floating',
-          //     timer: 5000
-          //   })
-          // }
         })
         .catch(({ response }) => {
           const { status, data } = response
@@ -845,9 +831,6 @@ export default {
           .replaceAll("'", '')
           .split(' , ')
 
-      // console.log(data.nav_count.categoryName.replaceAll("'", '').split(' , '))
-
-      console.log(this.category)
       this.company = data.company
       this.business_unit = data.business_unit
       this.department = data.department
@@ -859,16 +842,8 @@ export default {
     closeBtn() {
       this.locationForm.reset()
       this.locationForm.clear()
-      // this.company = null
-      // this.business_unit = null
-      // this.department = null
-      // this.section = null
-      this.category = 'All Categories'
+      this.category = null
       this.vendor = null
-      // this.companyList = []
-      // this.buList = []
-      // this.deptList = []
-      // this.sectionList = []
     },
     retrieveAudit(search, loading) {
       loading(true)
@@ -1024,13 +999,8 @@ export default {
           var $el = $(this),
             relTime
           $el.niftyOverlay('show')
-
-          // Do something...
-
           relTime = setInterval(function() {
-            // Hide the screen overlay
             $el.niftyOverlay('hide')
-
             clearInterval(relTime)
           }, 1000)
         })

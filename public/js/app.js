@@ -7906,11 +7906,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -8167,16 +8162,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
             container: 'floating',
             timer: 5000
           });
-        } // else {
-        //   $.niftyNoty({
-        //     type: 'danger',
-        //     icon: 'pli-cross icon-2x',
-        //     message: `<i class="fa fa-check"></i> ${$text}!`,
-        //     container: 'floating',
-        //     timer: 5000
-        //   })
-        // }
-
+        }
       })["catch"](function (_ref4) {
         var response = _ref4.response;
         var status = response.status,
@@ -8233,9 +8219,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         name: name,
         position: position
       };
-      if (data.nav_count.byCategory === 'True') this.category = data.nav_count.categoryName.replaceAll("'", '').split(' , '); // console.log(data.nav_count.categoryName.replaceAll("'", '').split(' , '))
-
-      console.log(this.category);
+      if (data.nav_count.byCategory === 'True') this.category = data.nav_count.categoryName.replaceAll("'", '').split(' , ');
       this.company = data.company;
       this.business_unit = data.business_unit;
       this.department = data.department;
@@ -8246,16 +8230,9 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     },
     closeBtn: function closeBtn() {
       this.locationForm.reset();
-      this.locationForm.clear(); // this.company = null
-      // this.business_unit = null
-      // this.department = null
-      // this.section = null
-
-      this.category = 'All Categories';
-      this.vendor = null; // this.companyList = []
-      // this.buList = []
-      // this.deptList = []
-      // this.sectionList = []
+      this.locationForm.clear();
+      this.category = null;
+      this.vendor = null;
     },
     retrieveAudit: function retrieveAudit(search, loading) {
       loading(true);
@@ -8459,10 +8436,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       }).on('click', function (e) {
         var $el = $(this),
             relTime;
-        $el.niftyOverlay('show'); // Do something...
-
+        $el.niftyOverlay('show');
         relTime = setInterval(function () {
-          // Hide the screen overlay
           $el.niftyOverlay('hide');
           clearInterval(relTime);
         }, 1000);
@@ -51115,7 +51090,7 @@ var render = function() {
                             staticClass: "demo-pli-add-user-star icon-lg"
                           }),
                           _vm._v(
-                            " New\n                    App User Setup\n                  "
+                            " New App\n                    User Setup\n                  "
                           )
                         ]
                       )
