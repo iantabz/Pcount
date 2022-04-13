@@ -52806,142 +52806,6 @@ var render = function() {
                       1
                     )
                   ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "row",
-                    staticStyle: { padding: "10px 15px 15px 10px" }
-                  },
-                  [
-                    _vm._m(3),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-md-6" },
-                      [
-                        _c(
-                          "v-select",
-                          {
-                            attrs: {
-                              filterable: false,
-                              label: "vendor_name",
-                              options: _vm.vendorList,
-                              placeholder: "Search for Vendor Name",
-                              multiple: ""
-                            },
-                            on: { search: _vm.retrieveVendor },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "option",
-                                fn: function(option) {
-                                  return [
-                                    _vm._v(_vm._s("" + option.vendor_name))
-                                  ]
-                                }
-                              },
-                              {
-                                key: "selected-option",
-                                fn: function(option) {
-                                  return [
-                                    _vm._v(_vm._s("" + option.vendor_name))
-                                  ]
-                                }
-                              }
-                            ]),
-                            model: {
-                              value: _vm.vendor,
-                              callback: function($$v) {
-                                _vm.vendor = $$v
-                              },
-                              expression: "vendor"
-                            }
-                          },
-                          [
-                            _c("template", { slot: "no-options" }, [
-                              _c("strong", [_vm._v("Search for Vendor Name")])
-                            ])
-                          ],
-                          2
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "row pad-all",
-                    staticStyle: { "padding-left": "10px" }
-                  },
-                  [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-lg-6" },
-                      [
-                        _c("v-select", {
-                          attrs: {
-                            options: _vm.countTypes,
-                            label: "countTypes",
-                            placeholder: "Count Type"
-                          },
-                          model: {
-                            value: _vm.countType,
-                            callback: function($$v) {
-                              _vm.countType = $$v
-                            },
-                            expression: "countType"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "row pad-all",
-                    staticStyle: { "padding-left": "10px" }
-                  },
-                  [
-                    _vm._m(5),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-6" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.date,
-                            expression: "date"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        staticStyle: { "border-radius": "4px" },
-                        attrs: {
-                          type: "date",
-                          name: "dateFrom",
-                          id: "dateFrom"
-                        },
-                        domProps: { value: _vm.date },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.date = $event.target.value
-                          }
-                        }
-                      })
-                    ])
-                  ]
                 )
               ]
             ),
@@ -52954,9 +52818,9 @@ var render = function() {
                 staticStyle: { "text-align": "left" }
               },
               [
-                _vm._m(6),
+                _vm._m(3),
                 _vm._v(" "),
-                _vm._m(7),
+                _vm._m(4),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -52965,7 +52829,7 @@ var render = function() {
                     staticStyle: { padding: "10px 15px 15px 10px" }
                   },
                   [
-                    _vm._m(8),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -52989,66 +52853,6 @@ var render = function() {
                             expression: "section"
                           }
                         })
-                      ],
-                      1
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "row",
-                    staticStyle: { padding: "10px 15px 15px 10px" }
-                  },
-                  [
-                    _vm._m(9),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-md-6" },
-                      [
-                        _c(
-                          "v-select",
-                          {
-                            attrs: {
-                              filterable: false,
-                              label: "category",
-                              options: _vm.categoryList,
-                              placeholder: "Search for Category",
-                              multiple: ""
-                            },
-                            on: { search: _vm.retrieveCategory },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "option",
-                                fn: function(option) {
-                                  return [_vm._v(_vm._s("" + option.category))]
-                                }
-                              },
-                              {
-                                key: "selected-option",
-                                fn: function(option) {
-                                  return [_vm._v(_vm._s("" + option.category))]
-                                }
-                              }
-                            ]),
-                            model: {
-                              value: _vm.category,
-                              callback: function($$v) {
-                                _vm.category =
-                                  typeof $$v === "string" ? $$v.trim() : $$v
-                              },
-                              expression: "category"
-                            }
-                          },
-                          [
-                            _c("template", { slot: "no-options" }, [
-                              _c("strong", [_vm._v("Search for Category")])
-                            ])
-                          ],
-                          2
-                        )
                       ],
                       1
                     )
@@ -53094,9 +52898,9 @@ var render = function() {
                 domProps: { value: _vm.date }
               }),
               _vm._v(" "),
-              _vm._m(10),
+              _vm._m(6),
               _vm._v(" "),
-              _vm._m(11)
+              _vm._m(7)
             ]
           )
         ])
@@ -53149,41 +52953,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "label",
-      {
-        staticClass: "col-md-3 control-label text-bold",
-        staticStyle: { "text-align": "right" }
-      },
-      [_c("h5", [_vm._v("Vendor Name :")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
-      _c("h5", [
-        _c("i", { staticClass: "icon-lg demo-pli-file-edit icon-fw" }),
-        _vm._v("\n                  Count Type :\n                ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
-      _c("h5", [
-        _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
-        _vm._v(" Batch\n                  Date :\n                ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
@@ -53222,19 +52991,6 @@ var staticRenderFns = [
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 control-label text-bold",
-        staticStyle: { "text-align": "right" }
-      },
-      [_c("h5", [_vm._v("By Dept :")])]
     )
   },
   function() {

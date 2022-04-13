@@ -72,7 +72,7 @@
                   </v-select>
                 </div>
               </div>
-              <div class="row" style="padding: 10px 15px 15px 10px">
+              <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
                   class="col-md-3 control-label text-bold"
                   style="text-align: right"
@@ -133,7 +133,7 @@
                     style="border-radius: 4px"
                   />
                 </div>
-              </div>
+              </div> -->
             </div>
             <div
               class="col-lg-6 table-toolbar-right form-horizontal pad-top"
@@ -169,7 +169,7 @@
                   ></v-select>
                 </div>
               </div>
-              <div class="row" style="padding: 10px 15px 15px 10px">
+              <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
                   class="col-md-3 control-label text-bold"
                   style="text-align: right"
@@ -196,7 +196,7 @@
                     }}</template>
                   </v-select>
                 </div>
-              </div>
+              </div> -->
               <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
                   class="col-md-3 control-label text-bold"
