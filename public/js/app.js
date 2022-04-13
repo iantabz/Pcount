@@ -7911,12 +7911,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -51121,7 +51115,7 @@ var render = function() {
                             staticClass: "demo-pli-add-user-star icon-lg"
                           }),
                           _vm._v(
-                            " New\n                    Location\n                  "
+                            " New\n                    App User Setup\n                  "
                           )
                         ]
                       )
@@ -51201,45 +51195,6 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          data.done == "false"
-                            ? _c(
-                                "td",
-                                {
-                                  staticClass: "text-main text-normal",
-                                  staticStyle: {
-                                    "font-size": "13px",
-                                    "text-align": "center"
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "label label-warning text-thin"
-                                    },
-                                    [_vm._v("On going")]
-                                  )
-                                ]
-                              )
-                            : _c(
-                                "td",
-                                {
-                                  staticClass: "text-main text-normal",
-                                  staticStyle: {
-                                    "font-size": "13px",
-                                    "text-align": "center"
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "span",
-                                    { staticClass: "label label-success" },
-                                    [_vm._v("Done")]
-                                  )
-                                ]
-                              ),
-                          _vm._v(" "),
                           _c("td", [
                             _c(
                               "button",
@@ -51276,7 +51231,7 @@ var render = function() {
                         _vm._s(_vm.data.to) +
                         " of\n                  " +
                         _vm._s(_vm.data.total) +
-                        " entries\n                  "
+                        " entries\n                "
                     )
                   ]),
                   _vm._v(" "),
@@ -51329,7 +51284,7 @@ var render = function() {
                 _c(
                   "h5",
                   { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
-                  [_vm._v("Location Information")]
+                  [_vm._v("User setup information")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -51859,8 +51814,6 @@ var staticRenderFns = [
         _c("th", { staticClass: "text-main text-center" }, [
           _vm._v("Date Added")
         ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-main text-center" }, [_vm._v("Status")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-main text-center" }, [_vm._v("Action")])
       ])

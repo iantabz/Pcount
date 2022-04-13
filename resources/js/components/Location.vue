@@ -150,7 +150,7 @@
                       data-toggle="modal"
                     >
                       <i class="demo-pli-add-user-star icon-lg"></i> New
-                      Location
+                      App User Setup
                     </button>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
                     <th class="text-main text-center">IAD Audit</th>
                     <th class="text-main text-center">Rack Description</th>
                     <th class="text-main text-center">Date Added</th>
-                    <th class="text-main text-center">Status</th>
+                    <!-- <th class="text-main text-center">Status</th> -->
                     <th class="text-main text-center">Action</th>
                   </tr>
                 </thead>
@@ -192,7 +192,7 @@
                     <td class="text-main text-normal">
                       {{ data.date_added | formatDate }}
                     </td>
-                    <td
+                    <!-- <td
                       class="text-main text-normal"
                       v-if="data.done == 'false'"
                       style="font-size: 13px; text-align: center"
@@ -205,7 +205,7 @@
                       v-else
                     >
                       <span class="label label-success">Done</span>
-                    </td>
+                    </td> -->
                     <td>
                       <button
                         @click="editBtn(data)"
@@ -228,12 +228,6 @@
                   <div class="col-md-6">
                     Showing {{ data.from }} to {{ data.to }} of
                     {{ data.total }} entries
-                    <!-- <span v-if="searchProducts && !date"
-                      >(Filtered from {{ total_result }} total entries)</span
-                    >
-                    <span v-if="searchProducts && date"
-                      >(Filtered from {{ total_result }} total entries)</span
-                    > -->
                   </div>
                   <div class="col-md-6">
                     <div class="text-right">
@@ -266,7 +260,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="mdlTitle">Location Information</h5>
+            <h5 class="modal-title" id="mdlTitle">User setup information</h5>
             <button
               type="button"
               class="close"
