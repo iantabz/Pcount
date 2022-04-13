@@ -7916,6 +7916,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -8001,6 +8002,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       this.forPrintVendor = value.join(' , ');
     },
     category: function category(newValue) {
+      console.log(newValue);
+
       if (newValue) {
         var value = [];
         newValue.forEach(function (element, index) {
@@ -8254,7 +8257,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       // this.department = null
       // this.section = null
 
-      this.category = null;
+      this.category = 'All Categories';
       this.vendor = null; // this.companyList = []
       // this.buList = []
       // this.deptList = []
@@ -51211,7 +51214,10 @@ var render = function() {
                                 [
                                   _c(
                                     "span",
-                                    { staticClass: "label label-warning" },
+                                    {
+                                      staticClass:
+                                        "label label-warning text-thin"
+                                    },
                                     [_vm._v("On going")]
                                   )
                                 ]
@@ -51629,7 +51635,7 @@ var render = function() {
                                   filterable: false,
                                   label: "category",
                                   options: _vm.categoryList,
-                                  placeholder: "Search for Category",
+                                  placeholder: "(Optional)",
                                   multiple: ""
                                 },
                                 on: { search: _vm.retrieveCategory },

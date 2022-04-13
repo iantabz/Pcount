@@ -197,7 +197,7 @@
                       v-if="data.done == 'false'"
                       style="font-size: 13px; text-align: center"
                     >
-                      <span class="label label-warning">On going</span>
+                      <span class="label label-warning text-thin">On going</span>
                     </td>
                     <td
                       class="text-main text-normal"
@@ -484,9 +484,10 @@
                     @search="retrieveCategory"
                     label="category"
                     :options="categoryList"
-                    placeholder="Search for Category"
+                    placeholder="(Optional)"
                     multiple
-                    ><template slot="no-options">
+                  >
+                    <template slot="no-options">
                       <strong>Search for Category</strong>
                     </template>
                     <template slot="option" slot-scope="option">{{
@@ -617,6 +618,7 @@ export default {
       this.forPrintVendor = value.join(' , ')
     },
     category(newValue) {
+      console.log(newValue)
       if (newValue) {
         let value = []
         newValue.forEach((element, index) => {
@@ -773,7 +775,7 @@ export default {
               container: 'floating',
               timer: 5000
             })
-          } 
+          }
           // else {
           //   $.niftyNoty({
           //     type: 'danger',
@@ -867,7 +869,7 @@ export default {
       // this.business_unit = null
       // this.department = null
       // this.section = null
-      this.category = null
+      this.category = 'All Categories'
       this.vendor = null
       // this.companyList = []
       // this.buList = []
