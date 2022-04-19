@@ -96,13 +96,14 @@
                   <div class="row" style="padding: 10px 15px 15px 30px">
                     <button
                       class="btn btn-info btn-rounded mar-lft"
-                     
-                      data-target="#rack-setup"
-                      data-toggle="modal"
-                    >
-                     <!-- :disabled="
+                      @click="showRackSetup = !showRackSetup"
+                      :disabled="
                         !company || !business_unit || !department || !section
-                      " -->
+                      "
+                    >
+                      <!-- data-target="#rack-setup"
+                      data-toggle="modal"
+                      -->
                       <i class="demo-pli-data-settings icon-lg"></i> Rack setup
                     </button>
                   </div>
@@ -454,7 +455,7 @@
                 </div>
               </div>
               <div class="form-group pad-top" style="margin-top: 30px">
-                <label
+                <!-- <label
                   style="text-align: right; padding-top: 5px"
                   class="col-sm-3 control-label text-main text-semibold"
                   for="location"
@@ -474,6 +475,38 @@
                     v-if="locationForm.errors.has('rack_desc')"
                     v-html="locationForm.errors.get('rack_desc')"
                   />
+                </div> -->
+                <label
+                  style="text-align: right; padding-top: 5px"
+                  class="col-sm-3 control-label text-main text-semibold"
+                  for="location"
+                  >Rack Description</label
+                >
+                <div class="col-sm-9">
+                  <v-select
+                    v-model.trim="locationForm.rack_desc"
+                    :reduce="rackList => rackList.rack_name"
+                    :filterable="false"
+                    label="rack_name"
+                    :options="rackList"
+                    placeholder="Select Rack"
+                  >
+                    <template slot="no-options">
+                      <strong>Search for Rack</strong>
+                    </template>
+                    <template slot="option" slot-scope="option">{{
+                      `${option.rack_name}`
+                    }}</template>
+                    <template slot="selected-option" slot-scope="option">{{
+                      `${option.rack_name}`
+                    }}</template>
+                  </v-select>
+                  <small
+                    class="help-block text-danger"
+                    v-if="locationForm.errors.has('rack_desc')"
+                    v-html="locationForm.errors.get('rack_desc')"
+                  />
+                  <small class="help-block"> </small>
                 </div>
               </div>
               <div class="form-group pad-top" style="margin-top: 30px">
@@ -532,6 +565,10 @@
     </div>
 
     <Modal
+      :company="company"
+      :business_unit="business_unit"
+      :department="department"
+      :section="section"
       class="modal fade"
       id="rack-setup"
       role="dialog"
@@ -539,6 +576,8 @@
       aria-hidden="true"
       data-keyboard="false"
       data-backdrop="static"
+      :showRackSetup="showRackSetup"
+      @closeMdl="status"
     ></Modal>
   </div>
 </template>
@@ -599,7 +638,9 @@ export default {
         forPrintVendor: []
       }),
       forPrintCategory: [],
-      forPrintVendor: []
+      forPrintVendor: [],
+      showRackSetup: false,
+      rackList: []
     }
   },
   components: {
@@ -607,6 +648,9 @@ export default {
     Modal
   },
   watch: {
+    showRackSetup() {
+      if (this.showRackSetup) $('#rack-setup').modal('show')
+    },
     date() {
       if (this.business_unit && this.department && this.section) {
         this.getResults()
@@ -629,7 +673,7 @@ export default {
       this.forPrintVendor = value.join(' , ')
     },
     category(newValue) {
-      console.log(newValue)
+      // console.log(newValue)
       if (newValue) {
         let value = []
         newValue.forEach((element, index) => {
@@ -641,6 +685,10 @@ export default {
     }
   },
   methods: {
+    status(value) {
+      // console.log(value)
+      this.showRackSetup = value
+    },
     async generate(e, reportType) {
       Swal.fire({
         html: "Please wait, don't close the browser.",
@@ -801,7 +849,7 @@ export default {
         })
     },
     assignBtn(data) {
-      console.log(data)
+      // console.log(data)
       var loc_id = data.location_id
       $('#demo-default-modal').modal('show')
     },
@@ -1001,6 +1049,14 @@ export default {
           this.data = response.data
           this.total_result = response.data.total
         })
+
+        axios
+          .get(
+            `/setup/location/getRacks?company=${this.company}&business_unit=${this.business_unit}&department=${this.department}&section=${this.section}`
+          )
+          .then(response => {
+            this.rackList = response.data
+          })
       }
     }
   },

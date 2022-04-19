@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/getBU', [LocationController::class, 'getBU']);
             Route::get('/getDept', [LocationController::class, 'getDept']);
             Route::get('/getSection', [LocationController::class, 'getSection']);
+            Route::get('/getRacks', [SetupController::class, 'getRacks']);
+            Route::post('/createRack', [SetupController::class, 'createRack']);
         });
 
         Route::prefix('users')->group(function () {

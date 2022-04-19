@@ -10,6 +10,7 @@ use App\Models\TblAppAudit;
 use App\Models\TblAppUser;
 use App\Models\TblItemCategoryMasterfile;
 use App\Models\TblLocation;
+use App\Models\TblLocationRack;
 use App\Models\TblNavCount;
 use App\Models\TblUser;
 use App\Models\TblUsertype;
@@ -139,13 +140,15 @@ class SetupController extends Controller
 
             $ifAppUserExists = TblLocation::join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_location.location_id')
                 ->join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_location.location_id')
+                ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_nav_count.location_id')
                 ->where([
                     ['company', 'LIKE', "%$comp%"],
                     ['business_unit', 'LIKE', "%$bu%"],
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
                     ['tbl_app_user.emp_id', 'LIKE', "%$app_user%"],
-                    ['tbl_app_user.done', false]
+                    ['tbl_app_user.done', false],
+                    ['batchDate', $batchDate]
                 ])
                 ->orwhere([
                     ['company', 'LIKE', "%$comp%"],
@@ -153,19 +156,22 @@ class SetupController extends Controller
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
                     ['tbl_app_audit.emp_id', 'LIKE', "%$app_user%"],
-                    ['tbl_app_audit.done', false]
+                    ['tbl_app_audit.done', false],
+                    ['batchDate', $batchDate]
                 ])
                 ->exists();
 
             $ifAppAuditExists = TblLocation::join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_location.location_id')
                 ->join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_location.location_id')
+                ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_nav_count.location_id')
                 ->where([
                     ['company', 'LIKE', "%$comp%"],
                     ['business_unit', 'LIKE', "%$bu%"],
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
                     ['tbl_app_audit.emp_id', 'LIKE', "%$app_audit%"],
-                    ['tbl_app_audit.done', false]
+                    ['tbl_app_audit.done', false],
+                    ['batchDate', $batchDate]
                 ])
                 ->orwhere([
                     ['company', 'LIKE', "%$comp%"],
@@ -173,7 +179,8 @@ class SetupController extends Controller
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
                     ['tbl_app_user.emp_id', 'LIKE', "%$app_audit%"],
-                    ['tbl_app_user.done', false]
+                    ['tbl_app_user.done', false],
+                    ['batchDate', $batchDate]
                 ])
                 ->exists();
             // dd($ifAppUserExists, $ifAppAuditExists);
@@ -333,5 +340,48 @@ class SetupController extends Controller
         );
 
         return $header;
+    }
+
+    public function getRacks()
+    {
+
+        return TblLocationRack::where([
+            'company' => request()->company,
+            'business_unit' => request()->business_unit,
+            'department' => request()->department,
+            'section' => request()->section
+        ])->get();
+    }
+
+    public function createRack()
+    {
+        // dd(request()->all());
+        $validate =  TblLocationRack::where([
+            'company' => request()->company,
+            'business_unit' => request()->business_unit,
+            'department' => request()->department,
+            'section' => request()->section,
+            'rack_name' => request()->name
+        ])->exists();
+
+        if (!request()->id) {
+            if (!$validate) {
+                TblLocationRack::create([
+                    'company' => request()->company,
+                    'business_unit' => request()->business_unit,
+                    'department' => request()->department,
+                    'section' => request()->section,
+                    'rack_name' => request()->name
+                ]);
+                return response()->json(['message' => 'User created successfully!'], 200);
+            }
+            return response()->json(['message' => 'Already exists!'], 406);
+        } else {
+            if (!$validate) {
+                TblLocationRack::where('id', request()->id)->update(['rack_name' => request()->name]);
+                return response()->json(['message' => 'Update successful!'], 200);
+            }
+            return response()->json(['message' => 'Already exists!'], 406);
+        }
     }
 }
