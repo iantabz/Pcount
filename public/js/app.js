@@ -7356,7 +7356,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-datetime/dist/vue-datetime.css */ "./node_modules/vue-datetime/dist/vue-datetime.css");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _modals_location_modal_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modals/location-modal.vue */ "./resources/js/components/modals/location-modal.vue");
+/* harmony import */ var _modals_RackSetup_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modals/RackSetup.vue */ "./resources/js/components/modals/RackSetup.vue");
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_6__);
@@ -7383,6 +7383,27 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7966,7 +7987,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
   },
   components: {
     datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_1__.Datetime,
-    Modal: _modals_location_modal_vue__WEBPACK_IMPORTED_MODULE_4__.default
+    Modal: _modals_RackSetup_vue__WEBPACK_IMPORTED_MODULE_4__.default
   },
   watch: {
     date: function date() {
@@ -13665,6 +13686,68 @@ vue__WEBPACK_IMPORTED_MODULE_4__.default.component('v-select', (vue_select__WEBP
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/RackSetup.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/RackSetup.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/location-modal.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/location-modal.vue?vue&type=script&lang=js& ***!
@@ -13946,7 +14029,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getCompany();
-    alert(1);
     setTimeout(function () {
       $('#company, #business_unit, #department, #section').select2({
         dropdownParent: $('#demo-default-modal'),
@@ -46924,6 +47006,45 @@ component.options.__file = "resources/js/components/VendorMasterfile.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/modals/RackSetup.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/modals/RackSetup.vue ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RackSetup_vue_vue_type_template_id_2e01ce28_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true& */ "./resources/js/components/modals/RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true&");
+/* harmony import */ var _RackSetup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RackSetup.vue?vue&type=script&lang=js& */ "./resources/js/components/modals/RackSetup.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _RackSetup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _RackSetup_vue_vue_type_template_id_2e01ce28_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RackSetup_vue_vue_type_template_id_2e01ce28_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "2e01ce28",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modals/RackSetup.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/modals/location-modal.vue":
 /*!***********************************************************!*\
   !*** ./resources/js/components/modals/location-modal.vue ***!
@@ -47232,6 +47353,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VendorMasterfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VendorMasterfile.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VendorMasterfile.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VendorMasterfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/RackSetup.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/modals/RackSetup.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RackSetup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RackSetup.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/RackSetup.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RackSetup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -47614,6 +47751,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VendorMasterfile_vue_vue_type_template_id_6c49a5b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VendorMasterfile_vue_vue_type_template_id_6c49a5b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VendorMasterfile.vue?vue&type=template&id=6c49a5b1&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VendorMasterfile.vue?vue&type=template&id=6c49a5b1&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/modals/RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RackSetup_vue_vue_type_template_id_2e01ce28_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RackSetup_vue_vue_type_template_id_2e01ce28_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RackSetup_vue_vue_type_template_id_2e01ce28_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true&");
 
 
 /***/ }),
@@ -50796,581 +50950,532 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "page-body" } }, [
-    _c("div", { attrs: { id: "page-content" } }, [
-      _c("div", { staticClass: "panel" }, [
-        _c("div", { staticClass: "panel-body" }, [
-          _c("div", { staticClass: "panel-heading pad-all" }, [
-            _c(
-              "h3",
-              {
-                staticClass: "panel-heading bord-btm text-thin",
-                staticStyle: {
-                  "font-size": "20px",
-                  "/* padding": "15px 0px 0px 25px"
-                }
-              },
-              [
-                _c("i", { staticClass: "demo-pli-map-2 icon-lg" }),
-                _vm._v(" " + _vm._s(_vm.$root.currentPage) + "\n          ")
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "table-responsive panel-body" }, [
-              _c("div", { staticClass: "row pad-top" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-6 table-toolbar-left form-horizontal"
-                  },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(0),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-6" },
-                          [
-                            _c("v-select", {
-                              attrs: {
-                                options: _vm.companyList,
-                                reduce: function(companyList) {
-                                  return companyList.acroname
-                                },
-                                label: "acroname",
-                                placeholder: "Company"
-                              },
-                              on: {
-                                input: function($event) {
-                                  return _vm.companySelected($event)
-                                }
-                              },
-                              model: {
-                                value: _vm.company,
-                                callback: function($$v) {
-                                  _vm.company = $$v
-                                },
-                                expression: "company"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-6" },
-                          [
-                            _c("v-select", {
-                              attrs: {
-                                label: "business_unit",
-                                options: _vm.buList,
-                                placeholder: "Search for Business Unit",
-                                reduce: function(buList) {
-                                  return buList.business_unit
-                                }
-                              },
-                              on: {
-                                input: function($event) {
-                                  return _vm.buSelected($event)
-                                }
-                              },
-                              model: {
-                                value: _vm.business_unit,
-                                callback: function($$v) {
-                                  _vm.business_unit = $$v
-                                },
-                                expression: "business_unit"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-6" },
-                          [
-                            _c("v-select", {
-                              attrs: {
-                                options: _vm.deptList,
-                                reduce: function(deptList) {
-                                  return deptList.dept_name
-                                },
-                                label: "dept_name",
-                                placeholder: "Department",
-                                disabled: !_vm.business_unit
-                              },
-                              on: {
-                                input: function($event) {
-                                  return _vm.departmentSelected($event)
-                                }
-                              },
-                              model: {
-                                value: _vm.department,
-                                callback: function($$v) {
-                                  _vm.department = $$v
-                                },
-                                expression: "department"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row pad-all",
-                        staticStyle: { "padding-left": "10px" }
-                      },
-                      [
-                        _vm._m(3),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-lg-6" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.date,
-                                expression: "date"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            staticStyle: { "border-radius": "4px" },
-                            attrs: {
-                              type: "date",
-                              name: "dateFrom",
-                              id: "dateFrom",
-                              min: "dateToday",
-                              disabled:
-                                !_vm.business_unit ||
-                                !_vm.department ||
-                                !_vm.section
-                            },
-                            domProps: { value: _vm.date },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.date = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", {
-                      staticClass: "row",
-                      staticStyle: { padding: "10px 15px 15px 10px" }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-6 table-toolbar-right form-horizontal"
-                  },
-                  [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _vm._m(5),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(6),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-6" },
-                          [
-                            _c("v-select", {
-                              attrs: {
-                                options: _vm.sectionList,
-                                reduce: function(sectionList) {
-                                  return sectionList.section_name
-                                },
-                                label: "section_name",
-                                placeholder: "Section",
-                                disabled: !_vm.department
-                              },
-                              model: {
-                                value: _vm.section,
-                                callback: function($$v) {
-                                  _vm.section = $$v
-                                },
-                                expression: "section"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm._m(7),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row pad-all" }, [
+  return _c(
+    "div",
+    { attrs: { id: "page-body" } },
+    [
+      _c("div", { attrs: { id: "page-content" } }, [
+        _c("div", { staticClass: "panel" }, [
+          _c("div", { staticClass: "panel-body" }, [
+            _c("div", { staticClass: "panel-heading pad-all" }, [
+              _c(
+                "h3",
+                {
+                  staticClass: "panel-heading bord-btm text-thin",
+                  staticStyle: {
+                    "font-size": "20px",
+                    "/* padding": "15px 0px 0px 25px"
+                  }
+                },
+                [
+                  _c("i", { staticClass: "demo-pli-map-2 icon-lg" }),
+                  _vm._v(" " + _vm._s(_vm.$root.currentPage) + "\n          ")
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "table-responsive panel-body" }, [
+                _c("div", { staticClass: "row pad-top" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-6 table-toolbar-left form-horizontal"
+                    },
+                    [
                       _c(
-                        "button",
+                        "div",
                         {
-                          staticClass: "btn btn-info btn-rounded mar-lft",
-                          attrs: { disabled: !_vm.data.data.length },
-                          on: {
-                            click: function($event) {
-                              return _vm.generate($event, "Excel")
-                            }
-                          }
+                          staticClass: "row",
+                          staticStyle: { padding: "10px 15px 15px 10px" }
                         },
                         [
-                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                          _vm._v(
-                            "  Print\n                    Location Setup\n                  "
+                          _vm._m(0),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-md-6" },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  options: _vm.companyList,
+                                  reduce: function(companyList) {
+                                    return companyList.acroname
+                                  },
+                                  label: "acroname",
+                                  placeholder: "Company"
+                                },
+                                on: {
+                                  input: function($event) {
+                                    return _vm.companySelected($event)
+                                  }
+                                },
+                                model: {
+                                  value: _vm.company,
+                                  callback: function($$v) {
+                                    _vm.company = $$v
+                                  },
+                                  expression: "company"
+                                }
+                              })
+                            ],
+                            1
                           )
                         ]
                       ),
                       _vm._v(" "),
                       _c(
-                        "button",
+                        "div",
                         {
-                          staticClass: "btn btn-info btn-rounded mar-lft",
-                          attrs: {
-                            disabled:
-                              !_vm.company ||
-                              !_vm.business_unit ||
-                              !_vm.department ||
-                              !_vm.section,
-                            "data-target": "#demo-default-modal",
-                            "data-toggle": "modal"
-                          }
+                          staticClass: "row",
+                          staticStyle: { padding: "10px 15px 15px 10px" }
                         },
                         [
-                          _c("i", {
-                            staticClass: "demo-pli-add-user-star icon-lg"
-                          }),
-                          _vm._v(
-                            " New App\n                    User Setup\n                  "
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-md-6" },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  label: "business_unit",
+                                  options: _vm.buList,
+                                  placeholder: "Search for Business Unit",
+                                  reduce: function(buList) {
+                                    return buList.business_unit
+                                  }
+                                },
+                                on: {
+                                  input: function($event) {
+                                    return _vm.buSelected($event)
+                                  }
+                                },
+                                model: {
+                                  value: _vm.business_unit,
+                                  callback: function($$v) {
+                                    _vm.business_unit = $$v
+                                  },
+                                  expression: "business_unit"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "row",
+                          staticStyle: { padding: "10px 15px 15px 10px" }
+                        },
+                        [
+                          _vm._m(2),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-md-6" },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  options: _vm.deptList,
+                                  reduce: function(deptList) {
+                                    return deptList.dept_name
+                                  },
+                                  label: "dept_name",
+                                  placeholder: "Department",
+                                  disabled: !_vm.business_unit
+                                },
+                                on: {
+                                  input: function($event) {
+                                    return _vm.departmentSelected($event)
+                                  }
+                                },
+                                model: {
+                                  value: _vm.department,
+                                  callback: function($$v) {
+                                    _vm.department = $$v
+                                  },
+                                  expression: "department"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "row pad-all",
+                          staticStyle: { "padding-left": "10px" }
+                        },
+                        [
+                          _vm._m(3),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-lg-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.date,
+                                  expression: "date"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              staticStyle: { "border-radius": "4px" },
+                              attrs: {
+                                type: "date",
+                                name: "dateFrom",
+                                id: "dateFrom",
+                                min: "dateToday",
+                                disabled:
+                                  !_vm.business_unit ||
+                                  !_vm.department ||
+                                  !_vm.section
+                              },
+                              domProps: { value: _vm.date },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.date = $event.target.value
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "row",
+                          staticStyle: { padding: "10px 15px 15px 30px" }
+                        },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info btn-rounded mar-lft",
+                              attrs: {
+                                disabled:
+                                  !_vm.company ||
+                                  !_vm.business_unit ||
+                                  !_vm.department ||
+                                  !_vm.section,
+                                "data-target": "#rack-setup",
+                                "data-toggle": "modal"
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "demo-pli-data-settings icon-lg"
+                              }),
+                              _vm._v(" Rack setup\n                  ")
+                            ]
                           )
                         ]
                       )
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "table",
-                {
-                  staticClass: "table table-striped table-vcenter table-hover",
-                  attrs: { id: "data-table" }
-                },
-                [
-                  _vm._m(8),
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
-                    "tbody",
+                    "div",
+                    {
+                      staticClass:
+                        "col-md-6 table-toolbar-right form-horizontal"
+                    },
                     [
-                      !_vm.data.data.length
-                        ? _c("tr", [
-                            _c(
-                              "td",
-                              {
-                                staticStyle: { "text-align": "center" },
-                                attrs: { colspan: "6" }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                    No data available.\n                  "
-                                )
-                              ]
-                            )
-                          ])
-                        : _vm._e(),
+                      _vm._m(4),
                       _vm._v(" "),
-                      _vm._l(_vm.data.data, function(data, index) {
-                        return _c("tr", { key: index }, [
-                          _c("td", { staticClass: "text-main text-normal" }, [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(data.location_id) +
-                                "\n                  "
-                            )
-                          ]),
+                      _vm._m(5),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "row",
+                          staticStyle: { padding: "10px 15px 15px 10px" }
+                        },
+                        [
+                          _vm._m(6),
                           _vm._v(" "),
-                          _c("td", { staticClass: "text-main text-normal" }, [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(data.app_users.name) +
-                                "\n                  "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-main text-normal" }, [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(data.app_audit.name) +
-                                "\n                  "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-main text-normal" }, [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(data.rack_desc) +
-                                "\n                  "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-main text-normal" }, [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(_vm._f("formatDate")(data.date_added)) +
-                                "\n                  "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-info btn-xs",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.editBtn(data)
-                                  }
+                          _c(
+                            "div",
+                            { staticClass: "col-md-6" },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  options: _vm.sectionList,
+                                  reduce: function(sectionList) {
+                                    return sectionList.section_name
+                                  },
+                                  label: "section_name",
+                                  placeholder: "Section",
+                                  disabled: !_vm.department
+                                },
+                                model: {
+                                  value: _vm.section,
+                                  callback: function($$v) {
+                                    _vm.section = $$v
+                                  },
+                                  expression: "section"
                                 }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "demo-pli-gear icon-lg icon-fw"
-                                })
-                              ]
-                            )
-                          ])
-                        ])
-                      })
-                    ],
-                    2
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _vm._v(
-                      "\n                  Showing " +
-                        _vm._s(_vm.data.from) +
-                        " to " +
-                        _vm._s(_vm.data.to) +
-                        " of\n                  " +
-                        _vm._s(_vm.data.total) +
-                        " entries\n                "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c(
-                      "div",
-                      { staticClass: "text-right" },
-                      [
-                        _c("pagination", {
-                          staticStyle: { margin: "0 0 20px 0" },
-                          attrs: {
-                            limit: 1,
-                            "show-disabled": true,
-                            data: _vm.data
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row pad-all" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-info btn-rounded mar-lft",
+                            attrs: { disabled: !_vm.data.data.length },
+                            on: {
+                              click: function($event) {
+                                return _vm.generate($event, "Excel")
+                              }
+                            }
                           },
-                          on: { "pagination-change-page": _vm.getResults }
+                          [
+                            _c("i", {
+                              staticClass: "demo-pli-printer icon-lg"
+                            }),
+                            _vm._v(
+                              "  Print\n                    Location Setup\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-info btn-rounded mar-lft",
+                            attrs: {
+                              disabled:
+                                !_vm.company ||
+                                !_vm.business_unit ||
+                                !_vm.department ||
+                                !_vm.section,
+                              "data-target": "#demo-default-modal",
+                              "data-toggle": "modal"
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "demo-pli-add-user-star icon-lg"
+                            }),
+                            _vm._v(
+                              " New App\n                    User Setup\n                  "
+                            )
+                          ]
+                        )
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-striped table-vcenter table-hover",
+                    attrs: { id: "data-table" }
+                  },
+                  [
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        !_vm.data.data.length
+                          ? _c("tr", [
+                              _c(
+                                "td",
+                                {
+                                  staticStyle: { "text-align": "center" },
+                                  attrs: { colspan: "6" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                    No data available.\n                  "
+                                  )
+                                ]
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.data.data, function(data, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { staticClass: "text-main text-normal" }, [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(data.location_id) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-main text-normal" }, [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(data.app_users.name) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-main text-normal" }, [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(data.app_audit.name) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-main text-normal" }, [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(data.rack_desc) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-main text-normal" }, [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(
+                                    _vm._f("formatDate")(data.date_added)
+                                  ) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-info btn-xs",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.editBtn(data)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "demo-pli-gear icon-lg icon-fw"
+                                  })
+                                ]
+                              )
+                            ])
+                          ])
                         })
                       ],
-                      1
+                      2
                     )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _vm._v(
+                        "\n                  Showing " +
+                          _vm._s(_vm.data.from) +
+                          " to " +
+                          _vm._s(_vm.data.to) +
+                          " of\n                  " +
+                          _vm._s(_vm.data.total) +
+                          " entries\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        { staticClass: "text-right" },
+                        [
+                          _c("pagination", {
+                            staticStyle: { margin: "0 0 20px 0" },
+                            attrs: {
+                              limit: 1,
+                              "show-disabled": true,
+                              data: _vm.data
+                            },
+                            on: { "pagination-change-page": _vm.getResults }
+                          })
+                        ],
+                        1
+                      )
+                    ])
                   ])
                 ])
               ])
             ])
           ])
         ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "demo-default-modal",
-          role: "dialog",
-          "aria-labelledby": "myModalLabel",
-          "aria-hidden": "true",
-          "data-keyboard": "false",
-          "data-backdrop": "static"
-        }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c(
-                  "h5",
-                  { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
-                  [_vm._v("User setup information")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    },
-                    on: { click: _vm.closeBtn }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "form-horizonal panel-body form-padding" },
-                  [
-                    _c("div", { staticClass: "form-group mar-btm" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass:
-                            "col-sm-3 control-label text-main text-semibold",
-                          staticStyle: {
-                            "text-align": "right",
-                            "padding-top": "5px"
-                          },
-                          attrs: { for: "user" }
-                        },
-                        [_vm._v("Inventory Clerk")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-sm-9" },
-                        [
-                          _c(
-                            "v-select",
-                            {
-                              attrs: {
-                                filterable: false,
-                                label: "name",
-                                options: _vm.employees,
-                                placeholder: "Search for Employee (Last name)"
-                              },
-                              on: { search: _vm.retrieveEmp },
-                              scopedSlots: _vm._u([
-                                {
-                                  key: "option",
-                                  fn: function(option) {
-                                    return [_vm._v(_vm._s("" + option.name))]
-                                  }
-                                },
-                                {
-                                  key: "selected-option",
-                                  fn: function(option) {
-                                    return [_vm._v(_vm._s("" + option.name))]
-                                  }
-                                }
-                              ]),
-                              model: {
-                                value: _vm.locationForm.selectedEmp,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.locationForm, "selectedEmp", $$v)
-                                },
-                                expression: "locationForm.selectedEmp"
-                              }
-                            },
-                            [
-                              _c("template", { slot: "no-options" }, [
-                                _c("strong", [
-                                  _vm._v("Search for Employee (Last name)")
-                                ])
-                              ])
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _vm.locationForm.errors.has("selectedEmp")
-                            ? _c("small", {
-                                staticClass: "help-block text-danger",
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    _vm.locationForm.errors.get("selectedEmp")
-                                  )
-                                }
-                              })
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm._m(9)
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-group pad-top",
-                        staticStyle: { "margin-top": "30px" }
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "demo-default-modal",
+            role: "dialog",
+            "aria-labelledby": "myModalLabel",
+            "aria-hidden": "true",
+            "data-keyboard": "false",
+            "data-backdrop": "static"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _c("div", { staticClass: "modal-header" }, [
+                  _c(
+                    "h5",
+                    { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
+                    [_vm._v("User setup information")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        type: "button",
+                        "data-dismiss": "modal",
+                        "aria-label": "Close"
                       },
-                      [
+                      on: { click: _vm.closeBtn }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-horizonal panel-body form-padding" },
+                    [
+                      _c("div", { staticClass: "form-group mar-btm" }, [
                         _c(
                           "label",
                           {
@@ -51380,9 +51485,9 @@ var render = function() {
                               "text-align": "right",
                               "padding-top": "5px"
                             },
-                            attrs: { for: "audit" }
+                            attrs: { for: "user" }
                           },
-                          [_vm._v("IAD Audit")]
+                          [_vm._v("Inventory Clerk")]
                         ),
                         _vm._v(" "),
                         _c(
@@ -51395,10 +51500,10 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "name",
-                                  options: _vm.audit,
-                                  placeholder: "Search for Audit (Last name)"
+                                  options: _vm.employees,
+                                  placeholder: "Search for Employee (Last name)"
                                 },
-                                on: { search: _vm.retrieveAudit },
+                                on: { search: _vm.retrieveEmp },
                                 scopedSlots: _vm._u([
                                   {
                                     key: "option",
@@ -51414,243 +51519,358 @@ var render = function() {
                                   }
                                 ]),
                                 model: {
-                                  value: _vm.locationForm.selectedAudit,
+                                  value: _vm.locationForm.selectedEmp,
                                   callback: function($$v) {
                                     _vm.$set(
                                       _vm.locationForm,
-                                      "selectedAudit",
-                                      typeof $$v === "string" ? $$v.trim() : $$v
+                                      "selectedEmp",
+                                      $$v
                                     )
                                   },
-                                  expression: "locationForm.selectedAudit"
+                                  expression: "locationForm.selectedEmp"
                                 }
                               },
                               [
                                 _c("template", { slot: "no-options" }, [
                                   _c("strong", [
-                                    _vm._v("Search for Audit (Last name)")
+                                    _vm._v("Search for Employee (Last name)")
                                   ])
                                 ])
                               ],
                               2
                             ),
                             _vm._v(" "),
-                            _vm.locationForm.errors.has("selectedAudit")
+                            _vm.locationForm.errors.has("selectedEmp")
                               ? _c("small", {
                                   staticClass: "help-block text-danger",
                                   domProps: {
                                     innerHTML: _vm._s(
-                                      _vm.locationForm.errors.get(
-                                        "selectedAudit"
-                                      )
+                                      _vm.locationForm.errors.get("selectedEmp")
                                     )
                                   }
                                 })
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(10)
+                            _vm._m(9)
                           ],
                           1
                         )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-group pad-top",
-                        staticStyle: { "margin-top": "30px" }
-                      },
-                      [
-                        _c(
-                          "label",
-                          {
-                            staticClass:
-                              "col-sm-3 control-label text-main text-semibold",
-                            staticStyle: {
-                              "text-align": "right",
-                              "padding-top": "5px"
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group pad-top",
+                          staticStyle: { "margin-top": "30px" }
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass:
+                                "col-sm-3 control-label text-main text-semibold",
+                              staticStyle: {
+                                "text-align": "right",
+                                "padding-top": "5px"
+                              },
+                              attrs: { for: "audit" }
                             },
-                            attrs: { for: "location" }
-                          },
-                          [_vm._v("Rack Description")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "col-sm-9",
-                            staticStyle: { "margin-bottom": "10px" }
-                          },
-                          [
-                            _c("input", {
-                              directives: [
+                            [_vm._v("IAD Audit")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-sm-9" },
+                            [
+                              _c(
+                                "v-select",
                                 {
-                                  name: "model",
-                                  rawName: "v-model.trim",
-                                  value: _vm.locationForm.rack_desc,
-                                  expression: "locationForm.rack_desc",
-                                  modifiers: { trim: true }
-                                }
-                              ],
-                              staticClass: "form-control",
-                              staticStyle: { "font-size": "12px" },
-                              attrs: {
-                                type: "text",
-                                placeholder: "Location",
-                                id: "location"
-                              },
-                              domProps: { value: _vm.locationForm.rack_desc },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                                  attrs: {
+                                    filterable: false,
+                                    label: "name",
+                                    options: _vm.audit,
+                                    placeholder: "Search for Audit (Last name)"
+                                  },
+                                  on: { search: _vm.retrieveAudit },
+                                  scopedSlots: _vm._u([
+                                    {
+                                      key: "option",
+                                      fn: function(option) {
+                                        return [
+                                          _vm._v(_vm._s("" + option.name))
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      key: "selected-option",
+                                      fn: function(option) {
+                                        return [
+                                          _vm._v(_vm._s("" + option.name))
+                                        ]
+                                      }
+                                    }
+                                  ]),
+                                  model: {
+                                    value: _vm.locationForm.selectedAudit,
+                                    callback: function($$v) {
+                                      _vm.$set(
+                                        _vm.locationForm,
+                                        "selectedAudit",
+                                        typeof $$v === "string"
+                                          ? $$v.trim()
+                                          : $$v
+                                      )
+                                    },
+                                    expression: "locationForm.selectedAudit"
                                   }
-                                  _vm.$set(
-                                    _vm.locationForm,
-                                    "rack_desc",
-                                    $event.target.value.trim()
-                                  )
                                 },
-                                blur: function($event) {
-                                  return _vm.$forceUpdate()
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.locationForm.errors.has("rack_desc")
-                              ? _c("small", {
-                                  staticClass: "help-block text-danger",
-                                  domProps: {
-                                    innerHTML: _vm._s(
-                                      _vm.locationForm.errors.get("rack_desc")
-                                    )
-                                  }
-                                })
-                              : _vm._e()
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-group pad-top",
-                        staticStyle: { "margin-top": "30px" }
-                      },
-                      [
-                        _c(
-                          "label",
-                          {
-                            staticClass:
-                              "col-sm-3 control-label text-main text-semibold",
-                            staticStyle: {
-                              "text-align": "right",
-                              "padding-top": "5px"
+                                [
+                                  _c("template", { slot: "no-options" }, [
+                                    _c("strong", [
+                                      _vm._v("Search for Audit (Last name)")
+                                    ])
+                                  ])
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _vm.locationForm.errors.has("selectedAudit")
+                                ? _c("small", {
+                                    staticClass: "help-block text-danger",
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        _vm.locationForm.errors.get(
+                                          "selectedAudit"
+                                        )
+                                      )
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm._m(10)
+                            ],
+                            1
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group pad-top",
+                          staticStyle: { "margin-top": "30px" }
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass:
+                                "col-sm-3 control-label text-main text-semibold",
+                              staticStyle: {
+                                "text-align": "right",
+                                "padding-top": "5px"
+                              },
+                              attrs: { for: "location" }
                             },
-                            attrs: { for: "location" }
-                          },
-                          [_vm._v("Filter by Category")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-sm-9" },
-                          [
-                            _c(
-                              "v-select",
-                              {
-                                attrs: {
-                                  filterable: false,
-                                  label: "category",
-                                  options: _vm.categoryList,
-                                  placeholder: "(Optional)",
-                                  multiple: ""
-                                },
-                                on: { search: _vm.retrieveCategory },
-                                scopedSlots: _vm._u([
+                            [_vm._v("Rack Description")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "col-sm-9",
+                              staticStyle: { "margin-bottom": "10px" }
+                            },
+                            [
+                              _c("input", {
+                                directives: [
                                   {
-                                    key: "option",
-                                    fn: function(option) {
-                                      return [
-                                        _vm._v(_vm._s("" + option.category))
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    key: "selected-option",
-                                    fn: function(option) {
-                                      return [
-                                        _vm._v(_vm._s("" + option.category))
-                                      ]
-                                    }
+                                    name: "model",
+                                    rawName: "v-model.trim",
+                                    value: _vm.locationForm.rack_desc,
+                                    expression: "locationForm.rack_desc",
+                                    modifiers: { trim: true }
                                   }
-                                ]),
-                                model: {
-                                  value: _vm.category,
-                                  callback: function($$v) {
-                                    _vm.category =
-                                      typeof $$v === "string" ? $$v.trim() : $$v
+                                ],
+                                staticClass: "form-control",
+                                staticStyle: { "font-size": "12px" },
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Location",
+                                  id: "location"
+                                },
+                                domProps: { value: _vm.locationForm.rack_desc },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.locationForm,
+                                      "rack_desc",
+                                      $event.target.value.trim()
+                                    )
                                   },
-                                  expression: "category"
+                                  blur: function($event) {
+                                    return _vm.$forceUpdate()
+                                  }
                                 }
+                              }),
+                              _vm._v(" "),
+                              _vm.locationForm.errors.has("rack_desc")
+                                ? _c("small", {
+                                    staticClass: "help-block text-danger",
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        _vm.locationForm.errors.get("rack_desc")
+                                      )
+                                    }
+                                  })
+                                : _vm._e()
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group pad-top",
+                          staticStyle: { "margin-top": "30px" }
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass:
+                                "col-sm-3 control-label text-main text-semibold",
+                              staticStyle: {
+                                "text-align": "right",
+                                "padding-top": "5px"
                               },
-                              [
-                                _c("template", { slot: "no-options" }, [
-                                  _c("strong", [_vm._v("Search for Category")])
-                                ])
-                              ],
-                              2
-                            )
-                          ],
-                          1
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    },
-                    on: { click: _vm.closeBtn }
-                  },
-                  [_vm._v("\n            Close\n          ")]
-                ),
+                              attrs: { for: "location" }
+                            },
+                            [_vm._v("Filter by Category")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-sm-9" },
+                            [
+                              _c(
+                                "v-select",
+                                {
+                                  attrs: {
+                                    filterable: false,
+                                    label: "category",
+                                    options: _vm.categoryList,
+                                    placeholder: "(Optional)",
+                                    multiple: ""
+                                  },
+                                  on: { search: _vm.retrieveCategory },
+                                  scopedSlots: _vm._u([
+                                    {
+                                      key: "option",
+                                      fn: function(option) {
+                                        return [
+                                          _vm._v(_vm._s("" + option.category))
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      key: "selected-option",
+                                      fn: function(option) {
+                                        return [
+                                          _vm._v(_vm._s("" + option.category))
+                                        ]
+                                      }
+                                    }
+                                  ]),
+                                  model: {
+                                    value: _vm.category,
+                                    callback: function($$v) {
+                                      _vm.category =
+                                        typeof $$v === "string"
+                                          ? $$v.trim()
+                                          : $$v
+                                    },
+                                    expression: "category"
+                                  }
+                                },
+                                [
+                                  _c("template", { slot: "no-options" }, [
+                                    _c("strong", [
+                                      _vm._v("Search for Category")
+                                    ])
+                                  ])
+                                ],
+                                2
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      )
+                    ]
+                  )
+                ]),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: { type: "button", disabled: _vm.locationForm.busy },
-                    on: {
-                      click: function($event) {
-                        return _vm.submitBtn()
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: {
+                        type: "button",
+                        "data-dismiss": "modal",
+                        "aria-label": "Close"
+                      },
+                      on: { click: _vm.closeBtn }
+                    },
+                    [_vm._v("\n            Close\n          ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.locationForm.busy
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.submitBtn()
+                        }
                       }
-                    }
-                  },
-                  [
-                    !_vm.locationForm.location_id
-                      ? _c("span", [_vm._v("Save")])
-                      : _c("span", [_vm._v("Save Changes")])
-                  ]
-                )
+                    },
+                    [
+                      !_vm.locationForm.location_id
+                        ? _c("span", [_vm._v("Save")])
+                        : _c("span", [_vm._v("Save Changes")])
+                    ]
+                  )
+                ])
               ])
-            ])
-          ]
-        )
-      ]
-    )
-  ])
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("Modal", {
+        staticClass: "modal fade",
+        attrs: {
+          id: "rack-setup",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel",
+          "aria-hidden": "true",
+          "data-keyboard": "false",
+          "data-backdrop": "static"
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -57076,6 +57296,109 @@ var staticRenderFns = [
         _c("th", [_vm._v("Vendor Name")]),
         _vm._v(" "),
         _c("th", [_vm._v("Vendor Code")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/modals/RackSetup.vue?vue&type=template&id=2e01ce28&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c(
+              "h5",
+              { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
+              [_vm._v("User setup information")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: {
+                  type: "button",
+                  "data-dismiss": "modal",
+                  "aria-label": "Close"
+                }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c(
+              "table",
+              { staticClass: "table table-striped table-vcenter table-hover" },
+              [
+                _c("thead", [
+                  _c("th", [_vm._v("Rack name")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Action")])
+                ]),
+                _vm._v(" "),
+                _c("tbody", [
+                  _c("tr", [
+                    _c(
+                      "td",
+                      {
+                        staticStyle: { "text-align": "center" },
+                        attrs: { colspan: "2" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                No data available.\n              "
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: {
+                  type: "button",
+                  "data-dismiss": "modal",
+                  "aria-label": "Close"
+                }
+              },
+              [_vm._v("\n          Close\n        ")]
+            )
+          ])
+        ])
       ])
     ])
   }

@@ -93,7 +93,18 @@
                       />
                     </div>
                   </div>
-                  <div class="row" style="padding: 10px 15px 15px 10px"></div>
+                  <div class="row" style="padding: 10px 15px 15px 30px">
+                    <button
+                      class="btn btn-info btn-rounded mar-lft"
+                      :disabled="
+                        !company || !business_unit || !department || !section
+                      "
+                      data-target="#rack-setup"
+                      data-toggle="modal"
+                    >
+                      <i class="demo-pli-data-settings icon-lg"></i> Rack setup
+                    </button>
+                  </div>
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
@@ -518,6 +529,16 @@
         </div>
       </div>
     </div>
+
+    <Modal
+      class="modal fade"
+      id="rack-setup"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+      data-keyboard="false"
+      data-backdrop="static"
+    ></Modal>
   </div>
 </template>
 
@@ -527,7 +548,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import { DateTime } from 'luxon'
 import vSelect from 'vue-select'
-import Modal from './modals/location-modal.vue'
+import Modal from './modals/RackSetup.vue'
 import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
 import Form from 'vform'

@@ -277,7 +277,6 @@ export default {
   },
   mounted() {
     this.getCompany()
-    alert(1)
     setTimeout(() => {
       $('#company, #business_unit, #department, #section').select2({
         dropdownParent: $('#demo-default-modal'),
