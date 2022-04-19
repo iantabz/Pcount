@@ -7927,6 +7927,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -13744,7 +13745,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      data: {
+        data: [],
+        from: null,
+        to: null,
+        total: null,
+        per_page: null,
+        current_page: null
+      }
+    };
+  },
+  methods: {
+    getResults: function getResults() {
+      console.log('getting data');
+    }
+  },
+  mounted: function mounted() {
+    this.getResults();
+  }
+});
 
 /***/ }),
 
@@ -51152,36 +51202,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "row",
-                          staticStyle: { padding: "10px 15px 15px 30px" }
-                        },
-                        [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-info btn-rounded mar-lft",
-                              attrs: {
-                                disabled:
-                                  !_vm.company ||
-                                  !_vm.business_unit ||
-                                  !_vm.department ||
-                                  !_vm.section,
-                                "data-target": "#rack-setup",
-                                "data-toggle": "modal"
-                              }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "demo-pli-data-settings icon-lg"
-                              }),
-                              _vm._v(" Rack setup\n                  ")
-                            ]
-                          )
-                        ]
-                      )
+                      _vm._m(4)
                     ]
                   ),
                   _vm._v(" "),
@@ -51192,9 +51213,9 @@ var render = function() {
                         "col-md-6 table-toolbar-right form-horizontal"
                     },
                     [
-                      _vm._m(4),
-                      _vm._v(" "),
                       _vm._m(5),
+                      _vm._v(" "),
+                      _vm._m(6),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -51203,7 +51224,7 @@ var render = function() {
                           staticStyle: { padding: "10px 15px 15px 10px" }
                         },
                         [
-                          _vm._m(6),
+                          _vm._m(7),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -51233,7 +51254,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(7),
+                      _vm._m(8),
                       _vm._v(" "),
                       _c("div", { staticClass: "row pad-all" }, [
                         _c(
@@ -51293,7 +51314,7 @@ var render = function() {
                     attrs: { id: "data-table" }
                   },
                   [
-                    _vm._m(8),
+                    _vm._m(9),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -51551,7 +51572,7 @@ var render = function() {
                                 })
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(9)
+                            _vm._m(10)
                           ],
                           1
                         )
@@ -51647,7 +51668,7 @@ var render = function() {
                                   })
                                 : _vm._e(),
                               _vm._v(" "),
-                              _vm._m(10)
+                              _vm._m(11)
                             ],
                             1
                           )
@@ -51922,6 +51943,28 @@ var staticRenderFns = [
         _vm._v("\n                      Count Date :\n                    ")
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row", staticStyle: { padding: "10px 15px 15px 30px" } },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-info btn-rounded mar-lft",
+            attrs: { "data-target": "#rack-setup", "data-toggle": "modal" }
+          },
+          [
+            _c("i", { staticClass: "demo-pli-data-settings icon-lg" }),
+            _vm._v(" Rack setup\n                  ")
+          ]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -57322,84 +57365,147 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+      _c("div", { staticClass: "modal-content" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "table",
+              { staticClass: "table table-striped table-vcenter table-hover" },
+              [
+                _vm._m(2),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  [
+                    !_vm.data.data.length
+                      ? _c("tr", [
+                          _c(
+                            "td",
+                            {
+                              staticStyle: { "text-align": "center" },
+                              attrs: { colspan: "2" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                  No data available.\n                "
+                              )
+                            ]
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.data.data, function(data, index) {
+                      return _c("tr", { key: index }, [
+                        _c("td", { staticClass: "text-main text-normal" })
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(3)
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "modal-header" }, [
-            _c(
-              "h5",
-              { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
-              [_vm._v("User setup information")]
-            ),
-            _vm._v(" "),
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "mdlTitle" } }, [
+        _vm._v("Rack setup")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("form", { staticClass: "form-horizontal" }, [
+      _c("div", { staticClass: "panel-body" }, [
+        _c(
+          "label",
+          {
+            staticClass: "control-label text-semibold",
+            attrs: { for: "demo-oi-definput" }
+          },
+          [_vm._v("Rack name")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "input-group mar-btm" }, [
+          _c("input", {
+            staticClass: "form-control",
+            staticStyle: { "font-style": "12px" },
+            attrs: {
+              id: "demo-oi-definput",
+              type: "text",
+              placeholder: "Input Rack name"
+            }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "input-group-btn" }, [
             _c(
               "button",
-              {
-                staticClass: "close",
-                attrs: {
-                  type: "button",
-                  "data-dismiss": "modal",
-                  "aria-label": "Close"
-                }
-              },
-              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c(
-              "table",
-              { staticClass: "table table-striped table-vcenter table-hover" },
-              [
-                _c("thead", [
-                  _c("th", [_vm._v("Rack name")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Action")])
-                ]),
-                _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c(
-                      "td",
-                      {
-                        staticStyle: { "text-align": "center" },
-                        attrs: { colspan: "2" }
-                      },
-                      [
-                        _vm._v(
-                          "\n                No data available.\n              "
-                        )
-                      ]
-                    )
-                  ])
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-footer" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: {
-                  type: "button",
-                  "data-dismiss": "modal",
-                  "aria-label": "Close"
-                }
-              },
-              [_vm._v("\n          Close\n        ")]
+              { staticClass: "btn btn-warning", attrs: { type: "button" } },
+              [_vm._v("\n                    Add\n                  ")]
             )
           ])
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { staticClass: "text-main text-center" }, [_vm._v("Rack name")]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-main text-center" }, [_vm._v("Action")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_vm._v("\n          Close\n        ")]
+      )
     ])
   }
 ]

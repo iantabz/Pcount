@@ -96,12 +96,13 @@
                   <div class="row" style="padding: 10px 15px 15px 30px">
                     <button
                       class="btn btn-info btn-rounded mar-lft"
-                      :disabled="
-                        !company || !business_unit || !department || !section
-                      "
+                     
                       data-target="#rack-setup"
                       data-toggle="modal"
                     >
+                     <!-- :disabled="
+                        !company || !business_unit || !department || !section
+                      " -->
                       <i class="demo-pli-data-settings icon-lg"></i> Rack setup
                     </button>
                   </div>
