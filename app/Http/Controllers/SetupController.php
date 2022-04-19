@@ -131,6 +131,9 @@ class SetupController extends Controller
         } else {
             $dept = request()->department;
         }
+
+        if ($validated['selectedEmp']['emp_id'] == $validated['selectedAudit']['emp_id'])   return response()->json(['message' => 'Same names are now allowed'], 406);
+        dd(1);
         if (!request()->location_id) {
             // dd($validated['selectedEmp']['emp_id']);
             $comp = $validated['company'];
