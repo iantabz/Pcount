@@ -245,7 +245,7 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label class="col-md-3 control-label" for="demo-text-input"
                   >Company</label
                 >
@@ -270,22 +270,6 @@
                   >Business Unit</label
                 >
                 <div class="col-md-8">
-                  <!-- <select
-                    class="demo_select2 form-control"
-                    id="b_unit"
-                    data-placeholder="Select Business Unit to proceed"
-                    :disabled="company == null"
-                    @change="buSelected($event)"
-                  >
-                    <option value="" v-if="!buList.length">Select</option>
-                    <option
-                      v-for="opt in buList"
-                      :key="opt.bunit_code"
-                      :value="opt.bunit_code"
-                    >
-                      {{ opt.business_unit }}
-                    </option>
-                  </select> -->
                   <v-select
                     :options="buList"
                     :reduce="buList => buList.business_unit"
@@ -306,22 +290,6 @@
                   >Department</label
                 >
                 <div class="col-md-8">
-                  <!-- <select
-                    class="demo_select2 form-control"
-                    id="department"
-                    data-placeholder="Select Department Unit to proceed"
-                    :disabled="business_unit == null"
-                    @change="departmentSelected($event)"
-                  >
-                    <option value="" v-if="!deptList.length">Select</option>
-                    <option
-                      v-for="opt in deptList"
-                      :key="opt.dept_code"
-                      :value="opt.dept_code"
-                    >
-                      {{ opt.dept_name }}
-                    </option>
-                  </select> -->
                   <v-select
                     :options="deptList"
                     :reduce="deptList => deptList.dept_name"
@@ -355,7 +323,7 @@
                     v-html="userForm.errors.get('section')"
                   />
                 </div>
-              </div>
+              </div> -->
               <div class="form-group">
                 <label class="col-md-3 control-label" for="demo-text-input"
                   >Username</label
@@ -373,7 +341,7 @@
                     v-html="userForm.errors.get('username')"
                   />
                 </div>
-              </div>
+              </div> 
               <div class="form-group" v-if="!userForm.id">
                 <label class="col-md-3 control-label" for="demo-text-input"
                   >Password</label
@@ -461,10 +429,10 @@ export default {
         name: null,
         username: null,
         password: null,
-        company: null,
-        business_unit: null,
-        department: null,
-        section: null,
+        // company: null,
+        // business_unit: null,
+        // department: null,
+        // section: null,
         usertype_id: null
       }),
       searchProducts: null,
@@ -559,10 +527,10 @@ export default {
       $('#demo-default-modal').modal('hide')
     },
     submitBtn() {
-      this.userForm.company = this.company
-      this.userForm.business_unit = this.business_unit
-      this.userForm.department = this.department
-      this.userForm.section = this.section
+      // this.userForm.company = this.company
+      // this.userForm.business_unit = this.business_unit
+      // this.userForm.department = this.department
+      // this.userForm.section = this.section
 
       this.userForm
         .post('/setup/users/createUser')

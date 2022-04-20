@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\LocationData;
 use App\Http\Requests\CreateLocationRequest;
 use App\Http\Requests\CreateUserRequest;
+use App\Models\BusinessUnit;
+use App\Models\company;
+use App\Models\department;
 use App\Models\Employee;
+use App\Models\section;
 use App\Models\TblAppAudit;
 use App\Models\TblAppUser;
 use App\Models\TblItemCategoryMasterfile;
@@ -65,19 +69,51 @@ class SetupController extends Controller
 
     public function createUser(CreateUserRequest $request)
     {
-        // dd(request()->all());
         $validated = $request->validated();
+        // dd($validated, $validated['name']['emp_id']);
 
-        // dd($validated, $validated['name']['name']);
         if (!request()->id) {
+            $comp_code = $validated['name']['company_code'];
+            $bu_code = $validated['name']['bunit_code'];
+            $dept_code = $validated['name']['dept_code'];
+            $section_code = $validated['name']['section_code'];
+
+            $getCompany = company::where([['company_code', $comp_code], ['status', 'active']])->get()->toarray();
+            $getBU = BusinessUnit::where([
+                ['company_code', $comp_code],
+                ['bunit_code', $bu_code],
+                ['status', 'active']
+            ])->get()->toArray();
+            $getDept = department::where([
+                ['company_code', $comp_code],
+                ['bunit_code', $bu_code],
+                ['dept_code', $dept_code],
+                ['status', 'active']
+            ])->get()->toArray();
+            $getSection = section::where([
+                ['company_code', $comp_code],
+                ['bunit_code', $bu_code],
+                ['dept_code', $dept_code],
+                ['section_code', $section_code],
+                ['status', 'active']
+            ])->get()->toArray();
+
+
+            $company = $getCompany[0]['acroname'];
+            $business_unit = $getBU[0]['business_unit'];
+            $department = $getDept[0]['dept_name'];
+            $section = $getSection[0]['section_name'];
+
+            dd($company, $business_unit, $department, $section);
+
             User::create([
                 'name' => $validated['name']['name'],
                 'username' => $validated['username'],
                 'password' => bcrypt($validated['password']),
-                'company' => $validated['company'],
-                'business_unit' => $validated['business_unit'],
-                'department' => $validated['department'],
-                'section' => $validated['section'],
+                'company' => $company,
+                'business_unit' => $business_unit,
+                'department' => $department,
+                'section' => $section,
                 'usertype_id' => $validated['usertype_id']
             ]);
             return response()->json(['message' => 'User created successfully!'], 200);
@@ -86,10 +122,6 @@ class SetupController extends Controller
         $result = User::where('id', request()->id)->update([
             'name' => $validated['name'],
             'username' => $validated['username'],
-            'company' => $validated['company'],
-            'business_unit' => $validated['business_unit'],
-            'department' => $validated['department'],
-            'section' => $validated['section'],
             'usertype_id' => $validated['usertype_id']
         ]);
         if ($result) return response()->json(['message' => 'Update successful!'], 201);
@@ -98,7 +130,7 @@ class SetupController extends Controller
     public function searchEmployee()
     {
         $last_name = request()->lastname;
-        return Employee::selectRaw('emp_id, emp_no, emp_pins as emp_pin, name, position')
+        return Employee::selectRaw('emp_id, emp_no, emp_pins as emp_pin, name, position, company_code, bunit_code, dept_code, section_code')
             ->where([
                 ['name', 'LIKE', "%$last_name%"],
                 ['current_status', 'Active']
@@ -133,7 +165,7 @@ class SetupController extends Controller
         }
 
         if ($validated['selectedEmp']['emp_id'] == $validated['selectedAudit']['emp_id'])   return response()->json(['message' => 'Same names are now allowed'], 406);
-        // dd(1);
+
         if (!request()->location_id) {
             // dd($validated['selectedEmp']['emp_id']);
             $comp = $validated['company'];

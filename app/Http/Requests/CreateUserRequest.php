@@ -29,9 +29,9 @@ class CreateUserRequest extends FormRequest
                 'name' => ['required'],
                 'username' => ['required', 'unique:users'],
                 'password' => ['required'],
-                'company' => ['required'],
-                'business_unit' => ['required'],
-                'department' => ['required'],
+                // 'company' => ['required'],
+                // 'business_unit' => ['required'],
+                // 'department' => ['required'],
                 // 'section' => ['required'],
                 'usertype_id' => ['required']
             ];
@@ -40,10 +40,10 @@ class CreateUserRequest extends FormRequest
         return  [
             'name' => ['required'],
             'username' => ['required'],
-            'company' => ['required'],
-            'business_unit' => ['required'],
-            'department' => ['required'],
-            'section' => ['required'],
+            // 'company' => ['required'],
+            // 'business_unit' => ['required'],
+            // 'department' => ['required'],
+            // 'section' => ['required'],
             'usertype_id' => ['required']
         ];
     }

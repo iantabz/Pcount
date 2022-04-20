@@ -11688,38 +11688,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -11746,10 +11714,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         name: null,
         username: null,
         password: null,
-        company: null,
-        business_unit: null,
-        department: null,
-        section: null,
+        // company: null,
+        // business_unit: null,
+        // department: null,
+        // section: null,
         usertype_id: null
       }),
       searchProducts: null,
@@ -11847,10 +11815,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     submitBtn: function submitBtn() {
       var _this2 = this;
 
-      this.userForm.company = this.company;
-      this.userForm.business_unit = this.business_unit;
-      this.userForm.department = this.department;
-      this.userForm.section = this.section;
+      // this.userForm.company = this.company
+      // this.userForm.business_unit = this.business_unit
+      // this.userForm.department = this.department
+      // this.userForm.section = this.section
       this.userForm.post('/setup/users/createUser').then(function (_ref2) {
         var data = _ref2.data,
             status = _ref2.status;
@@ -55307,209 +55275,6 @@ var render = function() {
                                 domProps: {
                                   innerHTML: _vm._s(
                                     _vm.userForm.errors.get("name")
-                                  )
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 control-label",
-                          attrs: { for: "demo-text-input" }
-                        },
-                        [_vm._v("Company")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md-8" },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              options: _vm.companyList,
-                              reduce: function(companyList) {
-                                return companyList.acroname
-                              },
-                              label: "acroname",
-                              placeholder: "Company"
-                            },
-                            on: {
-                              input: function($event) {
-                                return _vm.companySelected($event)
-                              }
-                            },
-                            model: {
-                              value: _vm.company,
-                              callback: function($$v) {
-                                _vm.company = $$v
-                              },
-                              expression: "company"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.userForm.errors.has("company")
-                            ? _c("small", {
-                                staticClass: "text-danger",
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    _vm.userForm.errors.get("company")
-                                  )
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 control-label",
-                          attrs: { for: "demo-text-input" }
-                        },
-                        [_vm._v("Business Unit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md-8" },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              options: _vm.buList,
-                              reduce: function(buList) {
-                                return buList.business_unit
-                              },
-                              label: "business_unit",
-                              placeholder: "Business Unit"
-                            },
-                            on: {
-                              input: function($event) {
-                                return _vm.buSelected($event)
-                              }
-                            },
-                            model: {
-                              value: _vm.business_unit,
-                              callback: function($$v) {
-                                _vm.business_unit = $$v
-                              },
-                              expression: "business_unit"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.userForm.errors.has("business_unit")
-                            ? _c("small", {
-                                staticClass: "text-danger",
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    _vm.userForm.errors.get("business_unit")
-                                  )
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 control-label",
-                          attrs: { for: "demo-text-input" }
-                        },
-                        [_vm._v("Department")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md-8" },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              options: _vm.deptList,
-                              reduce: function(deptList) {
-                                return deptList.dept_name
-                              },
-                              label: "dept_name",
-                              placeholder: "Department"
-                            },
-                            on: {
-                              input: function($event) {
-                                return _vm.departmentSelected($event)
-                              }
-                            },
-                            model: {
-                              value: _vm.department,
-                              callback: function($$v) {
-                                _vm.department = $$v
-                              },
-                              expression: "department"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.userForm.errors.has("department")
-                            ? _c("small", {
-                                staticClass: "text-danger",
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    _vm.userForm.errors.get("department")
-                                  )
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 control-label",
-                          attrs: { for: "demo-text-input" }
-                        },
-                        [_vm._v("Section")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md-8" },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              options: _vm.sectionList,
-                              reduce: function(sectionList) {
-                                return sectionList.section_name
-                              },
-                              label: "section_name",
-                              placeholder: "Section"
-                            },
-                            model: {
-                              value: _vm.section,
-                              callback: function($$v) {
-                                _vm.section = $$v
-                              },
-                              expression: "section"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.userForm.errors.has("section")
-                            ? _c("small", {
-                                staticClass: "help-block text-danger",
-                                domProps: {
-                                  innerHTML: _vm._s(
-                                    _vm.userForm.errors.get("section")
                                   )
                                 }
                               })
