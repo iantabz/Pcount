@@ -104,19 +104,22 @@ class SetupController extends Controller
             $department = $getDept[0]['dept_name'];
             $section = $getSection[0]['section_name'];
 
-            dd($company, $business_unit, $department, $section);
-
-            User::create([
-                'name' => $validated['name']['name'],
-                'username' => $validated['username'],
-                'password' => bcrypt($validated['password']),
-                'company' => $company,
-                'business_unit' => $business_unit,
-                'department' => $department,
-                'section' => $section,
-                'usertype_id' => $validated['usertype_id']
-            ]);
-            return response()->json(['message' => 'User created successfully!'], 200);
+            // dd($company, $business_unit, $department, $section);
+            $checkUsername = User::where('username', $validated['username'])->exists();
+            if (!$checkUsername) {
+                User::create([
+                    'name' => $validated['name']['name'],
+                    'username' => $validated['username'],
+                    'password' => bcrypt($validated['password']),
+                    'company' => $company,
+                    'business_unit' => $business_unit,
+                    'department' => $department,
+                    'section' => $section,
+                    'usertype_id' => $validated['usertype_id']
+                ]);
+                return response()->json(['message' => 'User created successfully!'], 200);
+            }
+            return response()->json(['message' => 'Already exists!'], 406);
         }
         // dd($validated);
         $result = User::where('id', request()->id)->update([

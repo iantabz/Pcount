@@ -11676,18 +11676,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -11714,6 +11702,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         name: null,
         username: null,
         password: null,
+        confirm_password: null,
         // company: null,
         // business_unit: null,
         // department: null,
@@ -11856,8 +11845,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       })["catch"](function (_ref3) {
         var response = _ref3.response;
         var status = response.status,
-            data = response.data;
-        console.log(status, data);
+            data = response.data; // console.log(status, data.errors)
+
         $.niftyNoty({
           type: 'danger',
           icon: 'fa fa-exclamation-triangle',
@@ -55230,7 +55219,8 @@ var render = function() {
                                 label: "name",
                                 options: _vm.employees,
                                 placeholder:
-                                  "Search for Employee name (Last name)"
+                                  "Search for Employee name (Last name)",
+                                disabled: _vm.userForm.id
                               },
                               on: { search: _vm.retrieveEmp },
                               scopedSlots: _vm._u([
@@ -55305,7 +55295,7 @@ var render = function() {
                               modifiers: { trim: true }
                             }
                           ],
-                          staticClass: "form-control",
+                          staticClass: "form-control text-xl",
                           attrs: {
                             type: "text",
                             placeholder: "Input Username"
@@ -55363,10 +55353,11 @@ var render = function() {
                                   modifiers: { trim: true }
                                 }
                               ],
-                              staticClass: "form-control",
+                              staticClass: "form-control text-xl",
                               attrs: {
                                 type: "password",
-                                placeholder: "Input password"
+                                placeholder:
+                                  "Must be at least 8 characters and contain at least one digit"
                               },
                               domProps: { value: _vm.userForm.password },
                               on: {
@@ -55392,6 +55383,70 @@ var render = function() {
                                   domProps: {
                                     innerHTML: _vm._s(
                                       _vm.userForm.errors.get("password")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.userForm.id
+                      ? _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-3 control-label",
+                              attrs: { for: "demo-text-input" }
+                            },
+                            [_vm._v("Confirm Password")]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-8" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model.trim",
+                                  value: _vm.userForm.confirm_password,
+                                  expression: "userForm.confirm_password",
+                                  modifiers: { trim: true }
+                                }
+                              ],
+                              staticClass: "form-control text-xl",
+                              attrs: {
+                                type: "password",
+                                placeholder:
+                                  "Must be at least 8 characters and contain at least one digit"
+                              },
+                              domProps: {
+                                value: _vm.userForm.confirm_password
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.userForm,
+                                    "confirm_password",
+                                    $event.target.value.trim()
+                                  )
+                                },
+                                blur: function($event) {
+                                  return _vm.$forceUpdate()
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.userForm.errors.has("confirm_password")
+                              ? _c("small", {
+                                  staticClass: "text-danger",
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.userForm.errors.get(
+                                        "confirm_password"
+                                      )
                                     )
                                   }
                                 })

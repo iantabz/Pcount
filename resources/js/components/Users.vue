@@ -16,38 +16,7 @@
           <div class="row">
             <div class="table-responsive panel-body">
               <div class="row">
-                <div class="col-md-6 table-toolbar-left">
-                  <!-- <form
-                    action="consolidate"
-                    @submit.prevent="submitformorder"
-                    method="post"
-                    enctype="multipart/form-data"
-                  >
-                    <label class="col-lg-3 control-label">
-                      <h5>Filter Date :</h5>
-                    </label>
-                    <div class="col-lg-4">
-                      <datetime
-                        v-model="date"
-                        value-zone="Asia/Manila"
-                        zone="Asia/Manila"
-                      ></datetime>
-                    </div>
-                    <label
-                      class="col-lg-2 control-label"
-                      style="text-align: right"
-                    >
-                      <h5>To</h5>
-                    </label>
-                    <div class="col-lg-3">
-                      <datetime2
-                        v-model="date2"
-                        value-zone="Asia/Manila"
-                        zone="Asia/Manila"
-                      ></datetime2>
-                    </div>
-                  </form> -->
-                </div>
+                <div class="col-md-6 table-toolbar-left"></div>
                 <div class="col-md-6 table-toolbar-right">
                   <button
                     class="btn btn-primary btn-rounded pull-right btn-sm"
@@ -227,6 +196,7 @@
                     label="name"
                     :options="employees"
                     placeholder="Search for Employee name (Last name)"
+                    :disabled="userForm.id"
                     ><template slot="no-options">
                       <strong>Search for Employee name (Last name)</strong>
                     </template>
@@ -332,7 +302,7 @@
                   <input
                     type="text"
                     placeholder="Input Username"
-                    class="form-control"
+                    class="form-control text-xl"
                     v-model.trim="userForm.username"
                   />
                   <small
@@ -341,7 +311,7 @@
                     v-html="userForm.errors.get('username')"
                   />
                 </div>
-              </div> 
+              </div>
               <div class="form-group" v-if="!userForm.id">
                 <label class="col-md-3 control-label" for="demo-text-input"
                   >Password</label
@@ -349,14 +319,32 @@
                 <div class="col-md-8">
                   <input
                     type="password"
-                    placeholder="Input password"
-                    class="form-control"
+                    placeholder="Must be at least 8 characters and contain at least one digit"
+                    class="form-control text-xl"
                     v-model.trim="userForm.password"
                   />
                   <small
                     class="text-danger"
                     v-if="userForm.errors.has('password')"
                     v-html="userForm.errors.get('password')"
+                  />
+                </div>
+              </div>
+              <div class="form-group" v-if="!userForm.id">
+                <label class="col-md-3 control-label" for="demo-text-input"
+                  >Confirm Password</label
+                >
+                <div class="col-md-8">
+                  <input
+                    type="password"
+                    placeholder="Must be at least 8 characters and contain at least one digit"
+                    class="form-control text-xl"
+                    v-model.trim="userForm.confirm_password"
+                  />
+                  <small
+                    class="text-danger"
+                    v-if="userForm.errors.has('confirm_password')"
+                    v-html="userForm.errors.get('confirm_password')"
                   />
                 </div>
               </div>
@@ -429,6 +417,7 @@ export default {
         name: null,
         username: null,
         password: null,
+        confirm_password: null,
         // company: null,
         // business_unit: null,
         // department: null,
@@ -565,7 +554,7 @@ export default {
         })
         .catch(({ response }) => {
           const { status, data } = response
-          console.log(status, data)
+          // console.log(status, data.errors)
           $.niftyNoty({
             type: 'danger',
             icon: 'fa fa-exclamation-triangle',

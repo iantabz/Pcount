@@ -28,7 +28,8 @@ class CreateUserRequest extends FormRequest
             return [
                 'name' => ['required'],
                 'username' => ['required', 'unique:users'],
-                'password' => ['required'],
+                'password' => ['required', 'string', 'min:8', 'regex:/[0-9]/'],
+                'confirm_password' => ['required', 'same:password', 'string', 'min:8', 'regex:/[0-9]/'],
                 // 'company' => ['required'],
                 // 'business_unit' => ['required'],
                 // 'department' => ['required'],
