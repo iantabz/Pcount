@@ -77,6 +77,7 @@ class SetupController extends Controller
             $bu_code = $validated['name']['bunit_code'];
             $dept_code = $validated['name']['dept_code'];
             $section_code = $validated['name']['section_code'];
+            $position = $validated['name']['position'];
 
             $getCompany = company::where([['company_code', $comp_code], ['status', 'active']])->get()->toarray();
             $getBU = BusinessUnit::where([
@@ -104,7 +105,7 @@ class SetupController extends Controller
             $department = $getDept[0]['dept_name'];
             $section = $getSection[0]['section_name'];
 
-            // dd($company, $business_unit, $department, $section);
+            // dd($company, $business_unit, $department, $section, $position);
             $checkUsername = User::where('username', $validated['username'])->exists();
             if (!$checkUsername) {
                 User::create([
@@ -115,7 +116,8 @@ class SetupController extends Controller
                     'business_unit' => $business_unit,
                     'department' => $department,
                     'section' => $section,
-                    'usertype_id' => $validated['usertype_id']
+                    'usertype_id' => $validated['usertype_id'],
+                    'position' => $position
                 ]);
                 return response()->json(['message' => 'User created successfully!'], 200);
             }
