@@ -51506,7 +51506,7 @@ var render = function() {
                               staticClass: "demo-pli-printer icon-lg"
                             }),
                             _vm._v(
-                              "  Print\n                    Location Setup\n                  "
+                              "  Print\n                    Location Users\n                  "
                             )
                           ]
                         ),
@@ -51530,7 +51530,7 @@ var render = function() {
                               staticClass: "demo-pli-add-user-star icon-lg"
                             }),
                             _vm._v(
-                              " New App\n                    User Setup\n                  "
+                              " New App\n                    User\n                  "
                             )
                           ]
                         )

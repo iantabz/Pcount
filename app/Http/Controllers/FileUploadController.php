@@ -128,7 +128,7 @@ class FileUploadController extends Controller
             [
                 ['company_code', request()->code],
                 ['bunit_code', request()->bu],
-                ['dept_code', request()->dept],
+                ['dept_code', request()->dept]
             ]
         )->get();
     }

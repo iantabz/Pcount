@@ -152,7 +152,7 @@
                       @click="generate($event, 'Excel')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Print
-                      Location Setup
+                      Location Users
                     </button>
                     <button
                       class="btn btn-info btn-rounded mar-lft"
@@ -163,7 +163,7 @@
                       data-toggle="modal"
                     >
                       <i class="demo-pli-add-user-star icon-lg"></i> New App
-                      User Setup
+                      User
                     </button>
                   </div>
                 </div>

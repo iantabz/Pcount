@@ -127,7 +127,7 @@
 
               <!--Mega dropdown-->
               <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-              <li class="mega-dropdown">
+              {{-- <li class="mega-dropdown">
                 <a href="#" class="mega-dropdown-toggle">
                   <i class="demo-pli-layout-grid"></i>
                 </a>
@@ -248,7 +248,7 @@
                     </div>
                   </div>
                 </div>
-              </li>
+              </li> --}}
               <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
               <!--End mega dropdown-->
 
@@ -256,7 +256,7 @@
 
               <!--Notification dropdown-->
               <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-              <li class="dropdown">
+              {{-- <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                   <i class="demo-pli-bell"></i>
                   <span class="badge badge-header badge-danger"></span>
@@ -362,7 +362,7 @@
                     </a>
                   </div>
                 </div>
-              </li>
+              </li> --}}
               <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
               <!--End notifications dropdown-->
 
@@ -419,11 +419,11 @@
               <!--End user dropdown-->
 
 
-              <li>
+              {{-- <li>
                 <a href="#" class="aside-toggle">
                   <i class="demo-pli-dot-vertical"></i>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </div>
           <!--================================-->
