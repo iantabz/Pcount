@@ -34,20 +34,25 @@ class SetupController extends Controller
         $dept = request()->dept;
         $section = request()->section;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
-        return TblLocation::with(['app_users', 'app_audit', 'nav_count'])
+        $type = request()->type;
+        $countType = request()->countType;
+
+        if ($type == 'LocationSetup') return TblLocation::with(['app_users', 'app_audit', 'nav_count'])
             ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
             ->where([
                 ['company', 'LIKE', "%$company%"],
                 ['business_unit', 'LIKE', "$bu"],
                 ['department', 'LIKE', "$dept"],
                 ['section', 'LIKE', "$section"],
-                ['done', 'LIKE', "false"]
+                ['done', 'LIKE', "false"],
+                ['type', $countType]
             ])
             ->whereDate('batchDate', '=', $date)
             ->paginate(10);
-        // $query =  TblLocation::groupBy([ 'company', 'business_unit', 'section']);
-        // dd($query->get());   
-        // return $query->paginate(10);
+
+        if ($type == 'LocationMonitoring') return TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
+            ->whereDate('batchDate', '=', $date)->groupBy(['company', 'business_unit', 'department', 'section'])
+            ->paginate(10);
     }
 
     public function toggleStatusLocation()
@@ -147,6 +152,8 @@ class SetupController extends Controller
         // dd(request()->all());
         $batchDate = Carbon::parse(base64_decode(request()->countDate))->startOfDay()->toDateString();
         $validated = $request->validated();
+        $countType = request()->countType;
+
         if (!request()->forPrintVendor) {
             $vendor = 'null';
         } else {
@@ -178,55 +185,55 @@ class SetupController extends Controller
             $app_user = $validated['selectedEmp']['emp_id'];
             $app_audit = $validated['selectedAudit']['emp_id'];
 
-            $ifAppUserExists = TblLocation::join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_location.location_id')
-                ->join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_location.location_id')
-                ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_nav_count.location_id')
+            $ifAppUserExists = TblNavCount::join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_nav_count.location_id')
+                ->join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_nav_count.location_id')
+                ->join('tbl_location', 'tbl_location.location_id', '=', 'tbl_nav_count.location_id')
                 ->where([
                     ['company', 'LIKE', "%$comp%"],
                     ['business_unit', 'LIKE', "%$bu%"],
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
-                    ['tbl_app_user.emp_id', 'LIKE', "%$app_user%"],
+                    ['tbl_app_user.emp_id', $app_user],
                     ['tbl_app_user.done', false],
-                    ['batchDate', $batchDate]
-                ])
+                    ['tbl_nav_count.type', $countType]
+                ])->whereDate('batchDate', $batchDate)
                 ->orwhere([
                     ['company', 'LIKE', "%$comp%"],
                     ['business_unit', 'LIKE', "%$bu%"],
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
-                    ['tbl_app_audit.emp_id', 'LIKE', "%$app_user%"],
+                    ['tbl_app_audit.emp_id', $app_user],
                     ['tbl_app_audit.done', false],
-                    ['batchDate', $batchDate]
-                ])
+                    ['tbl_nav_count.type', $countType]
+                ])->whereDate('batchDate', $batchDate)
                 ->exists();
 
-            $ifAppAuditExists = TblLocation::join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_location.location_id')
-                ->join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_location.location_id')
-                ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_nav_count.location_id')
+            $ifAppAuditExists = TblNavCount::join('tbl_app_audit', 'tbl_app_audit.location_id', '=', 'tbl_nav_count.location_id')
+                ->join('tbl_app_user', 'tbl_app_user.location_id', '=', 'tbl_nav_count.location_id')
+                ->join('tbl_location', 'tbl_location.location_id', '=', 'tbl_nav_count.location_id')
                 ->where([
                     ['company', 'LIKE', "%$comp%"],
                     ['business_unit', 'LIKE', "%$bu%"],
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
-                    ['tbl_app_audit.emp_id', 'LIKE', "%$app_audit%"],
+                    ['tbl_app_audit.emp_id', $app_audit],
                     ['tbl_app_audit.done', false],
-                    ['batchDate', $batchDate]
-                ])
+                    ['tbl_nav_count.type', $countType]
+                ])->whereDate('batchDate', $batchDate)
                 ->orwhere([
                     ['company', 'LIKE', "%$comp%"],
                     ['business_unit', 'LIKE', "%$bu%"],
                     ['department', 'LIKE', "%$dept%"],
                     ['section', 'LIKE', "$section"],
-                    ['tbl_app_user.emp_id', 'LIKE', "%$app_audit%"],
+                    ['tbl_app_user.emp_id', $app_audit],
                     ['tbl_app_user.done', false],
-                    ['batchDate', $batchDate]
-                ])
+                    ['tbl_nav_count.type', $countType]
+                ])->whereDate('batchDate', $batchDate)
                 ->exists();
             // dd($ifAppUserExists, $ifAppAuditExists);
 
             if (!$ifAppUserExists && !$ifAppAuditExists) {
-                DB::transaction(function () use ($validated, $section, $dept, $vendor, $category, $batchDate) {
+                DB::transaction(function () use ($validated, $section, $dept, $vendor, $category, $batchDate, $countType) {
                     $location = TblLocation::create([
                         'company' => $validated['company'],
                         'business_unit' => $validated['business_unit'],
@@ -266,7 +273,7 @@ class SetupController extends Controller
                         'byVendor' => $vendor === 'null' ? 'False' : 'True',
                         'vendorName' => $vendor,
                         'location_id' => $location->id,
-                        // 'type' => $countType,
+                        'type' => $countType,
                         'batchDate' => $batchDate
                     ]);
                 });

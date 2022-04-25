@@ -19,6 +19,7 @@ import PhysicalCountCost from './components/PhysicalCountCost.vue'
 import PosUnposted from './components/PosUnposted.vue'
 import DamageCount from './components/DamageCount.vue'
 import LocationOrig from './components/Location2.vue'
+import LocationMonitoring from './components/LocationMonitoring.vue'
 
 Vue.use(VueRouter)
 
@@ -151,6 +152,14 @@ const router = new VueRouter({
       component: PhysicalCountCost,
       meta: {
         name: 'Actual Count (APP) with Cost'
+      }
+    },
+    {
+      name: 'Location Monitoring',
+      path: '/location_monitoring',
+      component: LocationMonitoring,
+      meta: {
+        name: 'Location Monitoring'
       }
     },
     {

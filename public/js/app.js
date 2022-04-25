@@ -7967,6 +7967,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8018,13 +8045,16 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         section: null,
         rack_desc: null,
         countDate: null,
+        countType: null,
         forPrintCategory: [],
         forPrintVendor: []
       }),
       forPrintCategory: [],
       forPrintVendor: [],
       showRackSetup: false,
-      rackList: []
+      rackList: [],
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     };
   },
   components: {
@@ -8035,8 +8065,11 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     showRackSetup: function showRackSetup() {
       if (this.showRackSetup) $('#rack-setup').modal('show');
     },
+    countType: function countType() {
+      this.getResults();
+    },
     date: function date() {
-      if (this.business_unit && this.department && this.section) {
+      if (this.business_unit && this.department && this.section && this.countType) {
         this.getResults();
       }
     },
@@ -8198,6 +8231,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       this.locationForm.section = this.section;
       this.locationForm.forPrintCategory = this.forPrintCategory;
       this.locationForm.countDate = btoa(this.date);
+      this.locationForm.countType = this.countType;
       this.locationForm.post('/setup/location/createLocation').then(function (_ref3) {
         var data = _ref3.data,
             status = _ref3.status,
@@ -8483,10 +8517,11 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     var _this7 = this;
 
     var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-    var url = null;
-    url = "/setup/location/getResults/?date=".concat(btoa(this.date), "&company=").concat(this.company, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+    var url = null,
+        type = 'LocationSetup';
+    url = "/setup/location/getResults/?date=".concat(btoa(this.date), "&type=").concat(type, "&company=").concat(this.company, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&countType=").concat(this.countType, "&page=");
 
-    if (this.business_unit && this.department && this.section) {
+    if (this.business_unit && this.department && this.section && this.countType) {
       axios.get(url + page).then(function (response) {
         _this7.data = response.data;
         _this7.total_result = response.data.total;
@@ -9293,6 +9328,142 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
         }, 1000);
       });
     }, 1000);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      data: {
+        data: [],
+        current_page: null,
+        from: null,
+        to: null,
+        total: null,
+        per_page: null
+      },
+      date: this.getFormattedDateToday(),
+      dateToday: this.getFormattedDateToday(),
+      total_result: null
+    };
+  },
+  watch: {
+    date: function date() {
+      this.getResults();
+    }
+  },
+  methods: {
+    getFormattedDateToday: function getFormattedDateToday() {
+      return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+    },
+    getResults: function getResults() {
+      var _this = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      console.log('getting data...');
+      var url = null,
+          type = 'LocationMonitoring';
+      axios.get("/setup/location/getResults/?date=".concat(btoa(this.date), "&type=").concat(type, "&company=").concat(this.company, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=")).then(function (response) {
+        _this.data = response.data;
+        _this.total_result = response.data.total;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.$root.currentPage = this.$route.meta.name;
+    this.getResults();
+    document.getElementById('dateFrom').setAttribute('min', this.dateToday);
   }
 });
 
@@ -14359,8 +14530,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_Dashboard_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue");
 /* harmony import */ var _components_CountData_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/CountData.vue */ "./resources/js/components/CountData.vue");
 /* harmony import */ var _components_Location_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Location.vue */ "./resources/js/components/Location.vue");
@@ -14377,6 +14548,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_PosUnposted_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/PosUnposted.vue */ "./resources/js/components/PosUnposted.vue");
 /* harmony import */ var _components_DamageCount_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/DamageCount.vue */ "./resources/js/components/DamageCount.vue");
 /* harmony import */ var _components_Location2_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/Location2.vue */ "./resources/js/components/Location2.vue");
+/* harmony import */ var _components_LocationMonitoring_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/LocationMonitoring.vue */ "./resources/js/components/LocationMonitoring.vue");
 /** @format */
 
 
@@ -14396,8 +14568,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_16__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_17__.default);
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_17__.default({
+
+vue__WEBPACK_IMPORTED_MODULE_17__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_18__.default);
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_18__.default({
   mode: 'history',
   routes: [// {
   //   name: '',
@@ -14511,6 +14684,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_17__.default({
     component: _components_PhysicalCountCost_vue__WEBPACK_IMPORTED_MODULE_12__.default,
     meta: {
       name: 'Actual Count (APP) with Cost'
+    }
+  }, {
+    name: 'Location Monitoring',
+    path: '/location_monitoring',
+    component: _components_LocationMonitoring_vue__WEBPACK_IMPORTED_MODULE_16__.default,
+    meta: {
+      name: 'Location Monitoring'
     }
   }, {
     path: '*',
@@ -14663,6 +14843,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-16b5d2a0] {\r\n  font-size: 1.1em;\n}\n#container .table-hover > tbody > tr[data-v-16b5d2a0]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-45237508] {\r\n  font-size: 1.1em;\n}\n#container .table-hover > tbody > tr[data-v-45237508]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42129,6 +42333,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_style_index_0_id_45237508_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_style_index_0_id_45237508_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_style_index_0_id_45237508_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css& ***!
@@ -46926,6 +47160,47 @@ component.options.__file = "resources/js/components/Location2.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/LocationMonitoring.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/LocationMonitoring.vue ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LocationMonitoring_vue_vue_type_template_id_45237508_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true& */ "./resources/js/components/LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true&");
+/* harmony import */ var _LocationMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LocationMonitoring.vue?vue&type=script&lang=js& */ "./resources/js/components/LocationMonitoring.vue?vue&type=script&lang=js&");
+/* harmony import */ var _LocationMonitoring_vue_vue_type_style_index_0_id_45237508_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css& */ "./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
+  _LocationMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _LocationMonitoring_vue_vue_type_template_id_45237508_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _LocationMonitoring_vue_vue_type_template_id_45237508_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "45237508",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/LocationMonitoring.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/NavUpload.vue":
 /*!***********************************************!*\
   !*** ./resources/js/components/NavUpload.vue ***!
@@ -47466,6 +47741,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/LocationMonitoring.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/LocationMonitoring.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LocationMonitoring.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/NavUpload.vue?vue&type=script&lang=js&":
 /*!************************************************************************!*\
   !*** ./resources/js/components/NavUpload.vue?vue&type=script&lang=js& ***!
@@ -47678,6 +47969,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_style_index_0_id_45237508_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=style&index=0&id=45237508&scoped=true&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css&":
 /*!****************************************************************************************************************!*\
   !*** ./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css& ***!
@@ -47866,6 +48170,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Location2_vue_vue_type_template_id_7fc7aa7c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Location2_vue_vue_type_template_id_7fc7aa7c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Location2.vue?vue&type=template&id=7fc7aa7c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Location2.vue?vue&type=template&id=7fc7aa7c&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true& ***!
+  \***************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_template_id_45237508_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_template_id_45237508_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocationMonitoring_vue_vue_type_template_id_45237508_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true&");
 
 
 /***/ }),
@@ -51406,6 +51727,44 @@ var render = function() {
                       _c(
                         "div",
                         {
+                          staticClass: "row pad-all",
+                          staticStyle: { "padding-left": "10px" }
+                        },
+                        [
+                          _vm._m(4),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-lg-6" },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  options: _vm.countTypes,
+                                  label: "countTypes",
+                                  placeholder: "Count Type",
+                                  disabled:
+                                    !_vm.company ||
+                                    !_vm.business_unit ||
+                                    !_vm.department ||
+                                    !_vm.section
+                                },
+                                model: {
+                                  value: _vm.countType,
+                                  callback: function($$v) {
+                                    _vm.countType = $$v
+                                  },
+                                  expression: "countType"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
                           staticClass: "row",
                           staticStyle: { padding: "10px 15px 15px 30px" }
                         },
@@ -51419,7 +51778,8 @@ var render = function() {
                                   !_vm.company ||
                                   !_vm.business_unit ||
                                   !_vm.department ||
-                                  !_vm.section
+                                  !_vm.section ||
+                                  !_vm.countType
                               },
                               on: {
                                 click: function($event) {
@@ -51446,9 +51806,9 @@ var render = function() {
                         "col-md-6 table-toolbar-right form-horizontal"
                     },
                     [
-                      _vm._m(4),
-                      _vm._v(" "),
                       _vm._m(5),
+                      _vm._v(" "),
+                      _vm._m(6),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -51457,7 +51817,7 @@ var render = function() {
                           staticStyle: { padding: "10px 15px 15px 10px" }
                         },
                         [
-                          _vm._m(6),
+                          _vm._m(7),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -51487,7 +51847,9 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(7),
+                      _vm._m(8),
+                      _vm._v(" "),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c("div", { staticClass: "row pad-all" }, [
                         _c(
@@ -51520,7 +51882,8 @@ var render = function() {
                                 !_vm.company ||
                                 !_vm.business_unit ||
                                 !_vm.department ||
-                                !_vm.section,
+                                !_vm.section ||
+                                !_vm.countType,
                               "data-target": "#demo-default-modal",
                               "data-toggle": "modal"
                             }
@@ -51547,7 +51910,7 @@ var render = function() {
                     attrs: { id: "data-table" }
                   },
                   [
-                    _vm._m(8),
+                    _vm._m(10),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -51617,7 +51980,8 @@ var render = function() {
                               _c(
                                 "button",
                                 {
-                                  staticClass: "btn btn-info btn-xs",
+                                  staticClass:
+                                    "btn btn-info btn-xs btn-rounded",
                                   on: {
                                     click: function($event) {
                                       return _vm.editBtn(data)
@@ -51805,7 +52169,7 @@ var render = function() {
                                 })
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(9)
+                            _vm._m(11)
                           ],
                           1
                         )
@@ -51901,7 +52265,7 @@ var render = function() {
                                   })
                                 : _vm._e(),
                               _vm._v(" "),
-                              _vm._m(10)
+                              _vm._m(12)
                             ],
                             1
                           )
@@ -52204,6 +52568,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+      _c("h5", [
+        _c("i", { staticClass: "icon-lg demo-pli-file-edit icon-fw" }),
+        _vm._v("\n                      Count Type :\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
@@ -52243,6 +52618,22 @@ var staticRenderFns = [
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
+      [
+        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+          _c("h5")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6 pad-all" })
+      ]
     )
   },
   function() {
@@ -53123,6 +53514,192 @@ var staticRenderFns = [
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LocationMonitoring.vue?vue&type=template&id=45237508&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "page-body" } }, [
+    _c("div", { attrs: { id: "page-content" } }, [
+      _c("div", { staticClass: "panel" }, [
+        _c("div", { staticClass: "panel-body" }, [
+          _c("div", { staticClass: "panel-heading pad-all" }, [
+            _c(
+              "h3",
+              {
+                staticClass: "panel-heading bord-btm text-thin",
+                staticStyle: {
+                  "font-size": "20px",
+                  "/* padding": "15px 0px 0px 25px"
+                }
+              },
+              [
+                _c("i", { staticClass: "demo-pli-map-2 icon-lg" }),
+                _vm._v(" " + _vm._s(_vm.$root.currentPage) + "\n          ")
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "table-responsive panel-body" }, [
+              _c("div", { staticClass: "row pad-top" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-md-6 table-toolbar-left form-horizontal"
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row pad-all",
+                        staticStyle: { "padding-left": "10px" }
+                      },
+                      [
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.date,
+                                expression: "date"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            staticStyle: { "border-radius": "4px" },
+                            attrs: {
+                              type: "date",
+                              name: "dateFrom",
+                              id: "dateFrom",
+                              min: "dateToday"
+                            },
+                            domProps: { value: _vm.date },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.date = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "col-md-6 table-toolbar-right form-horizontal"
+                }),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-striped table-vcenter table-hover",
+                    attrs: { id: "datatable" }
+                  },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        !_vm.data.data.length
+                          ? _c("tr", [
+                              _c(
+                                "td",
+                                {
+                                  staticStyle: { "text-align": "center" },
+                                  attrs: { colspan: "5" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                      No data available.\n                    "
+                                  )
+                                ]
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.data.data, function(data, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", [_vm._v(_vm._s(data.company))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(data.business_unit))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(data.department))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(data.section))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(data.rack_desc))])
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+      _c("h5", [
+        _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
+        _vm._v("\n                      Count Date :\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Company")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Business Unit")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Department")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Section")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Rack")])
+      ])
     ])
   }
 ]

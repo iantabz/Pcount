@@ -93,12 +93,35 @@
                       />
                     </div>
                   </div>
+                  <div class="row pad-all" style="padding-left: 10px;">
+                    <label class="col-lg-3 control-label text-bold">
+                      <h5>
+                        <i class="icon-lg demo-pli-file-edit icon-fw"></i>
+                        Count Type :
+                      </h5>
+                    </label>
+                    <div class="col-lg-6">
+                      <v-select
+                        :options="countTypes"
+                        label="countTypes"
+                        v-model="countType"
+                        placeholder="Count Type"
+                        :disabled="
+                          !company || !business_unit || !department || !section
+                        "
+                      ></v-select>
+                    </div>
+                  </div>
                   <div class="row" style="padding: 10px 15px 15px 30px">
                     <button
                       class="btn btn-info btn-rounded mar-lft"
                       @click="showRackSetup = !showRackSetup"
                       :disabled="
-                        !company || !business_unit || !department || !section
+                        !company ||
+                          !business_unit ||
+                          !department ||
+                          !section ||
+                          !countType
                       "
                     >
                       <!-- data-target="#rack-setup"
@@ -145,6 +168,12 @@
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
+                  <div class="row" style="padding: 10px 15px 15px 10px">
+                    <label class="col-md-3 control-label text-bold">
+                      <h5></h5>
+                    </label>
+                    <div class="col-md-6 pad-all"></div>
+                  </div>
                   <div class="row pad-all">
                     <button
                       class="btn btn-info btn-rounded mar-lft"
@@ -157,7 +186,11 @@
                     <button
                       class="btn btn-info btn-rounded mar-lft"
                       :disabled="
-                        !company || !business_unit || !department || !section
+                        !company ||
+                          !business_unit ||
+                          !department ||
+                          !section ||
+                          !countType
                       "
                       data-target="#demo-default-modal"
                       data-toggle="modal"
@@ -222,16 +255,10 @@
                     <td>
                       <button
                         @click="editBtn(data)"
-                        class="btn btn-info btn-xs"
+                        class="btn btn-info btn-xs btn-rounded"
                       >
                         <i class="demo-pli-gear icon-lg icon-fw"></i>
                       </button>
-                      <!-- <button
-                        @click="assignBtn(data)"
-                        class="btn btn-info btn-xs"
-                      >
-                        <i class="demo-pli-gear icon-lg icon-fw"></i>
-                      </button> -->
                     </td>
                   </tr>
                 </tbody>
@@ -634,13 +661,16 @@ export default {
         section: null,
         rack_desc: null,
         countDate: null,
+        countType: null,
         forPrintCategory: [],
         forPrintVendor: []
       }),
       forPrintCategory: [],
       forPrintVendor: [],
       showRackSetup: false,
-      rackList: []
+      rackList: [],
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     }
   },
   components: {
@@ -651,8 +681,16 @@ export default {
     showRackSetup() {
       if (this.showRackSetup) $('#rack-setup').modal('show')
     },
+    countType() {
+      this.getResults()
+    },
     date() {
-      if (this.business_unit && this.department && this.section) {
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.countType
+      ) {
         this.getResults()
       }
     },
@@ -806,6 +844,7 @@ export default {
       this.locationForm.section = this.section
       this.locationForm.forPrintCategory = this.forPrintCategory
       this.locationForm.countDate = btoa(this.date)
+      this.locationForm.countType = this.countType
       this.locationForm
         .post('/setup/location/createLocation')
         .then(({ data, status, text }) => {
@@ -1038,13 +1077,19 @@ export default {
         .replace(/-/g, '-')
     },
     getResults(page = 1) {
-      let url = null
-      url = `/setup/location/getResults/?date=${btoa(this.date)}&company=${
-        this.company
-      }&bu=${this.business_unit}&dept=${this.department}&section=${
-        this.section
-      }&page=`
-      if (this.business_unit && this.department && this.section) {
+      let url = null,
+        type = 'LocationSetup'
+      url = `/setup/location/getResults/?date=${btoa(
+        this.date
+      )}&type=${type}&company=${this.company}&bu=${this.business_unit}&dept=${
+        this.department
+      }&section=${this.section}&countType=${this.countType}&page=`
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.countType
+      ) {
         axios.get(url + page).then(response => {
           this.data = response.data
           this.total_result = response.data.total
