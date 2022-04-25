@@ -37,6 +37,8 @@ class SetupController extends Controller
         $type = request()->type;
         $countType = request()->countType;
 
+
+
         if ($type == 'LocationSetup') return TblLocation::with(['app_users', 'app_audit', 'nav_count'])
             ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
             ->where([
@@ -50,9 +52,48 @@ class SetupController extends Controller
             ->whereDate('batchDate', '=', $date)
             ->paginate(10);
 
-        if ($type == 'LocationMonitoring') return TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
-            ->whereDate('batchDate', '=', $date)->groupBy(['company', 'business_unit', 'department', 'section'])
-            ->paginate(10);
+        if ($type == 'LocationMonitoring') {
+            $racks = [];
+
+            $query = TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
+                ->whereDate('batchDate', '=', $date)
+                ->groupBy(['company', 'business_unit', 'department', 'section'])
+                ->get();
+
+            // dd($query);
+
+
+            // dd($query[0]['company']);
+            $query->map(function ($row) use (&$countType, &$date, &$racks, &$query) {
+                $comp = $query[0]['company'];
+                $bu = $query[0]['business_unit'];
+                $dept = $query[0]['department'];
+                $section = $query[0]['section'];
+
+                $row->racks = TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
+                    ->where([
+                        ['company', 'LIKE', "%$comp%"],
+                        ['business_unit', 'LIKE', "%$bu%"],
+                        ['department', 'LIKE', "%$dept%"],
+                        ['section', 'LIKE', "%$section%"]
+                    ])
+                    ->whereDate('batchDate', '=', $date)
+                    ->groupBy('rack_desc')
+                    ->get()
+                    ->toArray();
+                // dd($row->racks);
+
+                $racks = $row->racks;
+                // dd($racks);
+            });
+
+            $data['data'] = $query;
+            // $data['racks'] = $racks;
+            // dd($data);
+            return $data;
+        }
+
+        // $row->racks = TblLocation::where('')
     }
 
     public function toggleStatusLocation()

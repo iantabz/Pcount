@@ -19,7 +19,7 @@ import PhysicalCountCost from './components/PhysicalCountCost.vue'
 import PosUnposted from './components/PosUnposted.vue'
 import DamageCount from './components/DamageCount.vue'
 import LocationOrig from './components/Location2.vue'
-import LocationMonitoring from './components/LocationMonitoring.vue'
+import RackMonitoring from './components/RackMonitoring.vue'
 
 Vue.use(VueRouter)
 
@@ -155,11 +155,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Location Monitoring',
-      path: '/location_monitoring',
-      component: LocationMonitoring,
+      name: 'Rack Monitoring',
+      path: '/rack_monitoring',
+      component: RackMonitoring,
       meta: {
-        name: 'Location Monitoring'
+        name: 'Rack Monitoring'
       }
     },
     {

@@ -39,30 +39,58 @@
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal"></div>
                 <table
-                  class="table table-striped table-vcenter table-hover"
+                  class="table table-condensed table-vcenter table-hover"
                   id="datatable"
                 >
                   <thead>
                     <tr>
-                      <th>Company</th>
-                      <th>Business Unit</th>
-                      <th>Department</th>
-                      <th>Section</th>
-                      <th>Rack</th>
+                      <th class="text-center text-main">Company</th>
+                      <th class="text-center text-main">Business Unit</th>
+                      <th class="text-center text-main">Department</th>
+                      <th class="text-center text-main">Section</th>
+                      <th class="text-center text-main">Rack</th>
+                      <th class="text-center text-main">Status</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr v-if="!data.data.length">
+                  <tbody v-if="!data.data.length">
+                    <tr>
                       <td colspan="5" style="text-align: center;">
                         No data available.
                       </td>
                     </tr>
-                    <tr v-for="(data, index) in data.data" :key="index">
-                      <td>{{ data.company }}</td>
-                      <td>{{ data.business_unit }}</td>
-                      <td>{{ data.department }}</td>
-                      <td>{{ data.section }}</td>
-                      <td>{{ data.rack_desc }}</td>
+                  </tbody>
+                  <tbody v-for="(data, index) in data.data" :key="index">
+                    <tr>
+                      <td :rowspan="data.racks.length + 1">
+                        {{ data.company }}
+                      </td>
+                      <td :rowspan="data.racks.length + 1">
+                        {{ data.business_unit }}
+                      </td>
+                      <td :rowspan="data.racks.length + 1">
+                        {{ data.department }}
+                      </td>
+                      <td :rowspan="data.racks.length + 1">
+                        {{ data.section }}
+                      </td>
+                      <!-- <td>
+                        <div
+                          class="label label-success mar-all"
+                          v-for="(r, i) in data.racks"
+                          :key="i"
+                        >
+                          {{ r.rack_desc }} <br />
+                        </div>
+                      </td> -->
+                    </tr>
+                    <tr v-for="(r, i) in data.racks" :key="i">
+                      <td>{{ r.rack_desc }}</td>
+                      <td v-if="r.done == 'true'" class="text-center">
+                        <span class="label label-success">Done</span>
+                      </td>
+                      <td v-else class="text-center">
+                        <span class="label label-warning">On going</span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
