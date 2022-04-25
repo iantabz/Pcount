@@ -124,11 +124,46 @@
                           !countType
                       "
                     >
-                      <!-- data-target="#rack-setup"
-                      data-toggle="modal"
-                      -->
-                      <i class="demo-pli-data-settings icon-lg"></i> Rack setup
+                      <i class="demo-pli-data-settings icon-lg"></i> Rack Area
+                      setup
                     </button>
+
+                    <button
+                      v-if="
+                        !company ||
+                          !business_unit ||
+                          !department ||
+                          !section ||
+                          !countType
+                      "
+                      class="btn btn-info btn-rounded mar-lft"
+                      :disabled="
+                        !company ||
+                          !business_unit ||
+                          !department ||
+                          !section ||
+                          !countType
+                      "
+                    >
+                      <i class="demo-pli-map-2 icon-lg"></i> Rack Area
+                      Monitoring
+                    </button>
+
+                    <router-link
+                      v-else
+                      class="btn btn-info btn-rounded mar-lft"
+                      to="/rack_monitoring"
+                      :disabled="
+                        !company ||
+                          !business_unit ||
+                          !department ||
+                          !section ||
+                          !countType
+                      "
+                    >
+                      <i class="demo-pli-map-2 icon-lg"></i> Rack Area
+                      Monitoring
+                    </router-link>
                   </div>
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
@@ -207,9 +242,9 @@
               >
                 <thead>
                   <tr>
-                    <th class="text-main text-center">Location ID</th>
+                    <th class="text-main text-center">Team</th>
                     <th class="text-main text-center">Inventory Clerk</th>
-                    <th class="text-main text-center">IAD Audit</th>
+                    <th class="text-main text-center">Auditor</th>
                     <th class="text-main text-center">Rack Description</th>
                     <th class="text-main text-center">Date Added</th>
                     <!-- <th class="text-main text-center">Status</th> -->
@@ -224,7 +259,7 @@
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
                     <td class="text-main text-normal">
-                      {{ data.location_id }}
+                      {{ index + 1 }}
                     </td>
                     <td class="text-main text-normal">
                       {{ data.app_users.name }}
@@ -446,7 +481,7 @@
                   style="text-align: right; padding-top: 5px"
                   class="col-sm-3 control-label text-main text-semibold"
                   for="audit"
-                  >IAD Audit</label
+                  >Auditor</label
                 >
                 <div class="col-sm-9">
                   <v-select
@@ -473,7 +508,7 @@
                   />
                   <small class="help-block" style=""
                     ><em
-                      >IAD Audit is responsible in observing the inventory
+                      >Auditor is responsible in observing the inventory
                       operation in compliance to the management's instructions
                       for inventory control, verifies the inventory's existence
                       & accuracy of count results.</em

@@ -155,11 +155,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Rack Monitoring',
+      name: 'Rack Area Monitoring',
       path: '/rack_monitoring',
       component: RackMonitoring,
       meta: {
-        name: 'Rack Monitoring'
+        name: 'Rack Area Monitoring'
       }
     },
     {

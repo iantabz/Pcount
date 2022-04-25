@@ -7994,6 +7994,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -11415,6 +11450,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -14714,11 +14762,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_18__.default({
       name: 'Actual Count (APP) with Cost'
     }
   }, {
-    name: 'Rack Monitoring',
+    name: 'Rack Area Monitoring',
     path: '/rack_monitoring',
     component: _components_RackMonitoring_vue__WEBPACK_IMPORTED_MODULE_16__.default,
     meta: {
-      name: 'Rack Monitoring'
+      name: 'Rack Area Monitoring'
     }
   }, {
     path: '*',
@@ -51819,10 +51867,66 @@ var render = function() {
                               _c("i", {
                                 staticClass: "demo-pli-data-settings icon-lg"
                               }),
-                              _vm._v(" Rack setup\n                  ")
+                              _vm._v(
+                                " Rack Area\n                    setup\n                  "
+                              )
                             ]
-                          )
-                        ]
+                          ),
+                          _vm._v(" "),
+                          !_vm.company ||
+                          !_vm.business_unit ||
+                          !_vm.department ||
+                          !_vm.section ||
+                          !_vm.countType
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "btn btn-info btn-rounded mar-lft",
+                                  attrs: {
+                                    disabled:
+                                      !_vm.company ||
+                                      !_vm.business_unit ||
+                                      !_vm.department ||
+                                      !_vm.section ||
+                                      !_vm.countType
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "demo-pli-map-2 icon-lg"
+                                  }),
+                                  _vm._v(
+                                    " Rack Area\n                    Monitoring\n                  "
+                                  )
+                                ]
+                              )
+                            : _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "btn btn-info btn-rounded mar-lft",
+                                  attrs: {
+                                    to: "/rack_monitoring",
+                                    disabled:
+                                      !_vm.company ||
+                                      !_vm.business_unit ||
+                                      !_vm.department ||
+                                      !_vm.section ||
+                                      !_vm.countType
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "demo-pli-map-2 icon-lg"
+                                  }),
+                                  _vm._v(
+                                    " Rack Area\n                    Monitoring\n                  "
+                                  )
+                                ]
+                              )
+                        ],
+                        1
                       )
                     ]
                   ),
@@ -51965,7 +52069,7 @@ var render = function() {
                             _c("td", { staticClass: "text-main text-normal" }, [
                               _vm._v(
                                 "\n                    " +
-                                  _vm._s(data.location_id) +
+                                  _vm._s(index + 1) +
                                   "\n                  "
                               )
                             ]),
@@ -52221,7 +52325,7 @@ var render = function() {
                               },
                               attrs: { for: "audit" }
                             },
-                            [_vm._v("IAD Audit")]
+                            [_vm._v("Auditor")]
                           ),
                           _vm._v(" "),
                           _c(
@@ -52686,17 +52790,13 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { staticClass: "text-main text-center" }, [
-          _vm._v("Location ID")
-        ]),
+        _c("th", { staticClass: "text-main text-center" }, [_vm._v("Team")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-main text-center" }, [
           _vm._v("Inventory Clerk")
         ]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-main text-center" }, [
-          _vm._v("IAD Audit")
-        ]),
+        _c("th", { staticClass: "text-main text-center" }, [_vm._v("Auditor")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-main text-center" }, [
           _vm._v("Rack Description")
@@ -52729,7 +52829,7 @@ var staticRenderFns = [
     return _c("small", { staticClass: "help-block" }, [
       _c("em", [
         _vm._v(
-          "IAD Audit is responsible in observing the inventory\n                    operation in compliance to the management's instructions\n                    for inventory control, verifies the inventory's existence\n                    & accuracy of count results."
+          "Auditor is responsible in observing the inventory\n                    operation in compliance to the management's instructions\n                    for inventory control, verifies the inventory's existence\n                    & accuracy of count results."
         )
       ])
     ])
@@ -55340,9 +55440,34 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("div", {
-                  staticClass: "col-md-6 table-toolbar-right form-horizontal"
-                }),
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-md-6 table-toolbar-right form-horizontal"
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "row pad-all" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "btn btn-info btn-rounded mar-lft",
+                            attrs: { to: "/location" }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-arrow-circle-left icon-lg"
+                            }),
+                            _vm._v(" Location Setup\n                  ")
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                ),
                 _vm._v(" "),
                 _c(
                   "table",
@@ -55418,15 +55543,21 @@ var render = function() {
                               r.done == "true"
                                 ? _c("td", { staticClass: "text-center" }, [
                                     _c(
-                                      "span",
-                                      { staticClass: "label label-success" },
+                                      "small",
+                                      {
+                                        staticClass:
+                                          "label label-success text-thin"
+                                      },
                                       [_vm._v("Done")]
                                     )
                                   ])
                                 : _c("td", { staticClass: "text-center" }, [
                                     _c(
-                                      "span",
-                                      { staticClass: "label label-warning" },
+                                      "small",
+                                      {
+                                        staticClass:
+                                          "label label-warning text-thin"
+                                      },
                                       [_vm._v("On going")]
                                     )
                                   ])

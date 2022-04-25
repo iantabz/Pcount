@@ -37,7 +37,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 table-toolbar-right form-horizontal"></div>
+                <div class="col-md-6 table-toolbar-right form-horizontal">
+                  <div class="row pad-all">
+                    <router-link
+                      to="/location"
+                      class="btn btn-info btn-rounded mar-lft"
+                    >
+                      <i class="fa fa-arrow-circle-left icon-lg"></i> Location Setup
+                    </router-link>
+                  </div>
+                </div>
                 <table
                   class="table table-condensed table-vcenter table-hover"
                   id="datatable"
@@ -86,10 +95,14 @@
                     <tr v-for="(r, i) in data.racks" :key="i">
                       <td>{{ r.rack_desc }}</td>
                       <td v-if="r.done == 'true'" class="text-center">
-                        <span class="label label-success">Done</span>
+                        <small class="label label-success text-thin"
+                          >Done</small
+                        >
                       </td>
                       <td v-else class="text-center">
-                        <span class="label label-warning">On going</span>
+                        <small class="label label-warning text-thin"
+                          >On going</small
+                        >
                       </td>
                     </tr>
                   </tbody>
