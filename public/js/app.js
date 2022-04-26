@@ -11463,6 +11463,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -55460,7 +55479,9 @@ var render = function() {
                             _c("i", {
                               staticClass: "fa fa-arrow-circle-left icon-lg"
                             }),
-                            _vm._v(" Location Setup\n                  ")
+                            _vm._v(
+                              " Location\n                    Setup\n                  "
+                            )
                           ]
                         )
                       ],
@@ -55489,7 +55510,10 @@ var render = function() {
                           _c("tr", [
                             _c(
                               "td",
-                              { attrs: { rowspan: data.racks.length + 1 } },
+                              {
+                                staticClass: "text-thin",
+                                attrs: { rowspan: data.racks.length + 1 }
+                              },
                               [
                                 _vm._v(
                                   "\n                      " +
@@ -55501,7 +55525,10 @@ var render = function() {
                             _vm._v(" "),
                             _c(
                               "td",
-                              { attrs: { rowspan: data.racks.length + 1 } },
+                              {
+                                staticClass: "text-thin",
+                                attrs: { rowspan: data.racks.length + 1 }
+                              },
                               [
                                 _vm._v(
                                   "\n                      " +
@@ -55513,7 +55540,10 @@ var render = function() {
                             _vm._v(" "),
                             _c(
                               "td",
-                              { attrs: { rowspan: data.racks.length + 1 } },
+                              {
+                                staticClass: "text-thin",
+                                attrs: { rowspan: data.racks.length + 1 }
+                              },
                               [
                                 _vm._v(
                                   "\n                      " +
@@ -55525,7 +55555,10 @@ var render = function() {
                             _vm._v(" "),
                             _c(
                               "td",
-                              { attrs: { rowspan: data.racks.length + 1 } },
+                              {
+                                staticClass: "text-thin",
+                                attrs: { rowspan: data.racks.length + 1 }
+                              },
                               [
                                 _vm._v(
                                   "\n                      " +
@@ -55536,31 +55569,33 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _vm._l(data.racks, function(r, i) {
+                          _vm._l(data.racks, function(racks, i) {
                             return _c("tr", { key: i }, [
-                              _c("td", [_vm._v(_vm._s(r.rack_desc))]),
+                              _c("td", { staticClass: "text-thin" }, [
+                                _vm._v(
+                                  "\n                      " +
+                                    _vm._s(racks.rack_desc) +
+                                    "\n                    "
+                                )
+                              ]),
                               _vm._v(" "),
-                              r.done == "true"
-                                ? _c("td", { staticClass: "text-center" }, [
-                                    _c(
-                                      "small",
-                                      {
-                                        staticClass:
-                                          "label label-success text-thin"
-                                      },
-                                      [_vm._v("Done")]
+                              _c("td", { staticClass: "text-center" }, [
+                                _c("span", {
+                                  staticClass: "badge badge-icon badge-fw",
+                                  class: {
+                                    "badge-success": racks.rackGroup.every(
+                                      function(rack) {
+                                        return rack.done == "true"
+                                      }
+                                    ),
+                                    "badge-warning": !racks.rackGroup.every(
+                                      function(rack) {
+                                        return rack.done == "true"
+                                      }
                                     )
-                                  ])
-                                : _c("td", { staticClass: "text-center" }, [
-                                    _c(
-                                      "small",
-                                      {
-                                        staticClass:
-                                          "label label-warning text-thin"
-                                      },
-                                      [_vm._v("On going")]
-                                    )
-                                  ])
+                                  }
+                                })
+                              ])
                             ])
                           })
                         ],
@@ -55569,7 +55604,23 @@ var render = function() {
                     })
                   ],
                   2
-                )
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("small", [
+                        _vm._v(
+                          "Showing " +
+                            _vm._s(_vm.data.data.length) +
+                            " result(s)"
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" })
+                  ])
+                ])
               ])
             ])
           ])
@@ -55608,7 +55659,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-center text-main" }, [_vm._v("Section")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center text-main" }, [_vm._v("Rack")]),
+        _c("th", { staticClass: "text-center text-main" }, [_vm._v("Rack(s)")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center text-main" }, [_vm._v("Status")])
       ])
@@ -55621,7 +55672,11 @@ var staticRenderFns = [
     return _c("tr", [
       _c(
         "td",
-        { staticStyle: { "text-align": "center" }, attrs: { colspan: "5" } },
+        {
+          staticClass: "mar-top",
+          staticStyle: { "text-align": "center" },
+          attrs: { colspan: "6" }
+        },
         [
           _vm._v(
             "\n                      No data available.\n                    "

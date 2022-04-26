@@ -70,7 +70,8 @@ class SetupController extends Controller
                 $dept = $query[0]['department'];
                 $section = $query[0]['section'];
 
-                $row->racks = TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
+                $racksList = $row->racks = TblLocation::selectRaw('rack_desc')
+                    ->join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
                     ->where([
                         ['company', 'LIKE', "%$comp%"],
                         ['business_unit', 'LIKE', "%$bu%"],
@@ -79,17 +80,26 @@ class SetupController extends Controller
                     ])
                     ->whereDate('batchDate', '=', $date)
                     ->groupBy('rack_desc')
-                    ->get()
-                    ->toArray();
+                    ->get();
                 // dd($row->racks);
-
-                $racks = $row->racks;
-                // dd($racks);
+                $rackGroup = [];
+                $racks = $row->racks->toArray();
+                $racksList->map(function ($row2) use (&$countType, &$date, &$comp, &$bu, &$dept, &$section, &$rackGroup) {
+                    $row2->rackGroup = TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
+                        ->where([
+                            ['company', 'LIKE', "%$comp%"],
+                            ['business_unit', 'LIKE', "%$bu%"],
+                            ['department', 'LIKE', "%$dept%"],
+                            ['section', 'LIKE', "%$section%"]
+                        ])
+                        ->whereDate('batchDate', '=', $date)
+                        ->groupBy('rack_desc')
+                        ->get();
+                    $rackGroup = $row2->rackGroup;
+                });
             });
 
             $data['data'] = $query;
-            // $data['racks'] = $racks;
-            // dd($data);
             return $data;
         }
 

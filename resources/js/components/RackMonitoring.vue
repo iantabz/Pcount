@@ -43,7 +43,8 @@
                       to="/location"
                       class="btn btn-info btn-rounded mar-lft"
                     >
-                      <i class="fa fa-arrow-circle-left icon-lg"></i> Location Setup
+                      <i class="fa fa-arrow-circle-left icon-lg"></i> Location
+                      Setup
                     </router-link>
                   </div>
                 </div>
@@ -57,29 +58,33 @@
                       <th class="text-center text-main">Business Unit</th>
                       <th class="text-center text-main">Department</th>
                       <th class="text-center text-main">Section</th>
-                      <th class="text-center text-main">Rack</th>
+                      <th class="text-center text-main">Rack(s)</th>
                       <th class="text-center text-main">Status</th>
                     </tr>
                   </thead>
                   <tbody v-if="!data.data.length">
                     <tr>
-                      <td colspan="5" style="text-align: center;">
+                      <td
+                        colspan="6"
+                        style="text-align: center;"
+                        class="mar-top"
+                      >
                         No data available.
                       </td>
                     </tr>
                   </tbody>
                   <tbody v-for="(data, index) in data.data" :key="index">
                     <tr>
-                      <td :rowspan="data.racks.length + 1">
+                      <td :rowspan="data.racks.length + 1" class="text-thin">
                         {{ data.company }}
                       </td>
-                      <td :rowspan="data.racks.length + 1">
+                      <td :rowspan="data.racks.length + 1" class="text-thin">
                         {{ data.business_unit }}
                       </td>
-                      <td :rowspan="data.racks.length + 1">
+                      <td :rowspan="data.racks.length + 1" class="text-thin">
                         {{ data.department }}
                       </td>
-                      <td :rowspan="data.racks.length + 1">
+                      <td :rowspan="data.racks.length + 1" class="text-thin">
                         {{ data.section }}
                       </td>
                       <!-- <td>
@@ -92,21 +97,35 @@
                         </div>
                       </td> -->
                     </tr>
-                    <tr v-for="(r, i) in data.racks" :key="i">
-                      <td>{{ r.rack_desc }}</td>
-                      <td v-if="r.done == 'true'" class="text-center">
-                        <small class="label label-success text-thin"
-                          >Done</small
-                        >
+                    <tr v-for="(racks, i) in data.racks" :key="i">
+                      <td class="text-thin">
+                        {{ racks.rack_desc }}
                       </td>
-                      <td v-else class="text-center">
-                        <small class="label label-warning text-thin"
-                          >On going</small
-                        >
+
+                      <td class="text-center">
+                        <span
+                          class="badge badge-icon badge-fw"
+                          :class="{
+                            'badge-success': racks.rackGroup.every(
+                              rack => rack.done == 'true'
+                            ),
+                            'badge-warning': !racks.rackGroup.every(
+                              rack => rack.done == 'true'
+                            )
+                          }"
+                        ></span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="col-md-6">
+                      <small>Showing {{ data.data.length }} result(s)</small>
+                    </div>
+                    <div class="col-md-6"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
