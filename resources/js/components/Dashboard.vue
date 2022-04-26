@@ -278,40 +278,15 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <RackMonitoring style="margin: -20px !important"></RackMonitoring>
+      <!-- <div class="row">
         <div class="col-lg-3">
           <div class="row">
             <div class="col-sm-3 col-lg-6">
-              <!-- <div class="panel panel-primary panel-colorful">
-                <div class="pad-all text-center">
-                  <span class="text-3x text-thin">{{ total_result }}</span>
-                  <p>App Users</p>
-                  <i class="demo-psi-male icon-lg"></i>
-                </div>
-              </div>
-              <div class="panel panel-warning panel-colorful">
-                <div class="pad-all text-center">
-                  <span class="text-3x text-thin">15</span>
-                  <p>Users</p>
-                  <i class="demo-psi-male icon-lg"></i>
-                </div>
-              </div> -->
+            
             </div>
             <div class="col-sm-3 col-lg-6">
-              <!-- <div class="panel panel-purple panel-colorful">
-                <div class="pad-all text-center">
-                  <span class="text-3x text-thin">15</span>
-                  <p>Users</p>
-                  <i class="demo-pli-male"></i>
-                </div>
-              </div>
-              <div class="panel panel-dark panel-colorful">
-                <div class="pad-all text-center">
-                  <span class="text-3x text-thin">12</span>
-                  <p>Reports</p>
-                  <i class="demo-psi-receipt-4 icon-lg"></i>
-                </div>
-              </div> -->
+             
             </div>
             <div class="col-sm-6 col-lg-12">
               <div class="panel">
@@ -338,7 +313,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-9 no-pad">
           <div class="panel panel-body">
             <div class="panel-heading mar-btm">
               <h3
@@ -353,7 +328,6 @@
               <table class="table table-vcenter mar-top">
                 <thead>
                   <tr>
-                    <!-- <th class="min-w-td">#</th> -->
                     <th class="min-w-td">Name</th>
                     <th>Company</th>
                     <th>Business Unit</th>
@@ -368,7 +342,6 @@
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
-                    <!-- <td class="min-w-td">{{ index }}</td> -->
                     <td>
                       <img
                         src="img/profile-photos/1.png"
@@ -413,13 +386,14 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import Users from './Users.vue'
+import RackMonitoring from './RackMonitoring.vue'
 export default {
   data() {
     return {
@@ -437,7 +411,8 @@ export default {
     }
   },
   components: {
-    Users
+    Users,
+    RackMonitoring
   },
   methods: {
     getResults(page = 1) {

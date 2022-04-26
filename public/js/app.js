@@ -6871,33 +6871,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Users_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Users.vue */ "./resources/js/components/Users.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _RackMonitoring_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RackMonitoring.vue */ "./resources/js/components/RackMonitoring.vue");
 //
 //
 //
@@ -7292,6 +7266,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7309,7 +7284,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   components: {
-    Users: _Users_vue__WEBPACK_IMPORTED_MODULE_0__.default
+    Users: _Users_vue__WEBPACK_IMPORTED_MODULE_0__.default,
+    RackMonitoring: _RackMonitoring_vue__WEBPACK_IMPORTED_MODULE_1__.default
   },
   methods: {
     getResults: function getResults() {
@@ -11482,6 +11458,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -11519,10 +11508,13 @@ __webpack_require__.r(__webpack_exports__);
         _this.data = response.data;
         _this.total_result = response.data.total;
       });
+    },
+    refresh: function refresh() {
+      this.getResults();
     }
   },
   mounted: function mounted() {
-    this.$root.currentPage = this.$route.meta.name;
+    this.$root.currentPage = 'this.$route.meta.name';
     this.getResults();
     document.getElementById('dateFrom').setAttribute('min', this.dateToday);
   }
@@ -51111,111 +51103,133 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "page-body" } }, [
-    _c("div", { attrs: { id: "page-content" } }, [
-      _c("div", { staticClass: "panel" }, [
-        _c("div", { staticClass: "panel-body" }, [
-          _c("div", { staticClass: "row mar-top" }, [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c(
-                "h3",
-                {
-                  staticClass: "panel-heading text-thin",
-                  staticStyle: { "font-size": "20px" }
-                },
-                [
-                  _vm._v(
-                    "\n              INVENTORY COUNT CONSOLIDATION SYSTEM\n            "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "h3",
-                { staticClass: "text-main text-normal text-2x mar-no" },
-                [
-                  _vm._v(
-                    "\n              Welcome back, " +
-                      _vm._s(_vm.user.name) +
-                      "!\n            "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "h5",
-                { staticClass: "text-uppercase text-muted text-normal" },
-                [
-                  _vm._v(
-                    "\n              " +
-                      _vm._s(_vm._f("DashboardTime")(_vm.date)) +
-                      "\n            "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("hr", { staticClass: "new-section-xs" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "row mar-top" }, [
-                _c("div", { staticClass: "col-sm-4" }, [
-                  _c("div", { staticClass: "text-lg" }, [
-                    _c(
-                      "h4",
-                      {
-                        staticClass: "mar-btm",
-                        staticStyle: {
-                          "font-size": "18px",
-                          "font-weight": "600"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    Setup\n                  "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "list-group bg-trans mar-no" },
-                      [
-                        _c("router-link", { attrs: { to: "/location" } }, [
+    _c(
+      "div",
+      { attrs: { id: "page-content" } },
+      [
+        _c("div", { staticClass: "panel" }, [
+          _c("div", { staticClass: "panel-body" }, [
+            _c("div", { staticClass: "row mar-top" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c(
+                  "h3",
+                  {
+                    staticClass: "panel-heading text-thin",
+                    staticStyle: { "font-size": "20px" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              INVENTORY COUNT CONSOLIDATION SYSTEM\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h3",
+                  { staticClass: "text-main text-normal text-2x mar-no" },
+                  [
+                    _vm._v(
+                      "\n              Welcome back, " +
+                        _vm._s(_vm.user.name) +
+                        "!\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  { staticClass: "text-uppercase text-muted text-normal" },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm._f("DashboardTime")(_vm.date)) +
+                        "\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("hr", { staticClass: "new-section-xs" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "row mar-top" }, [
+                  _c("div", { staticClass: "col-sm-4" }, [
+                    _c("div", { staticClass: "text-lg" }, [
+                      _c(
+                        "h4",
+                        {
+                          staticClass: "mar-btm",
+                          staticStyle: {
+                            "font-size": "18px",
+                            "font-weight": "600"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    Setup\n                  "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "list-group bg-trans mar-no" },
+                        [
+                          _c("router-link", { attrs: { to: "/location" } }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "list-group-item panel-title",
+                                attrs: { href: "javascript:;" }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "pci-chevron chevron-right"
+                                }),
+                                _vm._v(
+                                  "\n                        Location (APP users) setup\n                      "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("router-link", { attrs: { to: "/location" } }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "list-group-item panel-title",
+                                attrs: { href: "javascript:;" }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "pci-chevron chevron-right"
+                                }),
+                                _vm._v(" Users setup\n                      ")
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c(
-                            "a",
-                            {
-                              staticClass: "list-group-item panel-title",
-                              attrs: { href: "javascript:;" }
-                            },
+                            "router-link",
+                            { attrs: { to: "/vendor_masterfile" } },
                             [
-                              _c("i", {
-                                staticClass: "pci-chevron chevron-right"
-                              }),
-                              _vm._v(
-                                "\n                        Location (APP users) setup\n                      "
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "list-group-item panel-title",
+                                  attrs: { href: "javascript:;" }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "pci-chevron chevron-right"
+                                  }),
+                                  _vm._v(
+                                    " Vendor\n                        Masterfile"
+                                  )
+                                ]
                               )
                             ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("router-link", { attrs: { to: "/location" } }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "list-group-item panel-title",
-                              attrs: { href: "javascript:;" }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "pci-chevron chevron-right"
-                              }),
-                              _vm._v(" Users setup\n                      ")
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/vendor_masterfile" } },
-                          [
+                          ),
+                          _vm._v(" "),
+                          _c("router-link", { attrs: { to: "/category" } }, [
                             _c(
                               "a",
                               {
@@ -51227,374 +51241,146 @@ var render = function() {
                                   staticClass: "pci-chevron chevron-right"
                                 }),
                                 _vm._v(
-                                  " Vendor\n                        Masterfile"
+                                  " Item\n                        Department"
                                 )
                               ]
                             )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("router-link", { attrs: { to: "/category" } }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "list-group-item panel-title",
-                              attrs: { href: "javascript:;" }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "pci-chevron chevron-right"
-                              }),
-                              _vm._v(
-                                " Item\n                        Department"
-                              )
-                            ]
-                          )
-                        ])
-                      ],
-                      1
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-4" }, [
-                  _c("div", { staticClass: "text-lg" }, [
-                    _c(
-                      "h4",
-                      {
-                        staticClass: "mar-btm",
-                        staticStyle: {
-                          "font-size": "18px",
-                          "font-weight": "600"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    Reports\n                  "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "list-group bg-trans mar-no" },
-                      [
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/physical_count" } },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "list-group-item panel-title",
-                                attrs: { href: "javascript:;" }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "pci-chevron chevron-right"
-                                }),
-                                _vm._v(
-                                  "\n                        Actual Count (APP)\n                      "
-                                )
-                              ]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/physical_count_cost" } },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "list-group-item panel-title",
-                                attrs: { href: "javascript:;" }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "pci-chevron chevron-right"
-                                }),
-                                _vm._v(
-                                  " Actual\n                        Count (APP) w/ Cost\n                      "
-                                )
-                              ]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/variance_report" } },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "list-group-item panel-title",
-                                attrs: { href: "javascript:;" }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "pci-chevron chevron-right"
-                                }),
-                                _vm._v(
-                                  " Variance\n                        Report"
-                                )
-                              ]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          { attrs: { to: "/variance_report_cost" } },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "list-group-item panel-title",
-                                attrs: { href: "javascript:;" }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "pci-chevron chevron-right"
-                                }),
-                                _vm._v(
-                                  " Variance\n                        Report w/ Cost"
-                                )
-                              ]
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-4" })
-              ])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-lg-3" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-3 col-lg-6" }),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-3 col-lg-6" }),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6 col-lg-12" }, [
-              _c("div", { staticClass: "panel" }, [
-                _c("div", { staticClass: "panel-body text-center" }, [
-                  _c("img", {
-                    staticClass: "img-lg img-circle mar-btm",
-                    staticStyle: { "margin-left": "30%" },
-                    attrs: {
-                      alt: "Profile Picture",
-                      src: "img/profile-photos/5.png"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "p",
-                    {
-                      staticClass: "text-semibold mar-no text-main",
-                      staticStyle: { "font-size": "1.2em" }
-                    },
-                    [
-                      _vm._v(
-                        "\n                  " +
-                          _vm._s(_vm.user.name) +
-                          "\n                "
+                          ])
+                        ],
+                        1
                       )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "text-muted" }, [
-                    _vm._v(_vm._s(_vm.user.position))
+                    ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(0)
+                  _c("div", { staticClass: "col-sm-4" }, [
+                    _c("div", { staticClass: "text-lg" }, [
+                      _c(
+                        "h4",
+                        {
+                          staticClass: "mar-btm",
+                          staticStyle: {
+                            "font-size": "18px",
+                            "font-weight": "600"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    Reports\n                  "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "list-group bg-trans mar-no" },
+                        [
+                          _c(
+                            "router-link",
+                            { attrs: { to: "/physical_count" } },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "list-group-item panel-title",
+                                  attrs: { href: "javascript:;" }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "pci-chevron chevron-right"
+                                  }),
+                                  _vm._v(
+                                    "\n                        Actual Count (APP)\n                      "
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "router-link",
+                            { attrs: { to: "/physical_count_cost" } },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "list-group-item panel-title",
+                                  attrs: { href: "javascript:;" }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "pci-chevron chevron-right"
+                                  }),
+                                  _vm._v(
+                                    " Actual\n                        Count (APP) w/ Cost\n                      "
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "router-link",
+                            { attrs: { to: "/variance_report" } },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "list-group-item panel-title",
+                                  attrs: { href: "javascript:;" }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "pci-chevron chevron-right"
+                                  }),
+                                  _vm._v(
+                                    " Variance\n                        Report"
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "router-link",
+                            { attrs: { to: "/variance_report_cost" } },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "list-group-item panel-title",
+                                  attrs: { href: "javascript:;" }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "pci-chevron chevron-right"
+                                  }),
+                                  _vm._v(
+                                    " Variance\n                        Report w/ Cost"
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-4" })
                 ])
               ])
             ])
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-lg-9" }, [
-          _c("div", { staticClass: "panel panel-body" }, [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-vcenter mar-top" }, [
-                _vm._m(2),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  [
-                    !_vm.data.data.length
-                      ? _c("tr", [
-                          _c(
-                            "td",
-                            {
-                              staticStyle: { "text-align": "center" },
-                              attrs: { colspan: "6" }
-                            },
-                            [
-                              _vm._v(
-                                "\n                    No data available.\n                  "
-                              )
-                            ]
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm._l(_vm.data.data, function(data, index) {
-                      return _c("tr", { key: index }, [
-                        _vm._m(3, true),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "btn-link",
-                              attrs: { href: "javascript:;" }
-                            },
-                            [_vm._v(_vm._s(data.name))]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(data.company))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(data.business_unit) +
-                              "\n                  "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(data.section) +
-                              "\n                  "
-                          )
-                        ])
-                      ])
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _vm._v(
-                      "\n                  Showing " +
-                        _vm._s(_vm.data.from) +
-                        " to "
-                    ),
-                    _c("strong", [_vm._v(_vm._s(_vm.data.to))]),
-                    _vm._v(" of\n                  "),
-                    _c("strong", [
-                      _vm._v(" " + _vm._s(_vm.data.total) + " entries ")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c(
-                      "div",
-                      { staticClass: "text-right" },
-                      [
-                        _c("pagination", {
-                          staticStyle: { margin: "0 0 20px 0" },
-                          attrs: {
-                            limit: 1,
-                            "show-disabled": true,
-                            data: _vm.data
-                          },
-                          on: { "pagination-change-page": _vm.getResults }
-                        })
-                      ],
-                      1
-                    )
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ])
-      ])
-    ])
+        _c("RackMonitoring", { staticStyle: { margin: "-20px !important" } })
+      ],
+      1
+    )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mar-top" }, [
-      _c("button", { staticClass: "btn btn-mint" }, [_vm._v("Follow")]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-mint" }, [_vm._v("Message")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-heading mar-btm" }, [
-      _c(
-        "h3",
-        {
-          staticClass: "pad-btm bord-btm text-thin",
-          staticStyle: {
-            "font-size": "20px",
-            "/* padding": "15px 0px 0px 25px"
-          }
-        },
-        [
-          _c("i", { staticClass: "demo-pli-male icon-lg" }),
-          _vm._v("\n              Web Users\n            ")
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { staticClass: "min-w-td" }, [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Company")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Business Unit")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Department")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Section")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("img", {
-        staticClass: "img-circle img-sm",
-        attrs: { src: "img/profile-photos/1.png", alt: "Profile Picture" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -55388,23 +55174,32 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "page-body" } }, [
     _c("div", { attrs: { id: "page-content" } }, [
-      _c("div", { staticClass: "panel" }, [
+      _c("div", { staticClass: "panel", attrs: { id: "#demo-panel-ref" } }, [
         _c("div", { staticClass: "panel-body" }, [
-          _c("div", { staticClass: "panel-heading pad-all" }, [
-            _c(
-              "h3",
-              {
-                staticClass: "panel-heading bord-btm text-thin",
-                staticStyle: {
-                  "font-size": "20px",
-                  "/* padding": "15px 0px 0px 25px"
-                }
-              },
-              [
-                _c("i", { staticClass: "demo-pli-map-2 icon-lg" }),
-                _vm._v(" " + _vm._s(_vm.$root.currentPage) + "\n          ")
-              ]
-            )
+          _c("div", { staticClass: "panel-heading pad-all " }, [
+            _c("div", { staticClass: "panel-control" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "demo-panel-ref-btn btn btn-default",
+                  attrs: {
+                    "data-target": "#demo-panel-ref",
+                    "data-toggle": "panel-overlay"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.refresh()
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "demo-psi-repeat-2 icon-fw" }),
+                  _vm._v(" Refresh\n            ")
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
@@ -55423,7 +55218,7 @@ var render = function() {
                         staticStyle: { "padding-left": "10px" }
                       },
                       [
-                        _vm._m(0),
+                        _vm._m(1),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("input", {
@@ -55498,9 +55293,9 @@ var render = function() {
                     attrs: { id: "datatable" }
                   },
                   [
-                    _vm._m(1),
+                    _vm._m(2),
                     _vm._v(" "),
-                    !_vm.data.data.length ? _c("tbody", [_vm._m(2)]) : _vm._e(),
+                    !_vm.data.data.length ? _c("tbody", [_vm._m(3)]) : _vm._e(),
                     _vm._v(" "),
                     _vm._l(_vm.data.data, function(data, index) {
                       return _c(
@@ -55630,6 +55425,22 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "h3",
+      {
+        staticClass: "panel-title text-thin bord-btm ",
+        staticStyle: { "font-size": "20px", "/* padding": "15px 0px 0px 25px" }
+      },
+      [
+        _c("i", { staticClass: "demo-pli-map-2 icon-lg" }),
+        _vm._v(" Rack Area Monitoring\n          ")
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

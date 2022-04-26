@@ -81,22 +81,28 @@ class SetupController extends Controller
                     ->whereDate('batchDate', '=', $date)
                     ->groupBy('rack_desc')
                     ->get();
-                // dd($row->racks);
-                $rackGroup = [];
+                // dd($racksList);
+
                 $racks = $row->racks->toArray();
-                $racksList->map(function ($row2) use (&$countType, &$date, &$comp, &$bu, &$dept, &$section, &$rackGroup) {
-                    $row2->rackGroup = TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
-                        ->where([
-                            ['company', 'LIKE', "%$comp%"],
-                            ['business_unit', 'LIKE', "%$bu%"],
-                            ['department', 'LIKE', "%$dept%"],
-                            ['section', 'LIKE', "%$section%"]
-                        ])
-                        ->whereDate('batchDate', '=', $date)
-                        ->groupBy('rack_desc')
-                        ->get();
-                    $rackGroup = $row2->rackGroup;
-                });
+                $rackGroup = [];
+                foreach ($racks as $rack) {
+                    // dd($rack);
+                    $racksList->map(function ($row2) use (&$countType, &$date, &$comp, &$bu, &$dept, &$section, &$rackGroup) {
+                        // $rack_desc = $rack['rack_desc'];
+                        $row2->rackGroup = TblLocation::join('tbl_nav_count', 'tbl_nav_count.location_id', '=', 'tbl_location.location_id')
+                            ->where([
+                                ['company', 'LIKE', "%$comp%"],
+                                ['business_unit', 'LIKE', "%$bu%"],
+                                ['department', 'LIKE', "%$dept%"],
+                                ['section', 'LIKE', "%$section%"]
+                                // ['rack_desc', 'LIKE', "%$rack_desc%"]
+                            ])
+                            ->whereDate('batchDate', '=', $date)
+                            ->get();
+                        $rackGroup = $row2->rackGroup;
+                        // dump($rackGroup);
+                    });
+                }
             });
 
             $data['data'] = $query;

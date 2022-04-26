@@ -3,14 +3,27 @@
 <template>
   <div id="page-body">
     <div id="page-content">
-      <div class="panel">
+      <div class="panel" id="#demo-panel-ref">
+        <!-- <div class="panel-heading">
+        
+        </div> -->
         <div class="panel-body">
-          <div class="panel-heading pad-all">
+          <div class="panel-heading pad-all ">
+            <div class="panel-control">
+              <button
+                class="demo-panel-ref-btn btn btn-default"
+                data-target="#demo-panel-ref"
+                data-toggle="panel-overlay"
+                @click="refresh()"
+              >
+                <i class="demo-psi-repeat-2 icon-fw"></i> Refresh
+              </button>
+            </div>
             <h3
-              class="panel-heading bord-btm text-thin"
+              class="panel-title text-thin bord-btm "
               style="font-size: 20px;/* padding: 15px 0px 0px 25px; */"
             >
-              <i class="demo-pli-map-2 icon-lg"></i> {{ $root.currentPage }}
+              <i class="demo-pli-map-2 icon-lg"></i> Rack Area Monitoring
             </h3>
           </div>
           <div class="row">
@@ -184,10 +197,13 @@ export default {
           this.data = response.data
           this.total_result = response.data.total
         })
+    },
+    refresh() {
+      this.getResults()
     }
   },
   mounted() {
-    this.$root.currentPage = this.$route.meta.name
+    this.$root.currentPage = 'this.$route.meta.name'
     this.getResults()
     document.getElementById('dateFrom').setAttribute('min', this.dateToday)
   }
