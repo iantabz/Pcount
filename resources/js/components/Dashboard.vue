@@ -34,14 +34,14 @@
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i>
-                          Location (APP users) setup
+                          Location Setup (App users)
                         </a>
                       </router-link>
                       <router-link to="/location">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
-                          ><i class="pci-chevron chevron-right"></i> Users setup
+                          ><i class="pci-chevron chevron-right"></i> User setup
                         </a>
                       </router-link>
                       <router-link to="/vendor_masterfile">

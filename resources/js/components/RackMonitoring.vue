@@ -3,7 +3,7 @@
 <template>
   <div id="page-body">
     <div id="page-content">
-      <div class="panel" id="#demo-panel-ref">
+      <div class="panel">
         <!-- <div class="panel-heading">
         
         </div> -->
@@ -12,26 +12,31 @@
             <div class="panel-control">
               <button
                 class="demo-panel-ref-btn btn btn-default"
-                data-target="#demo-panel-ref"
                 data-toggle="panel-overlay"
-                @click="refresh()"
+                data-target="#demo-panel-collapse-default"
+                id="demo-state-btn"
+                @click="refresh($event)"
+                data-loading-text="Loading..."
               >
-                <i class="demo-psi-repeat-2 icon-fw"></i> Refresh
+                <i class="demo-psi-repeat-2 icon-fw"></i> Refresh Table
               </button>
             </div>
             <h3
-              class="panel-title text-thin bord-btm "
-              style="font-size: 20px;/* padding: 15px 0px 0px 25px; */"
+              class="text-thin bord-btm "
+              style="font-size: 20px;padding: 10px;"
             >
               <i class="demo-pli-map-2 icon-lg"></i> Rack Area Monitoring
             </h3>
           </div>
           <div class="row">
-            <div class="table-responsive panel-body">
+            <div
+              class="table-responsive panel-body"
+              id="demo-panel-collapse-default"
+            >
               <div class="row pad-top">
                 <div class="col-md-6 table-toolbar-left form-horizontal">
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-calendar-4 icon-fw"></i>
                         Count Date :
@@ -198,11 +203,40 @@ export default {
           this.total_result = response.data.total
         })
     },
-    refresh() {
-      this.getResults()
+    refresh(e) {
+      const thisButton = e.target
+      const oldHTML = thisButton.innerHTML
+      thisButton.disabled = true
+      thisButton.innerHTML =
+        '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
+
+      setTimeout(() => {
+        this.getResults()
+        thisButton.disabled = false
+        thisButton.innerHTML = oldHTML
+      }, 800)
     }
   },
   mounted() {
+    $('.demo-panel-ref-btn')
+      .niftyOverlay({
+        iconClass: 'demo-psi-repeat-2 spin-anim icon-2x'
+      })
+      .on('click', function() {
+        var $el = $(this),
+          relTime
+        $el.niftyOverlay('show')
+
+        // Do something...
+
+        relTime = setInterval(function() {
+          // Hide the screen overlay
+          $el.niftyOverlay('hide')
+
+          clearInterval(relTime)
+        }, 800)
+      })
+
     this.$root.currentPage = 'this.$route.meta.name'
     this.getResults()
     document.getElementById('dateFrom').setAttribute('min', this.dateToday)

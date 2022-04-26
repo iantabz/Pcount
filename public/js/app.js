@@ -11471,6 +11471,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -11509,11 +11514,35 @@ __webpack_require__.r(__webpack_exports__);
         _this.total_result = response.data.total;
       });
     },
-    refresh: function refresh() {
-      this.getResults();
+    refresh: function refresh(e) {
+      var _this2 = this;
+
+      var thisButton = e.target;
+      var oldHTML = thisButton.innerHTML;
+      thisButton.disabled = true;
+      thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
+      setTimeout(function () {
+        _this2.getResults();
+
+        thisButton.disabled = false;
+        thisButton.innerHTML = oldHTML;
+      }, 800);
     }
   },
   mounted: function mounted() {
+    $('.demo-panel-ref-btn').niftyOverlay({
+      iconClass: 'demo-psi-repeat-2 spin-anim icon-2x'
+    }).on('click', function () {
+      var $el = $(this),
+          relTime;
+      $el.niftyOverlay('show'); // Do something...
+
+      relTime = setInterval(function () {
+        // Hide the screen overlay
+        $el.niftyOverlay('hide');
+        clearInterval(relTime);
+      }, 800);
+    });
     this.$root.currentPage = 'this.$route.meta.name';
     this.getResults();
     document.getElementById('dateFrom').setAttribute('min', this.dateToday);
@@ -51185,7 +51214,7 @@ var render = function() {
                                   staticClass: "pci-chevron chevron-right"
                                 }),
                                 _vm._v(
-                                  "\n                        Location (APP users) setup\n                      "
+                                  "\n                        Location Setup (App users)\n                      "
                                 )
                               ]
                             )
@@ -51202,7 +51231,7 @@ var render = function() {
                                 _c("i", {
                                   staticClass: "pci-chevron chevron-right"
                                 }),
-                                _vm._v(" Users setup\n                      ")
+                                _vm._v(" User setup\n                      ")
                               ]
                             )
                           ]),
@@ -51914,23 +51943,19 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "btn btn-info btn-xs btn-rounded",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.editBtn(data)
-                                    }
-                                  }
+                              _c("button", {
+                                staticClass:
+                                  "btn btn-icon demo-pli-gear icon-lg add-tooltip",
+                                attrs: {
+                                  "data-original-title": "Settings",
+                                  "data-container": "body"
                                 },
-                                [
-                                  _c("i", {
-                                    staticClass: "demo-pli-gear icon-lg icon-fw"
-                                  })
-                                ]
-                              )
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editBtn(data)
+                                  }
+                                }
+                              })
                             ])
                           ])
                         })
@@ -52458,7 +52483,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Company :")])]
@@ -52471,7 +52496,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Business Unit :")])]
@@ -52484,7 +52509,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Department :")])]
@@ -52494,7 +52519,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v("\n                      Count Date :\n                    ")
@@ -52505,7 +52530,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-file-edit icon-fw" }),
         _vm._v("\n                      Count Type :\n                    ")
@@ -52520,7 +52545,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -52536,7 +52561,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -52551,7 +52576,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
@@ -52565,7 +52590,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -52581,7 +52606,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -55174,7 +55199,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "page-body" } }, [
     _c("div", { attrs: { id: "page-content" } }, [
-      _c("div", { staticClass: "panel", attrs: { id: "#demo-panel-ref" } }, [
+      _c("div", { staticClass: "panel" }, [
         _c("div", { staticClass: "panel-body" }, [
           _c("div", { staticClass: "panel-heading pad-all " }, [
             _c("div", { staticClass: "panel-control" }, [
@@ -55183,18 +55208,20 @@ var render = function() {
                 {
                   staticClass: "demo-panel-ref-btn btn btn-default",
                   attrs: {
-                    "data-target": "#demo-panel-ref",
-                    "data-toggle": "panel-overlay"
+                    "data-toggle": "panel-overlay",
+                    "data-target": "#demo-panel-collapse-default",
+                    id: "demo-state-btn",
+                    "data-loading-text": "Loading..."
                   },
                   on: {
                     click: function($event) {
-                      return _vm.refresh()
+                      return _vm.refresh($event)
                     }
                   }
                 },
                 [
                   _c("i", { staticClass: "demo-psi-repeat-2 icon-fw" }),
-                  _vm._v(" Refresh\n            ")
+                  _vm._v(" Refresh Table\n            ")
                 ]
               )
             ]),
@@ -55203,221 +55230,231 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "table-responsive panel-body" }, [
-              _c("div", { staticClass: "row pad-top" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-6 table-toolbar-left form-horizontal"
-                  },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row pad-all",
-                        staticStyle: { "padding-left": "10px" }
-                      },
-                      [
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-lg-6" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.date,
-                                expression: "date"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            staticStyle: { "border-radius": "4px" },
-                            attrs: {
-                              type: "date",
-                              name: "dateFrom",
-                              id: "dateFrom",
-                              min: "dateToday"
-                            },
-                            domProps: { value: _vm.date },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.date = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-6 table-toolbar-right form-horizontal"
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "row pad-all" },
-                      [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "btn btn-info btn-rounded mar-lft",
-                            attrs: { to: "/location" }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "fa fa-arrow-circle-left icon-lg"
-                            }),
-                            _vm._v(
-                              " Location\n                    Setup\n                  "
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "table",
-                  {
-                    staticClass:
-                      "table table-condensed table-vcenter table-hover",
-                    attrs: { id: "datatable" }
-                  },
-                  [
-                    _vm._m(2),
-                    _vm._v(" "),
-                    !_vm.data.data.length ? _c("tbody", [_vm._m(3)]) : _vm._e(),
-                    _vm._v(" "),
-                    _vm._l(_vm.data.data, function(data, index) {
-                      return _c(
-                        "tbody",
-                        { key: index },
+            _c(
+              "div",
+              {
+                staticClass: "table-responsive panel-body",
+                attrs: { id: "demo-panel-collapse-default" }
+              },
+              [
+                _c("div", { staticClass: "row pad-top" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-md-6 table-toolbar-left form-horizontal"
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "row pad-all",
+                          staticStyle: { "padding-left": "10px" }
+                        },
                         [
-                          _c("tr", [
-                            _c(
-                              "td",
-                              {
-                                staticClass: "text-thin",
-                                attrs: { rowspan: data.racks.length + 1 }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(data.company) +
-                                    "\n                    "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticClass: "text-thin",
-                                attrs: { rowspan: data.racks.length + 1 }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(data.business_unit) +
-                                    "\n                    "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticClass: "text-thin",
-                                attrs: { rowspan: data.racks.length + 1 }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(data.department) +
-                                    "\n                    "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticClass: "text-thin",
-                                attrs: { rowspan: data.racks.length + 1 }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(data.section) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          ]),
+                          _vm._m(1),
                           _vm._v(" "),
-                          _vm._l(data.racks, function(racks, i) {
-                            return _c("tr", { key: i }, [
-                              _c("td", { staticClass: "text-thin" }, [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(racks.rack_desc) +
-                                    "\n                    "
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("td", { staticClass: "text-center" }, [
-                                _c("span", {
-                                  staticClass: "badge badge-icon badge-fw",
-                                  class: {
-                                    "badge-success": racks.rackGroup.every(
-                                      function(rack) {
-                                        return rack.done == "true"
-                                      }
-                                    ),
-                                    "badge-warning": !racks.rackGroup.every(
-                                      function(rack) {
-                                        return rack.done == "true"
-                                      }
-                                    )
+                          _c("div", { staticClass: "col-lg-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.date,
+                                  expression: "date"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              staticStyle: { "border-radius": "4px" },
+                              attrs: {
+                                type: "date",
+                                name: "dateFrom",
+                                id: "dateFrom",
+                                min: "dateToday"
+                              },
+                              domProps: { value: _vm.date },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
                                   }
-                                })
-                              ])
-                            ])
-                          })
-                        ],
-                        2
+                                  _vm.date = $event.target.value
+                                }
+                              }
+                            })
+                          ])
+                        ]
                       )
-                    })
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "col-md-6" }, [
-                      _c("small", [
-                        _vm._v(
-                          "Showing " +
-                            _vm._s(_vm.data.data.length) +
-                            " result(s)"
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col-md-6 table-toolbar-right form-horizontal"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "row pad-all" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "btn btn-info btn-rounded mar-lft",
+                              attrs: { to: "/location" }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-arrow-circle-left icon-lg"
+                              }),
+                              _vm._v(
+                                " Location\n                    Setup\n                  "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-condensed table-vcenter table-hover",
+                      attrs: { id: "datatable" }
+                    },
+                    [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      !_vm.data.data.length
+                        ? _c("tbody", [_vm._m(3)])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm._l(_vm.data.data, function(data, index) {
+                        return _c(
+                          "tbody",
+                          { key: index },
+                          [
+                            _c("tr", [
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "text-thin",
+                                  attrs: { rowspan: data.racks.length + 1 }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(data.company) +
+                                      "\n                    "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "text-thin",
+                                  attrs: { rowspan: data.racks.length + 1 }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(data.business_unit) +
+                                      "\n                    "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "text-thin",
+                                  attrs: { rowspan: data.racks.length + 1 }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(data.department) +
+                                      "\n                    "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "text-thin",
+                                  attrs: { rowspan: data.racks.length + 1 }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(data.section) +
+                                      "\n                    "
+                                  )
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(data.racks, function(racks, i) {
+                              return _c("tr", { key: i }, [
+                                _c("td", { staticClass: "text-thin" }, [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(racks.rack_desc) +
+                                      "\n                    "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "text-center" }, [
+                                  _c("span", {
+                                    staticClass: "badge badge-icon badge-fw",
+                                    class: {
+                                      "badge-success": racks.rackGroup.every(
+                                        function(rack) {
+                                          return rack.done == "true"
+                                        }
+                                      ),
+                                      "badge-warning": !racks.rackGroup.every(
+                                        function(rack) {
+                                          return rack.done == "true"
+                                        }
+                                      )
+                                    }
+                                  })
+                                ])
+                              ])
+                            })
+                          ],
+                          2
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-6" })
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("small", [
+                          _vm._v(
+                            "Showing " +
+                              _vm._s(_vm.data.data.length) +
+                              " result(s)"
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" })
+                    ])
                   ])
                 ])
-              ])
-            ])
+              ]
+            )
           ])
         ])
       ])
@@ -55432,8 +55469,8 @@ var staticRenderFns = [
     return _c(
       "h3",
       {
-        staticClass: "panel-title text-thin bord-btm ",
-        staticStyle: { "font-size": "20px", "/* padding": "15px 0px 0px 25px" }
+        staticClass: "text-thin bord-btm ",
+        staticStyle: { "font-size": "20px", padding: "10px" }
       },
       [
         _c("i", { staticClass: "demo-pli-map-2 icon-lg" }),
@@ -55445,7 +55482,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v("\n                      Count Date :\n                    ")

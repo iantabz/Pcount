@@ -18,7 +18,7 @@
                 <div class="col-md-6 table-toolbar-left form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Company :</h5></label
@@ -36,7 +36,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Business Unit :</h5></label
@@ -55,7 +55,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Department :</h5></label
@@ -74,7 +74,7 @@
                     </div>
                   </div>
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-calendar-4 icon-fw"></i>
                         Count Date :
@@ -94,7 +94,7 @@
                     </div>
                   </div>
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-file-edit icon-fw"></i>
                         Count Type :
@@ -168,20 +168,20 @@
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Section :</h5></label
@@ -198,13 +198,13 @@
                     </div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
@@ -290,10 +290,10 @@
                     <td>
                       <button
                         @click="editBtn(data)"
-                        class="btn btn-info btn-xs btn-rounded"
-                      >
-                        <i class="demo-pli-gear icon-lg icon-fw"></i>
-                      </button>
+                        class="btn btn-icon demo-pli-gear icon-lg add-tooltip"
+                        data-original-title="Settings"
+                        data-container="body"
+                      ></button>
                     </td>
                   </tr>
                 </tbody>
