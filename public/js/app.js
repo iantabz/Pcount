@@ -8043,6 +8043,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       employees: [],
       audit: [],
       categoryList: [],
+      filteredCategoryList: [],
       category: null,
       vendorList: [],
       vendor: null,
@@ -8101,13 +8102,29 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       this.forPrintVendor = value.join(' , ');
     },
     category: function category(newValue) {
-      // console.log(newValue)
       if (newValue) {
-        var value = [];
-        newValue.forEach(function (element, index) {
-          value.push("'" + element.category + "'");
+        var res = newValue.find(function (val) {
+          return val.category === 'ALL CATEGORIES';
         });
-        this.forPrintCategory = value.join(' , '); // console.log(this.forPrintCategory)
+
+        if (res) {
+          this.filteredCategoryList = this.categoryList.filter(function (categ) {
+            return categ.category === res.category;
+          }); // this.category = this.category.filter(
+          //   categ => categ.category === res.category
+          // )
+        } else {
+          this.filteredCategoryList = this.categoryList.filter(function (categ) {
+            return categ.category !== 'ALL CATEGORIES';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.category + "'");
+          });
+          this.forPrintCategory = value.join(' , '); // console.log(this.forPrintCategory)
+        }
+      } else {
+        this.filteredCategoryList = this.categoryList;
       }
     }
   },
@@ -8520,6 +8537,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
     Promise.all([this.getCompany(), this.getCategory(), this.getVendor()]).then(function (response) {
       _this6.companyList = response[0].data;
       _this6.categoryList = response[1].data;
+      _this6.filteredCategoryList = response[1].data;
       _this6.vendorList = response[2].data;
     });
   }), _defineProperty(_methods, "getFormattedDateToday", function getFormattedDateToday() {
@@ -11321,12 +11339,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -51682,7 +51694,8 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-info btn-rounded mar-lft",
+                              staticClass:
+                                "btn btn-info btn-rounded mar-lft text-thin",
                               attrs: {
                                 disabled:
                                   !_vm.company ||
@@ -51716,7 +51729,7 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass:
-                                    "btn btn-info btn-rounded mar-lft",
+                                    "btn btn-info btn-rounded mar-lft text-thin",
                                   attrs: {
                                     disabled:
                                       !_vm.company ||
@@ -51739,7 +51752,7 @@ var render = function() {
                                 "router-link",
                                 {
                                   staticClass:
-                                    "btn btn-info btn-rounded mar-lft",
+                                    "btn btn-info btn-rounded mar-lft text-thin",
                                   attrs: {
                                     to: "/rack_monitoring",
                                     disabled:
@@ -51821,7 +51834,8 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-info btn-rounded mar-lft",
+                            staticClass:
+                              "btn btn-info btn-rounded mar-lft text-thin",
                             attrs: { disabled: !_vm.data.data.length },
                             on: {
                               click: function($event) {
@@ -51842,7 +51856,8 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-info btn-rounded mar-lft",
+                            staticClass:
+                              "btn btn-info btn-rounded mar-lft text-thin",
                             attrs: {
                               disabled:
                                 !_vm.company ||
@@ -52028,7 +52043,7 @@ var render = function() {
                   _c(
                     "h5",
                     { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
-                    [_vm._v("User setup information")]
+                    [_vm._v("App user information")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -52360,7 +52375,7 @@ var render = function() {
                                   attrs: {
                                     filterable: false,
                                     label: "category",
-                                    options: _vm.categoryList,
+                                    options: _vm.filteredCategoryList,
                                     placeholder: "(Optional)",
                                     multiple: ""
                                   },
@@ -55199,44 +55214,41 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "page-body" } }, [
     _c("div", { attrs: { id: "page-content" } }, [
-      _c("div", { staticClass: "panel" }, [
-        _c("div", { staticClass: "panel-body" }, [
-          _c("div", { staticClass: "panel-heading pad-all " }, [
-            _c("div", { staticClass: "panel-control" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "demo-panel-ref-btn btn btn-default",
-                  attrs: {
-                    "data-toggle": "panel-overlay",
-                    "data-target": "#demo-panel-collapse-default",
-                    id: "demo-state-btn",
-                    "data-loading-text": "Loading..."
-                  },
-                  on: {
-                    click: function($event) {
-                      return _vm.refresh($event)
+      _c(
+        "div",
+        { staticClass: "panel", attrs: { id: "demo-panel-collapse-default" } },
+        [
+          _c("div", { staticClass: "panel-body" }, [
+            _c("div", { staticClass: "panel-heading pad-all " }, [
+              _c("div", { staticClass: "panel-control" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "demo-panel-ref-btn btn btn-default",
+                    attrs: {
+                      "data-toggle": "panel-overlay",
+                      "data-target": "#demo-panel-collapse-default",
+                      id: "demo-state-btn",
+                      "data-loading-text": "Loading..."
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.refresh($event)
+                      }
                     }
-                  }
-                },
-                [
-                  _c("i", { staticClass: "demo-psi-repeat-2 icon-fw" }),
-                  _vm._v(" Refresh Table\n            ")
-                ]
-              )
+                  },
+                  [
+                    _c("i", { staticClass: "demo-psi-repeat-2 icon-fw" }),
+                    _vm._v(" Refresh Table\n            ")
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
             ]),
             _vm._v(" "),
-            _vm._m(0)
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              {
-                staticClass: "table-responsive panel-body",
-                attrs: { id: "demo-panel-collapse-default" }
-              },
-              [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "table-responsive panel-body" }, [
                 _c("div", { staticClass: "row pad-top" }, [
                   _c(
                     "div",
@@ -55453,11 +55465,11 @@ var render = function() {
                     ])
                   ])
                 ])
-              ]
-            )
+              ])
+            ])
           ])
-        ])
-      ])
+        ]
+      )
     ])
   ])
 }

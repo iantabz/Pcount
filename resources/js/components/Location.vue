@@ -114,7 +114,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 30px">
                     <button
-                      class="btn btn-info btn-rounded mar-lft"
+                      class="btn btn-info btn-rounded mar-lft text-thin"
                       @click="showRackSetup = !showRackSetup"
                       :disabled="
                         !company ||
@@ -136,7 +136,7 @@
                           !section ||
                           !countType
                       "
-                      class="btn btn-info btn-rounded mar-lft"
+                      class="btn btn-info btn-rounded mar-lft text-thin"
                       :disabled="
                         !company ||
                           !business_unit ||
@@ -151,7 +151,7 @@
 
                     <router-link
                       v-else
-                      class="btn btn-info btn-rounded mar-lft"
+                      class="btn btn-info btn-rounded mar-lft text-thin"
                       to="/rack_monitoring"
                       :disabled="
                         !company ||
@@ -211,7 +211,7 @@
                   </div>
                   <div class="row pad-all">
                     <button
-                      class="btn btn-info btn-rounded mar-lft"
+                      class="btn btn-info btn-rounded mar-lft text-thin"
                       :disabled="!data.data.length"
                       @click="generate($event, 'Excel')"
                     >
@@ -219,7 +219,7 @@
                       Location Users
                     </button>
                     <button
-                      class="btn btn-info btn-rounded mar-lft"
+                      class="btn btn-info btn-rounded mar-lft text-thin"
                       :disabled="
                         !company ||
                           !business_unit ||
@@ -335,7 +335,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="mdlTitle">User setup information</h5>
+            <h5 class="modal-title" id="mdlTitle">App user information</h5>
             <button
               type="button"
               class="close"
@@ -584,7 +584,7 @@
                     :filterable="false"
                     @search="retrieveCategory"
                     label="category"
-                    :options="categoryList"
+                    :options="filteredCategoryList"
                     placeholder="(Optional)"
                     multiple
                   >
@@ -683,6 +683,7 @@ export default {
       employees: [],
       audit: [],
       categoryList: [],
+      filteredCategoryList: [],
       category: null,
       vendorList: [],
       vendor: null,
@@ -746,14 +747,29 @@ export default {
       this.forPrintVendor = value.join(' , ')
     },
     category(newValue) {
-      // console.log(newValue)
       if (newValue) {
-        let value = []
-        newValue.forEach((element, index) => {
-          value.push("'" + element.category + "'")
-        })
-        this.forPrintCategory = value.join(' , ')
-        // console.log(this.forPrintCategory)
+        const res = newValue.find(val => val.category === 'ALL CATEGORIES')
+
+        if (res) {
+          this.filteredCategoryList = this.categoryList.filter(
+            categ => categ.category === res.category
+          )
+          // this.category = this.category.filter(
+          //   categ => categ.category === res.category
+          // )
+        } else {
+          this.filteredCategoryList = this.categoryList.filter(
+            categ => categ.category !== 'ALL CATEGORIES'
+          )
+          let value = []
+          newValue.forEach((element, index) => {
+            value.push("'" + element.category + "'")
+          })
+          this.forPrintCategory = value.join(' , ')
+          // console.log(this.forPrintCategory)
+        }
+      } else {
+        this.filteredCategoryList = this.categoryList
       }
     }
   },
@@ -1102,6 +1118,7 @@ export default {
       ]).then(response => {
         this.companyList = response[0].data
         this.categoryList = response[1].data
+        this.filteredCategoryList = response[1].data
         this.vendorList = response[2].data
       })
     },

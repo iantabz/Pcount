@@ -130,7 +130,7 @@ class FileUploadController extends Controller
                 ['bunit_code', request()->bu],
                 ['dept_code', request()->dept]
             ]
-        )->get();
+        )->whereIn('section_name', ['SELLING AREA', 'STOCK ROOM', 'STOCKROOM'])->get();
     }
 
     public function importItemMasterfile()
@@ -166,13 +166,22 @@ class FileUploadController extends Controller
     public function getCategory()
     {
         $category = request()->category;
+
         if ($category) {
+
+            $x = TblItemCategoryMasterfile::selectRaw('category, dept_code')
+                ->where('category', 'LIKE', "%$category%")
+                ->orWhere('dept_code', $category)
+                ->get();
+
+            dd($x);
 
             return TblItemCategoryMasterfile::selectRaw('category, dept_code')
                 ->where('category', 'LIKE', "%$category%")
                 ->orWhere('dept_code', $category)
                 ->get();
         } else {
+            return TblItemCategoryMasterfile::take(500)->get()->prepend(collect(['category' => 'ALL CATEGORIES']));
             return TblItemCategoryMasterfile::take(500)->get();
         }
     }

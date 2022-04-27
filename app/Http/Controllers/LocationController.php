@@ -73,7 +73,7 @@ class LocationController extends Controller
                     ['bunit_code', request()->bu],
                     ['dept_code', request()->dept],
                 ]
-            )->get();
+            )->whereIn('section_name', ['SELLING AREA', 'STOCK ROOM'])->get();
         } else {
             return section::where(
                 [
@@ -81,7 +81,7 @@ class LocationController extends Controller
                     ['bunit_code', request()->bu],
                     ['dept_code', request()->dept],
                 ]
-            )->get();
+            )->whereIn('section_name', ['SELLING AREA', 'STOCK ROOM'])->get();
         }
     }
 }

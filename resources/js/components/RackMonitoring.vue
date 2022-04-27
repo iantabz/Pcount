@@ -3,10 +3,7 @@
 <template>
   <div id="page-body">
     <div id="page-content">
-      <div class="panel">
-        <!-- <div class="panel-heading">
-        
-        </div> -->
+      <div class="panel" id="demo-panel-collapse-default">
         <div class="panel-body">
           <div class="panel-heading pad-all ">
             <div class="panel-control">
@@ -29,10 +26,7 @@
             </h3>
           </div>
           <div class="row">
-            <div
-              class="table-responsive panel-body"
-              id="demo-panel-collapse-default"
-            >
+            <div class="table-responsive panel-body">
               <div class="row pad-top">
                 <div class="col-md-6 table-toolbar-left form-horizontal">
                   <div class="row pad-all" style="padding-left: 10px;">
