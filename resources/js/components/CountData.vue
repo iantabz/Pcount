@@ -87,7 +87,7 @@
                         @search="retrieveVendor"
                         label="vendor_name"
                         :options="vendorList"
-                        placeholder="Search for Vendor Name"
+                        placeholder="Search for Vendor Name (OPTIONAL)"
                         multiple
                         ><template slot="no-options">
                           <strong>Search for Vendor Name</strong>
@@ -200,7 +200,7 @@
                         @search="retrieveCategory"
                         label="category"
                         :options="categoryList"
-                        placeholder="Search for Category"
+                        placeholder="Search for Item Dept (OPTIONAL)"
                         multiple
                         ><template slot="no-options">
                           <strong>Search for Category</strong>
@@ -551,11 +551,14 @@ export default {
       const url = window.URL.createObjectURL(new Blob([data]))
       const link = document.createElement('a')
       link.href = url
-        let section = null
+      let section = null
       // console.log(fileName)
       this.section ? (section = '-' + this.section) : (section = '')
       // console.log(fileName)
-      link.setAttribute('download', `Actual Count (APP) as of ${this.date} ${this.business_unit} ${this.department}${section}.pdf`)
+      link.setAttribute(
+        'download',
+        `Actual Count (APP) as of ${this.date} ${this.business_unit} ${this.department}${section}.pdf`
+      )
       // console.log(link)
       document.body.appendChild(link)
       link.click()

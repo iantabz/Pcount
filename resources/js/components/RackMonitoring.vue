@@ -41,11 +41,11 @@
                         class="form-control"
                         v-model="date"
                         type="date"
-                        name="dateFrom"
-                        id="dateFrom"
                         style="border-radius: 4px"
-                        min="dateToday"
                       />
+                      <!-- min="dateToday"
+                        name="dateFrom"
+                        id="dateFrom" -->
                     </div>
                   </div>
                 </div>
@@ -233,7 +233,7 @@ export default {
 
     this.$root.currentPage = 'this.$route.meta.name'
     this.getResults()
-    document.getElementById('dateFrom').setAttribute('min', this.dateToday)
+    // document.getElementById('dateFrom').setAttribute('min', this.dateToday)
   }
 }
 </script>

@@ -11570,8 +11570,7 @@ __webpack_require__.r(__webpack_exports__);
       }, 800);
     });
     this.$root.currentPage = 'this.$route.meta.name';
-    this.getResults();
-    document.getElementById('dateFrom').setAttribute('min', this.dateToday);
+    this.getResults(); // document.getElementById('dateFrom').setAttribute('min', this.dateToday)
   }
 });
 
@@ -12060,46 +12059,26 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       }
     }, 1000),
     editBtn: function editBtn(data) {
-      var _this = this;
+      this.getUserTypes(); // setTimeout(() => {
+      // this.userForm.fill(data)
 
-      this.getCompany();
-      this.getUserTypes();
-      setTimeout(function () {
-        // this.userForm.fill(data)
-        var company = _this.companyList.find(function (sm) {
-          return sm.acroname == data.company;
-        });
-
-        var utype = _this.userTypes.find(function (ut) {
-          return ut.id == data.usertype_id;
-        });
-
-        _this.userForm.id = data.id;
-        _this.userForm.name = data.name;
-        _this.userForm.usertype_id = utype.id;
-        _this.userForm.username = data.username;
-        _this.userForm.company = data.company;
-        _this.userForm.business_unit = data.business_unit;
-        _this.userForm.department = data.department;
-        _this.userForm.section = data.section; // var bunit_code = data.business_unit,
-        //   business_unit = data.business_unit,
-        //   dept_code = data.department,
-        //   dept_name = data.department
-        // this.buList.push({
-        //   bunit_code,
-        //   business_unit
-        // })
-        // this.deptList.push({
-        //   dept_code,
-        //   dept_name
-        // })
-
-        _this.company = data.company;
-        _this.business_unit = data.business_unit;
-        _this.department = data.department;
-        _this.section = data.section;
-        $('#demo-default-modal').modal('show');
-      }, 1000);
+      console.log(data.id);
+      var utype = this.userTypes.find(function (ut) {
+        return ut.id == data.usertype_id;
+      });
+      this.userForm.id = data.id;
+      this.userForm.name = data.name;
+      this.userForm.usertype_id = utype.id;
+      this.userForm.username = data.username;
+      this.userForm.company = data.company;
+      this.userForm.business_unit = data.business_unit;
+      this.userForm.department = data.department;
+      this.userForm.section = data.section;
+      this.company = data.company;
+      this.business_unit = data.business_unit;
+      this.department = data.department;
+      this.section = data.section;
+      $('#demo-default-modal').modal('show'); // }, 1000)
     },
     closeBtn: function closeBtn() {
       this.userForm.clear();
@@ -12115,7 +12094,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       $('#demo-default-modal').modal('hide');
     },
     submitBtn: function submitBtn() {
-      var _this2 = this;
+      var _this = this;
 
       // this.userForm.company = this.company
       // this.userForm.business_unit = this.business_unit
@@ -12126,11 +12105,11 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             status = _ref2.status;
 
         if (status == 200) {
-          _this2.getResults();
+          _this.getResults();
 
-          _this2.userForm.clear();
+          _this.userForm.clear();
 
-          _this2.userForm.reset();
+          _this.userForm.reset();
 
           $('#demo-default-modal').modal('hide');
           $.niftyNoty({
@@ -12143,9 +12122,9 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         }
 
         if (status == 201) {
-          _this2.getResults();
+          _this.getResults();
 
-          _this2.closeBtn();
+          _this.closeBtn();
 
           $.niftyNoty({
             type: 'success',
@@ -12177,43 +12156,43 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     //   this.section = section.section_code
     // },
     departmentSelected: function departmentSelected(val) {
-      var _this3 = this;
+      var _this2 = this;
 
       var department = this.deptList.filter(function (sm) {
         return sm.dept_name == val;
       })[0];
       var bu = this.buList.filter(function (sm) {
-        return sm.business_unit == _this3.business_unit;
+        return sm.business_unit == _this2.business_unit;
       })[0];
       var company = this.companyList.filter(function (e) {
-        return e.acroname == _this3.company;
+        return e.acroname == _this2.company;
       })[0]; // console.log(company, bu, department)
 
       axios.get("/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
-        _this3.sectionList = response.data;
+        _this2.sectionList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     },
     buSelected: function buSelected(val) {
-      var _this4 = this;
+      var _this3 = this;
 
       // const buSelected = e.target.value
       var bu = this.buList.filter(function (sm) {
         return sm.business_unit == val;
       })[0];
       var company = this.companyList.filter(function (e) {
-        return e.acroname == _this4.company;
+        return e.acroname == _this3.company;
       })[0];
       this.department = null;
       axios.get("/uploading/nav_upload/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
-        _this4.deptList = response.data;
+        _this3.deptList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     },
     companySelected: function companySelected(val) {
-      var _this5 = this;
+      var _this4 = this;
 
       // const companySelected = e.target.value
       var comp = this.companyList.filter(function (sm) {
@@ -12221,45 +12200,45 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       })[0];
       this.business_unit = null;
       axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
-        _this5.buList = response.data;
+        _this4.buList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     },
     addBtn: function addBtn() {
-      this.getCompany();
+      // this.getCompany()
       this.getUserTypes();
     },
     getUserTypes: function getUserTypes() {
-      var _this6 = this;
+      var _this5 = this;
 
       axios.get('/setup/users/getUsertypes').then(function (response) {
-        _this6.userTypes = response.data;
+        _this5.userTypes = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     },
     getCompany: function getCompany() {
-      var _this7 = this;
+      var _this6 = this;
 
       axios.get('/uploading/nav_upload/getCompany').then(function (response) {
-        _this7.companyList = response.data;
+        _this6.companyList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     },
     getResults: function getResults() {
-      var _this8 = this;
+      var _this7 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var url = "/setup/users/getResults/?page=";
       axios.get(url + page).then(function (response) {
-        _this8.data = response.data;
-        _this8.total_result = response.data.total;
+        _this7.data = response.data;
+        _this7.total_result = response.data.total;
       });
     },
     btn_activation: function btn_activation(id, status) {
-      var _this9 = this;
+      var _this8 = this;
 
       axios.post('/setup/users/toggleStatus', {
         id: id,
@@ -12269,7 +12248,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             status = _ref4.status;
 
         if (status == 200) {
-          _this9.getResults();
+          _this8.getResults();
 
           $.niftyNoty({
             type: 'success',
@@ -12283,10 +12262,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     }
   },
   mounted: function mounted() {
-    this.$root.currentPage = this.$route.meta.name; // this.name = this.$root.authUser.name
-
-    this.getResults(); // $('#container').css('position', 'relative')
-
+    this.$root.currentPage = this.$route.meta.name;
+    this.getResults();
     setTimeout(function () {
       $('#toggleBtn').niftyOverlay({
         iconClass: 'demo-psi-repeat-2 spin-anim icon-2x',
@@ -49872,7 +49849,8 @@ var render = function() {
                                   filterable: false,
                                   label: "vendor_name",
                                   options: _vm.vendorList,
-                                  placeholder: "Search for Vendor Name",
+                                  placeholder:
+                                    "Search for Vendor Name (OPTIONAL)",
                                   multiple: ""
                                 },
                                 on: { search: _vm.retrieveVendor },
@@ -50063,7 +50041,8 @@ var render = function() {
                                   filterable: false,
                                   label: "category",
                                   options: _vm.categoryList,
-                                  placeholder: "Search for Category",
+                                  placeholder:
+                                    "Search for Item Dept (OPTIONAL)",
                                   multiple: ""
                                 },
                                 on: { search: _vm.retrieveCategory },
@@ -55291,12 +55270,7 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               staticStyle: { "border-radius": "4px" },
-                              attrs: {
-                                type: "date",
-                                name: "dateFrom",
-                                id: "dateFrom",
-                                min: "dateToday"
-                              },
+                              attrs: { type: "date" },
                               domProps: { value: _vm.date },
                               on: {
                                 input: function($event) {

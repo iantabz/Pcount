@@ -465,42 +465,26 @@ export default {
       }
     }, 1000),
     editBtn(data) {
-      this.getCompany()
       this.getUserTypes()
-      setTimeout(() => {
-        // this.userForm.fill(data)
-        const company = this.companyList.find(sm => sm.acroname == data.company)
-        const utype = this.userTypes.find(ut => ut.id == data.usertype_id)
-        this.userForm.id = data.id
-        this.userForm.name = data.name
-        this.userForm.usertype_id = utype.id
-        this.userForm.username = data.username
-        this.userForm.company = data.company
-        this.userForm.business_unit = data.business_unit
-        this.userForm.department = data.department
-        this.userForm.section = data.section
+      // setTimeout(() => {
+      // this.userForm.fill(data)
+      console.log(data.id)
+      const utype = this.userTypes.find(ut => ut.id == data.usertype_id)
+      this.userForm.id = data.id
+      this.userForm.name = data.name
+      this.userForm.usertype_id = utype.id
+      this.userForm.username = data.username
+      this.userForm.company = data.company
+      this.userForm.business_unit = data.business_unit
+      this.userForm.department = data.department
+      this.userForm.section = data.section
 
-        // var bunit_code = data.business_unit,
-        //   business_unit = data.business_unit,
-        //   dept_code = data.department,
-        //   dept_name = data.department
-
-        // this.buList.push({
-        //   bunit_code,
-        //   business_unit
-        // })
-
-        // this.deptList.push({
-        //   dept_code,
-        //   dept_name
-        // })
-
-        this.company = data.company
-        this.business_unit = data.business_unit
-        this.department = data.department
-        this.section = data.section
-        $('#demo-default-modal').modal('show')
-      }, 1000)
+      this.company = data.company
+      this.business_unit = data.business_unit
+      this.department = data.department
+      this.section = data.section
+      $('#demo-default-modal').modal('show')
+      // }, 1000)
     },
     closeBtn() {
       this.userForm.clear()
@@ -626,7 +610,7 @@ export default {
         })
     },
     addBtn() {
-      this.getCompany()
+      // this.getCompany()
       this.getUserTypes()
     },
     getUserTypes() {
@@ -679,10 +663,7 @@ export default {
   },
   mounted() {
     this.$root.currentPage = this.$route.meta.name
-    // this.name = this.$root.authUser.name
     this.getResults()
-
-    // $('#container').css('position', 'relative')
 
     setTimeout(() => {
       $('#toggleBtn')
