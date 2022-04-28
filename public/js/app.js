@@ -7341,6 +7341,8 @@ var _methods;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
+
 
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -8121,7 +8123,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
           newValue.forEach(function (element, index) {
             value.push("'" + element.category + "'");
           });
-          this.forPrintCategory = value.join(' , '); // console.log(this.forPrintCategory)
+          this.forPrintCategory = value.join(' , ');
         }
       } else {
         this.filteredCategoryList = this.categoryList;
@@ -8314,6 +8316,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       $('#demo-default-modal').modal('show');
     },
     editBtn: function editBtn(data) {
+      var _this3 = this;
+
       // const comp = this.companyList.find(sm => (sm.acroname = data.company))
       var bunit_code = data.business_unit,
           business_unit = data.business_unit,
@@ -8323,7 +8327,9 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
           emp_no = data.app_users.emp_no,
           emp_pin = data.app_users.emp_pin,
           name = data.app_users.name,
-          position = data.app_users.position;
+          position = data.app_users.position,
+          categories = data.categoryName,
+          test = null;
       this.buList.push({
         bunit_code: bunit_code,
         business_unit: business_unit
@@ -8350,7 +8356,15 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         name: name,
         position: position
       };
-      if (data.nav_count.byCategory === 'True') this.category = data.nav_count.categoryName.replaceAll("'", '').split(' , ');
+      if (data.nav_count.byCategory === 'True') test = data.nav_count.categoryName.replaceAll("'", '').split(' , ');
+      var comp = null;
+      test.forEach(function (element, index) {
+        _this3.categoryList.filter(function (sm) {
+          return sm.category == element;
+        }), _readOnlyError("comp");
+      }); // this.category = arr
+
+      console.log(comp);
       this.company = data.company;
       this.business_unit = data.business_unit;
       this.department = data.department;
@@ -8403,24 +8417,24 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       loading(false);
     }
   }, 1000)), _defineProperty(_methods, "departmentSelected", function departmentSelected(val) {
-    var _this3 = this;
+    var _this4 = this;
 
     var department = this.deptList.filter(function (sm) {
       return sm.dept_name == val;
     })[0];
     var bu = this.buList.filter(function (sm) {
-      return sm.business_unit == _this3.business_unit;
+      return sm.business_unit == _this4.business_unit;
     })[0];
     var company = this.companyList.find(function (e) {
-      return e.acroname == _this3.company;
+      return e.acroname == _this4.company;
     });
     axios.get("/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
-      _this3.sectionList = response.data;
+      _this4.sectionList = response.data;
     })["catch"](function (response) {
       console.log('error');
     });
   }), _defineProperty(_methods, "buSelected", function buSelected(val) {
-    var _this4 = this;
+    var _this5 = this;
 
     this.department = null;
     this.section = null;
@@ -8430,16 +8444,16 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         return sm.business_unit == val;
       })[0];
       var company = this.companyList.find(function (e) {
-        return e.acroname == _this4.company;
+        return e.acroname == _this5.company;
       });
       axios.get("/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
-        _this4.deptList = response.data;
+        _this5.deptList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     }
   }), _defineProperty(_methods, "companySelected", function companySelected(val) {
-    var _this5 = this;
+    var _this6 = this;
 
     this.business_unit = null;
     this.department = null;
@@ -8450,7 +8464,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         return sm.acroname == val;
       })[0];
       axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
-        _this5.buList = response.data;
+        _this6.buList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
@@ -8532,18 +8546,18 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       }, _callee5);
     }))();
   }), _defineProperty(_methods, "getResults2", function getResults2() {
-    var _this6 = this;
+    var _this7 = this;
 
     Promise.all([this.getCompany(), this.getCategory(), this.getVendor()]).then(function (response) {
-      _this6.companyList = response[0].data;
-      _this6.categoryList = response[1].data;
-      _this6.filteredCategoryList = response[1].data;
-      _this6.vendorList = response[2].data;
+      _this7.companyList = response[0].data;
+      _this7.categoryList = response[1].data;
+      _this7.filteredCategoryList = response[1].data;
+      _this7.vendorList = response[2].data;
     });
   }), _defineProperty(_methods, "getFormattedDateToday", function getFormattedDateToday() {
     return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
   }), _defineProperty(_methods, "getResults", function getResults() {
-    var _this7 = this;
+    var _this8 = this;
 
     var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
     var url = null,
@@ -8552,11 +8566,11 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
 
     if (this.business_unit && this.department && this.section && this.countType) {
       axios.get(url + page).then(function (response) {
-        _this7.data = response.data;
-        _this7.total_result = response.data.total;
+        _this8.data = response.data;
+        _this8.total_result = response.data.total;
       });
       axios.get("/setup/location/getRacks?company=".concat(this.company, "&business_unit=").concat(this.business_unit, "&department=").concat(this.department, "&section=").concat(this.section)).then(function (response) {
-        _this7.rackList = response.data;
+        _this8.rackList = response.data;
       });
     }
   }), _methods),

@@ -762,11 +762,11 @@ export default {
             categ => categ.category !== 'ALL CATEGORIES'
           )
           let value = []
+
           newValue.forEach((element, index) => {
             value.push("'" + element.category + "'")
           })
           this.forPrintCategory = value.join(' , ')
-          // console.log(this.forPrintCategory)
         }
       } else {
         this.filteredCategoryList = this.categoryList
@@ -953,7 +953,9 @@ export default {
         emp_no = data.app_users.emp_no,
         emp_pin = data.app_users.emp_pin,
         name = data.app_users.name,
-        position = data.app_users.position
+        position = data.app_users.position,
+        categories = data.categoryName,
+        test = null
 
       this.buList.push({
         bunit_code,
@@ -987,9 +989,14 @@ export default {
       }
 
       if (data.nav_count.byCategory === 'True')
-        this.category = data.nav_count.categoryName
-          .replaceAll("'", '')
-          .split(' , ')
+        test = data.nav_count.categoryName.replaceAll("'", '').split(' , ')
+
+      const comp = null
+      test.forEach((element, index) => {
+        comp = this.categoryList.filter(sm => sm.category == element)
+      })
+      // this.category = arr
+      console.log(comp)
 
       this.company = data.company
       this.business_unit = data.business_unit
