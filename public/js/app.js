@@ -4322,8 +4322,10 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       date: this.getFormattedDateToday(),
       // date2: this.getFormattedDateToday(),
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredcategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
@@ -4339,19 +4341,67 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
   },
   watch: {
     vendor: function vendor(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.vendor_name);
-      });
-      console.log(value);
-      this.forPrintVendor = value.join('|');
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // console.log(value)
+      // this.forPrintVendor = value.join('|')
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.vendor = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.vendor_name === 'ALL VENDORS';
+        });
+
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name === res.vendor_name;
+          }); // this.getResults()
+        } else {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name !== 'ALL VENDORS';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.vendor_name + "'");
+          });
+          this.forPrintVendor = value.join(' , '); // this.getResults()
+        }
+      } else {
+        this.filteredvendorList = this.vendorList;
+      }
     },
     category: function category(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.category);
-      });
-      this.forPrintCategory = value.join('|');
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.category === 'ALL CATEGORIES';
+        });
+
+        if (res) {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category === res.category;
+          }); // this.getResults()
+        } else {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category !== 'ALL CATEGORIES';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.category + "'");
+          });
+          this.forPrintCategory = value.join(' , '); // this.getResults()
+        }
+      } else {
+        this.filteredcategoryList = this.categoryList;
+      }
     }
   },
   methods: {
@@ -4516,14 +4566,14 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getCategory?category=".concat(search)).then(function (_ref) {
           var data = _ref.data;
-          vm.categoryList = data;
+          vm.filteredcategoryList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.categoryList = [];
+          vm.filteredcategoryList = [];
           loading(false);
         });
       } else {
-        vm.categoryList = [];
+        vm.filteredcategoryList = [];
         loading(false);
       }
     }, 1000),
@@ -4535,14 +4585,14 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getVendor?vendor=".concat(search)).then(function (_ref2) {
           var data = _ref2.data;
-          vm.vendorList = data;
+          vm.filteredvendorList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.vendorList = [];
+          vm.filteredvendorList = [];
           loading(false);
         });
       } else {
-        vm.vendorList = [];
+        vm.filteredvendorList = [];
         loading(false);
       }
     }, 1000),
@@ -4551,7 +4601,9 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
 
       Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
         _this4.vendorList = response[0].data;
+        _this4.filteredvendorList = response[0].data;
         _this4.categoryList = response[1].data;
+        _this4.filteredcategoryList = response[1].data;
         _this4.buList = response[2].data;
         _this4.companyList = response[3].data;
       });
@@ -4908,8 +4960,10 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       date: this.getFormattedDateToday(),
       // date2: this.getFormattedDateToday(),
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredcategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
@@ -4923,18 +4977,66 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
   },
   watch: {
     vendor: function vendor(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.vendor_name);
-      });
-      this.forPrintVendor = value.join('|');
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // this.forPrintVendor = value.join('|')
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.vendor = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.vendor_name === 'ALL VENDORS';
+        });
+
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name === res.vendor_name;
+          }); // this.getResults()
+        } else {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name !== 'ALL VENDORS';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.vendor_name + "'");
+          });
+          this.forPrintVendor = value.join(' , '); // this.getResults()
+        }
+      } else {
+        this.filteredvendorList = this.vendorList;
+      }
     },
     category: function category(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.category);
-      });
-      this.forPrintCategory = value.join('|');
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.category === 'ALL CATEGORIES';
+        });
+
+        if (res) {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category === res.category;
+          }); // this.getResults()
+        } else {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category !== 'ALL CATEGORIES';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.category + "'");
+          });
+          this.forPrintCategory = value.join(' , '); // this.getResults()
+        }
+      } else {
+        this.filteredcategoryList = this.categoryList;
+      }
     }
   },
   methods: {
@@ -5057,14 +5159,14 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getCategory?category=".concat(search)).then(function (_ref) {
           var data = _ref.data;
-          vm.categoryList = data;
+          vm.filteredcategoryList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.categoryList = [];
+          vm.filteredcategoryList = [];
           loading(false);
         });
       } else {
-        vm.categoryList = [];
+        vm.filteredcategoryList = [];
         loading(false);
       }
     }, 1000),
@@ -5076,14 +5178,14 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getVendor?vendor=".concat(search)).then(function (_ref2) {
           var data = _ref2.data;
-          vm.vendorList = data;
+          vm.filteredvendorList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.vendorList = [];
+          vm.filteredvendorList = [];
           loading(false);
         });
       } else {
-        vm.vendorList = [];
+        vm.filteredvendorList = [];
         loading(false);
       }
     }, 1000),
@@ -5092,7 +5194,9 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
 
       Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(function (response) {
         _this4.vendorList = response[0].data;
+        _this4.filteredvendorList = response[0].data;
         _this4.categoryList = response[1].data;
+        _this4.filteredcategoryList = response[1].data;
         _this4.buList = response[2].data;
       });
     },
@@ -5534,28 +5638,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -5590,8 +5672,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       sectionList: [],
       section: null,
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredCategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
@@ -5623,20 +5707,72 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       this.getResults();
     },
     vendor: function vendor(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.vendor_name);
-      });
-      this.forPrintVendor = value.join('|');
-      this.getResults();
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // this.forPrintVendor = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.vendor = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.vendor_name === 'ALL VENDORS';
+        });
+
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name === res.vendor_name;
+          });
+          this.getResults();
+        } else {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name !== 'ALL VENDORS';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.vendor_name + "'");
+          });
+          this.forPrintVendor = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredvendorList = this.vendorList;
+      }
     },
     category: function category(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.category);
-      });
-      this.forPrintCategory = value.join('|');
-      this.getResults();
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.category === 'ALL CATEGORIES';
+        });
+
+        if (res) {
+          this.filteredCategoryList = this.categoryList.filter(function (categ) {
+            return categ.category === res.category;
+          });
+          this.getResults();
+        } else {
+          this.filteredCategoryList = this.categoryList.filter(function (categ) {
+            return categ.category !== 'ALL CATEGORIES';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.category + "'");
+          });
+          this.forPrintCategory = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredCategoryList = this.categoryList;
+      }
     }
   },
   methods: {
@@ -5854,21 +5990,23 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       }
     },
     retrieveCategory: function retrieveCategory(search, loading) {
-      loading(true);
-      this.search2(search, loading, this);
+      if (search) {
+        loading(true);
+        this.search2(search, loading, this);
+      }
     },
     search2: (0,lodash__WEBPACK_IMPORTED_MODULE_5__.debounce)(function (search, loading, vm) {
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getCategory?category=".concat(search)).then(function (_ref) {
           var data = _ref.data;
-          vm.categoryList = data;
+          vm.filteredCategoryList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.categoryList = [];
+          vm.filteredCategoryList = [];
           loading(false);
         });
       } else {
-        vm.categoryList = [];
+        vm.filteredCategoryList = [];
         loading(false);
       }
     }, 1000),
@@ -5880,14 +6018,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getVendor?vendor=".concat(search)).then(function (_ref2) {
           var data = _ref2.data;
-          vm.vendorList = data;
+          vm.filteredvendorList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.vendorList = [];
+          vm.filteredvendorList = [];
           loading(false);
         });
       } else {
-        vm.vendorList = [];
+        vm.filteredvendorList = [];
         loading(false);
       }
     }, 1000),
@@ -5974,11 +6112,13 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     getResults2: function getResults2() {
       var _this6 = this;
 
-      Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
+      Promise.all([this.getVendor(), this.getCategory(), // this.getBU(),
+      this.getCompany()]).then(function (response) {
         _this6.vendorList = response[0].data;
-        _this6.categoryList = response[1].data; // this.buList = response[2].data
-
-        _this6.companyList = response[3].data;
+        _this6.filteredvendorList = response[0].data;
+        _this6.categoryList = response[1].data;
+        _this6.filteredCategoryList = response[1].data;
+        _this6.companyList = response[2].data;
       });
     },
     getFormattedDateToday: function getFormattedDateToday() {
@@ -6017,20 +6157,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             switch (_context8.prev = _context8.next) {
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
-                url = null;
-                url = "/reports/appdata/getResults/?date=".concat(btoa(_this8.date), "&date2=").concat(btoa(_this8.date2), "&vendors=").concat(btoa(_this8.forPrintVendor), "&category=").concat(_this8.forPrintCategory, "&bu=").concat(_this8.business_unit, "&dept=").concat(_this8.department, "&section=").concat(_this8.section, "&page="); // if (this.business_unit && this.department && this.section) {
-                // axios.get(url + page).then(response => {
-                //   this.data = response.data
-                //   this.total_result = response.data.total
-                // })
-
-                _context8.next = 5;
+                url = "/reports/appdata/getResults/?date=".concat(btoa(_this8.date), "&date2=").concat(btoa(_this8.date2), "&vendors=").concat(btoa(_this8.forPrintVendor), "&category=").concat(_this8.forPrintCategory, "&bu=").concat(_this8.business_unit, "&dept=").concat(_this8.department, "&section=").concat(_this8.section, "&countType=").concat(_this8.countType, "&page=");
+                _context8.next = 4;
                 return axios.get(url + page);
 
-              case 5:
+              case 4:
                 return _context8.abrupt("return", _context8.sent);
 
-              case 6:
+              case 5:
               case "end":
                 return _context8.stop();
             }
@@ -6041,13 +6175,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     getResults: function getResults() {
       var _this9 = this;
 
-      Promise.all([this.getCountData(), this.getNotFound()]).then(function (response) {
-        if (_this9.business_unit && _this9.department && _this9.section) {
-          _this9.data = response[0].data;
-          _this9.total_result = response[0].data.total;
-          console.log(response[1].data.total);
-          _this9.notFoundItems = response[1].data.total;
-        }
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) Promise.all([this.getCountData(), this.getNotFound()]).then(function (response) {
+        _this9.data = response[0].data;
+        _this9.total_result = response[0].data.total;
+        _this9.notFoundItems = response[1].data.total;
       });
     }
   },
@@ -8104,6 +8235,8 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       this.forPrintVendor = value.join(' , ');
     },
     category: function category(newValue) {
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
+
       if (newValue) {
         var res = newValue.find(function (val) {
           return val.category === 'ALL CATEGORIES';
@@ -10411,8 +10544,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       sectionList: [],
       section: null,
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredcategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: []
@@ -10441,20 +10576,73 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       this.getResults();
     },
     vendor: function vendor(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.vendor_name);
-      });
-      this.forPrintVendor = value.join('|');
-      this.getResults();
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // this.forPrintVendor = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.vendor = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.vendor_name === 'ALL VENDORS';
+        });
+        console.log(res);
+
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name === res.vendor_name;
+          });
+          this.getResults();
+        } else {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name !== 'ALL VENDORS';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.vendor_name + "'");
+          });
+          this.forPrintVendor = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredvendorList = this.vendorList;
+      }
     },
     category: function category(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.category);
-      });
-      this.forPrintCategory = value.join('|');
-      this.getResults();
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.category === 'ALL CATEGORIES';
+        });
+
+        if (res) {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category === res.category;
+          });
+          this.getResults();
+        } else {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category !== 'ALL CATEGORIES';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.category + "'");
+          });
+          this.forPrintCategory = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredcategoryList = this.categoryList;
+      }
     }
   },
   methods: {
@@ -10662,14 +10850,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getCategory?category=".concat(search)).then(function (_ref) {
           var data = _ref.data;
-          vm.categoryList = data;
+          vm.filteredcategoryList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.categoryList = [];
+          vm.filteredcategoryList = [];
           loading(false);
         });
       } else {
-        vm.categoryList = [];
+        vm.filteredcategoryList = [];
         loading(false);
       }
     }, 1000),
@@ -10681,14 +10869,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getVendor?vendor=".concat(search)).then(function (_ref2) {
           var data = _ref2.data;
-          vm.vendorList = data;
+          vm.filteredvendorList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.vendorList = [];
+          vm.filteredvendorList = [];
           loading(false);
         });
       } else {
-        vm.vendorList = [];
+        vm.filteredvendorList = [];
         loading(false);
       }
     }, 1000),
@@ -10711,7 +10899,9 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
       Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
         _this7.vendorList = response[0].data;
-        _this7.categoryList = response[1].data; // this.buList = response[2].data
+        _this7.filteredvendorList = response[0].data;
+        _this7.categoryList = response[1].data;
+        _this7.filteredcategoryList = response[1].data; // this.buList = response[2].data
 
         _this7.companyList = response[3].data;
       });
@@ -12693,8 +12883,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       date2: this.getFormattedDateToday(),
       total_result: null,
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredcategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
@@ -12719,18 +12911,73 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       }
     },
     vendor: function vendor(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.vendor_name);
-      });
-      this.forPrintVendor = value.join('|'); // this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // this.forPrintVendor = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.vendor = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.vendor_name === 'ALL VENDORS';
+        });
+        console.log(res);
+
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name === res.vendor_name;
+          });
+          this.getResults();
+        } else {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name !== 'ALL VENDORS';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.vendor_name + "'");
+          });
+          this.forPrintVendor = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredvendorList = this.vendorList;
+      }
     },
     category: function category(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.category);
-      });
-      this.forPrintCategory = value.join('|'); // this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.category === 'ALL CATEGORIES';
+        });
+
+        if (res) {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category === res.category;
+          });
+          this.getResults();
+        } else {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category !== 'ALL CATEGORIES';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.category + "'");
+          });
+          this.forPrintCategory = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredcategoryList = this.categoryList;
+      }
     },
     business_unit: function business_unit() {// this.getResults()
     },
@@ -12836,8 +13083,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      var url = null;
-      url = "/reports/variance_report/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(this.forPrintVendor, "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+      var url = "/reports/variance_report/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(this.forPrintVendor, "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
       if (this.business_unit && this.department && this.section) {
         axios.get(url + page).then(function (response) {
@@ -12913,14 +13159,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getCategory?category=".concat(search)).then(function (_ref) {
           var data = _ref.data;
-          vm.categoryList = data;
+          vm.filteredcategoryList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.categoryList = [];
+          vm.filteredcategoryList = [];
           loading(false);
         });
       } else {
-        vm.categoryList = [];
+        vm.filteredcategoryList = [];
         loading(false);
       }
     }, 1000),
@@ -12932,14 +13178,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios.get("/uploading/nav_upload/getVendor?vendor=".concat(search)).then(function (_ref2) {
           var data = _ref2.data;
-          vm.vendorList = data;
+          vm.filteredvendorList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.vendorList = [];
+          vm.filteredvendorList = [];
           loading(false);
         });
       } else {
-        vm.vendorList = [];
+        vm.filteredvendorList = [];
         loading(false);
       }
     }, 1000),
@@ -12948,7 +13194,9 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
       Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
         _this6.vendorList = response[0].data;
-        _this6.categoryList = response[1].data; // this.buList = response[2].data
+        _this6.filteredvendorList = response[0].data;
+        _this6.categoryList = response[1].data;
+        _this6.filteredcategoryList = response[1].data; // this.buList = response[2].data
 
         _this6.companyList = response[3].data;
       });
@@ -13499,8 +13747,10 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       date2: this.getFormattedDateToday(),
       total_result: null,
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredcategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
@@ -13522,18 +13772,72 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       // }
     },
     vendor: function vendor(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.vendor_name);
-      });
-      this.forPrintVendor = value.join('|'); // this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // this.forPrintVendor = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.vendor = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.vendor_name === 'ALL VENDORS';
+        });
+
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name === res.vendor_name;
+          });
+          this.getResults();
+        } else {
+          this.filteredvendorList = this.vendorList.filter(function (categ) {
+            return categ.vendor_name !== 'ALL VENDORS';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.vendor_name + "'");
+          });
+          this.forPrintVendor = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredvendorList = this.vendorList;
+      }
     },
     category: function category(newValue) {
-      var value = [];
-      newValue.forEach(function (element, index) {
-        value.push(element.category);
-      });
-      this.forPrintCategory = value.join('|'); // this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      // this.getResults()
+      if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
+
+      if (newValue) {
+        var res = newValue.find(function (val) {
+          return val.category === 'ALL CATEGORIES';
+        });
+
+        if (res) {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category === res.category;
+          });
+          this.getResults();
+        } else {
+          this.filteredcategoryList = this.categoryList.filter(function (categ) {
+            return categ.category !== 'ALL CATEGORIES';
+          });
+          var value = [];
+          newValue.forEach(function (element, index) {
+            value.push("'" + element.category + "'");
+          });
+          this.forPrintCategory = value.join(' , ');
+          this.getResults();
+        }
+      } else {
+        this.filteredcategoryList = this.categoryList;
+      }
     },
     business_unit: function business_unit() {// this.getResults()
     },
@@ -13694,14 +13998,14 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios__WEBPACK_IMPORTED_MODULE_1___default().get("/uploading/nav_upload/getCategory?category=".concat(search)).then(function (_ref) {
           var data = _ref.data;
-          vm.categoryList = data;
+          vm.filteredcategoryList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.categoryList = [];
+          vm.filteredcategoryList = [];
           loading(false);
         });
       } else {
-        vm.categoryList = [];
+        vm.filteredcategoryList = [];
         loading(false);
       }
     }, 1000),
@@ -13713,14 +14017,14 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       if (search.trim().length > 0) {
         axios__WEBPACK_IMPORTED_MODULE_1___default().get("/uploading/nav_upload/getVendor?vendor=".concat(search)).then(function (_ref2) {
           var data = _ref2.data;
-          vm.vendorList = data;
+          vm.filteredvendorList = data;
           loading(false);
         })["catch"](function (error) {
-          vm.vendorList = [];
+          vm.filteredvendorList = [];
           loading(false);
         });
       } else {
-        vm.vendorList = [];
+        vm.filteredvendorList = [];
         loading(false);
       }
     }, 1000),
@@ -13729,7 +14033,9 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
 
       Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(function (response) {
         _this5.vendorList = response[0].data;
+        _this5.filteredvendorList = response[0].data;
         _this5.categoryList = response[1].data;
+        _this5.filteredcategoryList = response[1].data;
         _this5.buList = response[2].data;
       });
     },
@@ -48880,7 +49186,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "vendor_name",
-                                  options: _vm.vendorList,
+                                  options: _vm.filteredvendorList,
                                   placeholder: "Search for Vendor Name",
                                   multiple: ""
                                 },
@@ -49001,7 +49307,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "category",
-                                  options: _vm.categoryList,
+                                  options: _vm.filteredcategoryList,
                                   placeholder: "Search for Category",
                                   multiple: ""
                                 },
@@ -49330,7 +49636,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "vendor_name",
-                                  options: _vm.vendorList,
+                                  options: _vm.filteredvendorList,
                                   placeholder: "Search for Vendor Name",
                                   multiple: ""
                                 },
@@ -49486,7 +49792,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "category",
-                                  options: _vm.categoryList,
+                                  options: _vm.filteredcategoryList,
                                   placeholder: "Search for Category",
                                   multiple: ""
                                 },
@@ -49848,7 +50154,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "vendor_name",
-                                  options: _vm.vendorList,
+                                  options: _vm.filteredvendorList,
                                   placeholder:
                                     "Search for Vendor Name (OPTIONAL)",
                                   multiple: ""
@@ -50040,7 +50346,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "category",
-                                  options: _vm.categoryList,
+                                  options: _vm.filteredCategoryList,
                                   placeholder:
                                     "Search for Item Dept (OPTIONAL)",
                                   multiple: ""
@@ -54121,7 +54427,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "vendor_name",
-                                  options: _vm.vendorList,
+                                  options: _vm.filteredvendorList,
                                   placeholder: "Search for Vendor Name",
                                   multiple: ""
                                 },
@@ -54279,7 +54585,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "category",
-                                  options: _vm.categoryList,
+                                  options: _vm.filteredcategoryList,
                                   placeholder: "Search for Category",
                                   multiple: ""
                                 },
@@ -56515,7 +56821,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "vendor_name",
-                                  options: _vm.vendorList,
+                                  options: _vm.filteredvendorList,
                                   placeholder: "Search for Vendor Name",
                                   multiple: ""
                                 },
@@ -56673,7 +56979,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "category",
-                                  options: _vm.categoryList,
+                                  options: _vm.filteredcategoryList,
                                   placeholder: "Search for Category",
                                   multiple: ""
                                 },
@@ -57272,7 +57578,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "vendor_name",
-                                  options: _vm.vendorList,
+                                  options: _vm.filteredvendorList,
                                   placeholder: "Search for Vendor Name",
                                   multiple: ""
                                 },
@@ -57428,7 +57734,7 @@ var render = function() {
                                 attrs: {
                                   filterable: false,
                                   label: "category",
-                                  options: _vm.categoryList,
+                                  options: _vm.filteredcategoryList,
                                   placeholder: "Search for Category",
                                   multiple: ""
                                 },

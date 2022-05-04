@@ -87,7 +87,7 @@
                         :filterable="false"
                         @search="retrieveVendor"
                         label="vendor_name"
-                        :options="vendorList"
+                        :options="filteredvendorList"
                         placeholder="Search for Vendor Name"
                         multiple
                         ><template slot="no-options">
@@ -166,7 +166,7 @@
                         :filterable="false"
                         @search="retrieveCategory"
                         label="category"
-                        :options="categoryList"
+                        :options="filteredcategoryList"
                         placeholder="Search for Category"
                         multiple
                         ><template slot="no-options">
@@ -337,8 +337,10 @@ export default {
       sectionList: [],
       section: null,
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredcategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: []
@@ -367,20 +369,73 @@ export default {
       this.getResults()
     },
     vendor(newValue) {
-      let value = []
-      newValue.forEach((element, index) => {
-        value.push(element.vendor_name)
-      })
-      this.forPrintVendor = value.join('|')
-      this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // this.forPrintVendor = value.join('|')
+      // this.getResults()
+
+      if (newValue?.length == 0) this.vendor = null
+      if (newValue) {
+        const res = newValue.find(val => val.vendor_name === 'ALL VENDORS')
+
+        console.log(res)
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(
+            categ => categ.vendor_name === res.vendor_name
+          )
+
+          this.getResults()
+        } else {
+          this.filteredvendorList = this.vendorList.filter(
+            categ => categ.vendor_name !== 'ALL VENDORS'
+          )
+          let value = []
+
+          newValue.forEach((element, index) => {
+            value.push("'" + element.vendor_name + "'")
+          })
+          this.forPrintVendor = value.join(' , ')
+          this.getResults()
+        }
+      } else {
+        this.filteredvendorList = this.vendorList
+      }
     },
     category(newValue) {
-      let value = []
-      newValue.forEach((element, index) => {
-        value.push(element.category)
-      })
-      this.forPrintCategory = value.join('|')
-      this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      // this.getResults()
+
+      if (newValue?.length == 0) this.category = null
+      if (newValue) {
+        const res = newValue.find(val => val.category === 'ALL CATEGORIES')
+
+        if (res) {
+          this.filteredcategoryList = this.categoryList.filter(
+            categ => categ.category === res.category
+          )
+
+          this.getResults()
+        } else {
+          this.filteredcategoryList = this.categoryList.filter(
+            categ => categ.category !== 'ALL CATEGORIES'
+          )
+          let value = []
+
+          newValue.forEach((element, index) => {
+            value.push("'" + element.category + "'")
+          })
+          this.forPrintCategory = value.join(' , ')
+          this.getResults()
+        }
+      } else {
+        this.filteredcategoryList = this.categoryList
+      }
     }
   },
   methods: {
@@ -574,15 +629,15 @@ export default {
         axios
           .get(`/uploading/nav_upload/getCategory?category=${search}`)
           .then(({ data }) => {
-            vm.categoryList = data
+            vm.filteredcategoryList = data
             loading(false)
           })
           .catch(error => {
-            vm.categoryList = []
+            vm.filteredcategoryList = []
             loading(false)
           })
       } else {
-        vm.categoryList = []
+        vm.filteredcategoryList = []
         loading(false)
       }
     }, 1000),
@@ -595,15 +650,15 @@ export default {
         axios
           .get(`/uploading/nav_upload/getVendor?vendor=${search}`)
           .then(({ data }) => {
-            vm.vendorList = data
+            vm.filteredvendorList = data
             loading(false)
           })
           .catch(error => {
-            vm.vendorList = []
+            vm.filteredvendorList = []
             loading(false)
           })
       } else {
-        vm.vendorList = []
+        vm.filteredvendorList = []
         loading(false)
       }
     }, 1000),
@@ -631,7 +686,9 @@ export default {
         this.getCompany()
       ]).then(response => {
         this.vendorList = response[0].data
+        this.filteredvendorList = response[0].data
         this.categoryList = response[1].data
+        this.filteredcategoryList = response[1].data
         // this.buList = response[2].data
         this.companyList = response[3].data
       })

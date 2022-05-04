@@ -86,7 +86,7 @@
                         :filterable="false"
                         @search="retrieveVendor"
                         label="vendor_name"
-                        :options="vendorList"
+                        :options="filteredvendorList"
                         placeholder="Search for Vendor Name (OPTIONAL)"
                         multiple
                         ><template slot="no-options">
@@ -199,7 +199,7 @@
                         :filterable="false"
                         @search="retrieveCategory"
                         label="category"
-                        :options="categoryList"
+                        :options="filteredCategoryList"
                         placeholder="Search for Item Dept (OPTIONAL)"
                         multiple
                         ><template slot="no-options">
@@ -261,13 +261,6 @@
                     <th>Smallest SKU</th>
                     <th>Conv. Qty</th>
                     <th>Date Scanned</th>
-                    <!-- <th>Date Expiry</th> -->
-                    <!-- <th>Section</th>
-                    <th>Rack</th> -->
-                    <!-- <th>Employee No</th> -->
-                    <!-- <th>Time Scanned</th> -->
-                    <!-- <th>Saved</th>
-                    <th>Exported</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -298,21 +291,6 @@
                     <td class="text-main text-normal">
                       {{ data.datetime_scanned }}
                     </td>
-                    <!-- <td class="text-main text-normal">
-                      {{ data.date_expiry }}
-                    </td> -->
-                    <!-- <td class="text-main text-normal">
-                      {{ data.business_unit }}
-                    </td>
-                    <td class="text-main text-normal">{{ data.department }}</td>
-                    <td class="text-main text-normal">{{ data.section }}</td>
-                    <td class="text-main text-normal">{{ data.rack_desc }}</td> -->
-                    <!-- <td class="text-main text-normal">{{ data.empno }}</td> -->
-                    <!-- <td class="text-main text-normal">
-                      {{ data.datetime_scanned | formatDate }}
-                    </td> -->
-                    <!-- <td>{{ data.datetime_saved | formatDate }}</td>
-                    <td>{{ data.datetime_exported | formatDate }}</td> -->
                   </tr>
                 </tbody>
               </table>
@@ -384,8 +362,10 @@ export default {
       sectionList: [],
       section: null,
       vendorList: [],
+      filteredvendorList: [],
       vendor: null,
       categoryList: [],
+      filteredCategoryList: [],
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
@@ -417,20 +397,72 @@ export default {
       this.getResults()
     },
     vendor(newValue) {
-      let value = []
-      newValue.forEach((element, index) => {
-        value.push(element.vendor_name)
-      })
-      this.forPrintVendor = value.join('|')
-      this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.vendor_name)
+      // })
+      // this.forPrintVendor = value.join('|')
+      // this.getResults()
+
+      if (newValue?.length == 0) this.vendor = null
+      if (newValue) {
+        const res = newValue.find(val => val.vendor_name === 'ALL VENDORS')
+
+        if (res) {
+          this.filteredvendorList = this.vendorList.filter(
+            categ => categ.vendor_name === res.vendor_name
+          )
+
+          this.getResults()
+        } else {
+          this.filteredvendorList = this.vendorList.filter(
+            categ => categ.vendor_name !== 'ALL VENDORS'
+          )
+          let value = []
+
+          newValue.forEach((element, index) => {
+            value.push("'" + element.vendor_name + "'")
+          })
+          this.forPrintVendor = value.join(' , ')
+          this.getResults()
+        }
+      } else {
+        this.filteredvendorList = this.vendorList
+      }
     },
     category(newValue) {
-      let value = []
-      newValue.forEach((element, index) => {
-        value.push(element.category)
-      })
-      this.forPrintCategory = value.join('|')
-      this.getResults()
+      // let value = []
+      // newValue.forEach((element, index) => {
+      //   value.push(element.category)
+      // })
+      // this.forPrintCategory = value.join('|')
+      // this.getResults()
+
+      if (newValue?.length == 0) this.category = null
+      if (newValue) {
+        const res = newValue.find(val => val.category === 'ALL CATEGORIES')
+
+        if (res) {
+          this.filteredCategoryList = this.categoryList.filter(
+            categ => categ.category === res.category
+          )
+
+          this.getResults()
+        } else {
+          this.filteredCategoryList = this.categoryList.filter(
+            categ => categ.category !== 'ALL CATEGORIES'
+          )
+          let value = []
+
+          newValue.forEach((element, index) => {
+            value.push("'" + element.category + "'")
+          })
+          this.forPrintCategory = value.join(' , ')
+          this.getResults()
+        }
+      } else {
+        this.filteredCategoryList = this.categoryList
+      }
     }
   },
   methods: {
@@ -629,23 +661,25 @@ export default {
       }
     },
     retrieveCategory(search, loading) {
-      loading(true)
-      this.search2(search, loading, this)
+      if (search) {
+        loading(true)
+        this.search2(search, loading, this)
+      }
     },
     search2: debounce((search, loading, vm) => {
       if (search.trim().length > 0) {
         axios
           .get(`/uploading/nav_upload/getCategory?category=${search}`)
           .then(({ data }) => {
-            vm.categoryList = data
+            vm.filteredCategoryList = data
             loading(false)
           })
           .catch(error => {
-            vm.categoryList = []
+            vm.filteredCategoryList = []
             loading(false)
           })
       } else {
-        vm.categoryList = []
+        vm.filteredCategoryList = []
         loading(false)
       }
     }, 1000),
@@ -658,15 +692,15 @@ export default {
         axios
           .get(`/uploading/nav_upload/getVendor?vendor=${search}`)
           .then(({ data }) => {
-            vm.vendorList = data
+            vm.filteredvendorList = data
             loading(false)
           })
           .catch(error => {
-            vm.vendorList = []
+            vm.filteredvendorList = []
             loading(false)
           })
       } else {
-        vm.vendorList = []
+        vm.filteredvendorList = []
         loading(false)
       }
     }, 1000),
@@ -686,13 +720,14 @@ export default {
       Promise.all([
         this.getVendor(),
         this.getCategory(),
-        this.getBU(),
+        // this.getBU(),
         this.getCompany()
       ]).then(response => {
         this.vendorList = response[0].data
+        this.filteredvendorList = response[0].data
         this.categoryList = response[1].data
-        // this.buList = response[2].data
-        this.companyList = response[3].data
+        this.filteredCategoryList = response[1].data
+        this.companyList = response[2].data
       })
     },
     getFormattedDateToday() {
@@ -713,31 +748,31 @@ export default {
       )
     },
     async getCountData(page = 1) {
-      let url = null
-      url = `/reports/appdata/getResults/?date=${btoa(this.date)}&date2=${btoa(
-        this.date2
-      )}&vendors=${btoa(this.forPrintVendor)}&category=${
-        this.forPrintCategory
-      }&bu=${this.business_unit}&dept=${this.department}&section=${
-        this.section
-      }&page=`
-      // if (this.business_unit && this.department && this.section) {
-      // axios.get(url + page).then(response => {
-      //   this.data = response.data
-      //   this.total_result = response.data.total
-      // })
+      let url = `/reports/appdata/getResults/?date=${btoa(
+        this.date
+      )}&date2=${btoa(this.date2)}&vendors=${btoa(
+        this.forPrintVendor
+      )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+        this.department
+      }&section=${this.section}&countType=${this.countType}&page=`
+
       return await axios.get(url + page)
-      // }
     },
     getResults() {
-      Promise.all([this.getCountData(), this.getNotFound()]).then(response => {
-        if (this.business_unit && this.department && this.section) {
-          this.data = response[0].data
-          this.total_result = response[0].data.total
-          console.log(response[1].data.total)
-          this.notFoundItems = response[1].data.total
-        }
-      })
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
+        Promise.all([this.getCountData(), this.getNotFound()]).then(
+          response => {
+            this.data = response[0].data
+            this.total_result = response[0].data.total
+            this.notFoundItems = response[1].data.total
+          }
+        )
     }
   },
   mounted() {

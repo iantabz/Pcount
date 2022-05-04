@@ -160,7 +160,7 @@ class FileUploadController extends Controller
                 ->orWhere('vendor_code', $vendor)
                 ->get();
         } else {
-            return TblVendorMasterfile::take(500)->get();
+            return TblVendorMasterfile::take(500)->get()->prepend(collect(['vendor_name' => 'ALL VENDORS']));
         }
     }
     public function getCategory()
@@ -169,12 +169,12 @@ class FileUploadController extends Controller
 
         if ($category) {
 
-            $x = TblItemCategoryMasterfile::selectRaw('category, dept_code')
-                ->where('category', 'LIKE', "%$category%")
-                ->orWhere('dept_code', $category)
-                ->get();
+            // $x = TblItemCategoryMasterfile::selectRaw('category, dept_code')
+            //     ->where('category', 'LIKE', "%$category%")
+            //     ->orWhere('dept_code', $category)
+            //     ->get();
 
-            dd($x);
+            // dd($x);
 
             return TblItemCategoryMasterfile::selectRaw('category, dept_code')
                 ->where('category', 'LIKE', "%$category%")
@@ -182,7 +182,7 @@ class FileUploadController extends Controller
                 ->get();
         } else {
             return TblItemCategoryMasterfile::take(500)->get()->prepend(collect(['category' => 'ALL CATEGORIES']));
-            return TblItemCategoryMasterfile::take(500)->get();
+            // return TblItemCategoryMasterfile::take(500)->get();
         }
     }
 

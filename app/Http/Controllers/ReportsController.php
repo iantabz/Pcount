@@ -75,12 +75,14 @@ class ReportsController extends Controller
         // ->get();
 
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $masterFiles = $masterFiles->whereIn('vendor_name', $vendors);
             $vendors = implode(", ", $vendors);
         }
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $masterFiles = $masterFiles->whereIn('group', $category);
             $category = implode(", ", $category);
         }
@@ -232,11 +234,13 @@ class ReportsController extends Controller
         }
 
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $result->whereIn('vendor_name', $vendors);
         }
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $result->whereIn('group', $category);
         }
 
@@ -514,14 +518,16 @@ class ReportsController extends Controller
             return $c;
         });
 
-        dd($xx);
+        // dd($xx);
 
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $result->whereIn('vendor_name', $vendors);
         }
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $result->whereIn('group', $category);
         }
 
@@ -644,13 +650,15 @@ class ReportsController extends Controller
             $result->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
         }
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $result = $result->whereIn('vendor_name', $vendors);
             $vendors = implode(", ", $vendors);
         }
 
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $result = $result->whereIn('group', $category);
             $category = implode(", ", $category);
         }
@@ -715,7 +723,6 @@ class ReportsController extends Controller
     public function generateConsolidateReport()
     {
         // $pdf = PDF::loadView('reports.consolidated_report', ['data' => $this->getResultsConsolidateReport()]);
-
         // return $pdf->setPaper('legal', 'landscape')->download('Consolidatedreport.pdf');
         session(['data' => $this->getResultsConsolidateReport()]);
         return Excel::download(new ConsolidatedReportExport, 'ConsolidatedReport.xlsx');
@@ -787,12 +794,15 @@ class ReportsController extends Controller
         // ->get();
 
         if ($vendors) {
-            $masterFiles->whereIn('vendor_name', explode('|', $vendors));
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
+            $masterFiles->whereIn('vendor_name', $vendors);
         }
 
 
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $masterFiles->whereIn('group', $category);
             $category = implode(", ", $category);
         }
@@ -968,11 +978,13 @@ class ReportsController extends Controller
             $query->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
         }
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $query = $query->whereIn('vendor_name', $vendors);
         }
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $query = $query->whereIn('group', $category);
         }
 
@@ -1056,13 +1068,15 @@ class ReportsController extends Controller
         // }
 
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $result = $result->whereIn('vendor_name', $vendors);
             $vendors = implode(", ", $vendors);
         }
 
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $result = $result->whereIn('group', $category);
             $category = implode(", ", $category);
         }

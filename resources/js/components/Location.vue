@@ -747,6 +747,7 @@ export default {
       this.forPrintVendor = value.join(' , ')
     },
     category(newValue) {
+      if (newValue?.length == 0) this.category = null
       if (newValue) {
         const res = newValue.find(val => val.category === 'ALL CATEGORIES')
 

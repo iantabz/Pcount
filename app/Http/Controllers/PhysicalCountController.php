@@ -26,6 +26,7 @@ class PhysicalCountController extends Controller
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
         $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
+        $countType = request()->countType;
 
         $query = TblAppCountdata::selectRaw('
         tbl_app_countdata.id,
@@ -60,24 +61,19 @@ class PhysicalCountController extends Controller
         }
 
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            $vendors = explode(' , ', $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $query = $query->whereIn('vendor_name', $vendors);
         }
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $query = $query->whereIn('group', $category);
         }
 
         // dd($dateAsOf);
 
         return $query->whereBetween('datetime_saved', [$date, $dateAsOf])->groupBy('barcode')->orderBy('itemcode')->paginate(10);
-        // return TblAppCountdata::where([
-        //     ['business_unit', 'LIKE', "%$bu%"],
-        //     ['department', 'LIKE', "%$dept%"]
-        //     // ['section', '=', $section]
-        // ])
-        //     ->whereBetween('datetime_saved', [$date, $date2])
-        //     ->paginate(10);
     }
 
     public function getNotFound()
@@ -96,8 +92,8 @@ class PhysicalCountController extends Controller
 
     public function generate()
     {
-        set_time_limit(0);
-        ini_set('memory_limit', '-1');
+        // set_time_limit(0);
+        // ini_set('memory_limit', '-1');
         $pdf = PDF::loadView('reports.pcount_app', ['data' => $this->data()]);
         return $pdf->setPaper('legal', 'landscape')->download('PCount From App.pdf');
     }
@@ -149,6 +145,7 @@ class PhysicalCountController extends Controller
     {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
+
         $company = auth()->user()->company;
         $bu = request()->bu;
         $dept = request()->dept;
@@ -206,13 +203,16 @@ class PhysicalCountController extends Controller
             $result->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
         }
         if ($vendors) {
-            $vendors = explode('|', $vendors);
+            // $vendors = explode('|', $vendors);
+            $vendors = explode(" , ", $vendors);
+            $vendors = str_replace("'", "", $vendors);
             $result = $result->whereIn('vendor_name', $vendors);
             $vendors = implode(", ", $vendors);
         }
 
         if ($category) {
-            $category = explode('|', $category);
+            $category = explode(" , ", $category);
+            $category = str_replace("'", "", $category);
             $result = $result->whereIn('group', $category);
             $category = implode(", ", $category);
         }
