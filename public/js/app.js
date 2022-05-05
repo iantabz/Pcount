@@ -5637,7 +5637,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -12857,6 +12856,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -12896,7 +12909,11 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       deptList: [],
       department: null,
       sectionList: [],
-      section: null
+      section: null,
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL'],
+      finalExport: [],
+      "export": []
     };
   },
   components: {
@@ -12921,8 +12938,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       if (newValue) {
         var res = newValue.find(function (val) {
           return val.vendor_name === 'ALL VENDORS';
-        });
-        console.log(res);
+        }); // console.log(res)
 
         if (res) {
           this.filteredvendorList = this.vendorList.filter(function (categ) {
@@ -12986,28 +13002,101 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     }
   },
   methods: {
-    computeVariance: function computeVariance(a, b) {
-      var variance = 0;
-
-      if (a < 0) {
-        variance = parseFloat(b) + parseFloat(a);
-      } else {
-        variance = parseFloat(b) - parseFloat(a);
-      }
-
-      console.log(variance); //  const variance = parseFloat(a) - parseFloat(b)
-
-      return variance;
-    },
-    generateBtn: function generateBtn(e) {
+    exportBtn: function exportBtn(event, reportType) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var thisButton, oldHTML, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link;
+        var thisButton, oldHTML, pass, report, _yield$axios$post, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
+              case 0:
+                Swal.fire({
+                  html: "Please wait, don't close the browser.",
+                  title: 'Exporting in progress',
+                  timerProgressBar: true,
+                  allowOutsideClick: false,
+                  showConfirmButton: false,
+                  willOpen: function willOpen() {
+                    Swal.showLoading();
+                  },
+                  willClose: function willClose() {}
+                }).then(function (result) {
+                  if (result.isConfirmed) {}
+                }); // document.location.href = `/reports/appdata/generate`
+
+                thisButton = event.target;
+                oldHTML = thisButton.innerHTML;
+                pass = null, report = null;
+
+                if (reportType == 'Variance') {
+                  pass = '/reports/variance_report/export';
+                } else {
+                  pass = '/reports/variance_report/';
+                }
+
+                thisButton.disabled = true;
+                thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
+                _context.next = 9;
+                return axios.post(pass, {
+                  "export": btoa(JSON.stringify(_this["export"]))
+                }, {
+                  responseType: 'blob'
+                });
+
+              case 9:
+                _yield$axios$post = _context.sent;
+                headers = _yield$axios$post.headers;
+                data = _yield$axios$post.data;
+                // return console.log(headers)
+                contentDisposition = headers['content-disposition'];
+                _contentDisposition$s = contentDisposition.split(' '), _contentDisposition$s2 = _slicedToArray(_contentDisposition$s, 2), attachment = _contentDisposition$s2[0], file = _contentDisposition$s2[1];
+                _file$split = file.split('='), _file$split2 = _slicedToArray(_file$split, 2), key = _file$split2[0], fileName = _file$split2[1];
+                url = window.URL.createObjectURL(new Blob([data]));
+                link = document.createElement('a');
+                link.href = url;
+                section = null; // console.log(fileName)
+
+                _this.section ? section = '-' + _this.section : section = '';
+                title = 'Export to Nav';
+
+                if (reportType == 'Variance w/ Cost') {
+                  title = 'Export to Nav';
+                }
+
+                link.setAttribute('download', "".concat(title, " as of ").concat(_this.date, "  ").concat(_this.business_unit, " ").concat(_this.department).concat(section) + '.csv'); // console.log(link)
+
+                document.body.appendChild(link);
+                link.click();
+                thisButton.disabled = false;
+                thisButton.innerHTML = oldHTML;
+                Swal.close();
+                $.niftyNoty({
+                  type: 'success',
+                  icon: 'pli-cross icon-2x',
+                  message: '<i class="fa fa-check"></i> Generate successful!',
+                  container: 'floating',
+                  timer: 5000
+                });
+
+              case 29:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    generateBtn: function generateBtn(e) {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var thisButton, oldHTML, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 Swal.fire({
                   html: "Please wait, don't close the browser.",
@@ -13027,25 +13116,25 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 oldHTML = thisButton.innerHTML;
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
-                _context.next = 7;
-                return axios.get("/reports/variance_report/generate?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section), {
+                _context2.next = 7;
+                return axios.get("/reports/variance_report/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section), {
                   responseType: 'blob'
                 });
 
               case 7:
-                _yield$axios$get = _context.sent;
+                _yield$axios$get = _context2.sent;
                 headers = _yield$axios$get.headers;
                 data = _yield$axios$get.data;
                 // return console.log(headers)
                 contentDisposition = headers['content-disposition'];
-                _contentDisposition$s = contentDisposition.split(' '), _contentDisposition$s2 = _slicedToArray(_contentDisposition$s, 2), attachment = _contentDisposition$s2[0], file = _contentDisposition$s2[1];
-                _file$split = file.split('='), _file$split2 = _slicedToArray(_file$split, 2), key = _file$split2[0], fileName = _file$split2[1]; // console.log(fileName)
+                _contentDisposition$s3 = contentDisposition.split(' '), _contentDisposition$s4 = _slicedToArray(_contentDisposition$s3, 2), attachment = _contentDisposition$s4[0], file = _contentDisposition$s4[1];
+                _file$split3 = file.split('='), _file$split4 = _slicedToArray(_file$split3, 2), key = _file$split4[0], fileName = _file$split4[1]; // console.log(fileName)
 
                 url = window.URL.createObjectURL(new Blob([data]));
                 link = document.createElement('a');
                 link.href = url; // console.log('download', `${fileName.replace('"', '')}.pdf`)
 
-                link.setAttribute('download', "Variance Report  as of ".concat(_this.date, ".pdf")); // console.log(link)
+                link.setAttribute('download', "Variance Report  as of ".concat(_this2.date, ".pdf")); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -13069,51 +13158,167 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
               case 23:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee);
+        }, _callee2);
       }))();
     },
-    getFormattedDateToday: function getFormattedDateToday() {
-      return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
-    },
     getResults: function getResults() {
-      var _this2 = this;
+      var _this3 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var url = "/reports/variance_report/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(this.forPrintVendor, "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
-      if (this.business_unit && this.department && this.section) {
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) {
         axios.get(url).then(function (response) {
-          // console.log(response)
-          _this2.data = response.data;
-          _this2.total_result = response.data.total;
+          _this3.data = response.data;
+          _this3.total_result = response.data.total;
+          _this3.finalExport = response.data;
+
+          _this3.exportcsv();
         });
       }
     },
+    exportcsv: function exportcsv() {
+      var _this4 = this;
+
+      this["export"] = [];
+
+      var _loop = function _loop() {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i2], 2),
+            data = _Object$entries$_i[0],
+            test = _Object$entries$_i[1];
+
+        // console.log(data, test)
+        var variance = 0,
+            journalTemplateName = 'ITEM',
+            journalBatchName = '',
+            lineNo = 0,
+            itemCode = 0,
+            postingDate = _this4.date2,
+            entryType = '',
+            docNo = '',
+            desc = '',
+            locCode = '',
+            invtyPostGroup = '',
+            nav_qty = 0,
+            app_qty = 0,
+            unitAmt = 0,
+            unitCost = 0,
+            amt = 0,
+            sourceCode = 'ITEMJNL',
+            companyCode = 0,
+            deptCode = 0,
+            reasonCode = 0,
+            genProdPostGroup = 0,
+            docDate = _this4.date2,
+            exDocNo = '',
+            qtyPerUom = 0,
+            uom = '',
+            qtyBase = 0,
+            invQtyBase = 0,
+            valueEntry = '',
+            itemDiv = 0;
+        test.forEach(function (result) {
+          itemCode = result.itemcode;
+          desc = result.extended_desc; // variance = parseFloat(result.nav_qty - result.app_qty)
+
+          app_qty = parseFloat(result.app_qty);
+          nav_qty = parseFloat(result.nav_qty);
+          uom = result.uom;
+          lineNo += 10000;
+          qtyBase = nav_qty;
+          invQtyBase = app_qty;
+          console.log(variance); // if (variance < 0) {
+          //   entryType = 'Negative Adjmt.'
+          // } else {
+          //   entryType = 'Positive Adjmt.'
+          // }
+
+          if (result.nav_qty < 0) {
+            variance = parseFloat(result.app_qty) + parseFloat(result.nav_qty);
+            entryType = 'Negative Adjmt.';
+          } else {
+            variance = parseFloat(result.app_qty) - parseFloat(result.nav_qty);
+            entryType = 'Positive Adjmt.';
+          }
+
+          _this4["export"].push({
+            journalTemplateName: journalTemplateName,
+            journalBatchName: journalBatchName,
+            lineNo: lineNo,
+            itemCode: itemCode,
+            postingDate: postingDate,
+            entryType: entryType,
+            docNo: docNo,
+            desc: desc,
+            locCode: locCode,
+            invtyPostGroup: invtyPostGroup,
+            nav_qty: nav_qty,
+            app_qty: app_qty,
+            unitAmt: unitAmt,
+            unitCost: unitCost,
+            amt: amt,
+            sourceCode: sourceCode,
+            companyCode: companyCode,
+            deptCode: deptCode,
+            reasonCode: reasonCode,
+            genProdPostGroup: genProdPostGroup,
+            docDate: docDate,
+            exDocNo: exDocNo,
+            qtyPerUom: qtyPerUom,
+            uom: uom,
+            qtyBase: qtyBase,
+            invQtyBase: invQtyBase,
+            valueEntry: valueEntry,
+            itemDiv: itemDiv
+          });
+        }); // console.log(this.export)
+      };
+
+      for (var _i2 = 0, _Object$entries = Object.entries(this.finalExport); _i2 < _Object$entries.length; _i2++) {
+        _loop();
+      }
+    },
+    computeVariance: function computeVariance(a, b) {
+      var variance = 0;
+
+      if (a < 0) {
+        variance = parseFloat(b) + parseFloat(a);
+      } else {
+        variance = parseFloat(b) - parseFloat(a);
+      } // console.log(variance)
+      //  const variance = parseFloat(a) - parseFloat(b)
+
+
+      return variance;
+    },
+    getFormattedDateToday: function getFormattedDateToday() {
+      return new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+    },
     departmentSelected: function departmentSelected(val) {
-      var _this3 = this;
+      var _this5 = this;
 
       this.section = null;
       var department = this.deptList.filter(function (sm) {
         return sm.dept_name == val;
       })[0];
       var bu = this.buList.filter(function (sm) {
-        return sm.business_unit == _this3.business_unit;
+        return sm.business_unit == _this5.business_unit;
       })[0];
       var company = this.companyList.find(function (e) {
-        return e.acroname == _this3.company;
+        return e.acroname == _this5.company;
       });
       axios.get( // `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
       "/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
-        _this3.sectionList = response.data;
+        _this5.sectionList = response.data;
       })["catch"](function (response) {
         console.log('error');
       });
     },
     buSelected: function buSelected(val) {
-      var _this4 = this;
+      var _this6 = this;
 
       this.department = null;
       this.section = null;
@@ -13123,18 +13328,18 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           return sm.business_unit == val;
         })[0];
         var company = this.companyList.find(function (e) {
-          return e.acroname == _this4.company;
+          return e.acroname == _this6.company;
         });
         axios.get( // `/setup/location/getDept/?bu=${bu.bunit_code}`
         "/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
-          _this4.deptList = response.data;
+          _this6.deptList = response.data;
         })["catch"](function (response) {
           console.log('error');
         });
       }
     },
     companySelected: function companySelected(val) {
-      var _this5 = this;
+      var _this7 = this;
 
       this.business_unit = null;
       this.department = null;
@@ -13145,7 +13350,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           return sm.acroname == val;
         })[0];
         axios.get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
-          _this5.buList = response.data;
+          _this7.buList = response.data;
         })["catch"](function (response) {
           console.log('error');
         });
@@ -13190,45 +13395,25 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       }
     }, 1000),
     getResults2: function getResults2() {
-      var _this6 = this;
+      var _this8 = this;
 
       Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
-        _this6.vendorList = response[0].data;
-        _this6.filteredvendorList = response[0].data;
-        _this6.categoryList = response[1].data;
-        _this6.filteredcategoryList = response[1].data; // this.buList = response[2].data
+        _this8.vendorList = response[0].data;
+        _this8.filteredvendorList = response[0].data;
+        _this8.categoryList = response[1].data;
+        _this8.filteredcategoryList = response[1].data; // this.buList = response[2].data
 
-        _this6.companyList = response[3].data;
+        _this8.companyList = response[3].data;
       });
     },
     getCategory: function getCategory() {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return axios.get('/uploading/nav_upload/getCategory');
-
-              case 2:
-                return _context2.abrupt("return", _context2.sent);
-
-              case 3:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
-    },
-    getVendor: function getVendor() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios.get('/uploading/nav_upload/getVendor');
+                return axios.get('/uploading/nav_upload/getCategory');
 
               case 2:
                 return _context3.abrupt("return", _context3.sent);
@@ -13241,14 +13426,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         }, _callee3);
       }))();
     },
-    getBU: function getBU() {
+    getVendor: function getVendor() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return axios.get('/setup/location/getBU');
+                return axios.get('/uploading/nav_upload/getVendor');
 
               case 2:
                 return _context4.abrupt("return", _context4.sent);
@@ -13261,14 +13446,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         }, _callee4);
       }))();
     },
-    getCompany: function getCompany() {
+    getBU: function getBU() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.next = 2;
-                return axios.get('/uploading/nav_upload/getCompany');
+                return axios.get('/setup/location/getBU');
 
               case 2:
                 return _context5.abrupt("return", _context5.sent);
@@ -13279,6 +13464,26 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             }
           }
         }, _callee5);
+      }))();
+    },
+    getCompany: function getCompany() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return axios.get('/uploading/nav_upload/getCompany');
+
+              case 2:
+                return _context6.abrupt("return", _context6.sent);
+
+              case 3:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
       }))();
     }
   },
@@ -50401,7 +50606,6 @@ var render = function() {
                           staticClass:
                             "btn btn-danger btn-rounded pull-right mar-lft",
                           attrs: {
-                            "data-v-6200eafe": "",
                             disabled:
                               !_vm.notFoundItems || _vm.notFoundItems == 0
                           },
@@ -50412,12 +50616,9 @@ var render = function() {
                           }
                         },
                         [
-                          _c("i", {
-                            staticClass: "demo-pli-printer icon-lg",
-                            attrs: { "data-v-6200eafe": "" }
-                          }),
+                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
                           _vm._v(
-                            "  Items Not Found(" +
+                            "  Items Not\n                    Found(" +
                               _vm._s(_vm.notFoundItems) +
                               ")\n                  "
                           )
@@ -57075,6 +57276,8 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
+                    _vm._m(9),
+                    _vm._v(" "),
                     _c(
                       "div",
                       {
@@ -57085,7 +57288,9 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-info btn-rounded pull-right",
+                            staticClass:
+                              "btn btn-info btn-rounded pull-right text-thin mar-lft",
+                            attrs: { disabled: !_vm.data.data.length },
                             on: {
                               click: function($event) {
                                 return _vm.generateBtn($event)
@@ -57100,6 +57305,30 @@ var render = function() {
                               "  Generate\n                    Report\n                  "
                             )
                           ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-danger btn-rounded pull-right text-thin",
+                            attrs: { disabled: !_vm.data.data.length },
+                            on: {
+                              click: function($event) {
+                                return _vm.exportBtn($event, "Variance")
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "demo-pli-printer icon-lg"
+                            }),
+                            _vm._v(
+                              "  Export to\n                    navision (" +
+                                _vm._s(_vm.data.data.length) +
+                                ")\n                  "
+                            )
+                          ]
                         )
                       ]
                     )
@@ -57108,109 +57337,128 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("table", { staticClass: "table table-striped" }, [
-                _vm._m(9),
+                _vm._m(10),
                 _vm._v(" "),
                 _c(
                   "tbody",
-                  _vm._l(_vm.data.data, function(data, index) {
-                    return _c("tr", { key: index }, [
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-main text-normal",
-                          staticStyle: { "font-size": "1.1em" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(data.itemcode) +
-                              "\n                  "
+                  [
+                    !_vm.data.data.length
+                      ? _c("tr", [
+                          _c(
+                            "td",
+                            {
+                              staticStyle: { "text-align": "center" },
+                              attrs: { colspan: "13" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                    No data available.\n                  "
+                              )
+                            ]
                           )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-main text-normal",
-                          staticStyle: { "font-size": "1.1em" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(data.extended_desc) +
-                              "\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-main text-normal text-center",
-                          staticStyle: { "font-size": "1.1em" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(data.uom) +
-                              "\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-main text-normal text-center",
-                          staticStyle: { "font-size": "1.1em" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(Math.trunc(data.nav_qty)) +
-                              "\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-main text-normal text-center",
-                          staticStyle: { "font-size": "1.1em" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(data.conversion_qty) +
-                              "\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-main text-normal text-center",
-                          staticStyle: { "font-size": "1.1em" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(
-                                _vm.computeVariance(
-                                  data.nav_qty,
-                                  data.conversion_qty
-                                )
-                              ) +
-                              "\n                  "
-                          )
-                        ]
-                      )
-                    ])
-                  }),
-                  0
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.data.data, function(data, index) {
+                      return _c("tr", { key: index }, [
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal",
+                            staticStyle: { "font-size": "1.1em" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(data.itemcode) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal",
+                            staticStyle: { "font-size": "1.1em" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(data.extended_desc) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal text-center",
+                            staticStyle: { "font-size": "1.1em" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(data.uom) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal text-center",
+                            staticStyle: { "font-size": "1.1em" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(Math.trunc(data.nav_qty)) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal text-center",
+                            staticStyle: { "font-size": "1.1em" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(data.conversion_qty) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal text-center",
+                            staticStyle: { "font-size": "1.1em" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(
+                                  _vm.computeVariance(
+                                    data.nav_qty,
+                                    data.conversion_qty
+                                  )
+                                ) +
+                                "\n                  "
+                            )
+                          ]
+                        )
+                      ])
+                    })
+                  ],
+                  2
                 )
               ]),
               _vm._v(" "),
@@ -57242,7 +57490,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Company :")])]
@@ -57255,7 +57503,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Business Unit :")])]
@@ -57268,7 +57516,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Department :")])]
@@ -57281,7 +57529,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Vendor Name :")])]
@@ -57291,7 +57539,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v(" Date\n                      as of :\n                    ")
@@ -57306,7 +57554,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -57322,7 +57570,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -57337,7 +57585,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
@@ -57350,10 +57598,26 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("By Dept :")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
+      [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
+          _c("h5")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6 pad-all" })
+      ]
     )
   },
   function() {

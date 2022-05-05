@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\ExportsController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PhysicalCountController;
@@ -84,6 +85,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('variance_report')->group(function () {
             Route::get('/getResults', [ReportsController::class, 'getResultsVariance']);
             Route::get('/generate', [ReportsController::class, 'generateVariance']);
+            Route::post('/export', [ExportsController::class, 'exportVariance']);
         });
         Route::prefix('variance_report_cost')->group(function () {
             Route::get('/getResultVarianceCost', [ReportsController::class, 'getResultVarianceCost']);

@@ -222,13 +222,12 @@
                   </div>
                   <div class="row pad-all">
                     <button
-                      data-v-6200eafe=""
                       class="btn btn-danger btn-rounded pull-right mar-lft"
                       :disabled="!notFoundItems || notFoundItems == 0"
                       @click="generateBtnEXCEL($event, 'NotFound')"
                     >
-                      <i data-v-6200eafe="" class="demo-pli-printer icon-lg"></i
-                      >&nbsp; Items Not Found({{ notFoundItems }})
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
+                      Found({{ notFoundItems }})
                     </button>
                     <button
                       class="btn btn-info btn-rounded pull-right mar-lft"

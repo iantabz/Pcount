@@ -18,7 +18,7 @@
                 <div class="col-md-6 table-toolbar-left form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Company :</h5></label
@@ -36,7 +36,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Business Unit :</h5></label
@@ -55,7 +55,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Department :</h5></label
@@ -90,7 +90,7 @@
                   </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Vendor Name :</h5></label
@@ -117,7 +117,7 @@
                     </div>
                   </div>
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-calendar-4 icon-fw"></i> Date
                         as of :
@@ -138,20 +138,20 @@
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Section :</h5></label
@@ -187,7 +187,7 @@
                   </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>By Dept :</h5></label
@@ -214,13 +214,27 @@
                     </div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <!-- :disabled="!data.data.length" -->
+                    <label class="col-md-3 control-label text-thin">
+                      <h5></h5>
+                    </label>
+                    <div class="col-md-6 pad-all"></div>
+                  </div>
+                  <div class="row" style="padding: 10px 15px 15px 10px">
                     <button
-                      class="btn btn-info btn-rounded pull-right"
+                      :disabled="!data.data.length"
+                      class="btn btn-info btn-rounded pull-right text-thin mar-lft"
                       @click="generateBtn($event)"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
                       Report
+                    </button>
+                    <button
+                      class="btn btn-danger btn-rounded pull-right text-thin"
+                      :disabled="!data.data.length"
+                      @click="exportBtn($event, 'Variance')"
+                    >
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Export to
+                      navision ({{ data.data.length }})
                     </button>
                   </div>
                 </div>
@@ -275,11 +289,11 @@
                 </thead>
 
                 <tbody>
-                  <!-- <tr v-if="!data.data.length">
+                  <tr v-if="!data.data.length">
                     <td colspan="13" style="text-align: center;">
                       No data available.
                     </td>
-                  </tr> -->
+                  </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
                     <td class="text-main text-normal" style="font-size: 1.1em">
                       {{ data.itemcode }}
@@ -381,7 +395,11 @@ export default {
       deptList: [],
       department: null,
       sectionList: [],
-      section: null
+      section: null,
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL'],
+      finalExport: [],
+      export: []
     }
   },
   components: {
@@ -406,7 +424,7 @@ export default {
       if (newValue) {
         const res = newValue.find(val => val.vendor_name === 'ALL VENDORS')
 
-        console.log(res)
+        // console.log(res)
         if (res) {
           this.filteredvendorList = this.vendorList.filter(
             categ => categ.vendor_name === res.vendor_name
@@ -473,16 +491,82 @@ export default {
     }
   },
   methods: {
-    computeVariance(a, b) {
-      let variance = 0
-      if (a < 0) {
-        variance = parseFloat(b) + parseFloat(a)
+    async exportBtn(event, reportType) {
+      Swal.fire({
+        html: "Please wait, don't close the browser.",
+        title: 'Exporting in progress',
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+          Swal.showLoading()
+        },
+        willClose: () => {}
+      }).then(result => {
+        if (result.isConfirmed) {
+        }
+      })
+      // document.location.href = `/reports/appdata/generate`
+      const thisButton = event.target
+      const oldHTML = thisButton.innerHTML
+
+      let pass = null,
+        report = null
+      if (reportType == 'Variance') {
+        pass = '/reports/variance_report/export'
       } else {
-        variance = parseFloat(b) - parseFloat(a)
+        pass = '/reports/variance_report/'
       }
-      console.log(variance)
-      //  const variance = parseFloat(a) - parseFloat(b)
-      return variance
+
+      thisButton.disabled = true
+      thisButton.innerHTML =
+        '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
+      const { headers, data } = await axios.post(
+        pass,
+        {
+          export: btoa(JSON.stringify(this.export))
+        },
+
+        {
+          responseType: 'blob'
+        }
+      )
+      // return console.log(headers)
+      const { 'content-disposition': contentDisposition } = headers
+      const [attachment, file] = contentDisposition.split(' ')
+      const [key, fileName] = file.split('=')
+
+      const url = window.URL.createObjectURL(new Blob([data]))
+      const link = document.createElement('a')
+      link.href = url
+      let section = null
+      // console.log(fileName)
+      this.section ? (section = '-' + this.section) : (section = '')
+
+      let title = 'Export to Nav'
+      if (reportType == 'Variance w/ Cost') {
+        title = 'Export to Nav'
+      }
+
+      link.setAttribute(
+        'download',
+        `${title} as of ${this.date}  ${this.business_unit} ${this.department}${section}` +
+          '.csv'
+      )
+      // console.log(link)
+      document.body.appendChild(link)
+      link.click()
+
+      thisButton.disabled = false
+      thisButton.innerHTML = oldHTML
+      Swal.close()
+      $.niftyNoty({
+        type: 'success',
+        icon: 'pli-cross icon-2x',
+        message: '<i class="fa fa-check"></i> Generate successful!',
+        container: 'floating',
+        timer: 5000
+      })
     },
     async generateBtn(e) {
       Swal.fire({
@@ -552,12 +636,6 @@ export default {
         timer: 5000
       })
     },
-    getFormattedDateToday() {
-      return new Date()
-        .toJSON()
-        .slice(0, 10)
-        .replace(/-/g, '-')
-    },
     getResults(page = 1) {
       let url = `/reports/variance_report/getResults/?date=${btoa(
         this.date
@@ -566,13 +644,131 @@ export default {
       }&bu=${this.business_unit}&dept=${this.department}&section=${
         this.section
       }&page=`
-      if (this.business_unit && this.department && this.section) {
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      ) {
         axios.get(url).then(response => {
-          // console.log(response)
           this.data = response.data
           this.total_result = response.data.total
+          this.finalExport = response.data
+          this.exportcsv()
         })
       }
+    },
+    exportcsv() {
+      this.export = []
+      for (const [data, test] of Object.entries(this.finalExport)) {
+        // console.log(data, test)
+        let variance = 0,
+          journalTemplateName = 'ITEM',
+          journalBatchName = '',
+          lineNo = 0,
+          itemCode = 0,
+          postingDate = this.date2,
+          entryType = '',
+          docNo = '',
+          desc = '',
+          locCode = '',
+          invtyPostGroup = '',
+          nav_qty = 0,
+          app_qty = 0,
+          unitAmt = 0,
+          unitCost = 0,
+          amt = 0,
+          sourceCode = 'ITEMJNL',
+          companyCode = 0,
+          deptCode = 0,
+          reasonCode = 0,
+          genProdPostGroup = 0,
+          docDate = this.date2,
+          exDocNo = '',
+          qtyPerUom = 0,
+          uom = '',
+          qtyBase = 0,
+          invQtyBase = 0,
+          valueEntry = '',
+          itemDiv = 0
+
+        test.forEach(result => {
+          itemCode = result.itemcode
+          desc = result.extended_desc
+          // variance = parseFloat(result.nav_qty - result.app_qty)
+          app_qty = parseFloat(result.app_qty)
+          nav_qty = parseFloat(result.nav_qty)
+          uom = result.uom
+          lineNo += 10000
+          qtyBase = nav_qty
+          invQtyBase = app_qty
+          console.log(variance)
+          // if (variance < 0) {
+          //   entryType = 'Negative Adjmt.'
+          // } else {
+          //   entryType = 'Positive Adjmt.'
+          // }
+
+          if (result.nav_qty < 0) {
+            variance = parseFloat(result.app_qty) + parseFloat(result.nav_qty)
+            entryType = 'Negative Adjmt.'
+          } else {
+            variance = parseFloat(result.app_qty) - parseFloat(result.nav_qty)
+            entryType = 'Positive Adjmt.'
+          }
+
+          this.export.push({
+            journalTemplateName,
+            journalBatchName,
+            lineNo,
+            itemCode,
+            postingDate,
+            entryType,
+            docNo,
+            desc,
+            locCode,
+            invtyPostGroup,
+            nav_qty,
+            app_qty,
+            unitAmt,
+            unitCost,
+            amt,
+            sourceCode,
+            companyCode,
+            deptCode,
+            reasonCode,
+            genProdPostGroup,
+            docDate,
+            exDocNo,
+            qtyPerUom,
+            uom,
+            qtyBase,
+            invQtyBase,
+            valueEntry,
+            itemDiv
+          })
+        })
+
+        // console.log(this.export)
+      }
+    },
+    computeVariance(a, b) {
+      let variance = 0
+      if (a < 0) {
+        variance = parseFloat(b) + parseFloat(a)
+      } else {
+        variance = parseFloat(b) - parseFloat(a)
+      }
+      // console.log(variance)
+      //  const variance = parseFloat(a) - parseFloat(b)
+      return variance
+    },
+    getFormattedDateToday() {
+      return new Date()
+        .toJSON()
+        .slice(0, 10)
+        .replace(/-/g, '-')
     },
     departmentSelected(val) {
       this.section = null
