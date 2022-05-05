@@ -115,7 +115,7 @@
                     placeholder="Count Type"
                   ></v-select>
                 </div>
-              </div>
+              </div> -->
               <div class="row pad-all" style="padding-left: 10px;">
                 <label class="col-lg-3 control-label text-bold">
                   <h5>
@@ -133,7 +133,7 @@
                     style="border-radius: 4px"
                   />
                 </div>
-              </div> -->
+              </div>
             </div>
             <div
               class="col-lg-6 table-toolbar-right form-horizontal pad-top"

@@ -275,11 +275,11 @@
                 </thead>
 
                 <tbody>
-                  <tr v-if="!data.data.length">
+                  <!-- <tr v-if="!data.data.length">
                     <td colspan="13" style="text-align: center;">
                       No data available.
                     </td>
-                  </tr>
+                  </tr> -->
                   <tr v-for="(data, index) in data.data" :key="index">
                     <td class="text-main text-normal" style="font-size: 1.1em">
                       {{ data.itemcode }}
@@ -317,11 +317,10 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="col-md-6">
-                    Showing {{ data.from }} to {{ data.to }} of
-                    {{ data.total }} entries
+                    Showing {{ data.data.length }} entries
                   </div>
                   <div class="col-md-6">
-                    <div class="text-right">
+                    <!-- <div class="text-right">
                       <pagination
                         style="margin: 0 0 20px 0"
                         :limit="1"
@@ -329,7 +328,7 @@
                         :data="data"
                         @pagination-change-page="getResults"
                       ></pagination>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -568,7 +567,8 @@ export default {
         this.section
       }&page=`
       if (this.business_unit && this.department && this.section) {
-        axios.get(url + page).then(response => {
+        axios.get(url).then(response => {
+          // console.log(response)
           this.data = response.data
           this.total_result = response.data.total
         })

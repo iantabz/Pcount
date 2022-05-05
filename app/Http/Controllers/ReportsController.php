@@ -469,16 +469,16 @@ class ReportsController extends Controller
 
 
         $result = TblAppCountdata::selectRaw(
-            "tbl_app_countdata.itemcode, 
-        tbl_app_countdata.barcode,
-        tbl_item_masterfile.extended_desc,
-         tbl_app_countdata.uom, 
-         SUM(tbl_app_countdata.qty) as app_qty,
-         SUM(tbl_app_countdata.conversion_qty) as conversion_qty,
-         SUM(tbl_nav_countdata.qty) as nav_qty"
+            'tbl_app_countdata.itemcode, 
+            tbl_app_countdata.barcode,
+            tbl_item_masterfile.extended_desc,
+            tbl_app_countdata.uom, 
+            SUM(tbl_app_countdata.qty) as app_qty,
+            SUM(tbl_app_countdata.conversion_qty) as conversion_qty'
         )
             ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode')
-            ->leftJoin('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode');
+            ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode')
+            ->whereBetween('date', [$date, $dateAsOf]);
 
         if ($bu != 'null') {
             $result->WHERE('tbl_app_countdata.business_unit', $bu);
@@ -495,31 +495,6 @@ class ReportsController extends Controller
             // $result->orwhere('tbl_nav_countdata.section', $section);
         }
 
-        $x = $result->groupByRaw('tbl_app_countdata.itemcode')->orderBy('itemcode')->limit(5)->get();
-
-        // dd($x);
-
-        $xx = $x->map(function ($c) use ($bu, $dept, $section) {
-            // dd($c->itemcode);
-            $x = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
-                ['itemcode', $c->itemcode],
-                ['business_unit', $bu],
-                ['department', $dept],
-                ['section', $section]
-            ])->groupBy('itemcode');
-
-            // dd($x);
-            if ($x->exists()) {
-                $c->nav_qty = $x->nav_qty;
-            } else {
-                $c->nav_qty = null;
-            }
-
-            return $c;
-        });
-
-        // dd($xx);
-
         if ($vendors) {
             $vendors = explode(' , ', $vendors);
             $vendors = str_replace("'", "", $vendors);
@@ -531,14 +506,35 @@ class ReportsController extends Controller
             $result->whereIn('group', $category);
         }
 
+        $x = $result->groupByRaw('tbl_app_countdata.itemcode')->orderBy('itemcode')->get();
+
+        // dd($x);
+
+
+        $query = $x->map(function ($c) use ($bu, $dept, $section) {
+            // dd($c->itemcode);
+            $x = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
+                ['itemcode', $c->itemcode],
+                ['business_unit', $bu],
+                ['department', $dept],
+                ['section', $section]
+            ])->groupBy('itemcode');
+
+            // dd($x->get());
+            if ($x->exists()) {
+                $c->nav_qty = $x->first()->nav_qty;
+            } else {
+                $c->nav_qty = '-';
+            }
+
+            return $c;
+        });
+
         // dd($result->whereBetween('date', [$date, $dateAsOf])
         //     ->groupByRaw('tbl_nav_countdata.itemcode')
         //     ->orderBy('itemcode')->limit(5)->get());
-
-        return $result->whereBetween('date', [$date, $dateAsOf])
-            ->groupByRaw('tbl_nav_countdata.itemcode')
-            ->orderBy('itemcode')
-            ->paginate(10);
+        $data['data'] = $query;
+        return $data;
     }
 
     public function generateVariance()
