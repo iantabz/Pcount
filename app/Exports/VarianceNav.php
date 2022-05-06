@@ -21,29 +21,27 @@ class VarianceNav implements FromCollection, WithStyles, ShouldAutoSize, WithCol
         $test = null;
 
         $export = collect($export)->map(function ($trans) use ($test) {
-            // dd($trans->docNo);
+            $postingDate = date_format(date_create($trans->postingDate), "m/d/Y");
+            $docDate = date_format(date_create($trans->postingDate), "m/d/Y");
+
             $trans->DocNo = '10000';
-            // dd($test);
+            $trans->postingDate = $postingDate;
+            $trans->docDate = $docDate;
+            $trans->valueEntry = 'Direct Cost';
+            $trans->reasonCode = 'PCV';
+
             return $trans;
         });
-
-        // dd($export);
 
         return $export;
     }
 
     public function setPassword(Worksheet $sheet)
     {
-        // $protection = $sheet->getProtection();
-        // $protection->setPassword('PhpSpreadsheet');
-        // $protection->setSheet(true);
-        // $protection->setSort(true);
-        // $protection->setInsertRows(true);
-        // $protection->setFormatCells(true);
         return [
 
             $protection = $sheet->getProtection(),
-            $protection->setPassword('PhpSpreadsheet', true),
+            $protection->setPassword('Pcount2021', true),
             $protection->setSheet(true),
             $protection->setAlgorithm(Protection::ALGORITHM_SHA_512),
             $protection->setSpinCount(20000),
@@ -57,7 +55,7 @@ class VarianceNav implements FromCollection, WithStyles, ShouldAutoSize, WithCol
     {
         // $this->excelEnableProtection($sheet);
         $protection = $sheet->getProtection();
-        $protection->setPassword('PhpSpreadsheet', 'true');
+        $protection->setPassword('Pcount2021', 'true');
         $protection->setAlgorithm(Protection::ALGORITHM_SHA_512);
         $protection->setSpinCount(20000);
         $protection->setSheet(true);

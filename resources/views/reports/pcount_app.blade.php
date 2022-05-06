@@ -447,7 +447,7 @@
             // $timeDiff = $testStart->diff($testEnd);
             $timeDiff = date_diff($timeStartCount, $timeEndCount);
             $countTime = $timeDiff->format("%H:%I:%S");
-            $grandTotal += $item['total_qty'];
+            $grandTotal += $item['qty'];
             $grandTotalConvQty += $item['total_conv_qty'];
             // $countStart
             @endphp
@@ -457,7 +457,7 @@
                 <td style="text-align: center;">{{ $item['barcode'] }}</td>
                 <td style="text-align: left;">{{ $item['extended_desc'] }}</td>
                 <td style="text-align: center;">{{ $item['uom'] }}</td>
-                <td style="text-align: center;">{{ number_format($item['total_qty'], 0) }}</td>
+                <td style="text-align: center;">{{ number_format($item['qty'], 0) }}</td>
                 <td style="text-align: center;">
                     @if ($item['nav_uom'])
                     {{ $item['nav_uom'] }}

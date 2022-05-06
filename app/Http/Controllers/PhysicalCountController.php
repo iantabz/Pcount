@@ -168,7 +168,7 @@ class PhysicalCountController extends Controller
                 tbl_item_masterfile.extended_desc,
                 tbl_app_countdata.uom, 
                 tbl_nav_countdata.uom as nav_uom,
-                SUM(tbl_app_countdata.qty) as total_qty,
+                SUM(tbl_app_countdata.qty) as qty,
                 SUM(tbl_app_countdata.conversion_qty) as total_conv_qty,
                 tbl_app_countdata.rack_desc,
                 tbl_app_countdata.empno,
@@ -260,6 +260,8 @@ class PhysicalCountController extends Controller
             'runTime'    => $runTime,
             'data' => $result
         );
+
+        dd($header);
 
         return $header;
     }

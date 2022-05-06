@@ -13196,7 +13196,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             journalBatchName = '',
             lineNo = 0,
             itemCode = 0,
-            postingDate = _this4.date2,
+            postingDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
             entryType = '',
             docNo = '',
             desc = '',
@@ -13212,7 +13212,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             deptCode = 0,
             reasonCode = 0,
             genProdPostGroup = 0,
-            docDate = _this4.date2,
+            docDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
             exDocNo = '',
             qtyPerUom = 0,
             uom = '',
@@ -13222,19 +13222,16 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             itemDiv = 0;
         test.forEach(function (result) {
           itemCode = result.itemcode;
-          desc = result.extended_desc; // variance = parseFloat(result.nav_qty - result.app_qty)
-
+          desc = result.extended_desc;
           app_qty = parseFloat(result.app_qty);
           nav_qty = parseFloat(result.nav_qty);
           uom = result.uom;
           lineNo += 10000;
           qtyBase = nav_qty;
           invQtyBase = app_qty;
-          console.log(variance); // if (variance < 0) {
-          //   entryType = 'Negative Adjmt.'
-          // } else {
-          //   entryType = 'Positive Adjmt.'
-          // }
+          unitAmt = result.cost_no_vat;
+          unitCost = result.cost_no_vat;
+          amt = result.amt;
 
           if (result.nav_qty < 0) {
             variance = parseFloat(result.app_qty) + parseFloat(result.nav_qty);

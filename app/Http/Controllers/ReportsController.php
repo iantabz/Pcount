@@ -510,10 +510,9 @@ class ReportsController extends Controller
 
         // dd($x);
 
-
         $query = $x->map(function ($c) use ($bu, $dept, $section) {
             // dd($c->itemcode);
-            $x = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
+            $x = TblNavCountdata::selectRaw("cost_vat, cost_no_vat, amt, SUM(qty) as nav_qty")->where([
                 ['itemcode', $c->itemcode],
                 ['business_unit', $bu],
                 ['department', $dept],
@@ -523,9 +522,17 @@ class ReportsController extends Controller
             // dd($x->get());
             if ($x->exists()) {
                 $c->nav_qty = $x->first()->nav_qty;
+                $c->cost_vat = $x->first()->cost_vat;
+                $c->cost_no_vat = $x->first()->cost_no_vat;
+                $c->amt = $x->first()->amt;
             } else {
                 $c->nav_qty = '-';
+                $c->cost_vat = '-';
+                $c->cost_no_vat = '-';
+                $c->amt = '-';
             }
+
+
 
             return $c;
         });
