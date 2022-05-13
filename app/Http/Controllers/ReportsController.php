@@ -549,7 +549,7 @@ class ReportsController extends Controller
         set_time_limit(0);
         ini_set('memory_limit', '-1');
 
-        $domPdfOptions = new Options();
+        // $domPdfOptions = new Options();
         // dd($domPdfOptions);
 
         $pdf = PDF::loadView('reports.variance_report', ['data' => $this->varianceReportData()]);

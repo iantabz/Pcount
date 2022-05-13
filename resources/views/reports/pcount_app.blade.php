@@ -315,6 +315,7 @@
 </head>
 
 <body>
+    {{-- {{dd($data)}} --}}
     @php
     $countSize =count($data['data']);
     $startCount = null;
@@ -432,7 +433,7 @@
             $skus =[];
             @endphp
             @foreach ($items as $key => $item)
-            {{-- {{dd($items)}} --}}
+
             {{-- {{dd(end($items))}} --}}
 
             @php
@@ -511,7 +512,8 @@
                 </th>
                 <th width="10%"></th>
                 <th width="30%" style="text-align: left; font-size: 12px;">
-                    <img src="data:image/png;base64,{{$item['app_user_sign']}}" class="img-tabz" />
+                    {{-- {{dd($items[0])}} --}}
+                    <img src="data:image/png;base64,{{$items[0]['user_signature']}}" class="img-tabz" />
                     {{-- <img src="data:image/jpg;base64,{{$item['app_user_sign']}}" style="" /> --}}
                     {{-- <img src="data:image/xml;base64,{{$item['app_user_sign']}}" class="img-tabz" /> --}}
                     {{-- <img
@@ -523,7 +525,7 @@
                 </th>
                 <th width=" 10%"></th>
                 <th width="30%" style="text-align: left; font-size: 12px;">
-                    <img src="data:image/png;base64,{{$item['audit_user_sign']}}" class="img-tabz" />
+                    <img src="data:image/png;base64,{{$items[0]['audit_signature']}}" class="img-tabz" />
                     <br />
                     {{$auditor}}
                 </th>

@@ -370,7 +370,8 @@ export default {
       forPrintCategory: [],
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
-      notFoundItems: 0
+      notFoundItems: 0,
+      export: []
     }
   },
   components: {
@@ -562,14 +563,20 @@ export default {
       thisButton.disabled = true
       thisButton.innerHTML =
         '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
-      const { headers, data } = await axios.get(
-        `/reports/appdata/generate?date=${btoa(this.date)}&date2=${btoa(
-          this.date2
-        )}&vendors=${btoa(this.forPrintVendor)}&category=${
-          this.forPrintCategory
-        }&bu=${this.business_unit}&dept=${this.department}&section=${
-          this.section
-        }&countType=${this.countType}`,
+
+      // `/reports/appdata/generate?date=${btoa(this.date)}&date2=${btoa(
+      //   this.date2
+      // )}&vendors=${btoa(this.forPrintVendor)}&category=${
+      //   this.forPrintCategory
+      // }&bu=${this.business_unit}&dept=${this.department}&section=${
+      //   this.section
+      // }&countType=${this.countType}`
+
+      const { headers, data } = await axios.post(
+        `/reports/appdata/generate`,
+        {
+          export: btoa(JSON.stringify(this.export))
+        },
         {
           responseType: 'blob'
         }
@@ -757,6 +764,17 @@ export default {
 
       return await axios.get(url + page)
     },
+    async getExport() {
+      let url = `/reports/appdata/getResults/?date=${btoa(
+        this.date
+      )}&date2=${btoa(this.date2)}&vendors=${btoa(
+        this.forPrintVendor
+      )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+        this.department
+      }&section=${this.section}&countType=${this.countType}&forExport=true`
+
+      return await axios.get(url)
+    },
     getResults() {
       if (
         this.business_unit &&
@@ -765,13 +783,17 @@ export default {
         this.vendor &&
         this.category
       )
-        Promise.all([this.getCountData(), this.getNotFound()]).then(
-          response => {
-            this.data = response[0].data
-            this.total_result = response[0].data.total
-            this.notFoundItems = response[1].data.total
-          }
-        )
+        Promise.all([
+          this.getCountData(),
+          this.getNotFound(),
+          this.getExport()
+        ]).then(response => {
+          // this.export = []
+          this.data = response[0].data
+          this.total_result = response[0].data.total
+          this.notFoundItems = response[1].data.total
+          this.export = response[2].data
+        })
     }
   },
   mounted() {

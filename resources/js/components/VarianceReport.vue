@@ -543,9 +543,9 @@ export default {
       // console.log(fileName)
       this.section ? (section = '-' + this.section) : (section = '')
 
-      let title = 'Export to Nav'
+      let title = 'Import to Nav'
       if (reportType == 'Variance w/ Cost') {
-        title = 'Export to Nav'
+        title = 'Import to Nav'
       }
 
       link.setAttribute(

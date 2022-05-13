@@ -17,6 +17,7 @@ class PhysicalCountController extends Controller
 {
     public function getResults()
     {
+        $company = auth()->user()->company;
         $user = auth()->user()->id;
         $bu = request()->bu;
         $dept = request()->dept;
@@ -27,6 +28,9 @@ class PhysicalCountController extends Controller
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
         $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
         $countType = request()->countType;
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
 
         $query = TblAppCountdata::selectRaw('
         tbl_app_countdata.id,
@@ -41,10 +45,22 @@ class PhysicalCountController extends Controller
         tbl_app_countdata.rack_desc,
         tbl_app_countdata.empno,
         datetime_scanned,
-        date_expiry
+        datetime_saved,
+        datetime_exported,
+        date_expiry,
+        vendor_name, 
+        tbl_item_masterfile.group,
+        tbl_app_user.name AS app_user,
+        tbl_app_user.position AS app_user_position,
+        tbl_app_audit.name AS audit_user,
+        tbl_app_audit.position AS audit_position
         ')
             ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode')
+            ->JOIN('tbl_app_user', 'tbl_app_user.location_id', 'tbl_app_countdata.location_id')
+            ->JOIN('tbl_app_audit', 'tbl_app_audit.location_id', 'tbl_app_countdata.location_id')
             ->LEFTJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode');
+
+        // dd($query->get());
 
         if ($bu != 'null') {
             $query->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
@@ -71,9 +87,46 @@ class PhysicalCountController extends Controller
             $query = $query->whereIn('group', $category);
         }
 
-        // dd($dateAsOf);
+        $query = $query->whereBetween('datetime_saved', [$date, $dateAsOf])
+            ->groupBy('barcode')
+            ->orderBy('itemcode');
 
-        return $query->whereBetween('datetime_saved', [$date, $dateAsOf])->groupBy('barcode')->orderBy('itemcode')->paginate(10);
+
+
+        if (request()->has('forExport')) {
+            $data = $query->get()
+                ->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
+                ->all();
+
+            $query = array(
+                'company' => $company,
+                'business_unit' => $bu,
+                'department' => $dept,
+                'section' => $section,
+                'vendors' => $vendors,
+                'category' => $category,
+                'date' => $printDate,
+                'countType' => $countType,
+                'user' => auth()->user()->name,
+                'user_position' => auth()->user()->position,
+                'runDate'   => $runDate,
+                'runTime'    => $runTime,
+                'data' => $data
+            );
+        } else {
+            $query = $query->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
+                ->paginate(10);
+        }
+
+        return $query;
+
+        // return $query->whereBetween('datetime_saved', [$date, $dateAsOf])
+        //     ->groupBy('barcode')
+        //     ->orderBy('itemcode')
+        //     // ->get()
+        //     ->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
+        //     // ->toArray();
+        //     ->paginate(10);
     }
 
     public function getNotFound()
@@ -94,7 +147,45 @@ class PhysicalCountController extends Controller
     {
         // set_time_limit(0);
         // ini_set('memory_limit', '-1');
-        $pdf = PDF::loadView('reports.pcount_app', ['data' => $this->data()]);
+
+        // dd(request()->all());
+        $export = json_decode(base64_decode(request()->export), true);
+
+        // dd($export);
+
+        // $export = collect($export)->all();
+        // dd($export);
+        // dd($export);
+
+        // dd(collect($export['data'])->flatten());
+
+        $export['data'] = collect($export['data'])->map(function ($trans) {
+            $res = array_map(function ($x) {
+                return array_map(function ($y) {
+                    return array_map(function ($z) {
+                        $newArr = [];
+                        foreach ($z as $index => $xyz) {
+                            if ($index === 0) {
+                                $res = TblAppCountdata::where('itemcode', $xyz['itemcode'])->first();
+                                $xyz['user_signature'] = $res->user_signature;
+                                $xyz['audit_signature'] = $res->audit_signature;
+                                $newArr[] = $xyz;
+                            } else {
+                                $newArr[] = $xyz;
+                            }
+                        }
+                        return $newArr;
+                    }, $y);
+                }, $x);
+            }, $trans);
+
+            return $res;
+        })->all();
+
+        // dd($export);
+
+
+        $pdf = PDF::loadView('reports.pcount_app', ['data' => $export]);
         return $pdf->setPaper('legal', 'landscape')->download('PCount From App.pdf');
     }
 
@@ -141,7 +232,7 @@ class PhysicalCountController extends Controller
         // return $data;
     }
 
-    public function data()
+    public function data($export)
     {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
@@ -178,10 +269,8 @@ class PhysicalCountController extends Controller
                 tbl_app_countdata.date_expiry,
                 tbl_app_user.name AS app_user,
                 tbl_app_user.position AS app_user_position,
-                tbl_app_countdata.user_signature as app_user_sign,
                 tbl_app_audit.name AS audit_user,
                 tbl_app_audit.position AS audit_position,
-                tbl_app_countdata.audit_signature AS audit_user_sign,
                 vendor_name, 
                 tbl_item_masterfile.group
                 ')
@@ -261,7 +350,7 @@ class PhysicalCountController extends Controller
             'data' => $result
         );
 
-        dd($header);
+        // dd($header);
 
         return $header;
     }

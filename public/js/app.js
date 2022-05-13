@@ -5680,7 +5680,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       forPrintCategory: [],
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
-      notFoundItems: 0
+      notFoundItems: 0,
+      "export": []
     };
   },
   components: {
@@ -5863,7 +5864,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var thisButton, oldHTML, _yield$axios$get2, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link, section;
+        var thisButton, oldHTML, _yield$axios$post, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link, section;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
@@ -5886,16 +5887,25 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 thisButton = e.target;
                 oldHTML = thisButton.innerHTML;
                 thisButton.disabled = true;
-                thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
+                thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'; // `/reports/appdata/generate?date=${btoa(this.date)}&date2=${btoa(
+                //   this.date2
+                // )}&vendors=${btoa(this.forPrintVendor)}&category=${
+                //   this.forPrintCategory
+                // }&bu=${this.business_unit}&dept=${this.department}&section=${
+                //   this.section
+                // }&countType=${this.countType}`
+
                 _context2.next = 7;
-                return axios.get("/reports/appdata/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&countType=").concat(_this2.countType), {
+                return axios.post("/reports/appdata/generate", {
+                  "export": btoa(JSON.stringify(_this2["export"]))
+                }, {
                   responseType: 'blob'
                 });
 
               case 7:
-                _yield$axios$get2 = _context2.sent;
-                headers = _yield$axios$get2.headers;
-                data = _yield$axios$get2.data;
+                _yield$axios$post = _context2.sent;
+                headers = _yield$axios$post.headers;
+                data = _yield$axios$post.data;
                 // return console.log(headers)
                 contentDisposition = headers['content-disposition'];
                 _contentDisposition$s3 = contentDisposition.split(' '), _contentDisposition$s4 = _slicedToArray(_contentDisposition$s3, 2), attachment = _contentDisposition$s4[0], file = _contentDisposition$s4[1];
@@ -6171,13 +6181,39 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         }, _callee8);
       }))();
     },
-    getResults: function getResults() {
+    getExport: function getExport() {
       var _this9 = this;
 
-      if (this.business_unit && this.department && this.section && this.vendor && this.category) Promise.all([this.getCountData(), this.getNotFound()]).then(function (response) {
-        _this9.data = response[0].data;
-        _this9.total_result = response[0].data.total;
-        _this9.notFoundItems = response[1].data.total;
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9() {
+        var url;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                url = "/reports/appdata/getResults/?date=".concat(btoa(_this9.date), "&date2=").concat(btoa(_this9.date2), "&vendors=").concat(btoa(_this9.forPrintVendor), "&category=").concat(_this9.forPrintCategory, "&bu=").concat(_this9.business_unit, "&dept=").concat(_this9.department, "&section=").concat(_this9.section, "&countType=").concat(_this9.countType, "&forExport=true");
+                _context9.next = 3;
+                return axios.get(url);
+
+              case 3:
+                return _context9.abrupt("return", _context9.sent);
+
+              case 4:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9);
+      }))();
+    },
+    getResults: function getResults() {
+      var _this10 = this;
+
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) Promise.all([this.getCountData(), this.getNotFound(), this.getExport()]).then(function (response) {
+        // this.export = []
+        _this10.data = response[0].data;
+        _this10.total_result = response[0].data.total;
+        _this10.notFoundItems = response[1].data.total;
+        _this10["export"] = response[2].data;
       });
     }
   },

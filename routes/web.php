@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('reports')->group(function () {
         Route::prefix('appdata')->group(function () {
             Route::get('/getResults', [PhysicalCountController::class, 'getResults']);
-            Route::get('/generate', [PhysicalCountController::class, 'generate']);
+            Route::post('/generate', [PhysicalCountController::class, 'generate']);
             Route::get('/generateAppDataExcel', [PhysicalCountController::class, 'generateAppDataExcel']);
             Route::get('/getNotFound', [PhysicalCountController::class, 'getNotFound']);
             Route::get('/generateNotFound', [PhysicalCountController::class, 'generateNotFound']);
