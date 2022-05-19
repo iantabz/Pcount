@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\ExportsController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\InventoryValuationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PhysicalCountController;
 use App\Http\Controllers\ReportsController;
@@ -98,6 +99,10 @@ Route::middleware('auth')->group(function () {
         Route::prefix('consolidation_nav')->group(function () {
             Route::get('/getResults', [ReportsController::class, 'getResults']);
             Route::get('/generate', [ReportsController::class, 'generate']);
+        });
+        Route::prefix('inventoryValuation')->group(function () {
+            Route::get('/getResults', [InventoryValuationController::class, 'getResults']);
+            Route::post('/generate', [InventoryValuationController::class, 'generate']);
         });
     });
 });

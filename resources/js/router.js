@@ -20,6 +20,7 @@ import PosUnposted from './components/PosUnposted.vue'
 import DamageCount from './components/DamageCount.vue'
 import LocationOrig from './components/Location2.vue'
 import RackMonitoring from './components/RackMonitoring.vue'
+import InventoryValuationVariance from './components/InventoryValuationVariance.vue'
 
 Vue.use(VueRouter)
 
@@ -160,6 +161,14 @@ const router = new VueRouter({
       component: RackMonitoring,
       meta: {
         name: 'Rack Area Monitoring'
+      }
+    },
+    {
+      name: 'Inventory Valuation w/ Variance',
+      path: '/inventory_valuation_variance',
+      component: InventoryValuationVariance,
+      meta: {
+        name: 'Inventory Valuation w/ Variance'
       }
     },
     {
