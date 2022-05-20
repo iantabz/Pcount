@@ -941,12 +941,15 @@
 
                       <!--Submenu-->
                       <ul class="collapse">
+                        <router-link tag="li" to="/inventory_valuation_variance">
+                          <a href="javascript:;">Inventory Valuation w/ Variances</a>
+                        </router-link>
                         <router-link tag="li" to="/physical_count">
                           <a href="javascript:;">Actual Count (APP)</a>
                         </router-link>
-                        <router-link tag="li" to="/damage_count">
+                        {{-- <router-link tag="li" to="/damage_count">
                           <a href="javascript:;">Actual Count (APP) for <span class="text-bold">Damages</span></a>
-                        </router-link>
+                        </router-link> --}}
                         <router-link tag="li" to="/physical_count_cost">
                           <a href="javascript:;">Actual Count (APP) with Cost</a>
                         </router-link>

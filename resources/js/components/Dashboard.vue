@@ -26,7 +26,7 @@
                       "
                       class="mar-btm"
                     >
-                      Setup
+                      &nbsp; Setup
                     </h4>
                     <div class="list-group bg-trans mar-no">
                       <router-link to="/location">
@@ -34,29 +34,30 @@
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i>
-                          Location Setup (App users)
+                          &nbsp; Location Setup (App users)
                         </a>
                       </router-link>
                       <router-link to="/location">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
-                          ><i class="pci-chevron chevron-right"></i> User setup
+                          ><i class="pci-chevron chevron-right"></i> &nbsp; User
+                          setup
                         </a>
                       </router-link>
                       <router-link to="/vendor_masterfile">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
-                          ><i class="pci-chevron chevron-right"></i> Vendor
-                          Masterfile</a
+                          ><i class="pci-chevron chevron-right"></i> &nbsp;
+                          Vendor Masterfile</a
                         >
                       </router-link>
                       <router-link to="/category">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
-                          ><i class="pci-chevron chevron-right"></i> Item
+                          ><i class="pci-chevron chevron-right"></i> &nbsp; Item
                           Department</a
                         >
                       </router-link>
@@ -77,7 +78,7 @@
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i>
-                          Actual Count (APP)
+                          &nbsp; Actual Count (APP)
                         </a>
                       </router-link>
                       <router-link to="/physical_count_cost">
@@ -85,7 +86,7 @@
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i> Actual
-                          Count (APP) w/ Cost
+                          &nbsp; Count (APP) w/ Cost
                         </a>
                       </router-link>
                       <router-link to="/variance_report">
@@ -93,7 +94,7 @@
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i> Variance
-                          Report</a
+                          &nbsp; Report</a
                         >
                       </router-link>
                       <router-link to="/variance_report_cost">
@@ -101,13 +102,32 @@
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i> Variance
-                          Report w/ Cost</a
+                          &nbsp; Report w/ Cost</a
                         >
                       </router-link>
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                  <div class="text-lg">
+                    <h4
+                      style="font-size: 18px;font-weight: 600;"
+                      class="mar-btm"
+                    >
+                      &nbsp;
+                    </h4>
+                    <div class="list-group bg-trans mar-no">
+                      <router-link to="/inventory_valuation_variance">
+                        <a
+                          href="javascript:;"
+                          class="list-group-item panel-title"
+                          ><i class="pci-chevron chevron-right"></i>
+                          &nbsp; Inventory Valuation w/ Variances
+                        </a>
+                      </router-link>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- <div class="col-md-7">

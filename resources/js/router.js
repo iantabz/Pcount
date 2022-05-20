@@ -164,11 +164,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Inventory Valuation w/ Variance',
+      name: 'Inventory Valuation w/ Variances',
       path: '/inventory_valuation_variance',
       component: InventoryValuationVariance,
       meta: {
-        name: 'Inventory Valuation w/ Variance'
+        name: 'Inventory Valuation w/ Variances'
       }
     },
     {

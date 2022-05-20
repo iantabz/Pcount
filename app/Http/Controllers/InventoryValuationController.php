@@ -37,8 +37,8 @@ class InventoryValuationController extends Controller
         ])->orderBy('itemcode');
 
         if (request()->has('forExport')) {
-            $data = $query->limit(2000)->get()->all();;
-            // $data = $query->get()->all();;
+            // $data = $query->limit(2000)->get()->all();;
+            $data = $query->get()->all();;
             $query = array(
                 'company' => $company,
                 'business_unit' => $bu,
@@ -64,13 +64,13 @@ class InventoryValuationController extends Controller
     {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
-
-
-        // dd($export);
+        // dd(request()->type);
 
         // $pdf = PDF::loadView('reports.inventory_valuation_variance_report', ['data' => $export]);
         // return $pdf->setPaper('legal', 'landscape')->download('PCount From App.pdf');
-
-        return (new InventoryValuation)->download('invoices.pdf', \Maatwebsite\Excel\Excel::MPDF);
+        if (request()->type == 'pdf')
+            return (new InventoryValuation)->download('invoices.pdf', \Maatwebsite\Excel\Excel::MPDF);
+        if (request()->type == 'xlsx')
+            return (new InventoryValuation)->download('invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 }

@@ -316,7 +316,7 @@
 
 <body>
     {{-- {{dd($data)}} --}}
-    {{-- <table style="border: 0px black;">
+    <table style="border: 0px black;">
         <thead>
             <tr>
                 <th style="text-align: left; font-size: 12px;">
@@ -324,13 +324,8 @@
                 </th>
             </tr>
             <tr>
-                <th style="text-align: left; font-size: 12px;">
-                    Actual Count (APP)
-                </th>
-            </tr>
-            <tr>
                 <th style="text-align: left; font-size: 12px; font-weight: bold;">
-                    Items Not Found Report
+                    INVENTORY VALUATION VARIANCE
                 </th>
             </tr>
             @if($data['business_unit'] != 'null')
@@ -357,7 +352,8 @@
                 </th>
             </tr>
         </thead>
-    </table> --}}
+    </table>
+    
     <table class="body1">
         <thead>
             <tr>

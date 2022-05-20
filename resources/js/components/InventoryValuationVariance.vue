@@ -134,7 +134,7 @@
                     <button
                       class="btn btn-info btn-rounded pull-right mar-lft"
                       :disabled="!data.data.length"
-                      @click="generateBtn($event)"
+                      @click="generateBtn($event, 'pdf')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
                       PDF ({{ total_result }})
@@ -143,7 +143,7 @@
                     <button
                       class="btn btn-info btn-rounded pull-right"
                       :disabled="!data.data.length"
-                      @click="generateBtnEXCEL($event, 'CountData')"
+                      @click="generateBtn($event, 'xlsx')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
                       Excel ({{ total_result }})
@@ -207,7 +207,7 @@
                         :limit="1"
                         :show-disabled="true"
                         :data="data"
-                        @pagination-change-page="getResults"
+                        @pagination-change-page="getData"
                       ></pagination>
                     </div>
                   </div>
@@ -358,7 +358,7 @@ export default {
         timer: 5000
       })
     },
-    async generateBtn(e) {
+    async generateBtn(e, type) {
       Swal.fire({
         html: "Please wait, don't close the browser.",
         title: 'Generating report in progress',
@@ -392,7 +392,8 @@ export default {
       const { headers, data } = await axios.post(
         `/reports/inventoryValuation/generate?`,
         {
-          export: btoa(JSON.stringify(this.export))
+          export: btoa(JSON.stringify(this.export)),
+          type: type
         },
         {
           responseType: 'blob'
@@ -410,9 +411,10 @@ export default {
       // console.log(fileName)
       this.section ? (section = '-' + this.section) : (section = '')
       // console.log(fileName)
+
       link.setAttribute(
         'download',
-        `Inventory Valuation Variance as of ${this.date} ${this.business_unit} ${this.department}${section}.pdf`
+        `Inventory Valuation Variance as of ${this.date} ${this.business_unit} ${this.department}${section}.${type}`
       )
       // console.log(link)
       document.body.appendChild(link)

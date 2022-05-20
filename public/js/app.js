@@ -7431,6 +7431,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -7887,7 +7907,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         }, _callee);
       }))();
     },
-    generateBtn: function generateBtn(e) {
+    generateBtn: function generateBtn(e, type) {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -7924,7 +7944,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
                 _context2.next = 7;
                 return axios.post("/reports/inventoryValuation/generate?", {
-                  "export": btoa(JSON.stringify(_this2["export"]))
+                  "export": btoa(JSON.stringify(_this2["export"])),
+                  type: type
                 }, {
                   responseType: 'blob'
                 });
@@ -7944,7 +7965,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
                 _this2.section ? section = '-' + _this2.section : section = ''; // console.log(fileName)
 
-                link.setAttribute('download', "Inventory Valuation Variance as of ".concat(_this2.date, " ").concat(_this2.business_unit, " ").concat(_this2.department).concat(section, ".pdf")); // console.log(link)
+                link.setAttribute('download', "Inventory Valuation Variance as of ".concat(_this2.date, " ").concat(_this2.business_unit, " ").concat(_this2.department).concat(section, ".").concat(type)); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -16004,11 +16025,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_19__.default({
       name: 'Rack Area Monitoring'
     }
   }, {
-    name: 'Inventory Valuation w/ Variance',
+    name: 'Inventory Valuation w/ Variances',
     path: '/inventory_valuation_variance',
     component: _components_InventoryValuationVariance_vue__WEBPACK_IMPORTED_MODULE_17__.default,
     meta: {
-      name: 'Inventory Valuation w/ Variance'
+      name: 'Inventory Valuation w/ Variances'
     }
   }, {
     path: '*',
@@ -52534,7 +52555,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                    Setup\n                  "
+                            "\n                      Setup\n                  "
                           )
                         ]
                       ),
@@ -52555,7 +52576,7 @@ var render = function() {
                                   staticClass: "pci-chevron chevron-right"
                                 }),
                                 _vm._v(
-                                  "\n                        Location Setup (App users)\n                      "
+                                  "\n                          Location Setup (App users)\n                      "
                                 )
                               ]
                             )
@@ -52572,7 +52593,9 @@ var render = function() {
                                 _c("i", {
                                   staticClass: "pci-chevron chevron-right"
                                 }),
-                                _vm._v(" User setup\n                      ")
+                                _vm._v(
+                                  "   User\n                        setup\n                      "
+                                )
                               ]
                             )
                           ]),
@@ -52592,7 +52615,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    " Vendor\n                        Masterfile"
+                                    "  \n                        Vendor Masterfile"
                                   )
                                 ]
                               )
@@ -52611,7 +52634,7 @@ var render = function() {
                                   staticClass: "pci-chevron chevron-right"
                                 }),
                                 _vm._v(
-                                  " Item\n                        Department"
+                                  "   Item\n                        Department"
                                 )
                               ]
                             )
@@ -52659,7 +52682,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    "\n                        Actual Count (APP)\n                      "
+                                    "\n                          Actual Count (APP)\n                      "
                                   )
                                 ]
                               )
@@ -52681,7 +52704,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    " Actual\n                        Count (APP) w/ Cost\n                      "
+                                    " Actual\n                          Count (APP) w/ Cost\n                      "
                                   )
                                 ]
                               )
@@ -52703,7 +52726,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    " Variance\n                        Report"
+                                    " Variance\n                          Report"
                                   )
                                 ]
                               )
@@ -52725,7 +52748,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    " Variance\n                        Report w/ Cost"
+                                    " Variance\n                          Report w/ Cost"
                                   )
                                 ]
                               )
@@ -52737,7 +52760,50 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-4" })
+                  _c("div", { staticClass: "col-sm-4" }, [
+                    _c("div", { staticClass: "text-lg" }, [
+                      _c(
+                        "h4",
+                        {
+                          staticClass: "mar-btm",
+                          staticStyle: {
+                            "font-size": "18px",
+                            "font-weight": "600"
+                          }
+                        },
+                        [_vm._v("\n                     \n                  ")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "list-group bg-trans mar-no" },
+                        [
+                          _c(
+                            "router-link",
+                            { attrs: { to: "/inventory_valuation_variance" } },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "list-group-item panel-title",
+                                  attrs: { href: "javascript:;" }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "pci-chevron chevron-right"
+                                  }),
+                                  _vm._v(
+                                    "\n                          Inventory Valuation w/ Variances\n                      "
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  ])
                 ])
               ])
             ])
@@ -53029,7 +53095,7 @@ var render = function() {
                           attrs: { disabled: !_vm.data.data.length },
                           on: {
                             click: function($event) {
-                              return _vm.generateBtn($event)
+                              return _vm.generateBtn($event, "pdf")
                             }
                           }
                         },
@@ -53050,7 +53116,7 @@ var render = function() {
                           attrs: { disabled: !_vm.data.data.length },
                           on: {
                             click: function($event) {
-                              return _vm.generateBtnEXCEL($event, "CountData")
+                              return _vm.generateBtn($event, "xlsx")
                             }
                           }
                         },
@@ -53207,7 +53273,7 @@ var render = function() {
                             "show-disabled": true,
                             data: _vm.data
                           },
-                          on: { "pagination-change-page": _vm.getResults }
+                          on: { "pagination-change-page": _vm.getData }
                         })
                       ],
                       1
