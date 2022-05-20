@@ -98,7 +98,7 @@
 
         .body1 {
             margin-top: 10px;
-            width: 100%;
+            max-width: 100%;
             font-size: 11px;
             text-align: center;
         }
@@ -316,33 +316,48 @@
 
 <body>
     {{-- {{dd($data)}} --}}
-    <header>
-        <div style="max-width: 100%">
-            <div class="row" style="flex-wrap: wrap;">
-                <div style="text-align: left; width: 400px; flex-basis: 0; flex-grow: 1; float: left; margin-bottom: 10px;">
-                    <h4>INVENTORY COUNT CONSOLIDATION SYSTEM </h4>
-                    @if($data['business_unit'] != 'null')
-                    <h4>{{ $data['business_unit']}}</h4>
-                    @endif</th>
-                    <h4>
-                        @if($data['department'] != 'null')
-                        {{$data['department']}}
-                        @endif
-                        @if($data['section'] != 'null')
-                        - {{$data['section']}}
-                        @endif
-                    </h4>
-                    <h4>As of {{ $data['date']}}</h4>
-                </div>
-                <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
-                    <div class="title1" style="text-align: center;">
-                        ACTUAL COUNT (APP)
-                    </div>
-                </div>
-                <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
-            </div>
-        </div>
-    </header>
+    {{-- <table style="border: 0px black;">
+        <thead>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    INVENTORY COUNT CONSOLIDATION SYSTEM
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Actual Count (APP)
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px; font-weight: bold;">
+                    Items Not Found Report
+                </th>
+            </tr>
+            @if($data['business_unit'] != 'null')
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    {{ $data['business_unit']}}
+                </th>
+            </tr>
+            @endif
+            @if($data['department'] != 'null')
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    {{$data['department']}}
+
+                    @if($data['section'] != 'null')
+                    - {{$data['section']}}
+                    @endif
+                </th>
+            </tr>
+            @endif
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    As of {{ $data['date']}}
+                </th>
+            </tr>
+        </thead>
+    </table> --}}
     <table class="body1">
         <thead>
             <tr>
@@ -370,12 +385,7 @@
                 <td colspan="5" style="text-align: center">No data available.</td>
             </tr>
             @endif
-
-            @php
-            $skus =[];
-            @endphp
             @foreach ($data['data'] as $key => $item)
-
             {{-- {{dd(end($item))}} --}}
             <tr>
                 <td style="text-align: center;">{{ $item['itemcode'] }}
@@ -389,7 +399,7 @@
         </tbody>
     </table>
 </body>
-<script type="text/php">
+{{-- <script type="text/php">
     if ( isset($pdf) ) { 
         $pdf->page_script('
             if ($PAGE_COUNT > 1) {
@@ -408,6 +418,6 @@
             } 
         ');
     }
-</script>
+</script> --}}
 
 </html>
