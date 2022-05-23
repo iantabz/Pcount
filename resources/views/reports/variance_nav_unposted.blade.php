@@ -221,7 +221,7 @@
                 </div>
                 <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
-                        VARIANCE REPORT
+                        NET NAV SYS REPORT
                     </div>
                 </div>
                 <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
@@ -267,18 +267,15 @@
                     Quantity
                 </th>
                 <th rowspan="2" class="text-center" style="vertical-align: middle;">
-                    Variance
+                    NET NAV SYS COUNT
                 </th>
 
             </tr>
             <tr>
                 <th class="text-center" style="vertical-align: middle;">
-                    P COUNT APP
-                </th>
+                    NAV SYS COUNT</th>
                 <th class="text-center" style="vertical-align: middle;">
-                    NET NAV SYS COUNT</th>
-                {{-- <th class="text-center" style="vertical-align: middle;">
-                    UNPOSTED</th> --}}
+                    UNPOSTED</th>
             </tr>
         </thead>
         <tbody>
@@ -302,10 +299,10 @@
 
             else if($item['nav_qty'] < 0)
             { 
-                $variance= $item['total_conv_qty'] + $value;
+                $variance=  $value;
             } 
             else{
-                $variance= $item['total_conv_qty'] - $value; 
+                $variance= $value; 
             } 
             @endphp 
                 <tr>
@@ -315,13 +312,10 @@
                 </td>
                 <td style="text-align: left;">{{ $item['extended_desc'] }}</td>
                 <td style="text-align: center;">{{ $item['nav_uom'] ?: 'PCS' }}</td>
-                <td style="text-align: center;">{{ number_format($item['total_conv_qty'], 0) }}</td>
                 <td style="text-align: center;">
-                    {{
-                        number_format($value, 0)
-                     }}
+                    {{ is_numeric($item['nav_qty']) ? number_format($item['nav_qty'], 0) : $item['nav_qty'] }}
                 </td>
-                {{-- <td style="text-align: center;">{{  is_numeric($item['unposted']) ? number_format($item['unposted'], 0) : $item['unposted'] }}</td> --}}
+                <td style="text-align: center;">{{  is_numeric($item['unposted']) ? number_format($item['unposted'], 0) : $item['unposted'] }}</td>
                 <td style="text-align: center;">{{ number_format($variance, 0) }}
                 </td>
                 </tr>

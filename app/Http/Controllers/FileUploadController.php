@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\ImportItemCategoryMasterfile;
 use App\Imports\ImportItemMasterfile;
+use App\Imports\ImportItemUnposted;
 use App\Imports\ImportNavPcount;
 use App\Imports\ImportVendorMasterfile;
 use App\Models\BusinessUnit;
@@ -202,6 +203,35 @@ class FileUploadController extends Controller
         $path = request()->file->storeAs('temp', time() . '.' . $extension);
         $path = storage_path('app') . '/' . $path;
         $import = new ImportItemCategoryMasterfile();
+        $import->import($path);
+
+        return response()->json(['message' => 'uploaded successfully'], 200);
+    }
+
+    public function importUnposted()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        $extension = request()->file('file')->getClientOriginalExtension();
+        $path = request()->file->storeAs('temp', time() . '.' . $extension);
+        $path = storage_path('app') . '/' . $path;
+
+        $reader = new Csv();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($path);
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $dataArray = $worksheet->toArray();
+
+        $array = explode(' ', $dataArray[2][0]);
+
+        $date = array_splice($array, 2);
+        $tempDate = implode(' ', $date);
+
+        $finalDate = Carbon::parse($tempDate)->format('Y-m-d');
+        // dd($finalDate);
+        $batchDate = request()->date;
+        $import = new ImportItemUnposted($finalDate, $batchDate);
         $import->import($path);
 
         return response()->json(['message' => 'uploaded successfully'], 200);

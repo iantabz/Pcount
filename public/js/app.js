@@ -11939,15 +11939,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 
-Dropzone.options.unposted = {
+Dropzone.options.navUpload = {
   paramName: 'file',
   // The name that will be used to transfer the file
-  url: '/uploading/masterfiles/test',
+  url: '/uploading/unposted/importUnposted',
+  // url: '/uploading/masterfiles/importItemMasterfile',
   timeout: 100000000,
   init: function init() {
     this.on('addedfile', function (file) {
@@ -12029,6 +12067,8 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       },
       searchProducts: null,
       total_result: null,
+      companyList: [],
+      company: null,
       vendorList: [],
       vendor: null,
       categoryList: [],
@@ -12040,7 +12080,9 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       deptList: [],
       department: null,
       sectionList: [],
-      section: null
+      section: null,
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     };
   },
   watch: {
@@ -12071,7 +12113,11 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       var bu = this.buList.filter(function (sm) {
         return sm.business_unit == _this3.business_unit;
       })[0];
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/setup/location/getSection/?bu=".concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
+      var company = this.companyList.find(function (e) {
+        return e.acroname == _this3.company;
+      });
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get( // `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
+      "/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
         _this3.sectionList = response.data;
       })["catch"](function (response) {
         console.log('error');
@@ -12087,8 +12133,30 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
         var bu = this.buList.filter(function (sm) {
           return sm.business_unit == val;
         })[0];
-        axios__WEBPACK_IMPORTED_MODULE_1___default().get("/setup/location/getDept/?bu=".concat(bu.bunit_code)).then(function (response) {
+        var company = this.companyList.find(function (e) {
+          return e.acroname == _this4.company;
+        });
+        axios__WEBPACK_IMPORTED_MODULE_1___default().get( // `/setup/location/getDept/?bu=${bu.bunit_code}`
+        "/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
           _this4.deptList = response.data;
+        })["catch"](function (response) {
+          console.log('error');
+        });
+      }
+    },
+    companySelected: function companySelected(val) {
+      var _this5 = this;
+
+      this.business_unit = null;
+      this.department = null;
+      this.section = null; // console.log(val)
+
+      if (val) {
+        var comp = this.companyList.filter(function (sm) {
+          return sm.acroname == val;
+        })[0];
+        axios__WEBPACK_IMPORTED_MODULE_1___default().get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
+          _this5.buList = response.data;
         })["catch"](function (response) {
           console.log('error');
         });
@@ -12133,12 +12201,13 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       }
     }, 1000),
     getResults: function getResults() {
-      var _this5 = this;
+      var _this6 = this;
 
-      Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(function (response) {
-        _this5.vendorList = response[0].data;
-        _this5.categoryList = response[1].data;
-        _this5.buList = response[2].data;
+      Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
+        _this6.vendorList = response[0].data;
+        _this6.categoryList = response[1].data;
+        _this6.buList = response[2].data;
+        _this6.companyList = response[3].data;
       });
     },
     getCategory: function getCategory() {
@@ -12201,24 +12270,44 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
         }, _callee3);
       }))();
     },
-    setCSRFToken: function setCSRFToken() {
-      document.getElementById('_token').value = document.head.querySelector('meta[name="csrf-token"]').content;
-    },
-    uploadFiles: function uploadFiles() {
+    getCompany: function getCompany() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        var uri;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                uri = '';
+                _context4.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('/uploading/nav_upload/getCompany');
 
-              case 1:
+              case 2:
+                return _context4.abrupt("return", _context4.sent);
+
+              case 3:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
+      }))();
+    },
+    setCSRFToken: function setCSRFToken() {
+      document.getElementById('_token').value = document.head.querySelector('meta[name="csrf-token"]').content;
+    },
+    uploadFiles: function uploadFiles() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var uri;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                uri = '';
+
+              case 1:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     },
     getFormattedDateToday: function getFormattedDateToday() {
@@ -13573,6 +13662,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -13736,7 +13840,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 if (reportType == 'Variance') {
                   pass = '/reports/variance_report/export';
                 } else {
-                  pass = '/reports/variance_report/';
+                  pass = '/reports/variance_report/NavUnposted';
                 }
 
                 thisButton.disabled = true;
@@ -13791,11 +13895,11 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         }, _callee);
       }))();
     },
-    generateBtn: function generateBtn(e) {
+    generateBtn: function generateBtn(e, type) {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var thisButton, oldHTML, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link;
+        var thisButton, oldHTML, pass, title, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
@@ -13817,14 +13921,24 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
                 thisButton = e.target;
                 oldHTML = thisButton.innerHTML;
+                pass = null, title = null;
+
+                if (type == 'Variance') {
+                  title = 'Variance Report';
+                  pass = "/reports/variance_report/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section);
+                } else {
+                  title = 'Net Nav Sys';
+                  pass = "/reports/variance_report/NavUnposted?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section);
+                }
+
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
-                _context2.next = 7;
-                return axios.get("/reports/variance_report/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section), {
+                _context2.next = 9;
+                return axios.get(pass, {
                   responseType: 'blob'
                 });
 
-              case 7:
+              case 9:
                 _yield$axios$get = _context2.sent;
                 headers = _yield$axios$get.headers;
                 data = _yield$axios$get.data;
@@ -13837,7 +13951,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 link = document.createElement('a');
                 link.href = url; // console.log('download', `${fileName.replace('"', '')}.pdf`)
 
-                link.setAttribute('download', "Variance Report  as of ".concat(_this2.date, ".pdf")); // console.log(link)
+                link.setAttribute('download', "".concat(title, " as of ").concat(_this2.date, " ").concat(_this2.business_unit, " ").concat(_this2.department, " ").concat(_this2.section, ".pdf")); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -13859,7 +13973,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                   timer: 5000
                 });
 
-              case 23:
+              case 25:
               case "end":
                 return _context2.stop();
             }
@@ -13896,7 +14010,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         // console.log(data, test)
         var variance = 0,
             journalTemplateName = 'ITEM',
-            journalBatchName = '',
+            journalBatchName = 'PCount Adj',
             lineNo = 0,
             itemCode = 0,
             postingDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
@@ -13907,6 +14021,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             invtyPostGroup = '',
             nav_qty = 0,
             app_qty = 0,
+            invQty = 0,
             unitAmt = 0,
             unitCost = 0,
             amt = 0,
@@ -13922,27 +14037,37 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             qtyBase = 0,
             invQtyBase = 0,
             valueEntry = '',
-            itemDiv = 0;
+            itemDiv = 0,
+            value = 0;
         test.forEach(function (result) {
           itemCode = result.itemcode;
           desc = result.extended_desc;
           app_qty = parseFloat(result.app_qty);
           nav_qty = parseFloat(result.nav_qty);
+
+          if (result.unposted != '-') {
+            value = nav_qty + parseFloat(result.unposted);
+          } else {
+            value = nav_qty;
+          }
+
+          if (result.nav_qty < 0) {
+            variance = app_qty + value;
+            entryType = 'Negative Adjmt.';
+          } else {
+            variance = app_qty - value;
+            entryType = 'Positive Adjmt.';
+          }
+
           uom = result.uom;
           lineNo += 10000;
-          qtyBase = nav_qty;
-          invQtyBase = app_qty;
+          variance = Math.abs(variance);
+          invQty = Math.abs(variance);
+          qtyBase = Math.abs(variance);
+          invQtyBase = Math.abs(variance);
           unitAmt = result.cost_no_vat;
           unitCost = result.cost_no_vat;
           amt = result.amt;
-
-          if (result.nav_qty < 0) {
-            variance = parseFloat(result.app_qty) + parseFloat(result.nav_qty);
-            entryType = 'Negative Adjmt.';
-          } else {
-            variance = parseFloat(result.app_qty) - parseFloat(result.nav_qty);
-            entryType = 'Positive Adjmt.';
-          }
 
           _this4["export"].push({
             journalTemplateName: journalTemplateName,
@@ -13955,8 +14080,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             desc: desc,
             locCode: locCode,
             invtyPostGroup: invtyPostGroup,
-            nav_qty: nav_qty,
-            app_qty: app_qty,
+            variance: variance,
+            invQty: invQty,
             unitAmt: unitAmt,
             unitCost: unitCost,
             amt: amt,
@@ -13981,13 +14106,31 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         _loop();
       }
     },
-    computeVariance: function computeVariance(a, b) {
-      var variance = 0;
+    computeNet: function computeNet(navQty, Unposted) {
+      var net = 0;
+
+      if (Unposted != '-') {
+        net = parseFloat(navQty) + parseFloat(Unposted);
+      } else {
+        net = parseFloat(navQty);
+      }
+
+      return net;
+    },
+    computeVariance: function computeVariance(a, b, c) {
+      var variance = 0,
+          value = 0;
+
+      if (b != '-') {
+        value = parseFloat(a) + parseFloat(b);
+      } else {
+        value = parseFloat(a);
+      }
 
       if (a < 0) {
-        variance = parseFloat(b) + parseFloat(a);
+        variance = parseFloat(c) + value;
       } else {
-        variance = parseFloat(b) - parseFloat(a);
+        variance = parseFloat(c) - value;
       } // console.log(variance)
       //  const variance = parseFloat(a) - parseFloat(b)
 
@@ -56836,6 +56979,47 @@ var render = function() {
                       [
                         _c("v-select", {
                           attrs: {
+                            options: _vm.companyList,
+                            reduce: function(companyList) {
+                              return companyList.acroname
+                            },
+                            label: "acroname",
+                            placeholder: "Company"
+                          },
+                          on: {
+                            input: function($event) {
+                              return _vm.companySelected($event)
+                            }
+                          },
+                          model: {
+                            value: _vm.company,
+                            callback: function($$v) {
+                              _vm.company = $$v
+                            },
+                            expression: "company"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "row",
+                    staticStyle: { padding: "10px 15px 15px 10px" }
+                  },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-md-6" },
+                      [
+                        _c("v-select", {
+                          attrs: {
                             label: "business_unit",
                             options: _vm.buList,
                             placeholder: "Search for Business Unit",
@@ -56869,7 +57053,7 @@ var render = function() {
                     staticStyle: { padding: "10px 15px 15px 10px" }
                   },
                   [
-                    _vm._m(1),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -56907,63 +57091,40 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "row",
-                    staticStyle: { padding: "10px 15px 15px 10px" }
+                    staticClass: "row pad-all",
+                    staticStyle: { "padding-left": "10px" }
                   },
                   [
-                    _vm._m(2),
+                    _vm._m(3),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-md-6" },
-                      [
-                        _c(
-                          "v-select",
+                    _c("div", { staticClass: "col-lg-6" }, [
+                      _c("input", {
+                        directives: [
                           {
-                            attrs: {
-                              filterable: false,
-                              label: "vendor_name",
-                              options: _vm.vendorList,
-                              placeholder: "Search for Vendor Name",
-                              multiple: ""
-                            },
-                            on: { search: _vm.retrieveVendor },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "option",
-                                fn: function(option) {
-                                  return [
-                                    _vm._v(_vm._s("" + option.vendor_name))
-                                  ]
-                                }
-                              },
-                              {
-                                key: "selected-option",
-                                fn: function(option) {
-                                  return [
-                                    _vm._v(_vm._s("" + option.vendor_name))
-                                  ]
-                                }
-                              }
-                            ]),
-                            model: {
-                              value: _vm.vendor,
-                              callback: function($$v) {
-                                _vm.vendor = $$v
-                              },
-                              expression: "vendor"
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.date,
+                            expression: "date"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        staticStyle: { "border-radius": "4px" },
+                        attrs: {
+                          type: "date",
+                          name: "dateFrom",
+                          id: "dateFrom"
+                        },
+                        domProps: { value: _vm.date },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
                             }
-                          },
-                          [
-                            _c("template", { slot: "no-options" }, [
-                              _c("strong", [_vm._v("Search for Vendor Name")])
-                            ])
-                          ],
-                          2
-                        )
-                      ],
-                      1
-                    )
+                            _vm.date = $event.target.value
+                          }
+                        }
+                      })
+                    ])
                   ]
                 )
               ]
@@ -56977,7 +57138,9 @@ var render = function() {
                 staticStyle: { "text-align": "left" }
               },
               [
-                _vm._m(3),
+                _vm._m(4),
+                _vm._v(" "),
+                _vm._m(5),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -56986,7 +57149,7 @@ var render = function() {
                     staticStyle: { padding: "10px 15px 15px 10px" }
                   },
                   [
-                    _vm._m(4),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -57014,66 +57177,6 @@ var render = function() {
                       1
                     )
                   ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "row",
-                    staticStyle: { padding: "10px 15px 15px 10px" }
-                  },
-                  [
-                    _vm._m(5),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-md-6" },
-                      [
-                        _c(
-                          "v-select",
-                          {
-                            attrs: {
-                              filterable: false,
-                              label: "category",
-                              options: _vm.categoryList,
-                              placeholder: "Search for Category",
-                              multiple: ""
-                            },
-                            on: { search: _vm.retrieveCategory },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "option",
-                                fn: function(option) {
-                                  return [_vm._v(_vm._s("" + option.category))]
-                                }
-                              },
-                              {
-                                key: "selected-option",
-                                fn: function(option) {
-                                  return [_vm._v(_vm._s("" + option.category))]
-                                }
-                              }
-                            ]),
-                            model: {
-                              value: _vm.category,
-                              callback: function($$v) {
-                                _vm.category =
-                                  typeof $$v === "string" ? $$v.trim() : $$v
-                              },
-                              expression: "category"
-                            }
-                          },
-                          [
-                            _c("template", { slot: "no-options" }, [
-                              _c("strong", [_vm._v("Search for Category")])
-                            ])
-                          ],
-                          2
-                        )
-                      ],
-                      1
-                    )
-                  ]
                 )
               ]
             )
@@ -57083,11 +57186,7 @@ var render = function() {
             "form",
             {
               staticClass: "dropzone",
-              attrs: {
-                id: "unposted",
-                enctype: "multipart/form-data",
-                disabled: ""
-              }
+              attrs: { id: "navUpload", enctype: "multipart/form-data" }
             },
             [
               _c("input", {
@@ -57109,9 +57208,19 @@ var render = function() {
                 domProps: { value: _vm.section }
               }),
               _vm._v(" "),
-              _vm._m(6),
+              _c("input", {
+                attrs: { type: "hidden", name: "countType" },
+                domProps: { value: _vm.countType }
+              }),
               _vm._v(" "),
-              _vm._m(7)
+              _c("input", {
+                attrs: { type: "hidden", name: "date" },
+                domProps: { value: _vm.date }
+              }),
+              _vm._v(" "),
+              _vm._m(7),
+              _vm._v(" "),
+              _vm._m(8)
             ]
           )
         ])
@@ -57120,6 +57229,19 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-3 control-label text-bold",
+        staticStyle: { "text-align": "right" }
+      },
+      [_c("h5", [_vm._v("Company :")])]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -57150,13 +57272,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+      _c("h5", [
+        _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
+        _vm._v(" Batch\n                  Date :\n                ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
-      "label",
-      {
-        staticClass: "col-md-3 control-label text-bold",
-        staticStyle: { "text-align": "right" }
-      },
-      [_c("h5", [_vm._v("Vendor Name :")])]
+      "div",
+      { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
+      [
+        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+          _c("h5")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6 pad-all" })
+      ]
     )
   },
   function() {
@@ -57192,19 +57328,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 control-label text-bold",
-        staticStyle: { "text-align": "right" }
-      },
-      [_c("h5", [_vm._v("Category :")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "dz-default dz-message" }, [
       _c("div", { staticClass: "dz-icon" }, [
         _c("i", { staticClass: "demo-pli-upload-to-cloud icon-5x" })
@@ -57226,9 +57349,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "fallback" }, [
-      _c("input", {
-        attrs: { name: "file", type: "file", multiple: "", disabled: "" }
-      })
+      _c("input", { attrs: { name: "file", type: "file" } })
     ])
   }
 ]
@@ -58784,7 +58905,7 @@ var render = function() {
                             attrs: { disabled: !_vm.data.data.length },
                             on: {
                               click: function($event) {
-                                return _vm.generateBtn($event)
+                                return _vm.generateBtn($event, "Variance")
                               }
                             }
                           },
@@ -58793,7 +58914,31 @@ var render = function() {
                               staticClass: "demo-pli-printer icon-lg"
                             }),
                             _vm._v(
-                              "  Generate\n                    Report\n                  "
+                              "  Generate\n                    Variance Report\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-warning btn-rounded pull-right text-thin mar-lft",
+                            attrs: { disabled: !_vm.data.data.length },
+                            on: {
+                              click: function($event) {
+                                return _vm.generateBtn($event, "NavUnposted")
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "demo-pli-printer icon-lg"
+                            }),
+                            _vm._v(
+                              "  Generate\n                    Net Nav Sys (" +
+                                _vm._s(_vm.data.data.length) +
+                                ")\n                  "
                             )
                           ]
                         ),
@@ -58815,7 +58960,7 @@ var render = function() {
                               staticClass: "demo-pli-printer icon-lg"
                             }),
                             _vm._v(
-                              "  Export to\n                    navision (" +
+                              "  Export to\n                    Navision (" +
                                 _vm._s(_vm.data.data.length) +
                                 ")\n                  "
                             )
@@ -58906,7 +59051,7 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(Math.trunc(data.nav_qty)) +
+                                _vm._s(data.conversion_qty) +
                                 "\n                  "
                             )
                           ]
@@ -58921,7 +59066,9 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(data.conversion_qty) +
+                                _vm._s(
+                                  _vm.computeNet(data.nav_qty, data.unposted)
+                                ) +
                                 "\n                  "
                             )
                           ]
@@ -58939,6 +59086,7 @@ var render = function() {
                                 _vm._s(
                                   _vm.computeVariance(
                                     data.nav_qty,
+                                    data.unposted,
                                     data.conversion_qty
                                   )
                                 ) +
@@ -59162,7 +59310,7 @@ var staticRenderFns = [
           {
             staticClass: "text-center",
             staticStyle: { "vertical-align": "middle" },
-            attrs: { rowspan: "2" }
+            attrs: { rowspan: "3" }
           },
           [_vm._v("\n                    Variance\n                  ")]
         )
@@ -59175,7 +59323,7 @@ var staticRenderFns = [
             staticClass: "text-center",
             staticStyle: { "vertical-align": "middle" }
           },
-          [_vm._v("\n                    Nav\n                  ")]
+          [_vm._v("\n                    P Count App\n                  ")]
         ),
         _vm._v(" "),
         _c(
@@ -59184,7 +59332,11 @@ var staticRenderFns = [
             staticClass: "text-center",
             staticStyle: { "vertical-align": "middle" }
           },
-          [_vm._v("\n                    P Count App\n                  ")]
+          [
+            _vm._v(
+              "\n                    Net Nav Sys Count\n                  "
+            )
+          ]
         )
       ])
     ])

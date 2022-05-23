@@ -223,10 +223,18 @@
                     <button
                       :disabled="!data.data.length"
                       class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                      @click="generateBtn($event)"
+                      @click="generateBtn($event, 'Variance')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Report
+                      Variance Report
+                    </button>
+                    <button
+                      class="btn btn-warning btn-rounded pull-right text-thin mar-lft"
+                      :disabled="!data.data.length"
+                      @click="generateBtn($event, 'NavUnposted')"
+                    >
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
+                      Net Nav Sys ({{ data.data.length }})
                     </button>
                     <button
                       class="btn btn-danger btn-rounded pull-right text-thin"
@@ -234,7 +242,7 @@
                       @click="exportBtn($event, 'Variance')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Export to
-                      navision ({{ data.data.length }})
+                      Navision ({{ data.data.length }})
                     </button>
                   </div>
                 </div>
@@ -271,7 +279,7 @@
                       Quantity
                     </th>
                     <th
-                      rowspan="2"
+                      rowspan="3"
                       class="text-center"
                       style="vertical-align: middle;"
                     >
@@ -280,10 +288,10 @@
                   </tr>
                   <tr>
                     <th class="text-center" style="vertical-align: middle;">
-                      Nav
+                      P Count App
                     </th>
                     <th class="text-center" style="vertical-align: middle;">
-                      P Count App
+                      Net Nav Sys Count
                     </th>
                   </tr>
                 </thead>
@@ -311,19 +319,26 @@
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ Math.trunc(data.nav_qty) }}
-                    </td>
-                    <td
-                      class="text-main text-normal text-center"
-                      style="font-size: 1.1em"
-                    >
                       {{ data.conversion_qty }}
                     </td>
                     <td
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ computeVariance(data.nav_qty, data.conversion_qty) }}
+                      {{ computeNet(data.nav_qty, data.unposted) }}
+                    </td>
+
+                    <td
+                      class="text-main text-normal text-center"
+                      style="font-size: 1.1em"
+                    >
+                      {{
+                        computeVariance(
+                          data.nav_qty,
+                          data.unposted,
+                          data.conversion_qty
+                        )
+                      }}
                     </td>
                   </tr>
                 </tbody>
@@ -515,7 +530,7 @@ export default {
       if (reportType == 'Variance') {
         pass = '/reports/variance_report/export'
       } else {
-        pass = '/reports/variance_report/'
+        pass = '/reports/variance_report/NavUnposted'
       }
 
       thisButton.disabled = true
@@ -568,7 +583,7 @@ export default {
         timer: 5000
       })
     },
-    async generateBtn(e) {
+    async generateBtn(e, type) {
       Swal.fire({
         html: "Please wait, don't close the browser.",
         title: 'Generating report in progress',
@@ -587,21 +602,34 @@ export default {
       const thisButton = e.target
       const oldHTML = thisButton.innerHTML
 
+      let pass = null,
+        title = null
+      if (type == 'Variance') {
+        title = 'Variance Report'
+        pass = `/reports/variance_report/generate?date=${btoa(
+          this.date
+        )}&date2=${btoa(this.date2)}&vendors=${btoa(
+          this.forPrintVendor
+        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+          this.department
+        }&section=${this.section}`
+      } else {
+        title = 'Net Nav Sys'
+        pass = `/reports/variance_report/NavUnposted?date=${btoa(
+          this.date
+        )}&date2=${btoa(this.date2)}&vendors=${btoa(
+          this.forPrintVendor
+        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+          this.department
+        }&section=${this.section}`
+      }
+
       thisButton.disabled = true
       thisButton.innerHTML =
         '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
-      const { headers, data } = await axios.get(
-        `/reports/variance_report/generate?date=${btoa(this.date)}&date2=${btoa(
-          this.date2
-        )}&vendors=${btoa(this.forPrintVendor)}&category=${
-          this.forPrintCategory
-        }&bu=${this.business_unit}&dept=${this.department}&section=${
-          this.section
-        }`,
-        {
-          responseType: 'blob'
-        }
-      )
+      const { headers, data } = await axios.get(pass, {
+        responseType: 'blob'
+      })
       // return console.log(headers)
       const { 'content-disposition': contentDisposition } = headers
       const [attachment, file] = contentDisposition.split(' ')
@@ -613,7 +641,10 @@ export default {
       link.href = url
       // console.log('download', `${fileName.replace('"', '')}.pdf`)
 
-      link.setAttribute('download', `Variance Report  as of ${this.date}.pdf`)
+      link.setAttribute(
+        'download',
+        `${title} as of ${this.date} ${this.business_unit} ${this.department} ${this.section}.pdf`
+      )
       // console.log(link)
       document.body.appendChild(link)
       link.click()
@@ -665,7 +696,7 @@ export default {
         // console.log(data, test)
         let variance = 0,
           journalTemplateName = 'ITEM',
-          journalBatchName = '',
+          journalBatchName = 'PCount Adj',
           lineNo = 0,
           itemCode = 0,
           postingDate = new Date()
@@ -679,6 +710,7 @@ export default {
           invtyPostGroup = '',
           nav_qty = 0,
           app_qty = 0,
+          invQty = 0,
           unitAmt = 0,
           unitCost = 0,
           amt = 0,
@@ -697,28 +729,36 @@ export default {
           qtyBase = 0,
           invQtyBase = 0,
           valueEntry = '',
-          itemDiv = 0
+          itemDiv = 0,
+          value = 0
 
         test.forEach(result => {
           itemCode = result.itemcode
           desc = result.extended_desc
           app_qty = parseFloat(result.app_qty)
           nav_qty = parseFloat(result.nav_qty)
+          if (result.unposted != '-') {
+            value = nav_qty + parseFloat(result.unposted)
+          } else {
+            value = nav_qty
+          }
+          if (result.nav_qty < 0) {
+            variance = app_qty + value
+            entryType = 'Negative Adjmt.'
+          } else {
+            variance = app_qty - value
+            entryType = 'Positive Adjmt.'
+          }
+
           uom = result.uom
           lineNo += 10000
-          qtyBase = nav_qty
-          invQtyBase = app_qty
+          variance = Math.abs(variance)
+          invQty = Math.abs(variance)
+          qtyBase = Math.abs(variance)
+          invQtyBase = Math.abs(variance)
           unitAmt = result.cost_no_vat
           unitCost = result.cost_no_vat
           amt = result.amt
-
-          if (result.nav_qty < 0) {
-            variance = parseFloat(result.app_qty) + parseFloat(result.nav_qty)
-            entryType = 'Negative Adjmt.'
-          } else {
-            variance = parseFloat(result.app_qty) - parseFloat(result.nav_qty)
-            entryType = 'Positive Adjmt.'
-          }
 
           this.export.push({
             journalTemplateName,
@@ -731,8 +771,8 @@ export default {
             desc,
             locCode,
             invtyPostGroup,
-            nav_qty,
-            app_qty,
+            variance,
+            invQty,
             unitAmt,
             unitCost,
             amt,
@@ -755,12 +795,29 @@ export default {
         // console.log(this.export)
       }
     },
-    computeVariance(a, b) {
-      let variance = 0
-      if (a < 0) {
-        variance = parseFloat(b) + parseFloat(a)
+    computeNet(navQty, Unposted) {
+      let net = 0
+      if (Unposted != '-') {
+        net = parseFloat(navQty) + parseFloat(Unposted)
       } else {
-        variance = parseFloat(b) - parseFloat(a)
+        net = parseFloat(navQty)
+      }
+
+      return net
+    },
+    computeVariance(a, b, c) {
+      let variance = 0,
+        value = 0
+      if (b != '-') {
+        value = parseFloat(a) + parseFloat(b)
+      } else {
+        value = parseFloat(a)
+      }
+
+      if (a < 0) {
+        variance = parseFloat(c) + value
+      } else {
+        variance = parseFloat(c) - value
       }
       // console.log(variance)
       //  const variance = parseFloat(a) - parseFloat(b)

@@ -20,6 +20,24 @@
                   class="col-md-3 control-label text-bold"
                   style="text-align: right"
                 >
+                  <h5>Company :</h5></label
+                >
+                <div class="col-md-6">
+                  <v-select
+                    :options="companyList"
+                    :reduce="companyList => companyList.acroname"
+                    label="acroname"
+                    v-model="company"
+                    placeholder="Company"
+                    @input="companySelected($event)"
+                  ></v-select>
+                </div>
+              </div>
+              <div class="row" style="padding: 10px 15px 15px 10px">
+                <label
+                  class="col-md-3 control-label text-bold"
+                  style="text-align: right"
+                >
                   <h5>Business Unit :</h5></label
                 >
                 <div class="col-md-6">
@@ -54,7 +72,7 @@
                   </v-select>
                 </div>
               </div>
-              <div class="row" style="padding: 10px 15px 15px 10px">
+              <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
                   class="col-md-3 control-label text-bold"
                   style="text-align: right"
@@ -82,28 +100,51 @@
                   </v-select>
                 </div>
               </div>
-              <!-- <div class="row" style="padding: 10px 15px 15px 10px">
-                <label
-                  class="col-md-3 control-label text-bold"
-                  style="text-align: right"
-                >
-                  <h5>Date From :</h5></label
-                >
-                <div class="col-md-6">
+              <div class="row pad-all" style="padding-left: 10px;">
+                <label class="col-lg-3 control-label text-bold">
+                  <h5>
+                    <i class="icon-lg demo-pli-file-edit icon-fw"></i>
+                    Count Type :
+                  </h5>
+                </label>
+                <div class="col-lg-6">
+                  <v-select
+                    :options="countTypes"
+                    label="countTypes"
+                    v-model="countType"
+                    placeholder="Count Type"
+                  ></v-select>
+                </div>
+              </div> -->
+              <div class="row pad-all" style="padding-left: 10px;">
+                <label class="col-lg-3 control-label text-bold">
+                  <h5>
+                    <i class="icon-lg demo-pli-calendar-4 icon-fw"></i> Batch
+                    Date :
+                  </h5>
+                </label>
+                <div class="col-lg-6">
                   <input
                     class="form-control"
                     v-model="date"
                     type="date"
                     name="dateFrom"
                     id="dateFrom"
+                    style="border-radius: 4px"
                   />
                 </div>
-              </div> -->
+              </div>
             </div>
             <div
               class="col-lg-6 table-toolbar-right form-horizontal pad-top"
               style="text-align: left"
             >
+              <div class="row" style="padding: 10px 15px 15px 10px">
+                <label class="col-md-3 control-label text-bold">
+                  <h5></h5>
+                </label>
+                <div class="col-md-6 pad-all"></div>
+              </div>
               <div class="row" style="padding: 10px 15px 15px 10px">
                 <label class="col-md-3 control-label text-bold">
                   <h5></h5>
@@ -128,12 +169,12 @@
                   ></v-select>
                 </div>
               </div>
-              <div class="row" style="padding: 10px 15px 15px 10px">
+              <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
                   class="col-md-3 control-label text-bold"
                   style="text-align: right"
                 >
-                  <h5>Category :</h5></label
+                  <h5>By Dept :</h5></label
                 >
                 <div class="col-md-6">
                   <v-select
@@ -155,7 +196,7 @@
                     }}</template>
                   </v-select>
                 </div>
-              </div>
+              </div> -->
               <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
                   class="col-md-3 control-label text-bold"
@@ -175,18 +216,14 @@
               </div> -->
             </div>
           </div>
-          <form
-            id="unposted"
-            class="dropzone"
-            enctype="multipart/form-data"
-            disabled
-          >
+          <form id="navUpload" class="dropzone" enctype="multipart/form-data">
             <input id="_token" type="hidden" name="_token" />
 
             <input type="hidden" :value="business_unit" name="business_unit" />
             <input type="hidden" :value="department" name="department" />
             <input type="hidden" :value="section" name="section" />
-            <!-- <input type="hidden" :value="date" name="date" /> -->
+            <input type="hidden" :value="countType" name="countType" />
+            <input type="hidden" :value="date" name="date" />
             <!-- <input id="date2" type="hidden" :value="date2" name="date2" /> -->
             <!-- <input type="hidden" :value="vendor" name="vendor" /> -->
             <!-- <input type="hidden" :value="category" name="category" /> -->
@@ -200,7 +237,7 @@
               </div>
             </div>
             <div class="fallback">
-              <input name="file" type="file" multiple disabled />
+              <input name="file" type="file" />
             </div>
           </form>
         </div>
@@ -215,9 +252,10 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
 
-Dropzone.options.unposted = {
+Dropzone.options.navUpload = {
   paramName: 'file', // The name that will be used to transfer the file
-  url: '/uploading/masterfiles/test',
+  url: '/uploading/unposted/importUnposted',
+  // url: '/uploading/masterfiles/importItemMasterfile',
   timeout: 100000000,
   init: function() {
     this.on('addedfile', function(file) {
@@ -294,6 +332,8 @@ export default {
       },
       searchProducts: null,
       total_result: null,
+      companyList: [],
+      company: null,
       vendorList: [],
       vendor: null,
       categoryList: [],
@@ -305,7 +345,9 @@ export default {
       deptList: [],
       department: null,
       sectionList: [],
-      section: null
+      section: null,
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     }
   },
   watch: {
@@ -342,10 +384,11 @@ export default {
       const bu = this.buList.filter(
         sm => sm.business_unit == this.business_unit
       )[0]
-
+      const company = this.companyList.find(e => e.acroname == this.company)
       axios
         .get(
-          `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
+          // `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
+          `/uploading/nav_upload/getSection/?code=${company.company_code}&bu=${bu.bunit_code}&dept=${department.dept_code}`
         )
         .then(response => {
           this.sectionList = response.data
@@ -359,10 +402,31 @@ export default {
       this.section = null
       if (val) {
         const bu = this.buList.filter(sm => sm.business_unit == val)[0]
+        const company = this.companyList.find(e => e.acroname == this.company)
         axios
-          .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
+          .get(
+            // `/setup/location/getDept/?bu=${bu.bunit_code}`
+            `/setup/location/getDept/?code=${company.company_code}&bu=${bu.bunit_code}`
+          )
           .then(response => {
             this.deptList = response.data
+          })
+          .catch(response => {
+            console.log('error')
+          })
+      }
+    },
+    companySelected(val) {
+      this.business_unit = null
+      this.department = null
+      this.section = null
+      // console.log(val)
+      if (val) {
+        const comp = this.companyList.filter(sm => sm.acroname == val)[0]
+        axios
+          .get(`/uploading/nav_upload/getBU/?code=${comp.company_code}`)
+          .then(response => {
+            this.buList = response.data
           })
           .catch(response => {
             console.log('error')
@@ -412,13 +476,17 @@ export default {
       }
     }, 1000),
     getResults() {
-      Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(
-        response => {
-          this.vendorList = response[0].data
-          this.categoryList = response[1].data
-          this.buList = response[2].data
-        }
-      )
+      Promise.all([
+        this.getVendor(),
+        this.getCategory(),
+        this.getBU(),
+        this.getCompany()
+      ]).then(response => {
+        this.vendorList = response[0].data
+        this.categoryList = response[1].data
+        this.buList = response[2].data
+        this.companyList = response[3].data
+      })
     },
     async getCategory() {
       return await axios.get('/uploading/nav_upload/getCategory')
@@ -429,7 +497,9 @@ export default {
     async getBU() {
       return await axios.get('/setup/location/getBU')
     },
-
+    async getCompany() {
+      return await axios.get('/uploading/nav_upload/getCompany')
+    },
     setCSRFToken() {
       document.getElementById('_token').value = document.head.querySelector(
         'meta[name="csrf-token"]'

@@ -63,6 +63,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/importVendorMasterfile', [FileUploadController::class, 'importVendorMasterfile']);
             Route::post('/importItemCategoryMasterfile', [FileUploadController::class, 'importItemCategoryMasterfile']);
         });
+
+        Route::prefix('unposted')->group(function () {
+            Route::post('/importUnposted', [FileUploadController::class, 'importUnposted']);
+        });
     });
 
     Route::prefix('reports')->group(function () {
@@ -87,6 +91,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/getResults', [ReportsController::class, 'getResultsVariance']);
             Route::get('/generate', [ReportsController::class, 'generateVariance']);
             Route::post('/export', [ExportsController::class, 'exportVariance']);
+            Route::get('/NavUnposted', [ExportsController::class, 'NavUnposted']);
         });
         Route::prefix('variance_report_cost')->group(function () {
             Route::get('/getResultVarianceCost', [ReportsController::class, 'getResultVarianceCost']);

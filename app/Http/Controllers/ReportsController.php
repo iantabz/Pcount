@@ -8,6 +8,7 @@ use App\Exports\PcountAppCountCost;
 use App\Models\BusinessUnit;
 use App\Models\TblAppCountdata;
 use App\Models\TblNavCountdata;
+use App\Models\TblUnposted;
 use Carbon\Carbon;
 use Dompdf\Options;
 use Illuminate\Http\Request;
@@ -519,7 +520,14 @@ class ReportsController extends Controller
                 ['section', $section]
             ])->groupBy('itemcode');
 
-            // dd($x->get());
+            $y = TblUnposted::selectRaw("cost_no_vat, tot_cost_no_vat, SUM(qty) as unposted")->where([
+                ['itemcode', $c->itemcode],
+                ['business_unit', $bu],
+                ['department', $dept],
+                ['section', $section]
+            ])->groupBy('itemcode');
+
+            // dd($y->get());
             if ($x->exists()) {
                 $c->nav_qty = $x->first()->nav_qty;
                 $c->cost_vat = $x->first()->cost_vat;
@@ -532,7 +540,11 @@ class ReportsController extends Controller
                 $c->amt = '-';
             }
 
-
+            if ($y->exists()) {
+                $c->unposted = $y->first()->unposted;
+            } else {
+                $c->unposted = '-';
+            }
 
             return $c;
         });
@@ -691,6 +703,19 @@ class ReportsController extends Controller
                         $c->nav_qty = $query->first()->nav_qty;
                     } else {
                         $c->nav_qty = '-';
+                    }
+
+                    $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
+                        ['itemcode', $c->itemcode],
+                        ['business_unit', $bu],
+                        ['department', $dept],
+                        ['section', $section]
+                    ])->groupBy('itemcode');
+
+                    if ($y->exists()) {
+                        $c->unposted = $y->first()->unposted;
+                    } else {
+                        $c->unposted = '-';
                     }
 
                     return $c;
