@@ -629,7 +629,7 @@ export default {
       })
     },
     getResults(page = 1) {
-      let url = `/reports/variance_report/getResults/?date=${btoa(
+      let url = `/reports/nav_sys/getResults/?date=${btoa(
         this.date
       )}&date2=${btoa(this.date2)}&vendors=${btoa(
         this.forPrintVendor

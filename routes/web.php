@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/generatePcountCostExcel', [ReportsController::class, 'generatePcountCostExcel']);
         });
         Route::prefix('nav_sys')->group(function () {
+            Route::get('/getResults', [NavSysController::class, 'getResults']);
             Route::get('/NetNavSys', [NavSysController::class, 'NetNavSys']);
         });
         Route::prefix('variance_report')->group(function () {
