@@ -5,6 +5,7 @@ use App\Http\Controllers\ExportsController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\InventoryValuationController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\NavSysController;
 use App\Http\Controllers\PhysicalCountController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SetupController;
@@ -87,11 +88,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/generatePcountCost', [ReportsController::class, 'generatePcountCost']);
             Route::get('/generatePcountCostExcel', [ReportsController::class, 'generatePcountCostExcel']);
         });
+        Route::prefix('nav_sys')->group(function () {
+            Route::get('/NetNavSys', [NavSysController::class, 'NetNavSys']);
+        });
         Route::prefix('variance_report')->group(function () {
             Route::get('/getResults', [ReportsController::class, 'getResultsVariance']);
             Route::get('/generate', [ReportsController::class, 'generateVariance']);
             Route::post('/export', [ExportsController::class, 'exportVariance']);
-            Route::get('/NavUnposted', [ExportsController::class, 'NavUnposted']);
         });
         Route::prefix('variance_report_cost')->group(function () {
             Route::get('/getResultVarianceCost', [ReportsController::class, 'getResultVarianceCost']);

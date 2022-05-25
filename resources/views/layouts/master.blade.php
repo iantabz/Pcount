@@ -953,6 +953,9 @@
                         <router-link tag="li" to="/physical_count_cost">
                           <a href="javascript:;">Actual Count (APP) with Cost</a>
                         </router-link>
+                        <router-link tag="li" to="/nav_sys">
+                          <a href="javascript:;">Navision System Report</a>
+                        </router-link>
                         <router-link tag="li" to="/variance_report">
                           <a href="javascript:;">Variance Report</a>
                         </router-link>

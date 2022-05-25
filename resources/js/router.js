@@ -21,6 +21,7 @@ import DamageCount from './components/DamageCount.vue'
 import LocationOrig from './components/Location2.vue'
 import RackMonitoring from './components/RackMonitoring.vue'
 import InventoryValuationVariance from './components/InventoryValuationVariance.vue'
+import NavSys from './components/NavSys.vue'
 
 Vue.use(VueRouter)
 
@@ -164,11 +165,19 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Inventory Valuation w/ Variances',
+      name: 'Inventory Valuation From Navision w/ Variances',
       path: '/inventory_valuation_variance',
       component: InventoryValuationVariance,
       meta: {
-        name: 'Inventory Valuation w/ Variances'
+        name: 'Inventory Valuation From Navision w/ Variances'
+      }
+    },
+    {
+      name: 'Navision System Report',
+      path: '/nav_sys',
+      component: NavSys,
+      meta: {
+        name: 'Navision System Report'
       }
     },
     {

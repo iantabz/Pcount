@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Variance Report</title>
+    <title> @if($data['report'] =='Variance')
+        VARIANCE REPORT 
+        @else
+        VARIANCE SUMMARY REPORT
+        @endif</title>
     <style media="screen">
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
@@ -221,7 +225,11 @@
                 </div>
                 <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
-                        VARIANCE REPORT
+                        @if($data['report'] =='Variance')
+                        VARIANCE REPORT 
+                        @else
+                        VARIANCE SUMMARY REPORT 
+                        @endif
                     </div>
                 </div>
                 <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
@@ -234,6 +242,9 @@
     @php
     $countSize = count($data['data']);
     @endphp
+
+    @if ($data['report'] =='Variance')
+
     @foreach ($data['data'] as $vendor_name => $categories)
     @php
     --$countSize;
@@ -346,6 +357,105 @@
     <div class="page-break"></div>
     @endif --}}
     @endforeach
+    @endif
+
+    @if($data['report'] =='Summary')
+    <table class="body1">
+        <thead>
+            <tr>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Item Code
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Barcode
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Description
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Uom
+                </th>
+                <th colspan="2" class="text-center" style="vertical-align: middle;">
+                    Quantity
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Variance
+                </th>
+
+            </tr>
+            <tr>
+                <th class="text-center" style="vertical-align: middle;">
+                    P COUNT APP
+                </th>
+                <th class="text-center" style="vertical-align: middle;">
+                    NET NAV SYS COUNT</th>
+                {{-- <th class="text-center" style="vertical-align: middle;">
+                    UNPOSTED</th> --}}
+            </tr>
+        </thead>
+        <tbody>
+            <?php  
+            $grandTotal = 0;
+            $variance = 0;
+            $value = 0;
+             ?>
+            @foreach ($data['data'] as $key => $item)
+            {{-- {{dd($item)}} --}}
+            @php
+              if($item['unposted'] != '-')
+            {
+                $value = $item['nav_qty'] + $item['unposted'];
+            }
+            else {
+                $value = $item['nav_qty'];
+            }
+
+            if($item['nav_qty'] == '-') $variance = $item['total_conv_qty'];
+
+            else if($item['nav_qty'] < 0)
+            { 
+                $variance= $item['total_conv_qty'] + $value;
+            } 
+            else{
+                $variance= $item['total_conv_qty'] - $value; 
+            } 
+            @endphp 
+                <tr>
+                <td style="text-align: center;">{{ $item['itemcode'] }}
+                </td>
+                <td style="text-align: center;">{{ $item['barcode'] }}
+                </td>
+                <td style="text-align: left;">{{ $item['extended_desc'] }}</td>
+                <td style="text-align: center;">{{ $item['nav_uom'] ?: 'PCS' }}</td>
+                <td style="text-align: center;">{{ number_format($item['total_conv_qty'], 0) }}</td>
+                <td style="text-align: center;">
+                    {{
+                        number_format($value, 0)
+                     }}
+                </td>
+                {{-- <td style="text-align: center;">{{  is_numeric($item['unposted']) ? number_format($item['unposted'], 0) : $item['unposted'] }}</td> --}}
+                <td style="text-align: center;">{{ number_format($variance, 0) }}
+                </td>
+                </tr>
+                <?php
+             $grandTotal += $variance;
+            ?>
+                @endforeach
+                <tr>
+                    <td colspan="6"
+                        style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
+                        Grand Total >>>
+                    </td>
+                    <td style="text-align:center; border-bottom-style: none; border-top-style: double;"> {{
+                        number_format($grandTotal, 0)}}
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+        
+    @endif
+    {{-- {{dd($data)}} --}}
     <table class="body2">
         <thead style="">
             <tr>

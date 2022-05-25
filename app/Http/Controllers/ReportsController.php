@@ -449,7 +449,7 @@ class ReportsController extends Controller
         $business_unit = auth()->user()->business_unit;
         $department = auth()->user()->department;
         $section = request()->section;
-        $vendors = request()->vendors;
+        $vendors = base64_decode(request()->vendors);
         $category = request()->category;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
@@ -475,38 +475,41 @@ class ReportsController extends Controller
             tbl_item_masterfile.extended_desc,
             tbl_app_countdata.uom, 
             SUM(tbl_app_countdata.qty) as app_qty,
-            SUM(tbl_app_countdata.conversion_qty) as conversion_qty'
+            SUM(tbl_app_countdata.conversion_qty) as conversion_qty,
+            vendor_name,
+            tbl_item_masterfile.group'
         )
-            ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode')
-            ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode')
-            ->whereBetween('date', [$date, $dateAsOf]);
+            ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
+            ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
+            ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
         if ($bu != 'null') {
-            $result->WHERE('tbl_app_countdata.business_unit', $bu);
-            // $result->orwhere('tbl_nav_countdata.business_unit', $bu);
+            $result->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
         }
 
         if ($dept != 'null') {
-            $result->WHERE('tbl_app_countdata.department', $dept);
-            // $result->orwhere('tbl_nav_countdata.department', $dept);
+            $result->WHERE('tbl_app_countdata.department', 'LIKE', "%$dept%");
         }
 
         if ($section != 'null') {
-            $result->WHERE('tbl_app_countdata.section', $section);
-            // $result->orwhere('tbl_nav_countdata.section', $section);
+            $result->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
         }
 
         if ($vendors) {
             $vendors = explode(' , ', $vendors);
             $vendors = str_replace("'", "", $vendors);
-            $result->whereIn('vendor_name', $vendors);
+            $result = $result->whereIn('vendor_name', $vendors);
+            $vendors = implode(", ", $vendors);
         }
         if ($category) {
             $category = explode(" , ", $category);
             $category = str_replace("'", "", $category);
-            $result->whereIn('group', $category);
+            $result = $result->whereIn('group', $category);
+            $category = implode(", ", $category);
         }
 
+        // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
+        // dd($result);
         $x = $result->groupByRaw('tbl_app_countdata.itemcode')->orderBy('itemcode')->get();
 
         // dd($x);
@@ -563,6 +566,7 @@ class ReportsController extends Controller
 
         // $domPdfOptions = new Options();
         // dd($domPdfOptions);
+        // dd(request()->all());
 
         $pdf = PDF::loadView('reports.variance_report', ['data' => $this->varianceReportData()]);
         return $pdf->setPaper('legal', 'landscape')->download('Variance Report.pdf');
@@ -638,6 +642,7 @@ class ReportsController extends Controller
 
         //  tbl_nav_countdata.uom as nav_uom,
         //  tbl_nav_countdata.qty as nav_qty, 
+
         $result = TblAppCountdata::selectRaw('
                 tbl_app_countdata.id,
                 tbl_app_countdata.itemcode, 
@@ -682,68 +687,123 @@ class ReportsController extends Controller
         // $result = $result->groupBy('barcode')->get()->groupBy(['vendor_name', 'group'])->toArray();
 
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->limit(5)->get()->groupBy(['vendor_name', 'group']);
-        $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
+        if (!request()->has('type')) {
+            $report = 'Variance';
+            $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
+            $arr = [];
+
+            foreach ($result as $vendor_name => $categories) {
+                foreach ($categories as $category => $items) {
+                    $arr[$vendor_name][$category] = $items->map(function ($c) use ($bu, $dept, $section) {
+                        $query = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
+                            ['itemcode', $c->itemcode],
+                            ['business_unit', $bu],
+                            ['department', $dept],
+                            ['section', $section]
+                        ])->groupBy('itemcode');
+                        // dd($query->get());
+
+                        if ($query->exists()) {
+                            $c->nav_qty = $query->first()->nav_qty;
+                        } else {
+                            $c->nav_qty = '-';
+                        }
+
+                        $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
+                            ['itemcode', $c->itemcode],
+                            ['business_unit', $bu],
+                            ['department', $dept],
+                            ['section', $section]
+                        ])->groupBy('itemcode');
+
+                        if ($y->exists()) {
+                            $c->unposted = $y->first()->unposted;
+                        } else {
+                            $c->unposted = '-';
+                        }
+
+                        return $c;
+                    });
+                }
+            }
+
+            $header = array(
+                'company'       => $company,
+                'business_unit' => $bu,
+                'department'    => $dept,
+                'section'       => $section,
+                'vendors'       => $vendors,
+                'category'      => $category,
+                'date'          => $printDate,
+                'user'          => auth()->user()->name,
+                'userBu'        =>  auth()->user()->business_unit,
+                'userDept'      => auth()->user()->department,
+                'userSection'   => auth()->user()->section,
+                'user_position' => auth()->user()->position,
+                'runDate'       => $runDate,
+                'runTime'       => $runTime,
+                'report'        => $report,
+                'data'          => $arr
+            );
+        } else {
+            $report = 'Summary';
+            $result = $result->groupBy('barcode')->orderBy('itemcode')->get();
+            $arr = [];
+
+            foreach ($result as $items => $c) {
+
+                $query = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
+                    ['itemcode', $c->itemcode],
+                    ['business_unit', $bu],
+                    ['department', $dept],
+                    ['section', $section]
+                ])->groupBy('itemcode');
+
+                if ($query->exists()) {
+                    $c->nav_qty = $query->first()->nav_qty;
+                } else {
+                    $c->nav_qty = '-';
+                }
+
+                $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
+                    ['itemcode', $c->itemcode],
+                    ['business_unit', $bu],
+                    ['department', $dept],
+                    ['section', $section]
+                ])->groupBy('itemcode');
+
+                if ($y->exists()) {
+                    $c->unposted = $y->first()->unposted;
+                } else {
+                    $c->unposted = '-';
+                }
+
+                // return $c;
+                // });
+            }
+
+            $header = array(
+                'company'       => $company,
+                'business_unit' => $bu,
+                'department'    => $dept,
+                'section'       => $section,
+                'vendors'       => $vendors,
+                'category'      => $category,
+                'date'          => $printDate,
+                'user'          => auth()->user()->name,
+                'userBu'        =>  auth()->user()->business_unit,
+                'userDept'      => auth()->user()->department,
+                'userSection'   => auth()->user()->section,
+                'user_position' => auth()->user()->position,
+                'runDate'       => $runDate,
+                'runTime'       => $runTime,
+                'report'        => $report,
+                'data'          => $result
+            );
+        }
 
         // dd($result);
 
-        $arr = [];
-
-        foreach ($result as $vendor_name => $categories) {
-            foreach ($categories as $category => $items) {
-                $arr[$vendor_name][$category] = $items->map(function ($c) use ($bu, $dept, $section) {
-                    $query = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
-                        ['itemcode', $c->itemcode],
-                        ['business_unit', $bu],
-                        ['department', $dept],
-                        ['section', $section]
-                    ])->groupBy('itemcode');
-                    // dd($query->get());
-
-                    if ($query->exists()) {
-                        $c->nav_qty = $query->first()->nav_qty;
-                    } else {
-                        $c->nav_qty = '-';
-                    }
-
-                    $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
-                        ['itemcode', $c->itemcode],
-                        ['business_unit', $bu],
-                        ['department', $dept],
-                        ['section', $section]
-                    ])->groupBy('itemcode');
-
-                    if ($y->exists()) {
-                        $c->unposted = $y->first()->unposted;
-                    } else {
-                        $c->unposted = '-';
-                    }
-
-                    return $c;
-                });
-            }
-        }
-
-
-
-        // dd($arr);
-
-        $header = array(
-            'company' => $company,
-            'business_unit' => $bu,
-            'department' => $dept,
-            'section' => $section,
-            'vendors' => $vendors,
-            'category' => $category,
-            'date' => $printDate,
-            'user' => auth()->user()->name,
-            'userBu' =>  auth()->user()->business_unit,
-            'userDept' => auth()->user()->department,
-            'userSection' => auth()->user()->section,
-            'user_position' => auth()->user()->position,
-            'runDate'   => $runDate,
-            'runTime'    => $runTime,
-            'data' => $arr
-        );
         // dd($header);
         return $header;
     }
