@@ -18,7 +18,25 @@
                 <div class="col-md-6 table-toolbar-left form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
+                      style="text-align: right"
+                    >
+                      <h5>Company :</h5></label
+                    >
+                    <div class="col-md-6">
+                      <v-select
+                        :options="companyList"
+                        :reduce="companyList => companyList.acroname"
+                        label="acroname"
+                        v-model="company"
+                        placeholder="Company"
+                        @input="companySelected($event)"
+                      ></v-select>
+                    </div>
+                  </div>
+                  <div class="row" style="padding: 10px 15px 15px 10px">
+                    <label
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Business Unit :</h5></label
@@ -37,7 +55,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Department :</h5></label
@@ -55,25 +73,9 @@
                       </v-select>
                     </div>
                   </div>
-
-                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-lg-3 control-label text-bold">
-                      <h5>Date From :</h5>
-                    </label>
-                    <div class="col-lg-6">
-                      <input
-                        class="form-control"
-                        v-model="date"
-                        type="date"
-                        name="dateFrom"
-                        id="dateFrom"
-                        style="border-radius: 4px"
-                      />
-                    </div>
-                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Vendor Name :</h5></label
@@ -100,7 +102,7 @@
                     </div>
                   </div>
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-calendar-4 icon-fw"></i> Date
                         as of :
@@ -121,15 +123,20 @@
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
-
+                  <div class="row" style="padding: 10px 15px 15px 10px">
+                    <label class="col-md-3 control-label text-thin">
+                      <h5></h5>
+                    </label>
+                    <div class="col-md-6 pad-all"></div>
+                  </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Section :</h5></label
@@ -145,27 +152,9 @@
                       ></v-select>
                     </div>
                   </div>
-                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label
-                      class="col-lg-3 control-label text-bold"
-                      style="text-align: right"
-                    >
-                      <h5>Date To :</h5>
-                    </label>
-                    <div class="col-lg-6">
-                      <input
-                        class="form-control"
-                        v-model="date2"
-                        type="date"
-                        name="dateTo"
-                        id="dateTo"
-                        style="border-radius: 4px"
-                      />
-                    </div>
-                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>By Dept :</h5></label
@@ -191,18 +180,26 @@
                       </v-select>
                     </div>
                   </div>
-                  <div class="row" style="padding: 10px 15px 15px 10px">
-                    <!-- :disabled="!data.data.length" -->
-
-                    <button
-                      class="btn btn-info btn-rounded pull-right"
-                      @click="generateBtn($event)"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Report
-                    </button>
-                  </div>
                 </div>
+              </div>
+              <div class="row" style="padding: 10px 15px 15px 10px">
+                <button
+                  :disabled="!data.data.length"
+                  class="btn btn-warning btn-rounded pull-right text-thin mar-lft"
+                  @click="generateBtn($event, 'Summary')"
+                >
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
+                  Summary Report
+                </button>
+
+                <button
+                  :disabled="!data.data.length"
+                  class="btn btn-info btn-rounded pull-right"
+                  @click="generateBtn($event, 'Variance')"
+                >
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
+                  Variance Report w/ Cost
+                </button>
               </div>
               <table class="table table-striped">
                 <thead>
@@ -240,7 +237,7 @@
                       class="text-center"
                       style="vertical-align: middle;"
                     >
-                      Qty
+                      Quantity
                     </th>
                     <th
                       rowspan="2"
@@ -265,10 +262,10 @@
                       w/o VAT
                     </th>
                     <th class="text-center" style="vertical-align: middle;">
-                      Nav
+                      P Count App
                     </th>
                     <th class="text-center" style="vertical-align: middle;">
-                      P Count App
+                      Net Nav Sys Count
                     </th>
                     <th>
                       w/ VAT
@@ -316,13 +313,14 @@
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ Math.trunc(data.nav_qty) }}
+                      {{ data.conversion_qty }}
                     </td>
                     <td
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ data.conversion_qty }}
+                      <!-- {{ Math.trunc(data.nav_qty) }} -->
+                      {{ computeNet(data.nav_qty, data.unposted) }}
                     </td>
                     <td
                       class="text-main text-normal text-center"
@@ -331,6 +329,7 @@
                       {{
                         computeVariance(
                           data.nav_qty,
+                          data.unposted,
                           data.conversion_qty,
                           data.cost_no_vat
                         ).variance
@@ -350,6 +349,7 @@
                       {{
                         computeVariance(
                           data.nav_qty,
+                          data.unposted,
                           data.conversion_qty,
                           data.cost_no_vat
                         ).tot_no_vat | numberFormat
@@ -361,18 +361,17 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="col-md-6">
-                    Showing {{ data.from }} to {{ data.to }} of
-                    {{ data.total }} entries
+                    Showing {{ data.data.length }} entries
                   </div>
                   <div class="col-md-6">
                     <div class="text-right">
-                      <pagination
+                      <!-- <pagination
                         style="margin: 0 0 20px 0"
                         :limit="1"
                         :show-disabled="true"
                         :data="data"
                         @pagination-change-page="getResults"
-                      ></pagination>
+                      ></pagination> -->
                     </div>
                   </div>
                 </div>
@@ -395,7 +394,7 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
 
-Vue.component('pagination', require('laravel-vue-pagination'))
+// Vue.component('pagination', require('laravel-vue-pagination'))
 Vue.component('v-select', vSelect)
 export default {
   data() {
@@ -420,36 +419,29 @@ export default {
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
-      buList: [],
+      company: null,
+      companyList: [],
       business_unit: null,
-      deptList: [],
+      buList: [],
       department: null,
-      sectionList: [],
-      section: null
+      deptList: [],
+      section: null,
+      sectionList: []
     }
   },
   components: {
-    datetime: Datetime,
-    datetime2: Datetime
+    datetime: Datetime
   },
   watch: {
     date() {
-      // if (this.business_unit && this.department && this.section) {
-      // this.getResults()
-      // }
+      if (this.business_unit && this.department && this.section) {
+        this.getResults()
+      }
     },
     vendor(newValue) {
-      // let value = []
-      // newValue.forEach((element, index) => {
-      //   value.push(element.vendor_name)
-      // })
-      // this.forPrintVendor = value.join('|')
-      // this.getResults()
-
       if (newValue?.length == 0) this.vendor = null
       if (newValue) {
         const res = newValue.find(val => val.vendor_name === 'ALL VENDORS')
-
         if (res) {
           this.filteredvendorList = this.vendorList.filter(
             categ => categ.vendor_name === res.vendor_name
@@ -473,13 +465,6 @@ export default {
       }
     },
     category(newValue) {
-      // let value = []
-      // newValue.forEach((element, index) => {
-      //   value.push(element.category)
-      // })
-      // this.forPrintCategory = value.join('|')
-      // this.getResults()
-
       if (newValue?.length == 0) this.category = null
       if (newValue) {
         const res = newValue.find(val => val.category === 'ALL CATEGORIES')
@@ -505,32 +490,41 @@ export default {
       } else {
         this.filteredcategoryList = this.categoryList
       }
-    },
-    business_unit() {
-      // this.getResults()
-    },
-    department() {
-      // this.getResults()
-    },
-    section() {
-      // this.getResults()
     }
   },
   methods: {
-    computeVariance(a, b, c) {
+    computeNet(navQty, Unposted) {
+      let net = 0
+      if (Unposted != '-') {
+        net = parseFloat(navQty) + parseFloat(Unposted)
+      } else {
+        net = parseFloat(navQty)
+      }
+
+      return net
+    },
+    computeVariance(a, b, c, cost) {
       // console.log(Math.trunc(a), b)
       let variance = 0,
-        tot_no_vat = 0
-      if (a < 0) {
-        variance = parseFloat(b) + parseFloat(a)
+        tot_no_vat = 0,
+        value = 0
+
+      if (b != '-') {
+        value = parseFloat(a) + parseFloat(b)
       } else {
-        variance = parseFloat(b) - parseFloat(a)
+        value = parseFloat(a)
       }
-      tot_no_vat = variance * c
-      console.log(variance, tot_no_vat)
+
+      if (a < 0) {
+        variance = parseFloat(c) + value
+      } else {
+        variance = parseFloat(c) - value
+      }
+
+      tot_no_vat = variance * parseFloat(cost)
       return { variance, tot_no_vat }
     },
-    async generateBtn(e) {
+    async generateBtn(e, reportType) {
       Swal.fire({
         html: "Please wait, don't close the browser.",
         title: 'Generating report in progress',
@@ -547,23 +541,36 @@ export default {
       })
       const thisButton = e.target
       const oldHTML = thisButton.innerHTML
+      let pass = null,
+        title = null
 
-      thisButton.disabled = true
-      thisButton.innerHTML =
-        '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
-      const { headers, data } = await axios.get(
-        `/reports/variance_report_cost/generateVarianceReportCost?date=${btoa(
+      if (reportType == 'Variance') {
+        title = 'Variance Report w/ Cost'
+
+        pass = `/reports/variance_report_cost/generateVarianceReportCost?date=${btoa(
           this.date
         )}&date2=${btoa(this.date2)}&vendors=${btoa(
           this.forPrintVendor
         )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
           this.department
-        }&section=${this.section}`,
+        }&section=${this.section}`
+      } else if (reportType == 'Summary') {
+        title = 'Variance Report w/ Cost Summary'
+        pass = `/reports/variance_report_cost/generateVarianceReportCost?date=${btoa(
+          this.date
+        )}&date2=${btoa(this.date2)}&vendors=${btoa(
+          this.forPrintVendor
+        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+          this.department
+        }&section=${this.section}&type=Summary`
+      }
 
-        {
-          responseType: 'blob'
-        }
-      )
+      thisButton.disabled = true
+      thisButton.innerHTML =
+        '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
+      const { headers, data } = await axios.get(pass, {
+        responseType: 'blob'
+      })
       // return console.log(headers)
       const { 'content-disposition': contentDisposition } = headers
       const [attachment, file] = contentDisposition.split(' ')
@@ -575,7 +582,10 @@ export default {
       link.href = url
       // console.log('download', `${fileName.replace('"', '')}.pdf`)
 
-      link.setAttribute('download', `Variance Report w/ Cost.pdf`)
+      link.setAttribute(
+        'download',
+        `${title} as of ${this.date} ${this.business_unit} ${this.department} ${this.section}.pdf`
+      )
       // console.log(link)
       document.body.appendChild(link)
       link.click()
@@ -605,16 +615,20 @@ export default {
         .replace(/-/g, '-')
     },
     getResults(page = 1) {
-      let url = null
-
-      url = `/reports/variance_report_cost/getResultVarianceCost/?date=${btoa(
+      let url = `/reports/variance_report_cost/getResultVarianceCost/?date=${btoa(
         this.date
-      )}&date2=${btoa(this.date2)}&vendors=${this.forPrintVendor}&category=${
-        this.forPrintCategory
-      }&bu=${this.business_unit}&dept=${this.department}&section=${
-        this.section
-      }&page=`
-      if (this.business_unit && this.department && this.section) {
+      )}&date2=${btoa(this.date2)}&vendors=${btoa(
+        this.forPrintVendor
+      )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+        this.department
+      }&section=${this.section}&page=`
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      ) {
         axios.get(url + page).then(response => {
           this.data = response.data
           this.total_result = response.data.total
@@ -627,10 +641,11 @@ export default {
       const bu = this.buList.filter(
         sm => sm.business_unit == this.business_unit
       )[0]
-
+      const company = this.companyList.find(e => e.acroname == this.company)
       axios
         .get(
-          `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
+          // `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
+          `/uploading/nav_upload/getSection/?code=${company.company_code}&bu=${bu.bunit_code}&dept=${department.dept_code}`
         )
         .then(response => {
           this.sectionList = response.data
@@ -644,10 +659,31 @@ export default {
       this.section = null
       if (val) {
         const bu = this.buList.filter(sm => sm.business_unit == val)[0]
+        const company = this.companyList.find(e => e.acroname == this.company)
         axios
-          .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
+          .get(
+            // `/setup/location/getDept/?bu=${bu.bunit_code}`
+            `/setup/location/getDept/?code=${company.company_code}&bu=${bu.bunit_code}`
+          )
           .then(response => {
             this.deptList = response.data
+          })
+          .catch(response => {
+            console.log('error')
+          })
+      }
+    },
+    companySelected(val) {
+      this.business_unit = null
+      this.department = null
+      this.section = null
+      // console.log(val)
+      if (val) {
+        const comp = this.companyList.filter(sm => sm.acroname == val)[0]
+        axios
+          .get(`/uploading/nav_upload/getBU/?code=${comp.company_code}`)
+          .then(response => {
+            this.buList = response.data
           })
           .catch(response => {
             console.log('error')
@@ -697,15 +733,19 @@ export default {
       }
     }, 1000),
     getResults2() {
-      Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(
-        response => {
-          this.vendorList = response[0].data
-          this.filteredvendorList = response[0].data
-          this.categoryList = response[1].data
-          this.filteredcategoryList = response[1].data
-          this.buList = response[2].data
-        }
-      )
+      Promise.all([
+        this.getVendor(),
+        this.getCategory(),
+        this.getBU(),
+        this.getCompany()
+      ]).then(response => {
+        this.vendorList = response[0].data
+        this.filteredvendorList = response[0].data
+        this.categoryList = response[1].data
+        this.filteredcategoryList = response[1].data
+        // this.buList = response[2].data
+        this.companyList = response[3].data
+      })
     },
     async getCategory() {
       return await axios.get('/uploading/nav_upload/getCategory')
@@ -715,6 +755,9 @@ export default {
     },
     async getBU() {
       return await axios.get('/setup/location/getBU')
+    },
+    async getCompany() {
+      return await axios.get('/uploading/nav_upload/getCompany')
     }
   },
   mounted() {
@@ -726,4 +769,16 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+#container .table td {
+  font-size: 1.1em;
+}
+
+#container .table > tbody > tr:hover {
+  background-color: rgb(2 2 2 / 5%);
+}
+
+h5 {
+  font-size: 14px;
+}
+</style>

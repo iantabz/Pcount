@@ -922,12 +922,16 @@
                         <li>
                           <a href="/nav_upload">Inventory Balance From Nav</a>
                         </li>
+                        <li>
+                          <a href="/pos_unposted">POS Unposted</a>
+                        </li>
                         {{-- <router-link tag="li" to="/nav_upload">
                           <a href="javascript:;">Physical Count From Nav</a>
                         </router-link> --}}
-                        <router-link tag="li" to="/pos_unposted">
+                        
+                        {{-- <router-link tag="li" to="/pos_unposted">
                           <a href="javascript:;">POS Unposted</a>
-                        </router-link>
+                        </router-link> --}}
                       </ul>
                     </li>
 
@@ -941,9 +945,9 @@
 
                       <!--Submenu-->
                       <ul class="collapse">
-                        <router-link tag="li" to="/inventory_valuation_variance">
+                        {{-- <router-link tag="li" to="/inventory_valuation_variance">
                           <a href="javascript:;">Inventory Valuation w/ Variances</a>
-                        </router-link>
+                        </router-link> --}}
                         <router-link tag="li" to="/physical_count">
                           <a href="javascript:;">Actual Count (APP)</a>
                         </router-link>
@@ -953,8 +957,8 @@
                         <router-link tag="li" to="/physical_count_cost">
                           <a href="javascript:;">Actual Count (APP) with Cost</a>
                         </router-link>
-                        <router-link tag="li" to="/nav_sys">
-                          <a href="javascript:;">Navision System Report</a>
+                        <router-link tag="li" to="/inventory_valuation">
+                          <a href="javascript:;">Inventory Valuation Report (Navision)</a>
                         </router-link>
                         <router-link tag="li" to="/variance_report">
                           <a href="javascript:;">Variance Report</a>
@@ -1001,9 +1005,9 @@
 
         <!-- Visible when footer positions are static -->
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <div class="hide-fixed pull-right pad-rgt">
+        {{-- <div class="hide-fixed pull-right pad-rgt">
           14GB of <strong>512GB</strong> Free.
-        </div>
+        </div> --}}
 
 
 

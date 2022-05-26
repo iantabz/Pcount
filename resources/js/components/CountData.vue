@@ -18,7 +18,7 @@
                 <div class="col-md-6 table-toolbar-left form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Company :</h5></label
@@ -36,7 +36,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Business Unit :</h5></label
@@ -55,7 +55,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Department :</h5></label
@@ -75,7 +75,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Vendor Name :</h5></label
@@ -102,7 +102,7 @@
                     </div>
                   </div>
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-file-edit icon-fw"></i>
                         Count Type :
@@ -118,7 +118,7 @@
                     </div>
                   </div>
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-calendar-4 icon-fw"></i> Date
                         as of :
@@ -139,20 +139,20 @@
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Section :</h5></label
@@ -170,7 +170,7 @@
                   </div>
                   <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-lg-3 control-label text-bold"
+                      class="col-lg-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Date To :</h5>
@@ -188,7 +188,7 @@
                   </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>By Dept :</h5></label
@@ -215,14 +215,14 @@
                     </div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
-                  <div class="row pad-all">
+                  <!-- <div class="row pad-all">
                     <button
-                      class="btn btn-danger btn-rounded pull-right mar-lft"
+                      class="btn btn-danger btn-rounded pull-right text-thin mar-lft"
                       :disabled="!notFoundItems || notFoundItems == 0"
                       @click="generateBtnEXCEL($event, 'NotFound')"
                     >
@@ -230,7 +230,7 @@
                       Found({{ notFoundItems }})
                     </button>
                     <button
-                      class="btn btn-info btn-rounded pull-right mar-lft"
+                      class="btn btn-info btn-rounded pull-right text-thin mar-lft"
                       :disabled="!data.data.length"
                       @click="generateBtn($event)"
                     >
@@ -239,15 +239,40 @@
                     </button>
 
                     <button
-                      class="btn btn-info btn-rounded pull-right"
+                      class="btn btn-info btn-rounded pull-right text-thin"
                       :disabled="!data.data.length"
                       @click="generateBtnEXCEL($event, 'CountData')"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
                       Excel
                     </button>
-                  </div>
+                  </div> -->
                 </div>
+              </div>
+              <div class="row pad-all">
+                <button
+                  class="btn btn-danger btn-rounded pull-right text-thin mar-lft"
+                  :disabled="!notFoundItems || notFoundItems == 0"
+                  @click="generateBtnEXCEL($event, 'NotFound')"
+                >
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
+                  Found({{ notFoundItems }})
+                </button>
+                <button
+                  class="btn btn-info btn-rounded pull-right text-thin mar-lft"
+                  :disabled="!data.data.length"
+                  @click="generateBtn($event)"
+                >
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate PDF
+                </button>
+
+                <button
+                  class="btn btn-info btn-rounded pull-right text-thin"
+                  :disabled="!data.data.length"
+                  @click="generateBtnEXCEL($event, 'CountData')"
+                >
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Excel
+                </button>
               </div>
               <table class="table table-striped table-vcenter" id="data-table">
                 <thead>
@@ -812,5 +837,9 @@ export default {
 
 #container .table > tbody > tr:hover {
   background-color: rgb(2 2 2 / 5%);
+}
+
+h5 {
+  font-size: 14px;
 }
 </style>

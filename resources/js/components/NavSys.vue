@@ -563,7 +563,7 @@ export default {
       let pass = null,
         title = null
       if (type == 'Variance') {
-        title = 'Variance Report'
+        title = 'Negative Inventory Balance (Navision)'
         pass = `/reports/nav_sys/NetNavSys?date=${btoa(this.date)}&date2=${btoa(
           this.date2
         )}&vendors=${btoa(this.forPrintVendor)}&category=${
@@ -581,7 +581,7 @@ export default {
           this.department
         }&section=${this.section}&type=Summary`
       } else {
-        title = 'Net Nav Sys'
+        title = 'Inventory Valuation Report (Navision)'
         pass = `/reports/nav_sys/NetNavSys?date=${btoa(this.date)}&date2=${btoa(
           this.date2
         )}&vendors=${btoa(this.forPrintVendor)}&category=${
@@ -918,6 +918,14 @@ export default {
 </script>
 
 <style scoped>
+#container .table td {
+  font-size: 1.1em;
+}
+
+#container .table > tbody > tr:hover {
+  background-color: rgb(2 2 2 / 5%);
+}
+
 h5 {
   font-size: 14px;
 }

@@ -17,7 +17,7 @@
             <div class="col-lg-6 table-toolbar-left form-horizontal pad-top">
               <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
-                  class="col-md-3 control-label text-bold"
+                  class="col-md-3 control-label text-thin"
                   style="text-align: right"
                 >
                   <h5>Company :</h5></label
@@ -35,7 +35,7 @@
               </div>
               <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
-                  class="col-md-3 control-label text-bold"
+                  class="col-md-3 control-label text-thin"
                   style="text-align: right"
                 >
                   <h5>Business Unit :</h5></label
@@ -54,7 +54,7 @@
               </div>
               <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
-                  class="col-md-3 control-label text-bold"
+                  class="col-md-3 control-label text-thin"
                   style="text-align: right"
                 >
                   <h5>Department :</h5></label
@@ -74,7 +74,7 @@
               </div>
               <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
-                  class="col-md-3 control-label text-bold"
+                  class="col-md-3 control-label text-thin"
                   style="text-align: right"
                 >
                   <h5>Vendor Name :</h5></label
@@ -117,7 +117,7 @@
                 </div>
               </div> -->
               <div class="row pad-all" style="padding-left: 10px;">
-                <label class="col-lg-3 control-label text-bold">
+                <label class="col-lg-3 control-label text-thin">
                   <h5>
                     <i class="icon-lg demo-pli-calendar-4 icon-fw"></i> Batch
                     Date :
@@ -140,20 +140,20 @@
               style="text-align: left"
             >
               <div class="row" style="padding: 10px 15px 15px 10px">
-                <label class="col-md-3 control-label text-bold">
+                <label class="col-md-3 control-label text-thin">
                   <h5></h5>
                 </label>
                 <div class="col-md-6 pad-all"></div>
               </div>
               <div class="row" style="padding: 10px 15px 15px 10px">
-                <label class="col-md-3 control-label text-bold">
+                <label class="col-md-3 control-label text-thin">
                   <h5></h5>
                 </label>
                 <div class="col-md-6 pad-all"></div>
               </div>
               <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
-                  class="col-md-3 control-label text-bold"
+                  class="col-md-3 control-label text-thin"
                   style="text-align: right"
                 >
                   <h5>Section :</h5></label
@@ -171,7 +171,7 @@
               </div>
               <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
-                  class="col-md-3 control-label text-bold"
+                  class="col-md-3 control-label text-thin"
                   style="text-align: right"
                 >
                   <h5>By Dept :</h5></label
@@ -199,7 +199,7 @@
               </div> -->
               <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                 <label
-                  class="col-md-3 control-label text-bold"
+                  class="col-md-3 control-label text-thin"
                   style="text-align: right"
                 >
                   <h5>Date To :</h5></label
@@ -523,4 +523,16 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+#container .table td {
+  font-size: 1.1em;
+}
+
+#container .table > tbody > tr:hover {
+  background-color: rgb(2 2 2 / 5%);
+}
+
+h5 {
+  font-size: 14px;
+}
+</style>

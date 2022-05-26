@@ -336,11 +336,11 @@
                 <td style="text-align: center;">{{ number_format($variance, 0) }}
                 </td>
                 </tr>
-                <?php
+                {{-- ?php
              $grandTotal += $variance;
-            ?>
+            ?> --}}
                 @endforeach
-                <tr>
+                {{-- <tr>
                     <td colspan="6"
                         style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
                         Grand Total >>>
@@ -348,7 +348,7 @@
                     <td style="text-align:center; border-bottom-style: none; border-top-style: double;"> {{
                         number_format($grandTotal, 0)}}
                     </td>
-                </tr>
+                </tr> --}}
         </tbody>
     </table>
     @endforeach
@@ -437,11 +437,11 @@
                 <td style="text-align: center;">{{ number_format($variance, 0) }}
                 </td>
                 </tr>
-                <?php
+                {{-- ?php
              $grandTotal += $variance;
-            ?>
+            ?> --}}
                 @endforeach
-                <tr>
+                {{-- <tr>
                     <td colspan="6"
                         style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
                         Grand Total >>>
@@ -449,7 +449,7 @@
                     <td style="text-align:center; border-bottom-style: none; border-top-style: double;"> {{
                         number_format($grandTotal, 0)}}
                     </td>
-                </tr>
+                </tr> --}}
         </tbody>
     </table>
 

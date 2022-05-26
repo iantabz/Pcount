@@ -117,12 +117,12 @@
                       &nbsp;
                     </h4>
                     <div class="list-group bg-trans mar-no">
-                      <router-link to="/inventory_valuation_variance">
+                      <router-link to="/inventory_valuation">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i>
-                          &nbsp; Inventory Valuation w/ Variances
+                          &nbsp; Inventory Valuation Report (Navision)
                         </a>
                       </router-link>
                     </div>

@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Variance Report w/ Cost</title>
+    <title> @if($data['report'] =='Variance')
+        VARIANCE REPORT w/ COST
+        @else
+        SUMMARY VARIANCE REPORT w/ COST
+        @endif</title>
     <style media="screen">
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
@@ -163,6 +167,11 @@
 
         .page-break {
             page-break-after: always;
+            page-break-before: avoid;
+        }
+
+        .page-break:last-child {
+            page-break-after: avoid;
         }
 
         h4 {
@@ -192,7 +201,6 @@
 </head>
 
 <body>
-
     <header>
         <div class="container" style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
@@ -226,10 +234,12 @@
     </header>
     {{-- {{dd($data)}} --}}
 
-    @foreach ($data['data'] as $vendor_name => $categories)
     @php
     $maxCount = count($data['data']);
     @endphp
+
+    @if ($data['report'] =='Variance')
+    @foreach ($data['data'] as $vendor_name => $categories)
 
     <div>
         <h4 style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</h4>
@@ -256,10 +266,10 @@
                     Uom
                 </th>
                 <th colspan="2" class="text-center" style="vertical-align: middle;">
-                    COST
+                    Cost
                 </th>
                 <th colspan="2" class="text-center" style="vertical-align: middle;">
-                    Qty
+                    Quantity
                 </th>
                 <th rowspan="2" class="text-center" style="vertical-align: middle;">
                     Variance
@@ -272,10 +282,10 @@
                 <th>w/ VAT</th>
                 <th>w/o VAT</th>
                 <th class="text-center" style="vertical-align: middle;">
-                    NAV</th>
-                <th class="text-center" style="vertical-align: middle;">
-                    P COUNT APP
+                    P Count App
                 </th>
+                <th class="text-center" style="vertical-align: middle;">
+                    Net Nav Sys</th>
                 <th>
                     w/ VAT
                 </th>
@@ -290,17 +300,35 @@
             $variance = 0;
             $tot_vat = 0;
             $tot_novat = 0;
+            $value = 0;
             $grandTotal_totvat = 0;
             $grandTotal_tot_novat = 0;
             ?>
             @foreach ($items as $key => $item)
             {{-- {{dd($item)}} --}}
             @php
+             if($item['unposted'] != '-')
+            {
+                $value = $item['nav_qty'] + $item['unposted'];
+            }
+            else {
+                $value = $item['nav_qty'];
+            }
+
             if($item['nav_qty'] == '-') $variance = $item['total_conv_qty'];
 
-            else if($item['nav_qty'] < 0){ $variance=$item['total_conv_qty'] + ($item['nav_qty']); } else{
-                $variance=$item['total_conv_qty'] - ($item['nav_qty']); } $tot_vat=$variance * $item['cost_vat'];
-                $tot_novat=$variance * $item['cost_no_vat']; @endphp <tr>
+            else if($item['nav_qty'] < 0)
+            { 
+                $variance = $item['total_conv_qty'] + $value; 
+            } else{
+                $variance = $item['total_conv_qty'] - $value; 
+            } 
+            
+            $tot_vat = $variance * $item['cost_vat'];
+            $tot_novat = $variance * $item['cost_no_vat']; 
+            @endphp 
+            
+            <tr>
                 <td style="text-align: center;">{{ $item['itemcode'] }}
                 </td>
                 <td style="text-align: center;">{{ $item['barcode'] }}
@@ -310,18 +338,17 @@
 
                 <td style="text-align: right">{{ $item['cost_vat'] ?: '-' }}
                 </td>
-                <td style="text-align: right">{{ $item['cost_no_vat'] }}
+                <td style="text-align: right"> P {{ $item['cost_no_vat'] }}
                 </td>
 
-                <td style="text-align: center"> {{ is_numeric($item['nav_qty']) ? number_format($item['nav_qty'], 0) :
-                    $item['nav_qty'] }}</td>
                 <td style="text-align: center"> {{ number_format($item['total_conv_qty'], 0) }}</td>
+                <td style="text-align: center"> {{ is_numeric($value) ? number_format($value, 0) :
+                    $value }}</td>
                 <td style="text-align: center"> {{ number_format($variance, 0) }}
                 </td>
-                {{-- {{dd($item)}} --}}
                 <td style="text-align: right">{{ $tot_vat ? $tot_vat : '-' }}
                 </td>
-                <td style="text-align: right">{{ number_format($tot_novat, 2) }}
+                <td style="text-align: right"> P {{ number_format($tot_novat, 2) }}
                     </tr>
                     <?php
             $grandTotal += $variance;
@@ -330,7 +357,7 @@
             ?>
                     @endforeach
                     <tr>
-                        <td colspan="7"
+                        <td colspan="8"
                             style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
                             Grand Total >>>
                         </td>
@@ -347,8 +374,135 @@
         </tbody>
     </table>
     @endforeach
-
     @endforeach
+    @endif
+
+    @if($data['report'] =='Summary')
+    <table class="body1">
+        <thead>
+            <tr>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Item Code
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Barcode
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Description
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Uom
+                </th>
+                <th colspan="2" class="text-center" style="vertical-align: middle;">
+                    Cost
+                </th>
+                <th colspan="2" class="text-center" style="vertical-align: middle;">
+                    Quantity
+                </th>
+                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    Variance
+                </th>
+                <th colspan="2" class="text-center" style="vertical-align: middle;">
+                    Total Cost
+                </th>
+            </tr>
+            <tr>
+                <th>w/ VAT</th>
+                <th>w/o VAT</th>
+                <th class="text-center" style="vertical-align: middle;">
+                    P Count App
+                </th>
+                <th class="text-center" style="vertical-align: middle;">
+                    Net Nav Sys</th>
+                <th>
+                    w/ VAT
+                </th>
+                <th>
+                    w/o VAT
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php  
+            $grandTotal = 0;
+            $variance = 0;
+            $tot_vat = 0;
+            $tot_novat = 0;
+            $value = 0;
+            $grandTotal_totvat = 0;
+            $grandTotal_tot_novat = 0;
+            ?>
+            @foreach ($data['data'] as $key => $item)
+            {{-- {{dd($item)}} --}}
+            @php
+             if($item['unposted'] != '-')
+            {
+                $value = $item['nav_qty'] + $item['unposted'];
+            }
+            else {
+                $value = $item['nav_qty'];
+            }
+
+            if($item['nav_qty'] == '-') $variance = $item['total_conv_qty'];
+
+            else if($item['nav_qty'] < 0)
+            { 
+                $variance = $item['total_conv_qty'] + $value; 
+            } else{
+                $variance = $item['total_conv_qty'] - $value; 
+            } 
+            
+            $tot_vat = $variance * $item['cost_vat'];
+            $tot_novat = $variance * $item['cost_no_vat']; 
+            @endphp 
+            
+            <tr>
+                <td style="text-align: center;">{{ $item['itemcode'] }}
+                </td>
+                <td style="text-align: center;">{{ $item['barcode'] }}
+                </td>
+                <td style="text-align: left">{{ $item['extended_desc'] }}</td>
+                <td style="text-align: center">{{ $item['nav_uom'] ?: 'PCS' }}</td>
+
+                <td style="text-align: right">{{ $item['cost_vat'] ?: '-' }}
+                </td>
+                <td style="text-align: right"> P {{ $item['cost_no_vat'] }}
+                </td>
+
+                <td style="text-align: center"> {{ number_format($item['total_conv_qty'], 0) }}</td>
+                <td style="text-align: center"> {{ is_numeric($value) ? number_format($value, 0) :
+                    $value }}</td>
+                <td style="text-align: center"> {{ number_format($variance, 0) }}
+                </td>
+                <td style="text-align: right">{{ $tot_vat ? $tot_vat : '-' }}
+                </td>
+                <td style="text-align: right"> P {{ number_format($tot_novat, 2) }}
+                    </tr>
+                    <?php
+            $grandTotal += $variance;
+            $grandTotal_totvat += $tot_vat;
+            $grandTotal_tot_novat += $tot_novat;
+            ?>
+                    @endforeach
+                    <tr>
+                        <td colspan="8"
+                            style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
+                            Grand Total >>>
+                        </td>
+                        <td style="text-align:center; border-bottom-style: none; border-top-style: double;"> {{
+                            number_format($grandTotal, 0)}}
+                        </td>
+                        <td style="text-align:right; border-bottom-style: none; border-top-style: double;"> {{
+                            number_format($grandTotal_totvat ? $grandTotal_totvat : 0, 2)}}
+                        </td>
+                        <td style="text-align:right; border-bottom-style: none; border-top-style: double;"> {{
+                            number_format($grandTotal_tot_novat, 2)}}
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+
+    @endif
     {{-- @if (count($data['data']) > 1)
     <div class="page-break"></div>
     @endif --}}

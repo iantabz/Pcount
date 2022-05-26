@@ -18,7 +18,7 @@
                 <div class="col-md-6 table-toolbar-left form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Company :</h5></label
@@ -36,7 +36,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Business Unit :</h5></label
@@ -56,7 +56,7 @@
 
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Department :</h5></label
@@ -76,7 +76,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Vendor Name :</h5></label
@@ -103,7 +103,7 @@
                     </div>
                   </div>
                   <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-bold">
+                    <label class="col-lg-3 control-label text-thin">
                       <h5>
                         <i class="icon-lg demo-pli-calendar-4 icon-fw"></i> Date
                         as of :
@@ -124,20 +124,20 @@
                 </div>
                 <div class="col-md-6 table-toolbar-right form-horizontal">
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-md-3 control-label text-bold">
+                    <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>Section :</h5></label
@@ -155,7 +155,7 @@
                   </div>
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-md-3 control-label text-bold"
+                      class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
                       <h5>By Dept :</h5></label
@@ -181,9 +181,9 @@
                       </v-select>
                     </div>
                   </div>
-                  <div class="row pad-all">
+                  <!-- <div class="row pad-all">
                     <button
-                      class="btn btn-info btn-rounded pull-right mar-lft"
+                      class="btn btn-info btn-rounded pull-right text-thin mar-lft"
                       :disabled="!data.data.length"
                       @click="generateBtn($event)"
                     >
@@ -192,15 +192,32 @@
                     </button>
 
                     <button
-                      class="btn btn-info btn-rounded pull-right"
+                      class="btn btn-info btn-rounded pull-right text-thin"
                       :disabled="!data.data.length"
                       @click="generateBtnEXCEL($event)"
                     >
                       <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
                       Excel
                     </button>
-                  </div>
+                  </div> -->
                 </div>
+              </div>
+              <div class="row pad-all">
+                <button
+                  class="btn btn-info btn-rounded pull-right text-thin mar-lft"
+                  :disabled="!data.data.length"
+                  @click="generateBtn($event)"
+                >
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Report
+                </button>
+
+                <button
+                  class="btn btn-info btn-rounded pull-right text-thin"
+                  :disabled="!data.data.length"
+                  @click="generateBtnEXCEL($event)"
+                >
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Excel
+                </button>
               </div>
               <table class="table table-striped table-vcenter" id="data-table">
                 <thead>
@@ -259,13 +276,13 @@
                       ₱ {{ data.cost_novat | numberFormat }}
                     </td>
                     <td class="text-main text-normal text-right">
-                      ₱ {{ data.tot_novat | numberFormat }}
+                      <!-- ₱ {{ data.tot_novat | numberFormat }} -->
+                      ₱
+                      {{
+                        computeVariance(data.cost_novat, data.total_conv_qty)
+                          | numberFormat
+                      }}
                     </td>
-                    <!-- <td class="text-main text-normal">
-                      {{ data.datetime_scanned | formatDate }}
-                    </td> -->
-                    <!-- <td>{{ data.datetime_saved | formatDate }}</td>
-                    <td>{{ data.datetime_exported | formatDate }}</td> -->
                   </tr>
                 </tbody>
               </table>
@@ -566,6 +583,12 @@ export default {
       })
       Swal.close()
     },
+    computeVariance(cost, qty) {
+      let total = 0
+      total = parseFloat(cost) * parseFloat(qty)
+      console.log(cost, qty, total)
+      return total
+    },
     departmentSelected(val) {
       this.section = null
       const department = this.deptList.filter(sm => sm.dept_name == val)[0]
@@ -723,6 +746,14 @@ export default {
 
 <style scoped>
 #container .table td {
-  font-size: 1em;
+  font-size: 1.1em;
+}
+
+#container .table > tbody > tr:hover {
+  background-color: rgb(2 2 2 / 5%);
+}
+
+h5 {
+  font-size: 14px;
 }
 </style>

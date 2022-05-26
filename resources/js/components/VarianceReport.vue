@@ -462,8 +462,7 @@ export default {
     }
   },
   components: {
-    datetime: Datetime,
-    datetime2: Datetime
+    datetime: Datetime
   },
   watch: {
     date() {
@@ -1011,6 +1010,14 @@ export default {
 </script>
 
 <style scoped>
+#container .table td {
+  font-size: 1.1em;
+}
+
+#container .table > tbody > tr:hover {
+  background-color: rgb(2 2 2 / 5%);
+}
+
 h5 {
   font-size: 14px;
 }

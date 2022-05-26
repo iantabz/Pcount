@@ -5637,6 +5637,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -10827,13 +10852,13 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 pass = null, title = null;
 
                 if (type == 'Variance') {
-                  title = 'Variance Report';
+                  title = 'Negative Inventory Balance (Navision)';
                   pass = "/reports/nav_sys/NetNavSys?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=Variance");
                 } else if (type == 'Summary') {
                   title = 'Variance Report Summary';
                   pass = "/reports/variance_report/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=Summary");
                 } else {
-                  title = 'Net Nav Sys';
+                  title = 'Inventory Valuation Report (Navision)';
                   pass = "/reports/nav_sys/NetNavSys?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section);
                 }
 
@@ -12234,6 +12259,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -12506,6 +12548,12 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           }
         }, _callee2);
       }))();
+    },
+    computeVariance: function computeVariance(cost, qty) {
+      var total = 0;
+      total = parseFloat(cost) * parseFloat(qty);
+      console.log(cost, qty, total);
+      return total;
     },
     departmentSelected: function departmentSelected(val) {
       var _this3 = this;
@@ -14790,8 +14838,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     };
   },
   components: {
-    datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_1__.Datetime,
-    datetime2: vue_datetime__WEBPACK_IMPORTED_MODULE_1__.Datetime
+    datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_1__.Datetime
   },
   watch: {
     date: function date() {
@@ -15830,7 +15877,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -15838,8 +15884,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+ // Vue.component('pagination', require('laravel-vue-pagination'))
 
-vue__WEBPACK_IMPORTED_MODULE_7__.default.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBPACK_IMPORTED_MODULE_4___default()));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -15864,30 +15910,26 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
-      buList: [],
+      company: null,
+      companyList: [],
       business_unit: null,
-      deptList: [],
+      buList: [],
       department: null,
-      sectionList: [],
-      section: null
+      deptList: [],
+      section: null,
+      sectionList: []
     };
   },
   components: {
-    datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_2__.Datetime,
-    datetime2: vue_datetime__WEBPACK_IMPORTED_MODULE_2__.Datetime
+    datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_2__.Datetime
   },
   watch: {
-    date: function date() {// if (this.business_unit && this.department && this.section) {
-      // this.getResults()
-      // }
+    date: function date() {
+      if (this.business_unit && this.department && this.section) {
+        this.getResults();
+      }
     },
     vendor: function vendor(newValue) {
-      // let value = []
-      // newValue.forEach((element, index) => {
-      //   value.push(element.vendor_name)
-      // })
-      // this.forPrintVendor = value.join('|')
-      // this.getResults()
       if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.vendor = null;
 
       if (newValue) {
@@ -15916,12 +15958,6 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       }
     },
     category: function category(newValue) {
-      // let value = []
-      // newValue.forEach((element, index) => {
-      //   value.push(element.category)
-      // })
-      // this.forPrintCategory = value.join('|')
-      // this.getResults()
       if ((newValue === null || newValue === void 0 ? void 0 : newValue.length) == 0) this.category = null;
 
       if (newValue) {
@@ -15948,38 +15984,49 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       } else {
         this.filteredcategoryList = this.categoryList;
       }
-    },
-    business_unit: function business_unit() {// this.getResults()
-    },
-    department: function department() {// this.getResults()
-    },
-    section: function section() {// this.getResults()
     }
   },
   methods: {
-    computeVariance: function computeVariance(a, b, c) {
-      // console.log(Math.trunc(a), b)
-      var variance = 0,
-          tot_no_vat = 0;
+    computeNet: function computeNet(navQty, Unposted) {
+      var net = 0;
 
-      if (a < 0) {
-        variance = parseFloat(b) + parseFloat(a);
+      if (Unposted != '-') {
+        net = parseFloat(navQty) + parseFloat(Unposted);
       } else {
-        variance = parseFloat(b) - parseFloat(a);
+        net = parseFloat(navQty);
       }
 
-      tot_no_vat = variance * c;
-      console.log(variance, tot_no_vat);
+      return net;
+    },
+    computeVariance: function computeVariance(a, b, c, cost) {
+      // console.log(Math.trunc(a), b)
+      var variance = 0,
+          tot_no_vat = 0,
+          value = 0;
+
+      if (b != '-') {
+        value = parseFloat(a) + parseFloat(b);
+      } else {
+        value = parseFloat(a);
+      }
+
+      if (a < 0) {
+        variance = parseFloat(c) + value;
+      } else {
+        variance = parseFloat(c) - value;
+      }
+
+      tot_no_vat = variance * parseFloat(cost);
       return {
         variance: variance,
         tot_no_vat: tot_no_vat
       };
     },
-    generateBtn: function generateBtn(e) {
+    generateBtn: function generateBtn(e, reportType) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var thisButton, oldHTML, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link;
+        var thisButton, oldHTML, pass, title, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -16000,14 +16047,24 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 });
                 thisButton = e.target;
                 oldHTML = thisButton.innerHTML;
+                pass = null, title = null;
+
+                if (reportType == 'Variance') {
+                  title = 'Variance Report w/ Cost';
+                  pass = "/reports/variance_report_cost/generateVarianceReportCost?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section);
+                } else if (reportType == 'Summary') {
+                  title = 'Variance Report w/ Cost Summary';
+                  pass = "/reports/variance_report_cost/generateVarianceReportCost?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&type=Summary");
+                }
+
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
-                _context.next = 7;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/reports/variance_report_cost/generateVarianceReportCost?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section), {
+                _context.next = 9;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get(pass, {
                   responseType: 'blob'
                 });
 
-              case 7:
+              case 9:
                 _yield$axios$get = _context.sent;
                 headers = _yield$axios$get.headers;
                 data = _yield$axios$get.data;
@@ -16020,7 +16077,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 link = document.createElement('a');
                 link.href = url; // console.log('download', `${fileName.replace('"', '')}.pdf`)
 
-                link.setAttribute('download', "Variance Report w/ Cost.pdf"); // console.log(link)
+                link.setAttribute('download', "".concat(title, " as of ").concat(_this.date, " ").concat(_this.business_unit, " ").concat(_this.department, " ").concat(_this.section, ".pdf")); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -16042,7 +16099,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                   timer: 5000
                 });
 
-              case 23:
+              case 25:
               case "end":
                 return _context.stop();
             }
@@ -16057,10 +16114,9 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      var url = null;
-      url = "/reports/variance_report_cost/getResultVarianceCost/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(this.forPrintVendor, "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+      var url = "/reports/variance_report_cost/getResultVarianceCost/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
-      if (this.business_unit && this.department && this.section) {
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) {
         axios__WEBPACK_IMPORTED_MODULE_1___default().get(url + page).then(function (response) {
           _this2.data = response.data;
           _this2.total_result = response.data.total;
@@ -16077,7 +16133,11 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       var bu = this.buList.filter(function (sm) {
         return sm.business_unit == _this3.business_unit;
       })[0];
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/setup/location/getSection/?bu=".concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
+      var company = this.companyList.find(function (e) {
+        return e.acroname == _this3.company;
+      });
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get( // `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
+      "/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
         _this3.sectionList = response.data;
       })["catch"](function (response) {
         console.log('error');
@@ -16093,8 +16153,30 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
         var bu = this.buList.filter(function (sm) {
           return sm.business_unit == val;
         })[0];
-        axios__WEBPACK_IMPORTED_MODULE_1___default().get("/setup/location/getDept/?bu=".concat(bu.bunit_code)).then(function (response) {
+        var company = this.companyList.find(function (e) {
+          return e.acroname == _this4.company;
+        });
+        axios__WEBPACK_IMPORTED_MODULE_1___default().get( // `/setup/location/getDept/?bu=${bu.bunit_code}`
+        "/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
           _this4.deptList = response.data;
+        })["catch"](function (response) {
+          console.log('error');
+        });
+      }
+    },
+    companySelected: function companySelected(val) {
+      var _this5 = this;
+
+      this.business_unit = null;
+      this.department = null;
+      this.section = null; // console.log(val)
+
+      if (val) {
+        var comp = this.companyList.filter(function (sm) {
+          return sm.acroname == val;
+        })[0];
+        axios__WEBPACK_IMPORTED_MODULE_1___default().get("/uploading/nav_upload/getBU/?code=".concat(comp.company_code)).then(function (response) {
+          _this5.buList = response.data;
         })["catch"](function (response) {
           console.log('error');
         });
@@ -16139,14 +16221,15 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       }
     }, 1000),
     getResults2: function getResults2() {
-      var _this5 = this;
+      var _this6 = this;
 
-      Promise.all([this.getVendor(), this.getCategory(), this.getBU()]).then(function (response) {
-        _this5.vendorList = response[0].data;
-        _this5.filteredvendorList = response[0].data;
-        _this5.categoryList = response[1].data;
-        _this5.filteredcategoryList = response[1].data;
-        _this5.buList = response[2].data;
+      Promise.all([this.getVendor(), this.getCategory(), this.getBU(), this.getCompany()]).then(function (response) {
+        _this6.vendorList = response[0].data;
+        _this6.filteredvendorList = response[0].data;
+        _this6.categoryList = response[1].data;
+        _this6.filteredcategoryList = response[1].data; // this.buList = response[2].data
+
+        _this6.companyList = response[3].data;
       });
     },
     getCategory: function getCategory() {
@@ -16207,6 +16290,26 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
             }
           }
         }, _callee4);
+      }))();
+    },
+    getCompany: function getCompany() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('/uploading/nav_upload/getCompany');
+
+              case 2:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     }
   },
@@ -17239,11 +17342,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_20__.default({
       name: 'Inventory Valuation From Navision w/ Variances'
     }
   }, {
-    name: 'Navision System Report',
-    path: '/nav_sys',
+    name: 'Inventory Valuation Report (Navision)',
+    path: '/inventory_valuation',
     component: _components_NavSys_vue__WEBPACK_IMPORTED_MODULE_18__.default,
     meta: {
-      name: 'Navision System Report'
+      name: 'Inventory Valuation Report (Navision)'
     }
   }, {
     path: '*',
@@ -17347,7 +17450,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-6200eafe] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-6200eafe]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-6200eafe] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-6200eafe]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\nh5[data-v-6200eafe] {\r\n  font-size: 14px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17443,7 +17546,31 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nh5[data-v-7d632fd5] {\r\n  font-size: 14px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-7d632fd5] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-7d632fd5]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\nh5[data-v-7d632fd5] {\r\n  font-size: 14px;\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-c3d2f5ae] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-c3d2f5ae]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\nh5[data-v-c3d2f5ae] {\r\n  font-size: 14px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17467,7 +17594,31 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-ec08adec] {\r\n  font-size: 1em;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-ec08adec] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-ec08adec]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\nh5[data-v-ec08adec] {\r\n  font-size: 14px;\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-552acc71] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-552acc71]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\nh5[data-v-552acc71] {\r\n  font-size: 14px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17515,7 +17666,31 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nh5[data-v-536347b0] {\r\n  font-size: 14px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-536347b0] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-536347b0]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\nh5[data-v-536347b0] {\r\n  font-size: 14px;\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n#container .table td[data-v-26753dc6] {\r\n  font-size: 1.1em;\n}\n#container .table > tbody > tr[data-v-26753dc6]:hover {\r\n  background-color: rgb(2 2 2 / 5%);\n}\nh5[data-v-26753dc6] {\r\n  font-size: 14px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -45018,6 +45193,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavUpload_vue_vue_type_style_index_0_id_c3d2f5ae_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavUpload_vue_vue_type_style_index_0_id_c3d2f5ae_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavUpload_vue_vue_type_style_index_0_id_c3d2f5ae_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css& ***!
@@ -45045,6 +45250,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PhysicalCountCost_vue_vue_type_style_index_0_id_ec08adec_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PosUnposted_vue_vue_type_style_index_0_id_552acc71_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PosUnposted_vue_vue_type_style_index_0_id_552acc71_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PosUnposted_vue_vue_type_style_index_0_id_552acc71_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
 
 /***/ }),
 
@@ -45105,6 +45340,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_VarianceReport_vue_vue_type_style_index_0_id_536347b0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_VarianceReportCost_vue_vue_type_style_index_0_id_26753dc6_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_VarianceReportCost_vue_vue_type_style_index_0_id_26753dc6_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_VarianceReportCost_vue_vue_type_style_index_0_id_26753dc6_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
 
 /***/ }),
 
@@ -49970,15 +50235,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _NavUpload_vue_vue_type_template_id_c3d2f5ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NavUpload.vue?vue&type=template&id=c3d2f5ae&scoped=true& */ "./resources/js/components/NavUpload.vue?vue&type=template&id=c3d2f5ae&scoped=true&");
 /* harmony import */ var _NavUpload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NavUpload.vue?vue&type=script&lang=js& */ "./resources/js/components/NavUpload.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _NavUpload_vue_vue_type_style_index_0_id_c3d2f5ae_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css& */ "./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
   _NavUpload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _NavUpload_vue_vue_type_template_id_c3d2f5ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
   _NavUpload_vue_vue_type_template_id_c3d2f5ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -50089,15 +50356,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PosUnposted_vue_vue_type_template_id_552acc71_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PosUnposted.vue?vue&type=template&id=552acc71&scoped=true& */ "./resources/js/components/PosUnposted.vue?vue&type=template&id=552acc71&scoped=true&");
 /* harmony import */ var _PosUnposted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PosUnposted.vue?vue&type=script&lang=js& */ "./resources/js/components/PosUnposted.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _PosUnposted_vue_vue_type_style_index_0_id_552acc71_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css& */ "./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
   _PosUnposted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _PosUnposted_vue_vue_type_template_id_552acc71_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
   _PosUnposted_vue_vue_type_template_id_552acc71_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -50249,15 +50518,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _VarianceReportCost_vue_vue_type_template_id_26753dc6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VarianceReportCost.vue?vue&type=template&id=26753dc6&scoped=true& */ "./resources/js/components/VarianceReportCost.vue?vue&type=template&id=26753dc6&scoped=true&");
 /* harmony import */ var _VarianceReportCost_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VarianceReportCost.vue?vue&type=script&lang=js& */ "./resources/js/components/VarianceReportCost.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _VarianceReportCost_vue_vue_type_style_index_0_id_26753dc6_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css& */ "./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
   _VarianceReportCost_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _VarianceReportCost_vue_vue_type_template_id_26753dc6_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
   _VarianceReportCost_vue_vue_type_template_id_26753dc6_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -50826,6 +51097,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css& ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NavUpload_vue_vue_type_style_index_0_id_c3d2f5ae_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NavUpload.vue?vue&type=style&index=0&id=c3d2f5ae&scoped=true&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css&":
 /*!****************************************************************************************************************!*\
   !*** ./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css& ***!
@@ -50835,6 +51119,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PhysicalCountCost_vue_vue_type_style_index_0_id_ec08adec_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PhysicalCountCost.vue?vue&type=style&index=0&id=ec08adec&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css& ***!
+  \**********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PosUnposted_vue_vue_type_style_index_0_id_552acc71_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PosUnposted.vue?vue&type=style&index=0&id=552acc71&scoped=true&lang=css&");
 
 
 /***/ }),
@@ -50861,6 +51158,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_VarianceReport_vue_vue_type_style_index_0_id_536347b0_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VarianceReport.vue?vue&type=style&index=0&id=536347b0&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VarianceReport.vue?vue&type=style&index=0&id=536347b0&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_VarianceReportCost_vue_vue_type_style_index_0_id_26753dc6_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VarianceReportCost.vue?vue&type=style&index=0&id=26753dc6&scoped=true&lang=css&");
 
 
 /***/ }),
@@ -52871,73 +53181,69 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(10),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row pad-all" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "btn btn-danger btn-rounded pull-right mar-lft",
-                          attrs: {
-                            disabled:
-                              !_vm.notFoundItems || _vm.notFoundItems == 0
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.generateBtnEXCEL($event, "NotFound")
-                            }
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                          _vm._v(
-                            "  Items Not\n                    Found(" +
-                              _vm._s(_vm.notFoundItems) +
-                              ")\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "btn btn-info btn-rounded pull-right mar-lft",
-                          attrs: { disabled: !_vm.data.data.length },
-                          on: {
-                            click: function($event) {
-                              return _vm.generateBtn($event)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                          _vm._v(
-                            "  Generate\n                    PDF\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-info btn-rounded pull-right",
-                          attrs: { disabled: !_vm.data.data.length },
-                          on: {
-                            click: function($event) {
-                              return _vm.generateBtnEXCEL($event, "CountData")
-                            }
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                          _vm._v(
-                            "  Generate\n                    Excel\n                  "
-                          )
-                        ]
-                      )
-                    ])
+                    _vm._m(10)
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row pad-all" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-danger btn-rounded pull-right text-thin mar-lft",
+                    attrs: {
+                      disabled: !_vm.notFoundItems || _vm.notFoundItems == 0
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.generateBtnEXCEL($event, "NotFound")
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                    _vm._v(
+                      "  Items Not\n                Found(" +
+                        _vm._s(_vm.notFoundItems) +
+                        ")\n              "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-info btn-rounded pull-right text-thin mar-lft",
+                    attrs: { disabled: !_vm.data.data.length },
+                    on: {
+                      click: function($event) {
+                        return _vm.generateBtn($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                    _vm._v("  Generate PDF\n              ")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-info btn-rounded pull-right text-thin",
+                    attrs: { disabled: !_vm.data.data.length },
+                    on: {
+                      click: function($event) {
+                        return _vm.generateBtnEXCEL($event, "CountData")
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                    _vm._v("  Generate Excel\n              ")
                   ]
                 )
               ]),
@@ -53126,7 +53432,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Company :")])]
@@ -53139,7 +53445,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Business Unit :")])]
@@ -53152,7 +53458,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Department :")])]
@@ -53165,7 +53471,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Vendor Name :")])]
@@ -53175,7 +53481,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-file-edit icon-fw" }),
         _vm._v("\n                      Count Type :\n                    ")
@@ -53186,7 +53492,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v(" Date\n                      as of :\n                    ")
@@ -53201,7 +53507,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -53217,7 +53523,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -53232,7 +53538,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
@@ -53245,7 +53551,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("By Dept :")])]
@@ -53259,7 +53565,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -54204,7 +54510,7 @@ var render = function() {
                         [
                           _c(
                             "router-link",
-                            { attrs: { to: "/inventory_valuation_variance" } },
+                            { attrs: { to: "/inventory_valuation" } },
                             [
                               _c(
                                 "a",
@@ -54217,7 +54523,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    "\n                          Inventory Valuation w/ Variances\n                      "
+                                    "\n                          Inventory Valuation Report (Navision)\n                      "
                                   )
                                 ]
                               )
@@ -58074,7 +58380,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Company :")])]
@@ -58087,7 +58393,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Business Unit :")])]
@@ -58100,7 +58406,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Department :")])]
@@ -58110,7 +58416,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v(" Batch\n                  Date :\n                ")
@@ -58125,7 +58431,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -58141,7 +58447,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -58156,7 +58462,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
@@ -58637,48 +58943,45 @@ var render = function() {
                           1
                         )
                       ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row pad-all" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "btn btn-info btn-rounded pull-right mar-lft",
-                          attrs: { disabled: !_vm.data.data.length },
-                          on: {
-                            click: function($event) {
-                              return _vm.generateBtn($event)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                          _vm._v(
-                            "  Generate\n                    Report\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-info btn-rounded pull-right",
-                          attrs: { disabled: !_vm.data.data.length },
-                          on: {
-                            click: function($event) {
-                              return _vm.generateBtnEXCEL($event)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                          _vm._v(
-                            "  Generate\n                    Excel\n                  "
-                          )
-                        ]
-                      )
-                    ])
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row pad-all" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-info btn-rounded pull-right text-thin mar-lft",
+                    attrs: { disabled: !_vm.data.data.length },
+                    on: {
+                      click: function($event) {
+                        return _vm.generateBtn($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                    _vm._v("  Generate Report\n              ")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-info btn-rounded pull-right text-thin",
+                    attrs: { disabled: !_vm.data.data.length },
+                    on: {
+                      click: function($event) {
+                        return _vm.generateBtnEXCEL($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                    _vm._v("  Generate Excel\n              ")
                   ]
                 )
               ]),
@@ -58789,9 +59092,14 @@ var render = function() {
                             { staticClass: "text-main text-normal text-right" },
                             [
                               _vm._v(
-                                "\n                    ₱ " +
+                                "\n                    ₱\n                    " +
                                   _vm._s(
-                                    _vm._f("numberFormat")(data.tot_novat)
+                                    _vm._f("numberFormat")(
+                                      _vm.computeVariance(
+                                        data.cost_novat,
+                                        data.total_conv_qty
+                                      )
+                                    )
                                   ) +
                                   "\n                  "
                               )
@@ -58873,7 +59181,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Company :")])]
@@ -58886,7 +59194,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Business Unit :")])]
@@ -58899,7 +59207,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Department :")])]
@@ -58912,7 +59220,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Vendor Name :")])]
@@ -58922,7 +59230,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v(" Date\n                      as of :\n                    ")
@@ -58937,7 +59245,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -58953,7 +59261,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -58968,7 +59276,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
@@ -58981,7 +59289,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("By Dept :")])]
@@ -59359,7 +59667,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Company :")])]
@@ -59372,7 +59680,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Business Unit :")])]
@@ -59385,7 +59693,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Department :")])]
@@ -59395,7 +59703,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v(" Batch\n                  Date :\n                ")
@@ -59410,7 +59718,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -59426,7 +59734,7 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -59441,7 +59749,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
@@ -61524,6 +61832,47 @@ var render = function() {
                           [
                             _c("v-select", {
                               attrs: {
+                                options: _vm.companyList,
+                                reduce: function(companyList) {
+                                  return companyList.acroname
+                                },
+                                label: "acroname",
+                                placeholder: "Company"
+                              },
+                              on: {
+                                input: function($event) {
+                                  return _vm.companySelected($event)
+                                }
+                              },
+                              model: {
+                                value: _vm.company,
+                                callback: function($$v) {
+                                  _vm.company = $$v
+                                },
+                                expression: "company"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row",
+                        staticStyle: { padding: "10px 15px 15px 10px" }
+                      },
+                      [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-6" },
+                          [
+                            _c("v-select", {
+                              attrs: {
                                 label: "business_unit",
                                 options: _vm.buList,
                                 placeholder: "Search for Business Unit",
@@ -61557,7 +61906,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(1),
+                        _vm._m(2),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -61599,7 +61948,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(2),
+                        _vm._m(3),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -61664,7 +62013,7 @@ var render = function() {
                         staticStyle: { "padding-left": "10px" }
                       },
                       [
-                        _vm._m(3),
+                        _vm._m(4),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("input", {
@@ -61709,7 +62058,9 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
-                    _vm._m(4),
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -61718,7 +62069,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(5),
+                        _vm._m(7),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -61755,7 +62106,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(6),
+                        _vm._m(8),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -61810,42 +62161,61 @@ var render = function() {
                           1
                         )
                       ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-info btn-rounded pull-right",
-                            on: {
-                              click: function($event) {
-                                return _vm.generateBtn($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "demo-pli-printer icon-lg"
-                            }),
-                            _vm._v(
-                              "  Generate\n                    Report\n                  "
-                            )
-                          ]
-                        )
-                      ]
                     )
                   ]
                 )
               ]),
               _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "row",
+                  staticStyle: { padding: "10px 15px 15px 10px" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-warning btn-rounded pull-right text-thin mar-lft",
+                      attrs: { disabled: !_vm.data.data.length },
+                      on: {
+                        click: function($event) {
+                          return _vm.generateBtn($event, "Summary")
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                      _vm._v(
+                        "  Generate\n                Summary Report\n              "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info btn-rounded pull-right",
+                      attrs: { disabled: !_vm.data.data.length },
+                      on: {
+                        click: function($event) {
+                          return _vm.generateBtn($event, "Variance")
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                      _vm._v(
+                        "  Generate\n                Variance Report w/ Cost\n              "
+                      )
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
               _c("table", { staticClass: "table table-striped" }, [
-                _vm._m(7),
+                _vm._m(9),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -61953,7 +62323,7 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(Math.trunc(data.nav_qty)) +
+                                _vm._s(data.conversion_qty) +
                                 "\n                  "
                             )
                           ]
@@ -61968,7 +62338,9 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(data.conversion_qty) +
+                                _vm._s(
+                                  _vm.computeNet(data.nav_qty, data.unposted)
+                                ) +
                                 "\n                  "
                             )
                           ]
@@ -61986,6 +62358,7 @@ var render = function() {
                                 _vm._s(
                                   _vm.computeVariance(
                                     data.nav_qty,
+                                    data.unposted,
                                     data.conversion_qty,
                                     data.cost_no_vat
                                   ).variance
@@ -62023,6 +62396,7 @@ var render = function() {
                                   _vm._f("numberFormat")(
                                     _vm.computeVariance(
                                       data.nav_qty,
+                                      data.unposted,
                                       data.conversion_qty,
                                       data.cost_no_vat
                                     ).tot_no_vat
@@ -62044,33 +62418,12 @@ var render = function() {
                   _c("div", { staticClass: "col-md-6" }, [
                     _vm._v(
                       "\n                  Showing " +
-                        _vm._s(_vm.data.from) +
-                        " to " +
-                        _vm._s(_vm.data.to) +
-                        " of\n                  " +
-                        _vm._s(_vm.data.total) +
+                        _vm._s(_vm.data.data.length) +
                         " entries\n                "
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-md-6" }, [
-                    _c(
-                      "div",
-                      { staticClass: "text-right" },
-                      [
-                        _c("pagination", {
-                          staticStyle: { margin: "0 0 20px 0" },
-                          attrs: {
-                            limit: 1,
-                            "show-disabled": true,
-                            data: _vm.data
-                          },
-                          on: { "pagination-change-page": _vm.getResults }
-                        })
-                      ],
-                      1
-                    )
-                  ])
+                  _vm._m(10)
                 ])
               ])
             ])
@@ -62088,7 +62441,20 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
+        staticStyle: { "text-align": "right" }
+      },
+      [_c("h5", [_vm._v("Company :")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Business Unit :")])]
@@ -62101,7 +62467,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Department :")])]
@@ -62114,7 +62480,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Vendor Name :")])]
@@ -62124,7 +62490,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { staticClass: "col-lg-3 control-label text-bold" }, [
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v(" Date\n                      as of :\n                    ")
@@ -62139,7 +62505,23 @@ var staticRenderFns = [
       "div",
       { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
       [
-        _c("label", { staticClass: "col-md-3 control-label text-bold" }, [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
+          _c("h5")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6 pad-all" })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row", staticStyle: { padding: "10px 15px 15px 10px" } },
+      [
+        _c("label", { staticClass: "col-md-3 control-label text-thin" }, [
           _c("h5")
         ]),
         _vm._v(" "),
@@ -62154,7 +62536,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
@@ -62167,7 +62549,7 @@ var staticRenderFns = [
     return _c(
       "label",
       {
-        staticClass: "col-md-3 control-label text-bold",
+        staticClass: "col-md-3 control-label text-thin",
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("By Dept :")])]
@@ -62226,7 +62608,7 @@ var staticRenderFns = [
             staticStyle: { "vertical-align": "middle" },
             attrs: { colspan: "2" }
           },
-          [_vm._v("\n                    Qty\n                  ")]
+          [_vm._v("\n                    Quantity\n                  ")]
         ),
         _vm._v(" "),
         _c(
@@ -62261,7 +62643,7 @@ var staticRenderFns = [
             staticClass: "text-center",
             staticStyle: { "vertical-align": "middle" }
           },
-          [_vm._v("\n                    Nav\n                  ")]
+          [_vm._v("\n                    P Count App\n                  ")]
         ),
         _vm._v(" "),
         _c(
@@ -62270,13 +62652,25 @@ var staticRenderFns = [
             staticClass: "text-center",
             staticStyle: { "vertical-align": "middle" }
           },
-          [_vm._v("\n                    P Count App\n                  ")]
+          [
+            _vm._v(
+              "\n                    Net Nav Sys Count\n                  "
+            )
+          ]
         ),
         _vm._v(" "),
         _c("th", [_vm._v("\n                    w/ VAT\n                  ")]),
         _vm._v(" "),
         _c("th", [_vm._v("\n                    w/o VAT\n                  ")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "text-right" })
     ])
   }
 ]

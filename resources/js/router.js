@@ -173,11 +173,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Navision System Report',
-      path: '/nav_sys',
+      name: 'Inventory Valuation Report (Navision)',
+      path: '/inventory_valuation',
       component: NavSys,
       meta: {
-        name: 'Navision System Report'
+        name: 'Inventory Valuation Report (Navision)'
       }
     },
     {

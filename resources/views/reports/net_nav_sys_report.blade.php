@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Variance Report</title>
+    <title>  
+        @if(!$data['report'] == 'Variance')
+        Inventory Valuation Report (Navision)
+        @else
+        Negative Inventory Balance (Navision)
+        @endif
+    </title>
     <style media="screen">
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
@@ -222,9 +228,9 @@
                 <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
                         @if(!$data['report'] == 'Variance')
-                        NET NAV SYS REPORT
+                        Inventory Valuation Report (Navision)
                         @else
-                        VARIANCE NAV SYS
+                        Negative Inventory Balance (Navision)
                         @endif
                     </div>
                 </div>
