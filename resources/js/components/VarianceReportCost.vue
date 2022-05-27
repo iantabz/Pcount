@@ -104,6 +104,22 @@
                   <div class="row pad-all" style="padding-left: 10px;">
                     <label class="col-lg-3 control-label text-thin">
                       <h5>
+                        <i class="icon-lg demo-pli-file-edit icon-fw"></i>
+                        Count Type :
+                      </h5>
+                    </label>
+                    <div class="col-lg-6">
+                      <v-select
+                        :options="countTypes"
+                        label="countTypes"
+                        v-model="countType"
+                        placeholder="Count Type"
+                      ></v-select>
+                    </div>
+                  </div>
+                  <div class="row pad-all" style="padding-left: 10px;">
+                    <label class="col-lg-3 control-label text-thin">
+                      <h5>
                         <i class="icon-lg demo-pli-calendar-4 icon-fw"></i> Date
                         as of :
                       </h5>
@@ -426,7 +442,9 @@ export default {
       department: null,
       deptList: [],
       section: null,
-      sectionList: []
+      sectionList: [],
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     }
   },
   components: {

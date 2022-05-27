@@ -294,9 +294,9 @@
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
-                    <td class="text-main text-normal">{{ data.itemcode }}</td>
-                    <td class="text-main text-normal">{{ data.barcode }}</td>
-                    <td class="text-main text-normal">
+                    <td class="text-main text-thin">{{ data.itemcode }}</td>
+                    <td class="text-main text-thin">{{ data.barcode }}</td>
+                    <td class="text-main text-thin">
                       {{ data.extended_desc }}
                     </td>
                     <td class="text-main text-normal text-center">
@@ -312,7 +312,7 @@
                     <td class="text-main text-normal text-center">
                       {{ data.total_conv_qty }}
                     </td>
-                    <td class="text-main text-normal">
+                    <td class="text-main text-thin">
                       {{ data.datetime_scanned }}
                     </td>
                   </tr>

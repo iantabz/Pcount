@@ -12276,6 +12276,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -12316,7 +12332,9 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       filteredcategoryList: [],
       category: null,
       forPrintVendor: [],
-      forPrintCategory: []
+      forPrintCategory: [],
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     };
   },
   components: {
@@ -13621,7 +13639,8 @@ __webpack_require__.r(__webpack_exports__);
       }, 800);
     });
     this.$root.currentPage = 'this.$route.meta.name';
-    this.getResults(); // document.getElementById('dateFrom').setAttribute('min', this.dateToday)
+    this.getResults();
+    document.getElementById('dateFrom').setAttribute('min', this.dateToday);
   }
 });
 
@@ -14376,6 +14395,22 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -15877,6 +15912,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15917,7 +15968,9 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       department: null,
       deptList: [],
       section: null,
-      sectionList: []
+      sectionList: [],
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     };
   },
   components: {
@@ -53279,15 +53332,15 @@ var render = function() {
                       _vm._v(" "),
                       _vm._l(_vm.data.data, function(data, index) {
                         return _c("tr", { key: index }, [
-                          _c("td", { staticClass: "text-main text-normal" }, [
+                          _c("td", { staticClass: "text-main text-thin" }, [
                             _vm._v(_vm._s(data.itemcode))
                           ]),
                           _vm._v(" "),
-                          _c("td", { staticClass: "text-main text-normal" }, [
+                          _c("td", { staticClass: "text-main text-thin" }, [
                             _vm._v(_vm._s(data.barcode))
                           ]),
                           _vm._v(" "),
-                          _c("td", { staticClass: "text-main text-normal" }, [
+                          _c("td", { staticClass: "text-main text-thin" }, [
                             _vm._v(
                               "\n                    " +
                                 _vm._s(data.extended_desc) +
@@ -53349,7 +53402,7 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("td", { staticClass: "text-main text-normal" }, [
+                          _c("td", { staticClass: "text-main text-thin" }, [
                             _vm._v(
                               "\n                    " +
                                 _vm._s(data.datetime_scanned) +
@@ -58797,6 +58850,39 @@ var render = function() {
                       [
                         _vm._m(4),
                         _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-lg-6" },
+                          [
+                            _c("v-select", {
+                              attrs: {
+                                options: _vm.countTypes,
+                                label: "countTypes",
+                                placeholder: "Count Type"
+                              },
+                              model: {
+                                value: _vm.countType,
+                                callback: function($$v) {
+                                  _vm.countType = $$v
+                                },
+                                expression: "countType"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row pad-all",
+                        staticStyle: { "padding-left": "10px" }
+                      },
+                      [
+                        _vm._m(5),
+                        _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("input", {
                             directives: [
@@ -58840,9 +58926,9 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
-                    _vm._m(5),
-                    _vm._v(" "),
                     _vm._m(6),
+                    _vm._v(" "),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -58851,7 +58937,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(7),
+                        _vm._m(8),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -58888,7 +58974,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(8),
+                        _vm._m(9),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -58993,7 +59079,7 @@ var render = function() {
                   attrs: { id: "data-table" }
                 },
                 [
-                  _vm._m(9),
+                  _vm._m(10),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -59225,6 +59311,17 @@ var staticRenderFns = [
       },
       [_c("h5", [_vm._v("Vendor Name :")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
+      _c("h5", [
+        _c("i", { staticClass: "icon-lg demo-pli-file-edit icon-fw" }),
+        _vm._v("\n                      Count Type :\n                    ")
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -59871,7 +59968,12 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               staticStyle: { "border-radius": "4px" },
-                              attrs: { type: "date" },
+                              attrs: {
+                                type: "date",
+                                min: "dateToday",
+                                name: "dateFrom",
+                                id: "dateFrom"
+                              },
                               domProps: { value: _vm.date },
                               on: {
                                 input: function($event) {
@@ -61171,6 +61273,39 @@ var render = function() {
                       [
                         _vm._m(4),
                         _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-lg-6" },
+                          [
+                            _c("v-select", {
+                              attrs: {
+                                options: _vm.countTypes,
+                                label: "countTypes",
+                                placeholder: "Count Type"
+                              },
+                              model: {
+                                value: _vm.countType,
+                                callback: function($$v) {
+                                  _vm.countType = $$v
+                                },
+                                expression: "countType"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row pad-all",
+                        staticStyle: { "padding-left": "10px" }
+                      },
+                      [
+                        _vm._m(5),
+                        _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("input", {
                             directives: [
@@ -61214,9 +61349,9 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
-                    _vm._m(5),
-                    _vm._v(" "),
                     _vm._m(6),
+                    _vm._v(" "),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -61225,7 +61360,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(7),
+                        _vm._m(8),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -61262,7 +61397,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(8),
+                        _vm._m(9),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -61319,7 +61454,7 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(9)
+                    _vm._m(10)
                   ]
                 )
               ]),
@@ -61396,7 +61531,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("table", { staticClass: "table table-striped" }, [
-                _vm._m(10),
+                _vm._m(11),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -61596,6 +61731,17 @@ var staticRenderFns = [
       },
       [_c("h5", [_vm._v("Vendor Name :")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
+      _c("h5", [
+        _c("i", { staticClass: "icon-lg demo-pli-file-edit icon-fw" }),
+        _vm._v("\n                      Count Type :\n                    ")
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -62015,6 +62161,39 @@ var render = function() {
                       [
                         _vm._m(4),
                         _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-lg-6" },
+                          [
+                            _c("v-select", {
+                              attrs: {
+                                options: _vm.countTypes,
+                                label: "countTypes",
+                                placeholder: "Count Type"
+                              },
+                              model: {
+                                value: _vm.countType,
+                                callback: function($$v) {
+                                  _vm.countType = $$v
+                                },
+                                expression: "countType"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row pad-all",
+                        staticStyle: { "padding-left": "10px" }
+                      },
+                      [
+                        _vm._m(5),
+                        _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("input", {
                             directives: [
@@ -62058,9 +62237,9 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
-                    _vm._m(5),
-                    _vm._v(" "),
                     _vm._m(6),
+                    _vm._v(" "),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -62069,7 +62248,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(7),
+                        _vm._m(8),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -62106,7 +62285,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(8),
+                        _vm._m(9),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -62215,7 +62394,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("table", { staticClass: "table table-striped" }, [
-                _vm._m(9),
+                _vm._m(10),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -62423,7 +62602,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(10)
+                  _vm._m(11)
                 ])
               ])
             ])
@@ -62485,6 +62664,17 @@ var staticRenderFns = [
       },
       [_c("h5", [_vm._v("Vendor Name :")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
+      _c("h5", [
+        _c("i", { staticClass: "icon-lg demo-pli-file-edit icon-fw" }),
+        _vm._v("\n                      Count Type :\n                    ")
+      ])
+    ])
   },
   function() {
     var _vm = this

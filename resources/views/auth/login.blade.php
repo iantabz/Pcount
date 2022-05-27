@@ -3,10 +3,11 @@
         <div
             class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
             <div class="sm:w-1/2 xl:w-3/5 h-full hidden md:flex flex-auto items-center justify-center p-10 overflow-hidden bg-yellow-900 text-white bg-no-repeat bg-cover relative"
-                style="background-image: url(https://img4.goodfon.com/wallpaper/nbig/5/6c/warehouse-equipment-goods-light-bulbs.jpg)">
+                style="background-image: url({{ asset('assets/img/bg.jpg') }})">
                 <div class="absolute bg-gradient-to-b from-yellow-600 to-yellow-500 opacity-75 inset-0 z-0"></div>
-                <div class="w-full  max-w-md z-10">
-                    <div class="sm:text-4xl xl:text-5xl font-bold leading-tight mb-6">Inventory
+                <div class="z-10">
+                {{-- <div class="w-full  max-w-md z-10"> --}}
+                    {{-- <div class="sm:text-4xl xl:text-5xl font-bold leading-tight mb-6">Inventory
                         Count Consolidation
                         System
                     </div>
@@ -16,7 +17,11 @@
                         text ever
                         since the 1500s when an unknown printer took a galley of type and scrambled it to make a type
                         specimen book it
-                        has?</div>
+                        has?</div> --}}
+
+                    <img src="{{ asset('assets/img/ics2.png') }}" alt="Inventory Count System"
+                        class="mx-auto w-auto">
+             
                 </div>
                 <!---remove custom style-->
                 <ul class="circles">

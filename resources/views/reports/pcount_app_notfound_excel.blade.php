@@ -202,10 +202,6 @@
     $countSize =count($data['data']);
     $startCount = null;
     @endphp
-    @foreach ($data['data'] as $emp => $audit)
-    @php
-    --$countSize
-    @endphp
 
     <table>
         <thead>
@@ -269,6 +265,13 @@
             @endif
         </thead>
     </table>
+
+    @foreach ($data['data'] as $emp => $audit)
+    @php
+    --$countSize
+    @endphp
+
+    
 
     @foreach ($audit as $auditor => $vendor)
 
