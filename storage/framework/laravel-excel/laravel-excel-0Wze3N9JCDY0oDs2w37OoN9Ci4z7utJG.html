@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Actual Count (APP)</title>
+    <style media="screen">
+        body {
+            font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
+            font-size: 12px;
+        }
+
+        /*
+            These next two styles are apparently the modern way to clear a float. This allows the logo
+            and the word "Invoice" to remain above the From and To sections. Inserting an empty div
+            between them with clear:both also works but is bad style.
+            Reference:
+            http://stackoverflow.com/questions/490184/what-is-the-best-way-to-clear-the-css-style-float
+        */
+        header:before,
+        header:after {
+            content: " ";
+            display: table;
+        }
+
+        header:after {
+            clear: both;
+        }
+
+        .title1 {
+            float: center;
+            margin: 0 auto;
+            font-size: 18px;
+            width: 100%;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .title2 {
+            float: center;
+            margin: 0 auto;
+            width: 100%;
+            margin-top: 30px;
+            /* font-size: 19px; */
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .from {
+            float: left;
+        }
+
+        .to {
+            float: right;
+        }
+
+        .fromto {
+            padding-top: 20px;
+            width: 600px;
+            font-size: 14px;
+        }
+
+        .fromto1 {
+            width: 180px;
+            padding-top: 20px;
+            /* font-size: 14px; */
+        }
+
+        .head1 {
+            /* padding-top: 20px; */
+            width: 100%;
+            /* font-size: 11px; */
+        }
+
+        .head1 th {
+            padding: 3px;
+            text-align: right;
+            /* font-size: 12px; */
+        }
+
+        .endt {
+            /* padding-top: 10px; */
+            width: 100%;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .body1 {
+            margin-top: 10px;
+            width: 100%;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .body1 th {
+            border-bottom: 1px solid #000;
+            padding: 5px 0px 5px 0px;
+            text-align: center;
+        }
+
+        .body1 td {
+            padding: 8px;
+            line-height: 1.42857143;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.227);
+            border-bottom-style: dashed;
+        }
+
+        .body2 {
+            margin-top: 5px;
+            width: 100%;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .body2 th {
+            border-bottom: 0px solid #000;
+            padding: 5px 0px 5px 0px;
+            text-align: center;
+        }
+
+        .body2 td {
+            padding: 2px;
+        }
+
+        .fromtocontent {
+            margin: 10px;
+            margin-right: 15px;
+        }
+
+        .panel {
+            background-color: #e8e5e5;
+            padding: 7px;
+        }
+
+        .items {
+            clear: both;
+            display: table;
+            padding: 20px;
+        }
+
+        /* Factor out common styles for all of the "col-" classes.*/
+        div[class^='col-'] {
+            display: table-cell;
+            padding: 7px;
+        }
+
+        /*for clarity name column styles by the percentage of width */
+        .col-1-10 {
+            width: 10%;
+        }
+
+        .col-1-52 {
+            width: 52%;
+        }
+
+        /* 
+        .row {
+            display: table-row;
+            page-break-inside: avoid;
+        } */
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .page-break:last-child {
+            page-break-after: avoid;
+            page-break-before: avoid;
+        }
+
+
+        h4 {
+            margin: 3px;
+        }
+
+        img {
+            display: inline-block;
+            max-width: 100%;
+            height: auto;
+            /* vertical-align: middle; */
+            /* border: 0; */
+        }
+
+        img.img-tabz {
+            font-size: 190px;
+            z-index: -1;
+            position: absolute;
+            margin-top: -14px;
+        }
+
+        span.span-text {
+            position: absolute;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    
+<header>
+    <div style="max-width: 100%">
+        <div class="row" style="flex-wrap: wrap;">
+            <div
+                style="text-align: left; width: 400px; flex-basis: 0; flex-grow: 1; float: left; margin-bottom: 10px;">
+                <h4>INVENTORY COUNT CONSOLIDATION SYSTEM </h4>
+                                <h4>ISLAND CITY MALL</h4>
+                </th>
+                <h4>
+                                        SUPERMARKET
+                                                            - SELLING AREA
+                                    </h4>
+                <h4>As of May 30, 2022</h4>
+                
+                <h4>Actual Count Date: May 30, 2022</h4>
+                                <h4>Count Type: ANNUAL</h4>
+                            </div>
+            <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
+                <div class="title1" style="text-align: center;">
+                    ACTUAL COUNT (APP)
+                </div>
+            </div>
+            <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
+        </div>
+    </div>
+</header>
+
+        
+    
+
+    
+
+        
+
+    
+    <table>
+                    </table>
+        
+    <table class="body1">
+        <thead>
+            <tr>
+                <th class="text-center" style="vertical-align: middle;">
+                    Barcode
+                </th>
+                <th class="text-center" style="vertical-align: middle;">
+                    Uom
+                </th>
+                <th class="text-center" style="vertical-align: middle;">
+                    Count
+                </th>
+                <th class="text-center" style="vertical-align: middle;">
+                    Date Scanned
+                </th>
+                
+            </tr>
+
+        </thead>
+        <tbody>
+
+            
+                                    
+            
+
+                        <tr>
+                <td style="text-align: center;">4800417062525</td>
+                <td style="text-align: center;">BOT</td>
+                <td style="text-align: center;">277</td>
+                <td style="text-align: center;">2022-05-30 01:09:00</td>
+            </tr>
+                        
+            
+
+                        <tr>
+                <td style="text-align: center;">34567</td>
+                <td style="text-align: center;">PCS</td>
+                <td style="text-align: center;">50</td>
+                <td style="text-align: center;">2022-05-30 01:12:08</td>
+            </tr>
+                        <tr>
+                <td colspan="2"
+                    style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
+                    GRAND TOTAL >>>>
+                </td>
+
+                <td style="text-align:center; border-bottom-style: none; border-top-style: double;">
+                    327</td>
+                <td style="text-align:center; border-bottom-style: none;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        
+    <table class="body2">
+        <thead style="">
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Prepared by:
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    <span class="span-text">
+                        Store Representative:
+                    </span>
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    <span class="span-text">Verified by:</span>
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    <br />
+                    Ian Tabz
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    
+                    
+                    
+                    
+                    
+                    <span class="span-text">Gementiza, May Marjorie Matugas</span>
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    
+                    Tinahora, Analie Enad
+                </th>
+            </tr>
+            
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Designation: System Programmer III
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    Designation: Audit Aide
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    Designation: Jr Auditor
+                </th>
+            </tr>
+            <tr>
+                
+
+                <th style="text-align: left; font-size: 12px;">
+                    Date:
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    Date: 2022-05-30
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    Date: 2022-05-30
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Time:
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    Time: 02:02 PM
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px;">
+                    Time: 02:02 PM
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Count Start: 2022-05-30 01:09:00 am
+                </th>
+
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Count End: 2022-05-30 02:02:31 pm
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    Count Time: 12:53:31
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left; font-size: 12px;">
+                    SKU Total: BOT, PCS
+                </th>
+            </tr>
+        </thead>
+    </table>
+            
+    
+    
+
+    
+
+        
+    
+</body>
+
+</html>

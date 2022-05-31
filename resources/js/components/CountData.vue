@@ -250,14 +250,48 @@
                 </div>
               </div>
               <div class="row pad-all">
-                <button
+                <!-- <button
                   class="btn btn-danger btn-rounded pull-right text-thin mar-lft"
                   :disabled="!notFoundItems || notFoundItems == 0"
                   @click="generateBtnEXCEL($event, 'NotFound')"
                 >
                   <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
                   Found({{ notFoundItems }})
-                </button>
+                </button> -->
+                <div class="btn-group pull-right">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle"
+                      :disabled="!notFoundItems || notFoundItems == 0"
+                      data-toggle="dropdown"
+                      type="button"
+                      aria-expanded="false"
+                    >
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
+                      Found ({{ notFoundItems }})
+                      <i class="dropdown-caret"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" style="">
+                      <li class="dropdown-header">Items Not Found</li>
+                      <li>
+                        <a
+                          href="javscript:;"
+                          @click="generateBtnEXCEL($event, 'NotFound Excel')"
+                        >
+                          Generate Excel
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="javscript:;"
+                          @click="generateBtnEXCEL($event, 'NotFound PDF')"
+                        >
+                          Generate PDF
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <button
                   class="btn btn-info btn-rounded pull-right text-thin mar-lft"
                   :disabled="!data.data.length"
@@ -514,8 +548,12 @@ export default {
         report = null
       if (reportType == 'CountData') {
         pass = '/reports/appdata/generateAppDataExcel'
-      } else {
+      } else if (reportType == 'NotFound Excel') {
         pass = '/reports/appdata/generateNotFound'
+        report = '&report=Excel'
+      } else if (reportType == 'NotFound PDF') {
+        pass = '/reports/appdata/generateNotFound'
+        report = '&report=PDF'
       }
       thisButton.disabled = true
       thisButton.innerHTML =
@@ -526,7 +564,8 @@ export default {
             this.forPrintVendor
           )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
             this.department
-          }&section=${this.section}&countType=${this.countType}`,
+          }&section=${this.section}&countType=${this.countType}` +
+          report,
         {
           responseType: 'blob'
         }
@@ -543,13 +582,17 @@ export default {
       // console.log(fileName)
       this.section ? (section = '-' + this.section) : (section = '')
 
-      let title = 'Actual Count (APP)'
-      if (reportType == 'NotFound') {
-        title = 'Actual Count (APP) Items Not Found'
+      let title = 'Actual Count (APP)',
+        fileType = '.xlsx'
+      if (reportType == 'NotFound Excel') {
+        title = 'Items Not Found from Actual Count (APP)'
+      } else if (reportType == 'NotFound PDF') {
+        title = 'Items Not Found from Actual Count (APP)'
+        fileType = '.pdf'
       }
       link.setAttribute(
         'download',
-        `${title} as of ${this.date}  ${this.business_unit} ${this.department}${section}.xlsx`
+        `${title} as of ${this.date}  ${this.business_unit} ${this.department}${section}${fileType}`
       )
       // console.log(link)
       document.body.appendChild(link)

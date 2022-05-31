@@ -257,7 +257,7 @@ class ReportsController extends Controller
         //     ->groupByRaw('tbl_nav_countdata.itemcode')
         //     ->orderBy('itemcode')
         //     ->paginate(10);
-        $x = $result->groupByRaw('itemcode')->orderBy('itemcode')->get();
+        $x = $result->groupByRaw('itemcode')->orderBy('itemcode')->cursor();
 
         $query = $x->map(function ($c) use ($bu, $dept, $section) {
             // dd($c->itemcode);
@@ -449,7 +449,7 @@ class ReportsController extends Controller
 
         if (!request()->has('type')) {
             $report = 'Variance';
-            $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
+            $result = $result->groupBy('barcode')->orderBy('itemcode')->cursor()->groupBy(['vendor_name', 'group']);
             // dd($result);
             $arr = [];
 
@@ -489,7 +489,7 @@ class ReportsController extends Controller
             }
         } else {
             $report = 'Summary';
-            $result = $result->groupBy('barcode')->orderBy('itemcode')->get();
+            $result = $result->groupBy('barcode')->orderBy('itemcode')->cursor();
             $arr = [];
 
             foreach ($result as $items => $c) {
@@ -547,6 +547,9 @@ class ReportsController extends Controller
 
     public function getResultsVariance()
     {
+        // ob_implicit_flush(true);
+        // echo response()->json(['hfgh' => 'dasdasd']);
+        // ob_end_flush();
         // dd(request()->all());
         $user = auth()->user()->id;
         $company = auth()->user()->company;
@@ -614,7 +617,7 @@ class ReportsController extends Controller
 
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
         // dd($result);
-        $x = $result->groupByRaw('tbl_app_countdata.itemcode')->orderBy('itemcode')->get();
+        $x = $result->groupByRaw('tbl_app_countdata.itemcode')->orderBy('itemcode')->cursor();
 
         // dd($x);
 
@@ -659,6 +662,12 @@ class ReportsController extends Controller
         // dd($result->whereBetween('date', [$date, $dateAsOf])
         //     ->groupByRaw('tbl_nav_countdata.itemcode')
         //     ->orderBy('itemcode')->limit(5)->get());
+
+
+
+
+        // @ob_flush();
+        // flush();
         $data['data'] = $query;
         return $data;
     }
@@ -793,7 +802,7 @@ class ReportsController extends Controller
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->limit(5)->get()->groupBy(['vendor_name', 'group']);
         if (!request()->has('type')) {
             $report = 'Variance';
-            $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
+            $result = $result->groupBy('barcode')->orderBy('itemcode')->cursor()->groupBy(['vendor_name', 'group']);
             $arr = [];
 
             foreach ($result as $vendor_name => $categories) {
@@ -851,7 +860,7 @@ class ReportsController extends Controller
             );
         } else {
             $report = 'Summary';
-            $result = $result->groupBy('barcode')->orderBy('itemcode')->get();
+            $result = $result->groupBy('barcode')->orderBy('itemcode')->cursor();
             $arr = [];
 
             foreach ($result as $items => $c) {
@@ -1275,7 +1284,7 @@ class ReportsController extends Controller
             $category = implode(", ", $category);
         }
 
-        $result = $result->GroupBy('barcode')->orderBy('itemcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray();
+        $result = $result->GroupBy('barcode')->orderBy('itemcode')->cursor()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray();
         // dd($result);
         // ->cursor()->map(function ($data) {
         //     // dd($countData);

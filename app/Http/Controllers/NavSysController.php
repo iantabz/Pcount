@@ -92,9 +92,9 @@ class NavSysController extends Controller
         // dd($result->get());
 
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
-        // $result = $vendors != null ? $result->groupBy('itemcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']) : $result->groupBy('itemcode')->orderBy('itemcode')->get();
-        $result = $vendors != null ? $result->groupBy('itemcode')->orderBy('itemcode')->get()->groupBy(['vendor_name']) : $result->groupBy('itemcode')->orderBy('itemcode')->limit(1000)->get();
-        // dd($result);
+        // dd($result->groupBy('itemcode')->orderBy('itemcode')->cursor()->groupBy(['vendor_name', 'group']));
+        $result = $vendors != null ? $result->groupBy('itemcode')->orderBy('itemcode')->cursor()->groupBy(['vendor_name', 'group'])
+            : $result->groupBy('itemcode')->orderBy('itemcode')->limit(10000)->cursor();
 
         if ($vendors) {
             $arr = [];
@@ -143,9 +143,12 @@ class NavSysController extends Controller
                 }
             }
 
+
+
             if ($reportType == 'Variance') {
                 $arr = collect($arr)->filter(function ($a) {
                     foreach ($a as $key => $b) {
+                        // dd($b);
                         $res[] = !$b->isEmpty();
                     };
 
@@ -157,7 +160,7 @@ class NavSysController extends Controller
                     });
                 })->all();
             }
-
+            // dd($arr);
             $header = array(
                 'company'       => $company,
                 'business_unit' => $bu,
@@ -211,11 +214,11 @@ class NavSysController extends Controller
             //     // return $c;
             //     // });
             // }
-            $result = collect($result)->map(function ($c) use ($bu, $dept, $section) {
+            $result = collect($result)->map(function ($c) use ($bu, $dept, $section, $reportType) {
                 // dd($c);
                 // $c = collect($c)->map(function ($item) use ($bu, $dept, $section) {
                 //     dd($item);
-                $x = TblNavCountdata::selectRaw("cost_vat, cost_no_vat, amt, SUM(qty) as nav_qty")->where([
+                $x = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
                     ['itemcode', $c->itemcode],
                     ['business_unit', $bu],
                     ['department', $dept],
@@ -223,37 +226,68 @@ class NavSysController extends Controller
                 ])->groupBy('itemcode');
 
 
-                $y = TblUnposted::selectRaw("cost_no_vat, tot_cost_no_vat, SUM(qty) as unposted")->where([
+                $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
                     ['itemcode', $c->itemcode],
                     ['business_unit', $bu],
                     ['department', $dept],
                     ['section', $section]
                 ])->groupBy('itemcode');
 
-                // dd($y->get());
-                if ($x->exists()) {
-                    $c->nav_qty = $x->first()->nav_qty;
-                    $c->cost_vat = $x->first()->cost_vat;
-                    $c->cost_no_vat = $x->first()->cost_no_vat;
-                    $c->amt = $x->first()->amt;
-                } else {
-                    $c->nav_qty = '-';
-                    $c->cost_vat = '-';
-                    $c->cost_no_vat = '-';
-                    $c->amt = '-';
+                // if ($x->exists()) {
+                //     $c->nav_qty = $x->first()->nav_qty;
+                //     $c->cost_vat = $x->first()->cost_vat;
+                //     $c->cost_no_vat = $x->first()->cost_no_vat;
+                //     $c->amt = $x->first()->amt;
+                // } else {
+                //     $c->nav_qty = '-';
+                //     $c->cost_vat = '-';
+                //     $c->cost_no_vat = '-';
+                //     $c->amt = '-';
+                // }
+
+                // if ($y->exists()) {
+                //     $c->unposted = $y->first()->unposted;
+                // } else {
+                //     $c->unposted = '-';
+                // }
+                $queryResult = $x->exists();
+                $navQty = $queryResult ? $x->first()->nav_qty : '-';
+                $c->nav_qty = $navQty;
+
+                $yResult = $y->exists();
+                $unposted = $yResult ? $y->first()->unposted : '-';
+                $c->unposted = $unposted;
+
+                if ($reportType == 'Variance') {
+                    $temp1 = $navQty === '-' ? 0 : $navQty;
+                    $temp2 = $unposted === '-' ? 0 : $unposted;
+
+                    $res = $temp1 + $temp2;
+
+                    if ($res < 0) {
+                        return $c;
+                    }
+                    return [];
                 }
 
-                if ($y->exists()) {
-                    $c->unposted = $y->first()->unposted;
-                } else {
-                    $c->unposted = '-';
-                }
-                // dd($item);
-                //     return $item;
-                // });
-                // dd($c);
                 return $c;
+            })->filter(function ($ar) {
+                return $ar;
             });
+
+            // $arr = $result->filter(function ($a) {
+            //     dd($a);
+            //     foreach ($a as $key => $b) {
+            //         $res[] = !$b->isEmpty();
+            //     };
+
+            //     return in_array(true, $res);
+            // })->map(function ($b) {
+            //     // dump($b);
+            //     return collect($b)->filter(function ($c) {
+            //         return !$c->isEmpty();
+            //     });
+            // })->all();
 
             // dd($result);
 
@@ -352,7 +386,7 @@ class NavSysController extends Controller
 
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
         // dd($result);
-        $x = $result->groupByRaw('itemcode')->orderBy('itemcode')->get();
+        $x = $result->groupByRaw('itemcode')->orderBy('itemcode')->cursor();
         // dd($x);
 
         $query = $x->map(function ($c) use ($bu, $dept, $section) {

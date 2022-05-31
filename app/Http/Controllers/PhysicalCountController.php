@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use \PDF;
+
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Models\TblAppNfitem;
 use App\Exports\ItemsNotFound;
+use App\Models\TblAppCountdata;
+use Illuminate\Support\Facades\DB;
 use App\Exports\PcountAppCountData;
 use App\Exports\PcountDamageExport;
-use App\Models\TblAppCountdata;
-use App\Models\TblAppNfitem;
-use Carbon\Carbon;
-use Facade\Ignition\QueryRecorder\Query;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Facade\Ignition\QueryRecorder\Query;
 
 class PhysicalCountController extends Controller
 {
@@ -91,10 +92,8 @@ class PhysicalCountController extends Controller
             ->groupBy('barcode')
             ->orderBy('itemcode');
 
-
-
         if (request()->has('forExport')) {
-            $data = $query->get()
+            $data = $query->cursor()
                 ->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
                 ->all();
 
@@ -191,6 +190,7 @@ class PhysicalCountController extends Controller
 
     public function generateAppDataExcel()
     {
+        // dd(request()->all());
         session(['data' => $this->data()]);
         return Excel::download(new PcountAppCountData, 'invoices.xlsx');
     }
@@ -232,7 +232,7 @@ class PhysicalCountController extends Controller
         // return $data;
     }
 
-    public function data($export)
+    public function data()
     {
         set_time_limit(0);
         ini_set('memory_limit', '-1');
@@ -469,9 +469,15 @@ class PhysicalCountController extends Controller
 
     public function generateNotFound()
     {
-        $type = "ExcelReport";
+        $type = request()->report;
+        // dd($type);
         session(['data' => $this->itemsNotFoundData($type)]);
-        return Excel::download(new ItemsNotFound, 'invoices.xlsx');
+        $data = session()->get('data');
+        $pdf = PDF::loadView('reports.pcount_app_notfound', ['data' => $data]);
+
+        // return $type == "ExcelReport" ? Excel::download(new ItemsNotFound, 'invoices.xlsx') : (new ItemsNotFound)->download('invoices.pdf',);
+        return $type == "Excel" ? Excel::download(new ItemsNotFound, 'notfound.xlsx') : $pdf->setPaper('legal', 'landscape')->download('notfound.pdf',);
+        // return Excel::download(new ItemsNotFound, 'invoices.xlsx');
     }
 
     public function itemsNotFoundData($type)
@@ -507,6 +513,7 @@ class PhysicalCountController extends Controller
         tbl_app_audit.name AS audit_user,
         tbl_app_audit.position AS audit_position,
         tbl_app_nfitem.audit_signature AS audit_user_sign,
+        description,
         vendor_name, 
         tbl_item_masterfile.group')
             ->join('tbl_app_user', 'tbl_app_user.location_id', 'tbl_app_nfitem.location_id')
@@ -566,19 +573,20 @@ class PhysicalCountController extends Controller
         // dd($result);
 
         $header = array(
-            'company' => $company,
+            'company'       => $company,
             'business_unit' => $bu,
-            'department' => $dept,
-            'section' => $section,
-            'vendors' => $vendors,
-            'category' => $category,
-            'date' => $printDate,
-            'countType' => $countType,
-            'user' => auth()->user()->name,
+            'department'    => $dept,
+            'section'       => $section,
+            'vendors'       => $vendors,
+            'category'      => $category,
+            'date'          => $printDate,
+            'countType'     => $countType,
+            'user'          => auth()->user()->name,
             'user_position' => auth()->user()->position,
-            'runDate'   => $runDate,
-            'runTime'    => $runTime,
-            'data' => $result
+            'runDate'       => $runDate,
+            'runTime'       => $runTime,
+            'type'          => $type,
+            'data'          => $result
         );
 
         return $header;

@@ -5662,6 +5662,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5805,7 +5839,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var thisButton, oldHTML, pass, report, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title;
+        var thisButton, oldHTML, pass, report, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title, fileType;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -5831,14 +5865,18 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
                 if (reportType == 'CountData') {
                   pass = '/reports/appdata/generateAppDataExcel';
-                } else {
+                } else if (reportType == 'NotFound Excel') {
                   pass = '/reports/appdata/generateNotFound';
+                  report = '&report=Excel';
+                } else if (reportType == 'NotFound PDF') {
+                  pass = '/reports/appdata/generateNotFound';
+                  report = '&report=PDF';
                 }
 
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
                 _context.next = 9;
-                return axios.get(pass + "?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType), {
+                return axios.get(pass + "?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType) + report, {
                   responseType: 'blob'
                 });
 
@@ -5856,13 +5894,16 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 section = null; // console.log(fileName)
 
                 _this.section ? section = '-' + _this.section : section = '';
-                title = 'Actual Count (APP)';
+                title = 'Actual Count (APP)', fileType = '.xlsx';
 
-                if (reportType == 'NotFound') {
-                  title = 'Actual Count (APP) Items Not Found';
+                if (reportType == 'NotFound Excel') {
+                  title = 'Items Not Found from Actual Count (APP)';
+                } else if (reportType == 'NotFound PDF') {
+                  title = 'Items Not Found from Actual Count (APP)';
+                  fileType = '.pdf';
                 }
 
-                link.setAttribute('download', "".concat(title, " as of ").concat(_this.date, "  ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx")); // console.log(link)
+                link.setAttribute('download', "".concat(title, " as of ").concat(_this.date, "  ").concat(_this.business_unit, " ").concat(_this.department).concat(section).concat(fileType)); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -53240,29 +53281,87 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row pad-all" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-danger btn-rounded pull-right text-thin mar-lft",
-                    attrs: {
-                      disabled: !_vm.notFoundItems || _vm.notFoundItems == 0
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.generateBtnEXCEL($event, "NotFound")
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                    _vm._v(
-                      "  Items Not\n                Found(" +
-                        _vm._s(_vm.notFoundItems) +
-                        ")\n              "
+                _c("div", { staticClass: "btn-group pull-right" }, [
+                  _c("div", { staticClass: "dropdown" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle",
+                        attrs: {
+                          disabled:
+                            !_vm.notFoundItems || _vm.notFoundItems == 0,
+                          "data-toggle": "dropdown",
+                          type: "button",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                        _vm._v(
+                          "  Items Not\n                    Found (" +
+                            _vm._s(_vm.notFoundItems) +
+                            ")\n                    "
+                        ),
+                        _c("i", { staticClass: "dropdown-caret" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      { staticClass: "dropdown-menu dropdown-menu-right" },
+                      [
+                        _c("li", { staticClass: "dropdown-header" }, [
+                          _vm._v("Items Not Found")
+                        ]),
+                        _vm._v(" "),
+                        _c("li", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "javscript:;" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.generateBtnEXCEL(
+                                    $event,
+                                    "NotFound Excel"
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        Generate Excel\n                      "
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("li", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "javscript:;" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.generateBtnEXCEL(
+                                    $event,
+                                    "NotFound PDF"
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        Generate PDF\n                      "
+                              )
+                            ]
+                          )
+                        ])
+                      ]
                     )
-                  ]
-                ),
+                  ])
+                ]),
                 _vm._v(" "),
                 _c(
                   "button",

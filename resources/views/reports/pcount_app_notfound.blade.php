@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Actual Count (APP)</title>
     <style>
         body {
@@ -317,19 +315,11 @@
 </head>
 
 <body>
-    {{-- {{dd($data)}} --}}
     @php
     $countSize =count($data['data']);
     $startCount = null;
     @endphp
-    @foreach ($data['data'] as $emp => $audit)
-    @php
-    --$countSize
-    @endphp
-
-    @foreach ($audit as $auditor => $vendor)
-
-    @foreach ($vendor as $vendor_name => $categories)
+    {{-- {{dd($data)}} --}}
 
     <header>
         <div style="max-width: 100%">
@@ -357,7 +347,7 @@
                 </div>
                 <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
-                        ACTUAL COUNT (APP)
+                        Items Not Found from Actual Count (APP)
                     </div>
                 </div>
                 <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
@@ -365,59 +355,61 @@
         </div>
     </header>
 
+    @foreach ($data['data'] as $emp => $audit)
+    @php
+    --$countSize
+    @endphp
 
-    <div>
-        <h4 style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</h4>
-    </div>
+    
+
+    @foreach ($audit as $auditor => $vendor)
+
+
+    @foreach ($vendor as $vendor_name => $categories)
+    {{-- <table>
+        <tr>
+            <th style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</th>
+        </tr>
+    </table> --}}
 
     @foreach ($categories as $category => $items)
-    <div>
 
-        <h4 style="text-align: left; font-size: 12px">Category: {{ $category }}</h4>
-    </div>
-    {{-- {{dd($items)}} --}}
-    {{-- {{dd(current($items[count($items) - 2]))}} --}}
-    {{-- {{dd(current($items[count($items)- 12]))}} --}}
-
+    <table>
+        @if($vendor_name)
+        <tr>
+            <th style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</th>
+        </tr>
+        @endif
+        @if($category)
+        <tr>
+            <th style="text-align: left; font-size: 12px">Category: {{ $category }}</th>
+        </tr>
+        @endif
+    </table>
     @php
     $grandTotal = 0;
     $grandTotalConvQty = 0;
     @endphp
-
     {{-- @foreach ($category as $cat_name => $items)
     {{dd($items)}}
     @endforeach --}}
     <table class="body1">
         <thead>
             <tr>
-                <th style="vertical-align: middle; text-align: center;">
-                    Item Code
+                <th class="text-center" style="vertical-align: middle;">
+                    Item/ Barcode
                 </th>
-                <th style="vertical-align: middle; text-align: center;">
-                    Barcode
-                </th>
-                <th style="vertical-align: middle; text-align: center;">
-                    Description
-                </th>
-                <th style="vertical-align: middle; text-align: center;">
+                <th>Description</th>
+                <th class="text-center" style="vertical-align: middle;">
                     Uom
                 </th>
-                <th style="vertical-align: middle; text-align: center;">
+                <th class="text-center" style="vertical-align: middle;">
                     Count
                 </th>
-                <th style="vertical-align: middle; text-align: center;">
-                    Smallest SKU
-                </th>
-                <th style="vertical-align: middle; text-align: center;">
-                    Conv. Qty
-                </th>
-                <th style="vertical-align: middle; text-align: center;">
-                    Rack
-                </th>
-                <th style="vertical-align: middle; text-align: center;">
+                <th class="text-center" style="vertical-align: middle;">
                     Date Scanned
                 </th>
-                {{-- <th style="vertical-align: middle; text-align: center;">
+                {{-- <th class="text-center" style="vertical-align: middle;">
                     Date Expiry
                 </th> --}}
             </tr>
@@ -435,7 +427,7 @@
             $skus =[];
             @endphp
             @foreach ($items as $key => $item)
-
+            {{-- {{dd($items)}} --}}
             {{-- {{dd(end($items))}} --}}
 
             @php
@@ -450,31 +442,19 @@
             // $timeDiff = $testStart->diff($testEnd);
             $timeDiff = date_diff($timeStartCount, $timeEndCount);
             $countTime = $timeDiff->format("%H:%I:%S");
-            $grandTotal += $item['qty'];
-            $grandTotalConvQty += $item['total_conv_qty'];
+            $grandTotal += $item['total_qty'];
             // $countStart
             @endphp
             <tr>
-                <td style="text-align: center;">{{ $item['itemcode'] }}
-                </td>
                 <td style="text-align: center;">{{ $item['barcode'] }}</td>
-                <td style="text-align: left;">{{ $item['extended_desc'] }}</td>
+                <td style="text-align: center;">{{ strtoupper($item['description']) }}</td>
                 <td style="text-align: center;">{{ $item['uom'] }}</td>
-                <td style="text-align: center;">{{ number_format($item['qty'], 0) }}</td>
-                <td style="text-align: center;">
-                    @if ($item['nav_uom'])
-                    {{ $item['nav_uom'] }}
-                    @else
-                    {{ $item['uom'] }}
-                    @endif</td>
-                <td style="text-align: center;">{{ number_format($item['total_conv_qty'], 0) }}</td>
-                <td style="text-align: center;">{{ $item['rack_desc'] }}</td>
+                <td style="text-align: center;">{{ number_format($item['total_qty'], 0) }}</td>
                 <td style="text-align: center;">{{ $item['datetime_scanned'] }}</td>
-                {{-- <td style="text-align: center;">{{ $item['date_expiry'] }}</td> --}}
             </tr>
             @endforeach
-            <tr>
-                <td colspan="4"
+            {{-- <tr>
+                <td colspan="2"
                     style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
                     GRAND TOTAL >>>>
                 </td>
@@ -483,9 +463,7 @@
                     {{ number_format($grandTotal, 0)}}</td>
                 <td style="text-align:center; border-bottom-style: none;">
                 </td>
-                <td style="text-align:center; border-bottom-style: none; border-top-style: double;">
-                    {{ number_format($grandTotalConvQty, 0)}}</td>
-            </tr>
+            </tr> --}}
         </tbody>
     </table>
     @endforeach
@@ -512,11 +490,11 @@
                     <br />
                     {{$data['user']}}
                 </th>
-                <th width="10%"></th>
+                <th width="10%" ></th>
+                {{-- {{dd($item)}} --}}
                 <th width="30%" style="text-align: left; font-size: 12px;">
-                    {{-- {{dd($items[0])}} --}}
-                    <img src="data:image/png;base64,{{$items[0]['user_signature']}}" class="img-tabz" />
-                    {{-- <img src="data:image/jpg;base64,{{$item['app_user_sign']}}" style="" /> --}}
+                    {{-- <img src="data:image/png;base64,{{$item['app_user_sign']}}" class="img-tabz" /> --}}
+                    <img src="data:image/jpg;base64,{{$item['app_user_sign']}}" class="img-tabz" />
                     {{-- <img src="data:image/xml;base64,{{$item['app_user_sign']}}" class="img-tabz" /> --}}
                     {{-- <img
                         src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxnPgoJCQk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMi40LDE3LjRIMi4zQzIuMiwxNy40LDIsMTcuMywyLDE3LjFjLTAuNy0xLjUtMS4xLTMuMS0xLjItNC44VjEydi0wLjNDMC44LDEwLDEuMiw4LjQsMiw2LjkKCQkJCUMyLjQsNiwzLDUuMiwzLjYsNC40YzIuMi0yLjUsNS40LTQsOC43LTRjMi44LDAsNS40LDEsNy42MDEsMi45YzAsMC4yLDAuMSwwLjMsMC4xLDAuNGMwLDAuMSwwLDAuMy0wLjEsMC40bC0zLjIsMy4yCgkJCQljLTAuMiwwLjItMC41LDAuMi0wLjcsMEMxNC45LDYuNSwxMy42LDYsMTIuMiw2QzExLDYsOS43LDYuNCw4LjcsNy4xYy0xLDAuNy0xLjgsMS44LTIuMiwzYy0wLjIsMC41LTAuMywxLjEtMC4zLDEuNgoJCQkJYzAsMC4xLDAsMC4yLDAsMC4zczAsMC4yLDAsMC4yYzAsMC42LDAuMSwxLjEsMC4zLDEuNmMwLjEsMC4yLDAsMC40LTAuMiwwLjYwMWwtMy43LDIuOEMyLjYsMTcuMywyLjUsMTcuNCwyLjQsMTcuNHogTTEyLjIsMS41CgkJCQljLTMuMSwwLTYsMS4zLTcuOSwzLjZDMy43LDUuOCwzLjIsNi41LDIuOCw3LjNjLTAuNywxLjQtMSwyLjgtMS4xLDQuNFYxMnYwLjNjMCwxLjMsMC4zLDIuNjAxLDAuOCwzLjhMNS40LDEzLjkKCQkJCWMtMC4xLTAuNS0wLjItMS0wLjItMS41YzAtMC4xLDAtMC4yLDAtMC4zczAtMC4yLDAtMC4zYzAtMC43LDAuMS0xLjMsMC4zLTEuOUM2LDguNSw2LjgsNy4zLDgsNi40YzIuNC0xLjcsNS43LTEuOCw4LjEtMC4xCgkJCQlsMi41LTIuNUMxNi45LDIuMywxNC42LDEuNSwxMi4yLDEuNXoiLz4KCQk8L2c+CgkJPGc+CgkJCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xMi4yLDIzLjVjLTMuMywwLTYuNS0xLjQtOC43LTRjLTAuNy0wLjgtMS4yLTEuNi0xLjYtMi40Yy0wLjEtMC4xOTksMC0wLjUsMC4xLTAuNmwzLjctMi44CgkJCQlDNS44LDEzLjYsNiwxMy42LDYuMiwxMy42YzAuMiwwLDAuMywwLjIsMC4zLDAuMzAxYzAuNCwxLjE5OSwxLjEsMi4xOTksMi4yLDNjMC40LDAuMywwLjksMC42LDEuNCwwLjgKCQkJCWMwLjcsMC4zLDEuNCwwLjM5OSwyLjIsMC4zOTljMS4zLDAsMi41LTAuMywzLjQtMC44OTljMC44OTktMC42MDEsMS41LTEuNCwxLjg5OS0yLjRoLTUuM2MtMC4zLDAtMC41LTAuMi0wLjUtMC41VjEwCgkJCQljMC0wLjMsMC4yLTAuNSwwLjUtMC41aDEwLjNjMC4yLDAsMC40LDAuMiwwLjUsMC40YzAuMiwwLjcsMC4zMDEsMS41LDAuMzAxLDIuMWMwLDEuOS0wLjMwMSwzLjYtMSw1LjIKCQkJCWMtMC42MDEsMS4zLTEuNCwyLjUtMi41LDMuNWMtMS4yLDEuMS0yLjgwMSwyLTQuNCwyLjVDMTQuMywyMy40LDEzLjMsMjMuNSwxMi4yLDIzLjV6IE0zLDE3YzAuNCwwLjcsMC44LDEuMywxLjMsMS45CgkJCQljMiwyLjMsNC45LDMuNiw4LDMuNmMxLDAsMS45LTAuMSwyLjgtMC40YzEuNS0wLjM5OSwyLjktMS4xOTksNC0yLjE5OUMyMCwxOSwyMC44LDE4LDIxLjMsMTYuOGMwLjYwMS0xLjM5OSwxLTMsMS00LjgKCQkJCWMwLTAuNS0wLjEtMS0wLjItMS41SDEyLjd2My4zSDE4LjFjMC4yLDAsMC4zMDEsMC4xMDEsMC40LDAuMnMwLjEsMC4zLDAuMSwwLjRjLTAuMywxLjUtMS4xOTksMi44LTIuNSwzLjYKCQkJCUMxNSwxOC43LDEzLjcsMTksMTIuMiwxOWMtMC45LDAtMS43LTAuMi0yLjUtMC41Yy0wLjYtMC4yLTEuMS0wLjUtMS42LTAuOWMtMS0wLjY5OS0xLjgtMS42OTktMi4zLTIuOEwzLDE3eiIvPgoJCTwvZz4KCTwvZz4KCTxnPgoJCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik02LjEsMTAuNWMtMC4xLDAtMC4yLDAtMC4zLTAuMUwyLjEsNy41QzEuOCw3LjQsMS44LDcsMiw2LjhjMC4yLTAuMiwwLjUtMC4zLDAuNy0wLjFsMy43LDIuOAoJCQljMC4yLDAuMiwwLjMsMC41LDAuMSwwLjdDNi40LDEwLjQsNi4yLDEwLjUsNi4xLDEwLjV6Ii8+Cgk8L2c+Cgk8Zz4KCQk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMTkuNCwyMC44Yy0wLjEwMSwwLTAuMiwwLTAuMzAxLTAuMUwxNS42LDE4Yy0wLjE5OS0wLjItMC4zLTAuNS0wLjEtMC43czAuNS0wLjMsMC43LTAuMWwzLjUsMi43CgkJCWMwLjIsMC4xOTksMC4zLDAuNSwwLjEsMC42OTlDMTkuNywyMC43LDE5LjYsMjAuOCwxOS40LDIwLjh6Ii8+Cgk8L2c+Cgk8Zz4KCQk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMTkuNSwxNC44aC01LjljLTAuMywwLTAuNS0wLjItMC41LTAuNXMwLjItMC41LDAuNS0wLjVoNS45YzAuMywwLDAuNSwwLjIsMC41LDAuNVMxOS44LDE0LjgsMTkuNSwxNC44eiIKCQkJLz4KCTwvZz4KPC9nPgo8L3N2Zz4="
@@ -525,69 +503,69 @@
                     <br />
                     <span class="span-text">{{$emp}}</span>
                 </th>
-                <th width=" 10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px;">
-                    <img src="data:image/png;base64,{{$items[0]['audit_signature']}}" class="img-tabz" />
+                <th width="10%" ></th>
+                <th width="30%"  style="text-align: left; font-size: 12px;">
+                    <img src="data:image/png;base64,{{$item['audit_user_sign']}}" class="img-tabz" />
                     <br />
                     {{$auditor}}
                 </th>
             </tr>
+            {{-- <tr>
+                <th style="text-align: left; font-size: 12px; border-top: 1px black solid;">
+                    (Signature over printed name)
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px; border-top: 1px black solid;">
+                    (Signature over printed name)
+                </th>
+                <th></th>
+                <th style="text-align: left; font-size: 12px; border-top: 1px black solid;">
+                    (Signature over printed name)
+                </th>
+            </tr> --}}
             <tr>
-                <th width="30%" style="text-align: left; font-size: 12px; border-top: 1px black solid;">
-                    (Signature over printed name)
-                </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px; border-top: 1px black solid;">
-                    (Signature over printed name)
-                </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px; border-top: 1px black solid;">
-                    (Signature over printed name)
-                </th>
-            </tr>
-            <tr>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Designation: {{$data['user_position']}}
                 </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%" ></th>
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Designation: {{$item['app_user_position']}}
                 </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%" ></th>
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Designation: {{$item['audit_position']}}
                 </th>
             </tr>
             <tr>
                 {{-- {{dd(date("Y-m-d h:i A", strtotime($item['datetime_exported'])))}} --}}
 
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Date:
                 </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%" ></th>
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Date: {{date("Y-m-d", strtotime($item['datetime_exported']))}}
                 </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%" ></th>
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Date: {{date("Y-m-d", strtotime($item['datetime_exported']))}}
                 </th>
             </tr>
             <tr>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Time:
                 </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%" ></th>
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Time: {{date("h:i A", strtotime($item['datetime_exported']))}}
                 </th>
-                <th width="10%"></th>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%" ></th>
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Time: {{date("h:i A", strtotime($item['datetime_exported']))}}
                 </th>
             </tr>
             <tr>
-                <th width="30%" style="text-align: left; font-size: 12px;">
+                <th width="30%"  style="text-align: left; font-size: 12px;">
                     Count Start: {{ $countStart }}
                 </th>
 
@@ -609,8 +587,7 @@
             </tr>
         </thead>
     </table>
-    <div class="page-break"></div>
-
+    @endforeach
     @endforeach
     {{-- {{dd($timeStartCount, $timeEndCount, $timeDiff, $countTime)}} --}}
     {{-- {{dd($countStart->diff($countEnd))}} --}}
@@ -621,32 +598,8 @@
     @endif --}}
 
     @endforeach
-    @if($loop->last == false)
-    <div class="page-break"></div>
-    @endif
-    @endforeach
     {{-- {{dd(current($items))}} --}}
     {{-- {{dd($data)}} --}}
 </body>
-<script type="text/php">
-    if ( isset($pdf) ) { 
-        $pdf->page_script('
-            if ($PAGE_COUNT > 1) {
-                $date =now()->format("Y-m-d h:i A");
-                $font = $fontMetrics->getFont("Helvetica");
-                $size = 12;
-                $finalPageCount = $PAGE_COUNT -1;
-
-                $pageText = $PAGE_NUM . " of " . ($PAGE_COUNT - 1);
-                $y = $pdf->get_height() - 24;
-                $x = $pdf->get_width() - 15 - $fontMetrics->getTextWidth($pageText, $font, $size);
-                if($PAGE_NUM <= $finalPageCount){
-                    $pdf->text(35, 580, "RUN DATE & TIME: " . $date, $font, 7);
-                    $pdf->text(500, 580, $pageText, $font, 8);
-                }
-            } 
-        ');
-    }
-</script>
 
 </html>
