@@ -345,19 +345,19 @@ class NavSysController extends Controller
         // dd($result->limit(10)->get());
 
 
-        // $result = TblAppCountdata::selectRaw(
-        //     'tbl_app_countdata.itemcode, 
-        //   tbl_app_countdata.barcode,
-        //   tbl_item_masterfile.extended_desc,
-        //   tbl_app_countdata.uom, 
-        //   SUM(tbl_app_countdata.qty) as app_qty,
-        //   SUM(tbl_app_countdata.conversion_qty) as conversion_qty,
-        //   vendor_name,
-        //   tbl_item_masterfile.group'
-        // )
-        //     ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
-        //     ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
-        //     ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
+        $result = TblAppCountdata::selectRaw(
+            'tbl_app_countdata.itemcode, 
+          tbl_app_countdata.barcode,
+          tbl_item_masterfile.extended_desc,
+          tbl_app_countdata.uom, 
+          SUM(tbl_app_countdata.qty) as app_qty,
+          SUM(tbl_app_countdata.conversion_qty) as conversion_qty,
+          vendor_name,
+          tbl_item_masterfile.group'
+        )
+            ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
+            ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
+            ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
         if ($bu != 'null') {
             $result->WHERE('tbl_nav_countdata.business_unit',  'LIKE', "%$bu%");
@@ -386,7 +386,7 @@ class NavSysController extends Controller
 
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
         // dd($result);
-        $x = $result->groupByRaw('itemcode')->orderBy('itemcode')->cursor();
+        $x = $result->groupByRaw('itemcode')->cursor();
         // dd($x);
 
         $query = $x->map(function ($c) use ($bu, $dept, $section) {

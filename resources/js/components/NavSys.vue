@@ -196,7 +196,6 @@
                   @click="generateBtn($event, 'NetNavSys')"
                 >
                   <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Report
-                  ({{ data.data.length }})
                 </button>
                 <button
                   :disabled="!data.data.length"

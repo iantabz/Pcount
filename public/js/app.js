@@ -10645,7 +10645,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -57787,11 +57786,7 @@ var render = function() {
                     },
                     [
                       _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                      _vm._v(
-                        "  Generate Report\n                (" +
-                          _vm._s(_vm.data.data.length) +
-                          ")\n              "
-                      )
+                      _vm._v("  Generate Report\n              ")
                     ]
                   ),
                   _vm._v(" "),
