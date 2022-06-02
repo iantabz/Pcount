@@ -92,6 +92,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/getResults', [NavSysController::class, 'getResults']);
             Route::get('/NetNavSys', [NavSysController::class, 'NetNavSys']);
         });
+        Route::prefix('not_in_count')->group(function () {
+            Route::get('/generate', [NavSysController::class, 'NetNavSys']);
+        });
         Route::prefix('variance_report')->group(function () {
             Route::get('/getResults', [ReportsController::class, 'getResultsVariance']);
             Route::get('/generate', [ReportsController::class, 'generateVariance']);

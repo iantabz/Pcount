@@ -73,22 +73,7 @@
                       </v-select>
                     </div>
                   </div>
-
                   <!-- <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label class="col-lg-3 control-label text-bold">
-                      <h5>Date From :</h5>
-                    </label>
-                    <div class="col-lg-6">
-                      <input
-                        class="form-control"
-                        v-model="date"
-                        type="date"
-                        name="dateFrom"
-                        id="dateFrom"
-                      />
-                    </div>
-                  </div> -->
-                  <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-3 control-label text-thin"
                       style="text-align: right"
@@ -115,23 +100,7 @@
                         }}</template>
                       </v-select>
                     </div>
-                  </div>
-                  <div class="row pad-all" style="padding-left: 10px;">
-                    <label class="col-lg-3 control-label text-thin">
-                      <h5>
-                        <i class="icon-lg demo-pli-file-edit icon-fw"></i>
-                        Count Type :
-                      </h5>
-                    </label>
-                    <div class="col-lg-6">
-                      <v-select
-                        :options="countTypes"
-                        label="countTypes"
-                        v-model="countType"
-                        placeholder="Count Type"
-                      ></v-select>
-                    </div>
-                  </div>
+                  </div> -->
                   <div class="row pad-all" style="padding-left: 10px;">
                     <label class="col-lg-3 control-label text-thin">
                       <h5>
@@ -186,23 +155,6 @@
 
                   <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
-                      class="col-lg-3 control-label text-bold"
-                      style="text-align: right"
-                    >
-                      <h5>Date To :</h5>
-                    </label>
-                    <div class="col-lg-6">
-                      <input
-                        class="form-control"
-                        v-model="date2"
-                        type="date"
-                        name="dateTo"
-                        id="dateTo"
-                      />
-                    </div>
-                  </div> -->
-                  <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label
                       class="col-md-3 control-label text-thin"
                       style="text-align: right"
                     >
@@ -228,84 +180,32 @@
                         }}</template>
                       </v-select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label class="col-md-3 control-label text-thin">
                       <h5></h5>
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
-                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
-                    <button
-                      :disabled="!data.data.length"
-                      class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                      @click="generateBtn($event, 'Summary')"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Summary Report
-                    </button>
-
-                    <button
-                      :disabled="!data.data.length"
-                      class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                      @click="generateBtn($event, 'Variance')"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Variance Report
-                    </button>
-                    <button
-                      class="btn btn-warning btn-rounded pull-right text-thin mar-lft"
-                      :disabled="!data.data.length"
-                      @click="generateBtn($event, 'NavUnposted')"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Net Nav Sys ({{ data.data.length }})
-                    </button>
-                    <button
-                      class="btn btn-danger btn-rounded pull-right text-thin"
-                      :disabled="!data.data.length"
-                      @click="exportBtn($event, 'Variance')"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Export to
-                      Navision ({{ data.data.length }})
-                    </button>
-                  </div> -->
                 </div>
               </div>
               <div class="row" style="padding: 10px 15px 15px 10px">
                 <button
-                  :disabled="!data.data.length"
                   class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                  @click="generateBtn($event, 'Summary')"
+                  :disabled="!data.data.length"
+                  @click="generateBtn($event, 'No Actual Count')"
                 >
                   <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                  Summary Report
-                </button>
-
-                <button
-                  :disabled="!data.data.length"
-                  class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                  @click="generateBtn($event, 'Variance')"
-                >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                  Variance Report
+                  Inventory Balance No Actual Count
                 </button>
                 <!-- <button
-                      class="btn btn-warning btn-rounded pull-right text-thin mar-lft"
-                      :disabled="!data.data.length"
-                      @click="generateBtn($event, 'NavUnposted')"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Net Nav Sys ({{ data.data.length }})
-                    </button> -->
-                <button
                   class="btn btn-danger btn-rounded pull-right text-thin"
                   :disabled="!data.data.length"
                   @click="exportBtn($event, 'Variance')"
                 >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Export to
-                  Navision ({{ data.data.length }})
-                </button>
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Export Negative
+                  Inventory Balance
+                </button> -->
               </div>
               <table class="table table-striped">
                 <thead>
@@ -343,15 +243,15 @@
                       class="text-center"
                       style="vertical-align: middle;"
                     >
-                      Variance
+                      Net Nav Sys Count
                     </th>
                   </tr>
                   <tr>
                     <th class="text-center" style="vertical-align: middle;">
-                      P Count App
+                      Nav Sys Count
                     </th>
                     <th class="text-center" style="vertical-align: middle;">
-                      Net Nav Sys Count
+                      Unposted
                     </th>
                   </tr>
                 </thead>
@@ -363,14 +263,14 @@
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
-                    <td class="text-main text-normal" style="font-size: 1.1em">
+                    <td class="text-main text-thin" style="font-size: 1.1em">
                       {{ data.itemcode }}
                     </td>
-                    <td class="text-main text-normal" style="font-size: 1.1em">
+                    <td class="text-main text-thin" style="font-size: 1.1em">
                       {{ data.extended_desc }}
                     </td>
                     <td
-                      class="text-main text-normal text-center"
+                      class="text-main text-thin text-center"
                       style="font-size: 1.1em"
                     >
                       {{ data.uom }}
@@ -379,13 +279,13 @@
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ data.conversion_qty }}
+                      {{ data.nav_qty }}
                     </td>
                     <td
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ computeNet(data.nav_qty, data.unposted) }}
+                      {{ data.unposted }}
                     </td>
 
                     <td
@@ -408,17 +308,7 @@
                   <div class="col-md-6">
                     Showing {{ data.data.length }} entries
                   </div>
-                  <div class="col-md-6">
-                    <!-- <div class="text-right">
-                      <pagination
-                        style="margin: 0 0 20px 0"
-                        :limit="1"
-                        :show-disabled="true"
-                        :data="data"
-                        @pagination-change-page="getResults"
-                      ></pagination>
-                    </div> -->
-                  </div>
+                  <div class="col-md-6"></div>
                 </div>
               </div>
             </div>
@@ -478,7 +368,8 @@ export default {
     }
   },
   components: {
-    datetime: Datetime
+    datetime: Datetime,
+    datetime2: Datetime
   },
   watch: {
     date() {
@@ -619,7 +510,7 @@ export default {
 
       let title = 'Import to Nav'
       if (reportType == 'Variance w/ Cost') {
-        title = 'Import to Nav'
+        title = 'Import to Nav Negative Inventory Balances'
       }
 
       link.setAttribute(
@@ -663,33 +554,15 @@ export default {
 
       let pass = null,
         title = null
-      if (type == 'Variance') {
-        title = 'Variance Report'
-        pass = `/reports/variance_report/generate?date=${btoa(
+      if (type == 'No Actual Count') {
+        title = 'Inventory Balance No Actual Count'
+        pass = `/reports/not_in_count/generate?date=${btoa(
           this.date
         )}&date2=${btoa(this.date2)}&vendors=${btoa(
           this.forPrintVendor
         )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
           this.department
-        }&section=${this.section}`
-      } else if (type == 'Summary') {
-        title = 'Variance Report Summary'
-        pass = `/reports/variance_report/generate?date=${btoa(
-          this.date
-        )}&date2=${btoa(this.date2)}&vendors=${btoa(
-          this.forPrintVendor
-        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
-          this.department
-        }&section=${this.section}&type=Summary`
-      } else {
-        title = 'Net Nav Sys'
-        pass = `/reports/variance_report/NavUnposted?date=${btoa(
-          this.date
-        )}&date2=${btoa(this.date2)}&vendors=${btoa(
-          this.forPrintVendor
-        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
-          this.department
-        }&section=${this.section}`
+        }&section=${this.section}&type=NotInCount`
       }
 
       thisButton.disabled = true
@@ -730,20 +603,14 @@ export default {
       })
     },
     getResults(page = 1) {
-      let url = `/reports/variance_report/getResults/?date=${btoa(
+      let url = `/reports/nav_sys/getResults/?date=${btoa(
         this.date
       )}&date2=${btoa(this.date2)}&vendors=${btoa(
         this.forPrintVendor
       )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
         this.department
       }&section=${this.section}&page=`
-      if (
-        this.business_unit &&
-        this.department &&
-        this.section &&
-        this.vendor &&
-        this.category
-      ) {
+      if (this.business_unit && this.department && this.section) {
         axios.get(url).then(response => {
           this.data = response.data
           this.total_result = response.data.total
@@ -792,7 +659,8 @@ export default {
           invQtyBase = 0,
           valueEntry = '',
           itemDiv = 0,
-          value = 0
+          value = 0,
+          variance2 = 0
 
         test.forEach(result => {
           itemCode = result.itemcode
@@ -804,57 +672,57 @@ export default {
           } else {
             value = nav_qty
           }
-          if (result.nav_qty < 0) {
-            variance = app_qty + value
-            entryType = 'Negative Adjmt.'
-          } else {
-            variance = app_qty - value
+          if (value < 0) {
             entryType = 'Positive Adjmt.'
+          } else {
+            entryType = 'Negative Adjmt.'
           }
 
           uom = result.uom
           lineNo += 10000
-          variance = Math.abs(variance)
-          invQty = Math.abs(variance)
-          qtyBase = Math.abs(variance)
-          invQtyBase = Math.abs(variance)
+          variance = Math.abs(value)
+          variance2 = value
+          invQty = Math.abs(value)
+          qtyBase = Math.abs(value)
+          invQtyBase = Math.abs(value)
           unitAmt = result.cost_no_vat
           unitCost = result.cost_no_vat
           amt = result.amt
 
-          this.export.push({
-            journalTemplateName,
-            journalBatchName,
-            lineNo,
-            itemCode,
-            postingDate,
-            entryType,
-            docNo,
-            desc,
-            locCode,
-            invtyPostGroup,
-            variance,
-            invQty,
-            unitAmt,
-            unitCost,
-            amt,
-            sourceCode,
-            companyCode,
-            deptCode,
-            reasonCode,
-            genProdPostGroup,
-            docDate,
-            exDocNo,
-            qtyPerUom,
-            uom,
-            qtyBase,
-            invQtyBase,
-            valueEntry,
-            itemDiv
-          })
+          // console.log(variance2)
+          if (variance2 < 0) {
+            this.export.push({
+              journalTemplateName,
+              journalBatchName,
+              lineNo,
+              itemCode,
+              postingDate,
+              entryType,
+              docNo,
+              desc,
+              locCode,
+              invtyPostGroup,
+              variance,
+              invQty,
+              unitAmt,
+              unitCost,
+              amt,
+              sourceCode,
+              companyCode,
+              deptCode,
+              reasonCode,
+              genProdPostGroup,
+              docDate,
+              exDocNo,
+              qtyPerUom,
+              uom,
+              qtyBase,
+              invQtyBase,
+              valueEntry,
+              itemDiv
+            })
+          }
         })
-
-        // console.log(this.export)
       }
     },
     computeNet(navQty, Unposted) {
@@ -875,15 +743,7 @@ export default {
       } else {
         value = parseFloat(a)
       }
-
-      if (a < 0) {
-        variance = parseFloat(c) + value
-      } else {
-        variance = parseFloat(c) - value
-      }
-      // console.log(variance)
-      //  const variance = parseFloat(a) - parseFloat(b)
-      return variance
+      return value
     },
     getFormattedDateToday() {
       return new Date()

@@ -883,6 +883,6 @@ export default {
 }
 
 h5 {
-  font-size: 14px;
+  font-size: 15px;
 }
 </style>

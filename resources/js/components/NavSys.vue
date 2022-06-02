@@ -195,15 +195,16 @@
                   :disabled="!data.data.length"
                   @click="generateBtn($event, 'NetNavSys')"
                 >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Report
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
+                  Inventory Valuation Report
                 </button>
                 <button
                   :disabled="!data.data.length"
                   class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                  @click="generateBtn($event, 'Variance')"
+                  @click="generateBtn($event, 'Negative NetNavSys')"
                 >
                   <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                  Negative Inventory Balance
+                  Negative Inventory Balance Report
                 </button>
                 <button
                   class="btn btn-danger btn-rounded pull-right text-thin"
@@ -561,7 +562,7 @@ export default {
 
       let pass = null,
         title = null
-      if (type == 'Variance') {
+      if (type == 'Negative NetNavSys') {
         title = 'Negative Inventory Balance (Navision)'
         pass = `/reports/nav_sys/NetNavSys?date=${btoa(this.date)}&date2=${btoa(
           this.date2
@@ -569,17 +570,8 @@ export default {
           this.forPrintCategory
         }&bu=${this.business_unit}&dept=${this.department}&section=${
           this.section
-        }&type=Variance`
-      } else if (type == 'Summary') {
-        title = 'Variance Report Summary'
-        pass = `/reports/variance_report/generate?date=${btoa(
-          this.date
-        )}&date2=${btoa(this.date2)}&vendors=${btoa(
-          this.forPrintVendor
-        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
-          this.department
-        }&section=${this.section}&type=Summary`
-      } else {
+        }&type=NegativeNetNavSys`
+      } else if (type == 'NetNavSys') {
         title = 'Inventory Valuation Report (Navision)'
         pass = `/reports/nav_sys/NetNavSys?date=${btoa(this.date)}&date2=${btoa(
           this.date2
@@ -587,7 +579,16 @@ export default {
           this.forPrintCategory
         }&bu=${this.business_unit}&dept=${this.department}&section=${
           this.section
-        }`
+        }&type=NetNavSys`
+      } else if (type == 'No Actual Count') {
+        title = 'Nav Inventory Balance No Actual Count'
+        pass = `/reports/not_in_count/generate?date=${btoa(
+          this.date
+        )}&date2=${btoa(this.date2)}&vendors=${btoa(
+          this.forPrintVendor
+        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
+          this.department
+        }&section=${this.section}&type=NotInCount`
       }
 
       thisButton.disabled = true
@@ -926,6 +927,6 @@ export default {
 }
 
 h5 {
-  font-size: 14px;
+  font-size: 15px;
 }
 </style>

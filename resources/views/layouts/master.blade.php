@@ -960,6 +960,9 @@
                         <router-link tag="li" to="/inventory_valuation">
                           <a href="javascript:;">Inventory Valuation Report (Navision)</a>
                         </router-link>
+                        <router-link tag="li" to="/not_in_count">
+                          <a href="javascript:;">Inventory Balance No Actual Count (Navision)</a>
+                        </router-link>
                         <router-link tag="li" to="/variance_report">
                           <a href="javascript:;">Variance Report</a>
                         </router-link>

@@ -22,6 +22,7 @@ import LocationOrig from './components/Location2.vue'
 import RackMonitoring from './components/RackMonitoring.vue'
 import InventoryValuationVariance from './components/InventoryValuationVariance.vue'
 import NavSys from './components/NavSys.vue'
+import NotInCount from './components/NotInCount.vue'
 
 Vue.use(VueRouter)
 
@@ -178,6 +179,14 @@ const router = new VueRouter({
       component: NavSys,
       meta: {
         name: 'Inventory Valuation Report (Navision)'
+      }
+    },
+    {
+      name: 'Inventory Balance No Actual Count (Navision)',
+      path: '/not_in_count',
+      component: NotInCount,
+      meta: {
+        name: 'Inventory Balance No Actual Count (Navision)'
       }
     },
     {

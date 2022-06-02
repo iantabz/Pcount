@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>  
-        @if(!$data['report'] == 'Variance')
+        @if(!$data['report'] == 'NetNavSys')
         Inventory Valuation Report (Navision)
         @else
         Negative Inventory Balance (Navision)
@@ -227,7 +227,7 @@
                 </div>
                 <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
-                        @if(!$data['report'] == 'Variance')
+                        @if(!$data['report'] == 'NetNavSys')
                         Inventory Valuation Report (Navision)
                         @else
                         Negative Inventory Balance (Navision)
@@ -237,8 +237,6 @@
                 <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
             </div>
         </div>
-
-
     </header>
     {{-- {{dd($data)}} --}}
     @if ($data['report'] != 'All')
@@ -358,9 +356,6 @@
                         Item Code
                     </th>
                     <th rowspan="2" class="text-center" style="vertical-align: middle;">
-                        Barcode
-                    </th>
-                    <th rowspan="2" class="text-center" style="vertical-align: middle;">
                         Description
                     </th>
                     <th rowspan="2" class="text-center" style="vertical-align: middle;">
@@ -412,8 +407,8 @@
                     <tr>
                     <td style="text-align: center;">{{ $item['itemcode'] }}
                     </td>
-                    <td style="text-align: center;">{{ $item['barcode'] }}
-                    </td>
+                    {{-- <td style="text-align: center;">{{ $item['barcode'] }}
+                    </td> --}}
                     <td style="text-align: left;">{{ $item['extended_desc'] }}</td>
                     <td style="text-align: center;">{{ $item['nav_uom'] ?: 'PCS' }}</td>
                     <td style="text-align: center;">
