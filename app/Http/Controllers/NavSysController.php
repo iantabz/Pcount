@@ -8,6 +8,7 @@ use App\Models\TblUnposted;
 use Illuminate\Http\Request;
 use App\Models\TblAppCountdata;
 use App\Models\TblNavCountdata;
+use Illuminate\Support\Facades\Cache;
 
 class NavSysController extends Controller
 {
@@ -367,9 +368,11 @@ class NavSysController extends Controller
             $result->WHERE('section', 'LIKE', "%$section%");
         }
 
+        // dd($result->get());
+
         // dd($result->limit(5)->cursor());
 
-        $result = $vendors != null ? $result->groupBy('itemcode')->cursor()
+        $result = $vendors != null ? $result->cursor()
             : $result->limit(1500)->get();
 
         $report = 'All';
@@ -381,7 +384,7 @@ class NavSysController extends Controller
                 ['section', $section]
             ])->groupBy('itemcode');
 
-            dd($x->get());
+            // dd($x->get());
 
 
             $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
@@ -456,6 +459,7 @@ class NavSysController extends Controller
 
     public function getResults()
     {
+
         // dd(request()->all());
         $user = auth()->user()->id;
         $company = auth()->user()->company;
@@ -469,6 +473,100 @@ class NavSysController extends Controller
         $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
         $bu = request()->bu;
         $dept = request()->dept;
+
+        $key = implode('-', [$section, $bu, $dept, $date]);
+
+        return Cache::remember($key, now()->addMinutes(5), function () use ($date, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
+            $result = TblAppCountdata::selectRaw('
+            tbl_app_countdata.itemcode, 
+            tbl_app_countdata.barcode,
+            tbl_nav_countdata.description as extended_desc,
+            tbl_app_countdata.uom
+            ')
+                ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
+                ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
+
+            if ($bu != 'null') {
+                $result->WHERE('tbl_nav_countdata.business_unit',  'LIKE', "%$bu%");
+            }
+
+            if ($dept != 'null') {
+                $result->WHERE('tbl_nav_countdata.department', 'LIKE', "%$dept%");
+            }
+
+            if ($section != 'null') {
+                $result->WHERE('tbl_nav_countdata.section', 'LIKE', "%$section%");
+            }
+
+            if ($vendors) {
+                $vendors = explode(' , ', $vendors);
+                $vendors = str_replace("'", "", $vendors);
+                $result = $result->whereIn('vendor_name', $vendors);
+                $vendors = implode(", ", $vendors);
+            }
+            if ($category) {
+                $category = explode(" , ", $category);
+                $category = str_replace("'", "", $category);
+                $result = $result->whereIn('group', $category);
+                $category = implode(", ", $category);
+            }
+
+            // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
+            // dd($result);
+
+            // dd($result->groupByRaw('itemcode')->first());
+
+            $x = $result->groupByRaw('itemcode')->get();
+            // dd($x);
+
+            $query = $x->map(function ($c) use ($bu, $dept, $section) {
+                // dd($c->itemcode);
+                $x = TblNavCountdata::selectRaw("cost_vat, cost_no_vat, amt, SUM(qty) as nav_qty")->where([
+                    ['itemcode', $c->itemcode],
+                    ['business_unit', $bu],
+                    ['department', $dept],
+                    ['section', $section]
+                ])->groupBy('itemcode');
+
+                $y = TblUnposted::selectRaw("cost_no_vat, tot_cost_no_vat, SUM(qty) as unposted")->where([
+                    ['itemcode', $c->itemcode],
+                    ['business_unit', $bu],
+                    ['department', $dept],
+                    ['section', $section]
+                ])->groupBy('itemcode');
+
+                // dd($y->get());
+                if ($x->exists()) {
+                    $c->nav_qty = $x->first()->nav_qty;
+                    $c->cost_vat = $x->first()->cost_vat;
+                    $c->cost_no_vat = $x->first()->cost_no_vat;
+                    $c->amt = $x->first()->amt;
+                } else {
+                    $c->nav_qty = '-';
+                    $c->cost_vat = '-';
+                    $c->cost_no_vat = '-';
+                    $c->amt = '-';
+                }
+
+                if ($y->exists()) {
+                    $c->unposted = $y->first()->unposted;
+                } else {
+                    $c->unposted = '-';
+                }
+
+                return $c;
+            });
+
+            // dd($result->whereBetween('date', [$date, $dateAsOf])
+            //     ->groupByRaw('tbl_nav_countdata.itemcode')
+            //     ->orderBy('itemcode')->limit(5)->get());
+            $data['data'] = $query;
+
+            return $data;
+        });
+
+
+
 
         // $result = TblNavCountdata::selectRaw("
         // tbl_nav_countdata.itemcode, 
@@ -484,87 +582,6 @@ class NavSysController extends Controller
         // dd($result->limit(10)->get());
 
 
-        $result = TblAppCountdata::selectRaw('
-            tbl_app_countdata.itemcode, 
-            tbl_app_countdata.barcode,
-            tbl_nav_countdata.description as extended_desc,
-            tbl_app_countdata.uom
-            ')
-            ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
-            ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
-        if ($bu != 'null') {
-            $result->WHERE('tbl_nav_countdata.business_unit',  'LIKE', "%$bu%");
-        }
-
-        if ($dept != 'null') {
-            $result->WHERE('tbl_nav_countdata.department', 'LIKE', "%$dept%");
-        }
-
-        if ($section != 'null') {
-            $result->WHERE('tbl_nav_countdata.section', 'LIKE', "%$section%");
-        }
-
-        if ($vendors) {
-            $vendors = explode(' , ', $vendors);
-            $vendors = str_replace("'", "", $vendors);
-            $result = $result->whereIn('vendor_name', $vendors);
-            $vendors = implode(", ", $vendors);
-        }
-        if ($category) {
-            $category = explode(" , ", $category);
-            $category = str_replace("'", "", $category);
-            $result = $result->whereIn('group', $category);
-            $category = implode(", ", $category);
-        }
-
-        // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
-        // dd($result);
-        $x = $result->groupByRaw('itemcode')->cursor();
-        // dd($x);
-
-        $query = $x->map(function ($c) use ($bu, $dept, $section) {
-            // dd($c->itemcode);
-            $x = TblNavCountdata::selectRaw("cost_vat, cost_no_vat, amt, SUM(qty) as nav_qty")->where([
-                ['itemcode', $c->itemcode],
-                ['business_unit', $bu],
-                ['department', $dept],
-                ['section', $section]
-            ])->groupBy('itemcode');
-
-            $y = TblUnposted::selectRaw("cost_no_vat, tot_cost_no_vat, SUM(qty) as unposted")->where([
-                ['itemcode', $c->itemcode],
-                ['business_unit', $bu],
-                ['department', $dept],
-                ['section', $section]
-            ])->groupBy('itemcode');
-
-            // dd($y->get());
-            if ($x->exists()) {
-                $c->nav_qty = $x->first()->nav_qty;
-                $c->cost_vat = $x->first()->cost_vat;
-                $c->cost_no_vat = $x->first()->cost_no_vat;
-                $c->amt = $x->first()->amt;
-            } else {
-                $c->nav_qty = '-';
-                $c->cost_vat = '-';
-                $c->cost_no_vat = '-';
-                $c->amt = '-';
-            }
-
-            if ($y->exists()) {
-                $c->unposted = $y->first()->unposted;
-            } else {
-                $c->unposted = '-';
-            }
-
-            return $c;
-        });
-
-        // dd($result->whereBetween('date', [$date, $dateAsOf])
-        //     ->groupByRaw('tbl_nav_countdata.itemcode')
-        //     ->orderBy('itemcode')->limit(5)->get());
-        $data['data'] = $query;
-        return $data;
     }
 }
