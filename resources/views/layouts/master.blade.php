@@ -897,6 +897,9 @@
                         <router-link tag="li" to="/location">
                           <a href="javascript:;">Location (App Users)</a>
                         </router-link>
+                        <router-link tag="li" to="/backend_setup">
+                          <a href="javascript:;">Item Setup by Backend</a>
+                        </router-link>
                         <router-link tag="li" to="/users">
                           <a href="javascript:;">Web Users</a>
                         </router-link>

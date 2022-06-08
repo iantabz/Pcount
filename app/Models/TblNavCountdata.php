@@ -34,7 +34,7 @@ class TblNavCountdata extends Model
         $reportType = request()->type;
 
 
-        $result = $this->hasMany(TblAppCountdata::class, 'itemcode', 'itemcode')->whereBetween('datetime_saved', [$date, $dateAsOf]);
+        $result = $this->hasMany(TblAppCountdata::class, 'itemcode', 'itemcode');
         if ($bu != 'null') {
             $result->WHERE('business_unit',  'LIKE', "%$bu%");
         }
@@ -44,6 +44,8 @@ class TblNavCountdata extends Model
         if ($section != 'null') {
             $result->WHERE('section', 'LIKE', "%$section%");
         }
+
+        $result = $result->whereBetween('datetime_saved', [$date, $dateAsOf]);
 
         return $result;
     }

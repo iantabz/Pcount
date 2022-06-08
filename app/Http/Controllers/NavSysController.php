@@ -8,6 +8,7 @@ use App\Models\TblUnposted;
 use Illuminate\Http\Request;
 use App\Models\TblAppCountdata;
 use App\Models\TblNavCountdata;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
 class NavSysController extends Controller
@@ -346,33 +347,54 @@ class NavSysController extends Controller
         //     ->where('date', $date)
         //     ->orderBy('itemcode');
 
-        $result = TblNavCountdata::doesnthave('NotInCount')
-            ->selectRaw('
+        // $result = TblNavCountdata::doesnthave('NotInCount')
+        //     ->selectRaw('
+        //         itemcode, 
+        //         description as extended_desc,
+        //         uom
+        //     ');
+        $result = TblNavCountdata::selectRaw('
                 itemcode, 
                 description as extended_desc,
                 uom
-            ')
-            ->orderBy('itemcode')
-            ->where('date', $date)
-            ->groupBy('itemcode');
-        // ->limit(50);
-        // dd($result->get());
+            ');
 
-        if ($bu != 'null') {
+        // dd($result->limit(50)->orderBy('itemcode')->get());
+
+        if ($bu != 'null')
             $result->WHERE('business_unit',  'LIKE', "%$bu%");
-        }
-        if ($dept != 'null') {
+
+        if ($dept != 'null')
             $result->WHERE('department', 'LIKE', "%$dept%");
-        }
-        if ($section != 'null') {
+
+        if ($section != 'null')
             $result->WHERE('section', 'LIKE', "%$section%");
-        }
+
+
+        $result =  $result->orderBy('itemcode')
+            ->where('date', $date)->whereNotIn('itemcode', function ($query) use ($bu, $dept, $section, $date, $dateAsOf) {
+                $query->select(DB::raw('itemcode'))
+                    ->from('tbl_app_countdata')
+                    ->where('tbl_app_countdata.itemcode', '=', 'itemcode');
+
+                if ($bu != 'null')
+                    $query->WHERE('business_unit',  'LIKE', "%$bu%");
+
+                if ($dept != 'null')
+                    $query->WHERE('department', 'LIKE', "%$dept%");
+
+                if ($section != 'null')
+                    $query->WHERE('section', 'LIKE', "%$section%");
+
+
+                $query->whereBetween('datetime_saved', [$date, $dateAsOf]);
+            });
 
         // dd($result->get());
 
-        // dd($result->limit(5)->cursor());
+        // dd($result->limit(5)->get());
 
-        $result = $vendors != null ? $result->cursor()
+        $result = $vendors != null ? $result->get()
             : $result->limit(1500)->get();
 
         $report = 'All';
@@ -433,6 +455,8 @@ class NavSysController extends Controller
         //         return !$c->isEmpty();
         //     });
         // })->all();
+
+        // dd($result);
 
         $header = array(
             'company'       => $company,

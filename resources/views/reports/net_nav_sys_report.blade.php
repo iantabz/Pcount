@@ -1,10 +1,8 @@
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
+    {{-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> --}}
     <title>  
         @if(!$data['report'] == 'NetNavSys')
         Inventory Valuation Report (Navision)
@@ -12,19 +10,12 @@
         Negative Inventory Balance (Navision)
         @endif
     </title>
-    <style media="screen">
+    <style>
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
             font-size: 12px;
         }
 
-        /*
-            These next two styles are apparently the modern way to clear a float. This allows the logo
-            and the word "Invoice" to remain above the From and To sections. Inserting an empty div
-            between them with clear:both also works but is bad style.
-            Reference:
-            http://stackoverflow.com/questions/490184/what-is-the-best-way-to-clear-the-css-style-float
-        */
         header:before,
         header:after {
             content: " ";
@@ -178,6 +169,12 @@
 
         h4 {
             margin: 3px;
+            display: block;
+            margin-block-start: 1.33em;
+            margin-block-end: 1.33em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-weight: bold;
         }
 
         img {
@@ -199,14 +196,38 @@
             position: absolute;
             z-index: 1;
         }
+
+        .container{
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        table {
+        border-collapse: collapse;
+        text-indent: 0;
+        /* border-color: inherit; */
+        /* border-spacing: 0; */
+        /* border-spacing: 2px; */
+    }
+
+        tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
     </style>
 </head>
 
 <body>
     <header>
-        <div class="container" style="max-width: 100%">
+        <div class="container">
             <div class="row" style="flex-wrap: wrap;">
-                <div class=""
+                <div
                     style="text-align: left; width: 400px; flex-basis: 0; flex-grow: 1; float: left; margin-bottom: 10px;">
                     <h4>INVENTORY COUNT CONSOLIDATION SYSTEM </h4>
                     @if($data['business_unit'] != 'null')
@@ -225,7 +246,7 @@
                     <h4>Actual Count Date: {{ $data['date']}}</h4>
                     <h4>Count Type: Annual</h4>
                 </div>
-                <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
+                <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
                         @if(!$data['report'] == 'NetNavSys')
                         Inventory Valuation Report (Navision)
@@ -234,11 +255,10 @@
                         @endif
                     </div>
                 </div>
-                <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
+                <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
             </div>
         </div>
     </header>
-    {{-- {{dd($data)}} --}}
     @if ($data['report'] != 'All')
         @php
         $countSize = count($data['data']);
@@ -497,12 +517,6 @@
     @if (count($data['data']) != 0)
     <div class="page-break"></div>
     @endif
-
-    {{-- {{dump( $vendor_name)}} --}}
-    {{-- {{$data['runDate']}} --}}
-
-
-    {{-- {{dd($data['data'])}} --}}
 </body>
 <script type="text/php">
     if ( isset($pdf) ) { 

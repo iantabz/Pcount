@@ -23,6 +23,7 @@ import RackMonitoring from './components/RackMonitoring.vue'
 import InventoryValuationVariance from './components/InventoryValuationVariance.vue'
 import NavSys from './components/NavSys.vue'
 import NotInCount from './components/NotInCount.vue'
+import BackendSetup from './components/SetupByBackend.vue'
 
 Vue.use(VueRouter)
 
@@ -187,6 +188,14 @@ const router = new VueRouter({
       component: NotInCount,
       meta: {
         name: 'Inventory Balance No Actual Count (Navision)'
+      }
+    },
+    {
+      name: 'Count Setup by Backend',
+      path: '/backend_setup',
+      component: BackendSetup,
+      meta: {
+        name: 'Count Setup by Backend'
       }
     },
     {

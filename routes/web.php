@@ -41,6 +41,11 @@ Route::middleware('auth')->group(function () {
         Route::prefix('masterfiles')->group(function () {
             Route::get('/getVendorMasterfile', [SetupController::class, 'getVendorMasterfile']);
             Route::get('/getItemCategoryMasterfile', [SetupController::class, 'getItemCategoryMasterfile']);
+            Route::get('/getItems', [SetupController::class, 'getItems']);
+        });
+
+        Route::prefix('countBackendSetup')->group(function () {
+            Route::get('/postCount', [SetupController::class, 'postCount']);
         });
     });
 

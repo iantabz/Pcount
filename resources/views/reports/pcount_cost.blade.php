@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Actual Count (APP) with Cost</title>
-    <style media="screen">
+    <style>
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
             font-size: 12px;
@@ -202,6 +202,10 @@
 
     @foreach ($data['data'] as $app_user => $audit)
 
+    @foreach ($audit as $auditor => $vendor)
+
+    @foreach ($vendor as $vendor_name => $categories)
+
     <header>
         <div class="container" style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
@@ -240,9 +244,7 @@
     $grandTotalNavQty = 0;
     $grandTotal = 0;
     @endphp
-    @foreach ($audit as $auditor => $vendor)
-
-    @foreach ($vendor as $vendor_name => $categories)
+    
     {{-- {{dd($categories)}} --}}
     <div>
         <h4 style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</h4>

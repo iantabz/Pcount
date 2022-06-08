@@ -11,8 +11,10 @@ use App\Models\department;
 use App\Models\Employee;
 use App\Models\section;
 use App\Models\TblAppAudit;
+use App\Models\TblAppCountdata;
 use App\Models\TblAppUser;
 use App\Models\TblItemCategoryMasterfile;
+use App\Models\TblItemMasterfile;
 use App\Models\TblLocation;
 use App\Models\TblLocationRack;
 use App\Models\TblNavCount;
@@ -483,5 +485,56 @@ class SetupController extends Controller
             }
             return response()->json(['message' => 'Already exists!'], 406);
         }
+    }
+
+    public function getItems()
+    {
+        $search = request()->item;
+        $query = TblItemMasterfile::where('item_code', $search)->orWhere('barcode', $search)->get();
+        return $query;
+    }
+
+    public function postCount()
+    {
+        dd(request()->all());
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
+        $items = json_decode(base64_decode(request()->data), true);
+        dd($items);
+
+        foreach ($items as $item) {
+            // dd($item['item_code']);
+            DB::beginTransaction();
+            //     TblAppCountdata::insert([
+            //      'itemcode' => $item->itemcode,
+            // 'barcode' => $item->barcode,
+            // 'description' => $item->description,
+            // 'uom' => $item->uom,
+            // 'qty' => $item->qty,
+            // 'conversion_qty' => $item->qty,
+            // 'business_unit' => $,
+            // 'department' => ,
+            // 'section' => ,
+            // 'rack_desc' => ,
+            // 'empno' => ,
+            // ]);
+        }
+
+
+
+        // itemcode => ,
+        // barcode => ,
+        // description => ,
+        // uom => ,
+        // qty => ,
+        // conversion_qty => ,
+        // location_id => ,
+        // business_unit => ,
+        // department => ,
+        // section => ,
+        // rack_desc => ,
+        // empno => ,
     }
 }
