@@ -261,7 +261,9 @@ class NavSysController extends Controller
                 $unposted = $yResult ? $y->first()->unposted : '-';
                 $c->unposted = $unposted;
 
-                if ($reportType == 'Variance') {
+                // dd($reportType);
+
+                if ($reportType == 'NegativeNetNavSys') {
                     $temp1 = $navQty === '-' ? 0 : $navQty;
                     $temp2 = $unposted === '-' ? 0 : $unposted;
 

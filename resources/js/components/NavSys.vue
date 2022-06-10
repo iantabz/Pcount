@@ -287,13 +287,13 @@
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ data.nav_qty }}
+                      {{ data.nav_qty | numberFormat }}
                     </td>
                     <td
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ data.unposted }}
+                      {{ data.unposted | numberFormat }}
                     </td>
 
                     <td
@@ -305,7 +305,7 @@
                           data.nav_qty,
                           data.unposted,
                           data.conversion_qty
-                        )
+                        ) | numberFormat
                       }}
                     </td>
                   </tr>

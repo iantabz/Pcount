@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Exports\CountByBackend;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\TblAppNfitem;
@@ -590,5 +590,132 @@ class PhysicalCountController extends Controller
         );
 
         return $header;
+    }
+
+    public function backendCount()
+    {
+        $company = auth()->user()->company;
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+        $vendors = base64_decode(request()->vendors);
+        $category = request()->category;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
+        $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
+        $countType = request()->countType;
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
+
+        $query = TblAppCountdata::selectRaw('
+        tbl_app_countdata.itemcode, 
+        tbl_app_countdata.barcode, 
+        tbl_app_countdata.uom, 
+        tbl_app_countdata.description, 
+        tbl_item_masterfile.extended_desc,
+        SUM(tbl_app_countdata.qty) as qty,
+        SUM(tbl_app_countdata.conversion_qty) as total_conv_qty,
+        tbl_app_countdata.rack_desc,
+        tbl_app_countdata.empno,
+        datetime_scanned,
+        datetime_saved,
+        datetime_exported,
+        date_expiry,
+        vendor_name, 
+        tbl_item_masterfile.group
+        ')
+            ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode');
+
+        // dd($query->get());
+
+        if ($bu != 'null')
+            $query->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
+
+
+        if ($dept != 'null')
+            $query->WHERE('tbl_app_countdata.department', 'LIKE', "%$dept%");
+
+
+        if ($section != 'null') {
+            $query->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
+        } else {
+            $query->WHERE('tbl_app_countdata.section', 'LIKE', "%null%");
+        }
+
+        $query = $query->whereBetween('datetime_saved', [$date, $dateAsOf])
+            ->groupBy('barcode')
+            ->orderBy('itemcode');
+
+        if (request()->has('forExport')) {
+            $data = $query->cursor()
+                ->groupBy(['vendor_name', 'group'])
+                ->all();
+
+            $query = array(
+                'company' => $company,
+                'business_unit' => $bu,
+                'department' => $dept,
+                'section' => $section,
+                'vendors' => $vendors,
+                'category' => $category,
+                'date' => $printDate,
+                'countType' => $countType,
+                'user' => auth()->user()->name,
+                'user_position' => auth()->user()->position,
+                'runDate'   => $runDate,
+                'runTime'    => $runTime,
+                'data' => $data
+            );
+        } else {
+            $query = $query->get()
+                ->toArray();
+        }
+
+        // dd($query);
+
+        return $query;
+    }
+
+    public function generateBackendCount()
+    {
+        // dd(request()->all());
+        // $company = auth()->user()->company;
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+        $vendors = base64_decode(request()->vendors);
+        $category = request()->category;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
+        $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
+        $countType = request()->countType;
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
+        $type = request()->report;
+
+        $export = json_decode(base64_decode(request()->export), true);
+        $headers = array(
+            'business_unit' => $bu,
+            'department' => $dept,
+            'section' => $section,
+            'vendors' => $vendors,
+            'category' => $category,
+            'date' => $printDate,
+            'countType' => $countType,
+            'user' => auth()->user()->name,
+            'user_position' => auth()->user()->position,
+            'runDate'   => $runDate,
+            'runTime'    => $runTime,
+            'report' => $type,
+            'data' => $export
+        );
+        session(['data' => $headers]);
+        $data = session()->get('data');
+        $pdf = PDF::loadView('reports.countdata_backend', ['data' => $data]);
+
+        // return $type == "ExcelReport" ? Excel::download(new ItemsNotFound, 'invoices.xlsx') : (new ItemsNotFound)->download('invoices.pdf',);
+        return $type == "Excel" ? Excel::download(new CountByBackend, 'Count by Backend.xlsx') : $pdf->setPaper('legal', 'landscape')->download('Count by Backend.pdf',);
     }
 }

@@ -135,6 +135,8 @@
             type="button"
             class="inline-flex justify-center rounded-md border border-transparent p-4 bg-red-600 text-lg leading-6 font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red transition ease-in-out duration-150 focus:ring focus:ring-violet-300"
             @click="saveBtn"
+            data-dismiss="modal"
+            aria-label="Close"
             :disabled="invalid == false"
             :class="{
               'cursor-not-allowed opacity-50': invalid == false
@@ -156,7 +158,14 @@ import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
 Vue.component('v-select', vSelect)
 export default {
-  props: ['company', 'business_unit', 'department', 'section', 'showRackSetup'],
+  props: [
+    'company',
+    'business_unit',
+    'department',
+    'section',
+    'date',
+    'showRackSetup'
+  ],
   data() {
     return {
       data: [],
@@ -203,7 +212,7 @@ export default {
   },
   computed: {
     invalid() {
-      // console.log(this.qty.length)
+      // console.log(this.date)
       if (this.qty.length != 0) {
         let result = this.qty.every(function(e) {
           return e > 0
@@ -216,6 +225,7 @@ export default {
   },
   methods: {
     saveBtn() {
+      // console.log(this.date)
       Object.entries(this.itemList).forEach(([test, value], index) => {
         value.qty = this.qty[test]
       })
@@ -230,8 +240,16 @@ export default {
             this.department
           }&section=${this.section}`
         )
-        .then(response => {
-          console.log(response.data)
+        .then((response, status) => {
+          if (response.status == 200) {
+            this.$emit('saveSuccess', false)
+            this.itemList = []
+            this.forPrintItems = []
+            this.item = null
+            this.qty = []
+          } else {
+            console.log('wtf')
+          }
         })
     },
     removeBtn: function(index) {

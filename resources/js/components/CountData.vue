@@ -168,24 +168,6 @@
                       ></v-select>
                     </div>
                   </div>
-                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label
-                      class="col-lg-3 control-label text-thin"
-                      style="text-align: right"
-                    >
-                      <h5>Date To :</h5>
-                    </label>
-                    <div class="col-lg-6">
-                      <input
-                        class="form-control"
-                        v-model="date2"
-                        type="date"
-                        name="dateTo"
-                        id="dateTo"
-                        style="border-radius: 4px"
-                      />
-                    </div>
-                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-3 control-label text-thin"
@@ -220,44 +202,9 @@
                     </label>
                     <div class="col-md-6 pad-all"></div>
                   </div>
-                  <!-- <div class="row pad-all">
-                    <button
-                      class="btn btn-danger btn-rounded pull-right text-thin mar-lft"
-                      :disabled="!notFoundItems || notFoundItems == 0"
-                      @click="generateBtnEXCEL($event, 'NotFound')"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
-                      Found({{ notFoundItems }})
-                    </button>
-                    <button
-                      class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                      :disabled="!data.data.length"
-                      @click="generateBtn($event)"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      PDF
-                    </button>
-
-                    <button
-                      class="btn btn-info btn-rounded pull-right text-thin"
-                      :disabled="!data.data.length"
-                      @click="generateBtnEXCEL($event, 'CountData')"
-                    >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                      Excel
-                    </button>
-                  </div> -->
                 </div>
               </div>
               <div class="row pad-all">
-                <!-- <button
-                  class="btn btn-danger btn-rounded pull-right text-thin mar-lft"
-                  :disabled="!notFoundItems || notFoundItems == 0"
-                  @click="generateBtnEXCEL($event, 'NotFound')"
-                >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
-                  Found({{ notFoundItems }})
-                </button> -->
                 <div class="btn-group pull-right">
                   <div class="dropdown">
                     <button
@@ -547,6 +494,7 @@ export default {
       let pass = null,
         report = null
       if (reportType == 'CountData') {
+        report = '&report=Excel'
         pass = '/reports/appdata/generateAppDataExcel'
       } else if (reportType == 'NotFound Excel') {
         pass = '/reports/appdata/generateNotFound'
@@ -688,7 +636,6 @@ export default {
       const company = this.companyList.find(e => e.acroname == this.company)
       axios
         .get(
-          // `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
           `/uploading/nav_upload/getSection/?code=${company.company_code}&bu=${bu.bunit_code}&dept=${department.dept_code}`
         )
         .then(response => {
@@ -705,7 +652,6 @@ export default {
         const bu = this.buList.filter(sm => sm.business_unit == val)[0]
         const company = this.companyList.find(e => e.acroname == this.company)
         axios
-          // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
           .get(
             `/setup/location/getDept/?code=${company.company_code}&bu=${bu.bunit_code}`
           )

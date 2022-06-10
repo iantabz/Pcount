@@ -205,25 +205,25 @@
                 </div>
               </div>
               <div class="row pad-all">
-                <!-- <div class="btn-group pull-right">
+                <div class="btn-group pull-right">
                   <div class="dropdown">
                     <button
                       class="btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle"
-                      :disabled="!notFoundItems || notFoundItems == 0"
+                      :disabled="!data.data.length"
                       data-toggle="dropdown"
                       type="button"
                       aria-expanded="false"
                     >
-                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
-                      Found ({{ notFoundItems }})
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
+                      Report
                       <i class="dropdown-caret"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" style="">
-                      <li class="dropdown-header">Items Not Found</li>
+                      <li class="dropdown-header">Report Type</li>
                       <li>
                         <a
                           href="javscript:;"
-                          @click="generateBtnEXCEL($event, 'NotFound Excel')"
+                          @click="generateBtnEXCEL($event, 'Excel')"
                         >
                           Generate Excel
                         </a>
@@ -231,7 +231,7 @@
                       <li>
                         <a
                           href="javscript:;"
-                          @click="generateBtnEXCEL($event, 'NotFound PDF')"
+                          @click="generateBtnEXCEL($event, 'PDF')"
                         >
                           Generate PDF
                         </a>
@@ -239,7 +239,7 @@
                     </ul>
                   </div>
                 </div>
-                <button
+                <!-- <button
                   class="btn btn-info btn-rounded pull-right text-thin mar-lft"
                   :disabled="!data.data.length"
                   @click="generateBtn($event)"
@@ -276,7 +276,6 @@
                     <th>Description</th>
                     <th>Uom</th>
                     <th>Qty</th>
-                    <th>Smallest SKU</th>
                     <th>Conv. Qty</th>
                   </tr>
                 </thead>
@@ -299,10 +298,6 @@
                       {{ data.qty }}
                     </td>
                     <td class="text-main text-normal text-center">
-                      <span v-if="data.nav_uom">{{ data.nav_uom }}</span>
-                      <span v-else>{{ data.uom }}</span>
-                    </td>
-                    <td class="text-main text-normal text-center">
                       {{ data.total_conv_qty }}
                     </td>
                   </tr>
@@ -311,24 +306,24 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="col-md-6">
-                    Showing {{ data.from }} to {{ data.to }} of
+                    <!-- Showing {{ data.from }} to {{ data.to }} of
                     {{ data.total }} entries
                     <span v-if="searchProducts && !date"
                       >(Filtered from {{ total_result }} total entries)</span
                     >
                     <span v-if="searchProducts && date"
                       >(Filtered from {{ total_result }} total entries)</span
-                    >
+                    > -->
                   </div>
                   <div class="col-md-6">
                     <div class="text-right">
-                      <pagination
+                      <!-- <pagination
                         style="margin: 0 0 20px 0"
                         :limit="1"
                         :show-disabled="true"
                         :data="data"
                         @pagination-change-page="getResults"
-                      ></pagination>
+                      ></pagination> -->
                     </div>
                   </div>
                 </div>
@@ -340,10 +335,12 @@
     </div>
 
     <Modal
+      v-show="showRackSetup == true"
       :company="company"
       :business_unit="business_unit"
       :department="department"
       :section="section"
+      :date="date"
       class="modal fade"
       id="rack-setup"
       role="dialog"
@@ -352,7 +349,9 @@
       data-keyboard="false"
       data-backdrop="static"
       :showRackSetup="showRackSetup"
+      @getResults="getResults"
       @closeMdl="status"
+      @saveSuccess="saveSuccess"
     ></Modal>
   </div>
 </template>
@@ -489,6 +488,11 @@ export default {
     }
   },
   methods: {
+    saveSuccess(value) {
+      console.log(value)
+      this.showRackSetup = value
+      if (value == false) this.getResults()
+    },
     status(value) {
       // console.log(value)
       this.showRackSetup = value
@@ -513,19 +517,18 @@ export default {
 
       let pass = null,
         report = null
-      if (reportType == 'CountData') {
-        pass = '/reports/appdata/generateAppDataExcel'
-      } else if (reportType == 'NotFound Excel') {
-        pass = '/reports/appdata/generateNotFound'
-        report = '&report=Excel'
-      } else if (reportType == 'NotFound PDF') {
-        pass = '/reports/appdata/generateNotFound'
+      if (reportType == 'PDF') {
+        pass = '/reports/backend/generateBackendCount'
         report = '&report=PDF'
+      } else if (reportType == 'Excel') {
+        pass = '/reports/backend/generateBackendCount'
+        report = '&report=Excel'
       }
+
       thisButton.disabled = true
       thisButton.innerHTML =
         '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
-      const { headers, data } = await axios.get(
+      const { headers, data } = await axios.post(
         pass +
           `?date=${btoa(this.date)}&date2=${btoa(this.date2)}&vendors=${btoa(
             this.forPrintVendor
@@ -534,9 +537,13 @@ export default {
           }&section=${this.section}&countType=${this.countType}` +
           report,
         {
+          export: btoa(JSON.stringify(this.export))
+        },
+        {
           responseType: 'blob'
         }
       )
+
       // return console.log(headers)
       const { 'content-disposition': contentDisposition } = headers
       const [attachment, file] = contentDisposition.split(' ')
@@ -549,12 +556,9 @@ export default {
       // console.log(fileName)
       this.section ? (section = '-' + this.section) : (section = '')
 
-      let title = 'Actual Count (APP)',
+      let title = 'Count Added By Backend',
         fileType = '.xlsx'
-      if (reportType == 'NotFound Excel') {
-        title = 'Items Not Found from Actual Count (APP)'
-      } else if (reportType == 'NotFound PDF') {
-        title = 'Items Not Found from Actual Count (APP)'
+      if (reportType == 'PDF') {
         fileType = '.pdf'
       }
       link.setAttribute(
@@ -781,7 +785,7 @@ export default {
       )
     },
     async getCountData(page = 1) {
-      let url = `/reports/appdata/getResults/?date=${btoa(
+      let url = `/reports/backend/backendCount/?date=${btoa(
         this.date
       )}&date2=${btoa(this.date2)}&vendors=${btoa(
         this.forPrintVendor
@@ -810,16 +814,12 @@ export default {
         this.vendor &&
         this.category
       )
-        Promise.all([
-          this.getCountData(),
-          this.getNotFound(),
-          this.getExport()
-        ]).then(response => {
+        Promise.all([this.getCountData()]).then(response => {
           // this.export = []
-          this.data = response[0].data
+          this.data.data = response[0].data
           this.total_result = response[0].data.total
-          this.notFoundItems = response[1].data.total
-          this.export = response[2].data
+          // this.notFoundItems = response[1].data.total
+          this.export = response[0].data
         })
     }
   },

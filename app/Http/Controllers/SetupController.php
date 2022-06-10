@@ -496,32 +496,68 @@ class SetupController extends Controller
 
     public function postCount()
     {
-        dd(request()->all());
+        // dd(request()->all());
         $bu = request()->bu;
         $dept = request()->dept;
         $section = request()->section;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
         $items = json_decode(base64_decode(request()->data), true);
-        dd($items);
+        $rack_desc = 'SETUP BY BACKEND';
+        $name = auth()->user()->name;
+
+        $emp = Employee::where('name', 'LIKE', "%$name%")->first();
+
+        // dd(auth()->user());
 
         foreach ($items as $item) {
+            // dd($item);
+            // $test = [
+            //     'itemcode' => $item['item_code'],
+            //     'barcode' => $item['barcode'],
+            //     'description' => $item['desc'],
+            //     'uom' => $item['uom'],
+            //     'qty' => $item['qty'],
+            //     'conversion_qty' => $item['qty'],
+            //     'business_unit' => $bu,
+            //     'department' => $dept,
+            //     'section' => $section,
+            //     'rack_desc' => $rack_desc,
+            //     'empno' => $emp['emp_no'],
+            //     'datetime_scanned' => now(),
+            //     'datetime_saved' => now(),
+            //     'datetime_exported' => now(),
+            //     'datetime_expiry' => '0000-00-00 00:00:00',
+            //     'user_signature' => 'null',
+            //     'audit_signature' => 'null'
+            // ];
+            // dd($test);
             // dd($item['item_code']);
             DB::beginTransaction();
-            //     TblAppCountdata::insert([
-            //      'itemcode' => $item->itemcode,
-            // 'barcode' => $item->barcode,
-            // 'description' => $item->description,
-            // 'uom' => $item->uom,
-            // 'qty' => $item->qty,
-            // 'conversion_qty' => $item->qty,
-            // 'business_unit' => $,
-            // 'department' => ,
-            // 'section' => ,
-            // 'rack_desc' => ,
-            // 'empno' => ,
-            // ]);
-        }
 
+            TblAppCountdata::insert([
+                'itemcode' => $item['item_code'],
+                'barcode' => $item['barcode'],
+                'description' => $item['desc'],
+                'uom' => $item['uom'],
+                'qty' => $item['qty'],
+                'conversion_qty' => $item['qty'],
+                'business_unit' => $bu,
+                'department' => $dept,
+                'section' => $section,
+                'rack_desc' => $rack_desc,
+                'empno' => $emp['emp_no'],
+                'datetime_scanned' => now(),
+                'datetime_saved' => now(),
+                'datetime_exported' => now(),
+                'date_expiry' => '0000-00-00 00:00:00',
+                'user_signature' => 'null',
+                'audit_signature' => 'null'
+            ]);
+
+            DB::commit();
+            // DB::rollBack();
+        }
+        return response()->json(['message' => 'Save successfull'], 200);
 
 
         // itemcode => ,

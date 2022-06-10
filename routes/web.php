@@ -76,6 +76,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('reports')->group(function () {
+        Route::prefix('backend')->group(function () {
+            Route::get('/backendCount', [PhysicalCountController::class, 'backendCount']);
+            Route::post('/generateBackendCount', [PhysicalCountController::class, 'generateBackendCount']);
+        });
         Route::prefix('appdata')->group(function () {
             Route::get('/getResults', [PhysicalCountController::class, 'getResults']);
             Route::post('/generate', [PhysicalCountController::class, 'generate']);

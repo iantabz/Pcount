@@ -547,10 +547,6 @@ class ReportsController extends Controller
 
     public function getResultsVariance()
     {
-        // ob_implicit_flush(true);
-        // echo response()->json(['hfgh' => 'dasdasd']);
-        // ob_end_flush();
-        // dd(request()->all());
         $user = auth()->user()->id;
         $company = auth()->user()->company;
         $business_unit = auth()->user()->business_unit;
@@ -588,7 +584,7 @@ class ReportsController extends Controller
         )
             ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
             ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
-            ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
+            ->whereBetween('datetime_saved', [$date, $dateAsOf]);
 
         if ($bu != 'null') {
             $result->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
@@ -617,7 +613,7 @@ class ReportsController extends Controller
 
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
         // dd($result);
-        $x = $result->groupByRaw('tbl_app_countdata.itemcode')->orderBy('itemcode')->cursor();
+        $x = $result->orderBy('itemcode')->groupByRaw('itemcode')->cursor();
 
         // dd($x);
 

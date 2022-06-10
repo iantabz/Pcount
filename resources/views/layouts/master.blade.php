@@ -897,9 +897,9 @@
                         <router-link tag="li" to="/location">
                           <a href="javascript:;">Location (App Users)</a>
                         </router-link>
-                        <router-link tag="li" to="/backend_setup">
+                        {{-- <router-link tag="li" to="/backend_setup">
                           <a href="javascript:;">Item Setup by Backend</a>
-                        </router-link>
+                        </router-link> --}}
                         <router-link tag="li" to="/users">
                           <a href="javascript:;">Web Users</a>
                         </router-link>
@@ -916,17 +916,17 @@
                     <li>
                       <a href="#">
                         <i class="demo-pli-upload-to-cloud icon-lg" style="font-size: 17px"></i>
-                        <span class="menu-title">Uploading</span>
+                        <span class="menu-title">Uploading Valuation Report (NAV)</span>
                         <i class="arrow"></i>
                       </a>
 
                       <!--Submenu-->
                       <ul class="collapse">
                         <li>
-                          <a href="/nav_upload">Inventory Balance From Nav</a>
+                          <a href="/nav_upload">Posted</a>
                         </li>
                         <li>
-                          <a href="/pos_unposted">POS Unposted</a>
+                          <a href="/pos_unposted">Unposted</a>
                         </li>
                         {{-- <router-link tag="li" to="/nav_upload">
                           <a href="javascript:;">Physical Count From Nav</a>
@@ -937,6 +937,14 @@
                         </router-link> --}}
                       </ul>
                     </li>
+
+                    <!--Menu list item-->
+                    <router-link tag="li" class="nav-item" to="/backend_setup">
+                      <a href="javascript:;">
+                      <i class="demo-pli-gear"></i>
+                      <span class="menu-title">Item Setup</span>
+                    </a>
+                    </router-link>
 
                     <!--Menu list item-->
                     <li>

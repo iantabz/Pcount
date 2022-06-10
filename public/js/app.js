@@ -5643,59 +5643,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -5864,6 +5811,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 pass = null, report = null;
 
                 if (reportType == 'CountData') {
+                  report = '&report=Excel';
                   pass = '/reports/appdata/generateAppDataExcel';
                 } else if (reportType == 'NotFound Excel') {
                   pass = '/reports/appdata/generateNotFound';
@@ -6018,8 +5966,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var company = this.companyList.find(function (e) {
         return e.acroname == _this3.company;
       });
-      axios.get( // `/setup/location/getSection/?bu=${bu.bunit_code}&dept=${department.dept_code}`
-      "/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
+      axios.get("/uploading/nav_upload/getSection/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code, "&dept=").concat(department.dept_code)).then(function (response) {
         _this3.sectionList = response.data;
       })["catch"](function (response) {
         console.log('error');
@@ -6038,8 +5985,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         var company = this.companyList.find(function (e) {
           return e.acroname == _this4.company;
         });
-        axios // .get(`/setup/location/getDept/?bu=${bu.bunit_code}`)
-        .get("/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
+        axios.get("/setup/location/getDept/?code=".concat(company.company_code, "&bu=").concat(bu.bunit_code)).then(function (response) {
           _this4.deptList = response.data;
         })["catch"](function (response) {
           console.log('error');
@@ -15094,7 +15040,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -15228,6 +15173,11 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
     }
   },
   methods: {
+    saveSuccess: function saveSuccess(value) {
+      console.log(value);
+      this.showRackSetup = value;
+      if (value == false) this.getResults();
+    },
     status: function status(value) {
       // console.log(value)
       this.showRackSetup = value;
@@ -15236,7 +15186,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var thisButton, oldHTML, pass, report, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title, fileType;
+        var thisButton, oldHTML, pass, report, _yield$axios$post, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title, fileType;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -15259,27 +15209,27 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 oldHTML = thisButton.innerHTML;
                 pass = null, report = null;
 
-                if (reportType == 'CountData') {
-                  pass = '/reports/appdata/generateAppDataExcel';
-                } else if (reportType == 'NotFound Excel') {
-                  pass = '/reports/appdata/generateNotFound';
-                  report = '&report=Excel';
-                } else if (reportType == 'NotFound PDF') {
-                  pass = '/reports/appdata/generateNotFound';
+                if (reportType == 'PDF') {
+                  pass = '/reports/backend/generateBackendCount';
                   report = '&report=PDF';
+                } else if (reportType == 'Excel') {
+                  pass = '/reports/backend/generateBackendCount';
+                  report = '&report=Excel';
                 }
 
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
                 _context.next = 9;
-                return axios.get(pass + "?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType) + report, {
+                return axios.post(pass + "?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType) + report, {
+                  "export": btoa(JSON.stringify(_this["export"]))
+                }, {
                   responseType: 'blob'
                 });
 
               case 9:
-                _yield$axios$get = _context.sent;
-                headers = _yield$axios$get.headers;
-                data = _yield$axios$get.data;
+                _yield$axios$post = _context.sent;
+                headers = _yield$axios$post.headers;
+                data = _yield$axios$post.data;
                 // return console.log(headers)
                 contentDisposition = headers['content-disposition'];
                 _contentDisposition$s = contentDisposition.split(' '), _contentDisposition$s2 = _slicedToArray(_contentDisposition$s, 2), attachment = _contentDisposition$s2[0], file = _contentDisposition$s2[1];
@@ -15290,12 +15240,9 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 section = null; // console.log(fileName)
 
                 _this.section ? section = '-' + _this.section : section = '';
-                title = 'Actual Count (APP)', fileType = '.xlsx';
+                title = 'Count Added By Backend', fileType = '.xlsx';
 
-                if (reportType == 'NotFound Excel') {
-                  title = 'Items Not Found from Actual Count (APP)';
-                } else if (reportType == 'NotFound PDF') {
-                  title = 'Items Not Found from Actual Count (APP)';
+                if (reportType == 'PDF') {
                   fileType = '.pdf';
                 }
 
@@ -15326,7 +15273,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var thisButton, oldHTML, _yield$axios$post, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link, section;
+        var thisButton, oldHTML, _yield$axios$post2, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link, section;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
@@ -15358,9 +15305,9 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 });
 
               case 7:
-                _yield$axios$post = _context2.sent;
-                headers = _yield$axios$post.headers;
-                data = _yield$axios$post.data;
+                _yield$axios$post2 = _context2.sent;
+                headers = _yield$axios$post2.headers;
+                data = _yield$axios$post2.data;
                 // return console.log(headers)
                 contentDisposition = headers['content-disposition'];
                 _contentDisposition$s3 = contentDisposition.split(' '), _contentDisposition$s4 = _slicedToArray(_contentDisposition$s3, 2), attachment = _contentDisposition$s4[0], file = _contentDisposition$s4[1];
@@ -15621,7 +15568,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
             switch (_context8.prev = _context8.next) {
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
-                url = "/reports/appdata/getResults/?date=".concat(btoa(_this8.date), "&date2=").concat(btoa(_this8.date2), "&vendors=").concat(btoa(_this8.forPrintVendor), "&category=").concat(_this8.forPrintCategory, "&bu=").concat(_this8.business_unit, "&dept=").concat(_this8.department, "&section=").concat(_this8.section, "&countType=").concat(_this8.countType, "&page=");
+                url = "/reports/backend/backendCount/?date=".concat(btoa(_this8.date), "&date2=").concat(btoa(_this8.date2), "&vendors=").concat(btoa(_this8.forPrintVendor), "&category=").concat(_this8.forPrintCategory, "&bu=").concat(_this8.business_unit, "&dept=").concat(_this8.department, "&section=").concat(_this8.section, "&countType=").concat(_this8.countType, "&page=");
                 _context8.next = 4;
                 return axios.get(url + page);
 
@@ -15663,12 +15610,12 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
     getResults: function getResults() {
       var _this10 = this;
 
-      if (this.business_unit && this.department && this.section && this.vendor && this.category) Promise.all([this.getCountData(), this.getNotFound(), this.getExport()]).then(function (response) {
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) Promise.all([this.getCountData()]).then(function (response) {
         // this.export = []
-        _this10.data = response[0].data;
-        _this10.total_result = response[0].data.total;
-        _this10.notFoundItems = response[1].data.total;
-        _this10["export"] = response[2].data;
+        _this10.data.data = response[0].data;
+        _this10.total_result = response[0].data.total; // this.notFoundItems = response[1].data.total
+
+        _this10["export"] = response[0].data;
       });
     }
   },
@@ -16431,22 +16378,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -18780,6 +18711,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
 
 
 
@@ -18787,7 +18720,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBPACK_IMPORTED_MODULE_2___default()));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['company', 'business_unit', 'department', 'section', 'showRackSetup'],
+  props: ['company', 'business_unit', 'department', 'section', 'date', 'showRackSetup'],
   data: function data() {
     return {
       data: [],
@@ -18833,7 +18766,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
   },
   computed: {
     invalid: function invalid() {
-      // console.log(this.qty.length)
+      // console.log(this.date)
       if (this.qty.length != 0) {
         var result = this.qty.every(function (e) {
           return e > 0;
@@ -18848,6 +18781,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
     saveBtn: function saveBtn() {
       var _this = this;
 
+      // console.log(this.date)
       Object.entries(this.itemList).forEach(function (_ref, index) {
         var _ref2 = _slicedToArray(_ref, 2),
             test = _ref2[0],
@@ -18856,8 +18790,17 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
         value.qty = _this.qty[test];
       });
       var xdata = btoa(JSON.stringify(this.itemList));
-      axios.get("/setup/countBackendSetup/postCount/?date=".concat(btoa(this.date), "&data=").concat(xdata, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section)).then(function (response) {
-        console.log(response.data);
+      axios.get("/setup/countBackendSetup/postCount/?date=".concat(btoa(this.date), "&data=").concat(xdata, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section)).then(function (response, status) {
+        if (response.status == 200) {
+          _this.$emit('saveSuccess', false);
+
+          _this.itemList = [];
+          _this.forPrintItems = [];
+          _this.item = null;
+          _this.qty = [];
+        } else {
+          console.log('wtf');
+        }
       });
     },
     removeBtn: function removeBtn(index) {
@@ -60695,7 +60638,7 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(data.nav_qty) +
+                                _vm._s(_vm._f("numberFormat")(data.nav_qty)) +
                                 "\n                  "
                             )
                           ]
@@ -60710,7 +60653,7 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(data.unposted) +
+                                _vm._s(_vm._f("numberFormat")(data.unposted)) +
                                 "\n                  "
                             )
                           ]
@@ -60726,10 +60669,12 @@ var render = function() {
                             _vm._v(
                               "\n                    " +
                                 _vm._s(
-                                  _vm.computeVariance(
-                                    data.nav_qty,
-                                    data.unposted,
-                                    data.conversion_qty
+                                  _vm._f("numberFormat")(
+                                    _vm.computeVariance(
+                                      data.nav_qty,
+                                      data.unposted,
+                                      data.conversion_qty
+                                    )
                                   )
                                 ) +
                                 "\n                  "
@@ -61860,36 +61805,6 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(data.nav_qty) +
-                                "\n                  "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass: "text-main text-normal text-center",
-                            staticStyle: { "font-size": "1.1em" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    " +
-                                _vm._s(data.unposted) +
-                                "\n                  "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass: "text-main text-normal text-center",
-                            staticStyle: { "font-size": "1.1em" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    " +
                                 _vm._s(
                                   _vm.computeVariance(
                                     data.nav_qty,
@@ -62081,16 +61996,6 @@ var staticRenderFns = [
           {
             staticClass: "text-center",
             staticStyle: { "vertical-align": "middle" },
-            attrs: { colspan: "2" }
-          },
-          [_vm._v("\n                    Quantity\n                  ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass: "text-center",
-            staticStyle: { "vertical-align": "middle" },
             attrs: { rowspan: "3" }
           },
           [
@@ -62098,26 +62003,6 @@ var staticRenderFns = [
               "\n                    Net Nav Sys Count\n                  "
             )
           ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("tr", [
-        _c(
-          "th",
-          {
-            staticClass: "text-center",
-            staticStyle: { "vertical-align": "middle" }
-          },
-          [_vm._v("\n                    Nav Sys Count\n                  ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass: "text-center",
-            staticStyle: { "vertical-align": "middle" }
-          },
-          [_vm._v("\n                    Unposted\n                  ")]
         )
       ])
     ])
@@ -64211,6 +64096,79 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row pad-all" }, [
+                  _c("div", { staticClass: "btn-group pull-right" }, [
+                    _c("div", { staticClass: "dropdown" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle",
+                          attrs: {
+                            disabled: !_vm.data.data.length,
+                            "data-toggle": "dropdown",
+                            type: "button",
+                            "aria-expanded": "false"
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                          _vm._v(
+                            "  Generate\n                    Report\n                    "
+                          ),
+                          _c("i", { staticClass: "dropdown-caret" })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        { staticClass: "dropdown-menu dropdown-menu-right" },
+                        [
+                          _c("li", { staticClass: "dropdown-header" }, [
+                            _vm._v("Report Type")
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "javscript:;" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.generateBtnEXCEL($event, "Excel")
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Generate Excel\n                      "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "javscript:;" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.generateBtnEXCEL($event, "PDF")
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Generate PDF\n                      "
+                                )
+                              ]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "button",
                     {
@@ -64312,18 +64270,6 @@ var render = function() {
                                 staticClass: "text-main text-normal text-center"
                               },
                               [
-                                data.nav_uom
-                                  ? _c("span", [_vm._v(_vm._s(data.nav_uom))])
-                                  : _c("span", [_vm._v(_vm._s(data.uom))])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticClass: "text-main text-normal text-center"
-                              },
-                              [
                                 _vm._v(
                                   "\n                    " +
                                     _vm._s(data.total_conv_qty) +
@@ -64339,59 +64285,7 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12" }, [
-                    _c("div", { staticClass: "col-md-6" }, [
-                      _vm._v(
-                        "\n                  Showing " +
-                          _vm._s(_vm.data.from) +
-                          " to " +
-                          _vm._s(_vm.data.to) +
-                          " of\n                  " +
-                          _vm._s(_vm.data.total) +
-                          " entries\n                  "
-                      ),
-                      _vm.searchProducts && !_vm.date
-                        ? _c("span", [
-                            _vm._v(
-                              "(Filtered from " +
-                                _vm._s(_vm.total_result) +
-                                " total entries)"
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.searchProducts && _vm.date
-                        ? _c("span", [
-                            _vm._v(
-                              "(Filtered from " +
-                                _vm._s(_vm.total_result) +
-                                " total entries)"
-                            )
-                          ])
-                        : _vm._e()
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-6" }, [
-                      _c(
-                        "div",
-                        { staticClass: "text-right" },
-                        [
-                          _c("pagination", {
-                            staticStyle: { margin: "0 0 20px 0" },
-                            attrs: {
-                              limit: 1,
-                              "show-disabled": true,
-                              data: _vm.data
-                            },
-                            on: { "pagination-change-page": _vm.getResults }
-                          })
-                        ],
-                        1
-                      )
-                    ])
-                  ])
-                ])
+                _vm._m(12)
               ])
             ])
           ])
@@ -64399,12 +64293,21 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("Modal", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.showRackSetup == true,
+            expression: "showRackSetup == true"
+          }
+        ],
         staticClass: "modal fade",
         attrs: {
           company: _vm.company,
           business_unit: _vm.business_unit,
           department: _vm.department,
           section: _vm.section,
+          date: _vm.date,
           id: "rack-setup",
           role: "dialog",
           "aria-labelledby": "myModalLabel",
@@ -64413,7 +64316,11 @@ var render = function() {
           "data-backdrop": "static",
           showRackSetup: _vm.showRackSetup
         },
-        on: { closeMdl: _vm.status }
+        on: {
+          getResults: _vm.getResults,
+          closeMdl: _vm.status,
+          saveSuccess: _vm.saveSuccess
+        }
       })
     ],
     1
@@ -64584,9 +64491,21 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Qty")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Smallest SKU")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Conv. Qty")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "col-md-6" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "text-right" })
+        ])
       ])
     ])
   }
@@ -65963,23 +65882,8 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                    " +
-                                _vm._s(data.conversion_qty) +
-                                "\n                  "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass: "text-main text-normal text-center",
-                            staticStyle: { "font-size": "1.1em" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                    " +
                                 _vm._s(
-                                  _vm.computeNet(data.nav_qty, data.unposted)
+                                  _vm._f("numberFormat")(data.conversion_qty)
                                 ) +
                                 "\n                  "
                             )
@@ -65996,10 +65900,31 @@ var render = function() {
                             _vm._v(
                               "\n                    " +
                                 _vm._s(
-                                  _vm.computeVariance(
-                                    data.nav_qty,
-                                    data.unposted,
-                                    data.conversion_qty
+                                  _vm._f("numberFormat")(
+                                    _vm.computeNet(data.nav_qty, data.unposted)
+                                  )
+                                ) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal text-center",
+                            staticStyle: { "font-size": "1.1em" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(
+                                  _vm._f("numberFormat")(
+                                    _vm.computeVariance(
+                                      data.nav_qty,
+                                      data.unposted,
+                                      data.conversion_qty
+                                    )
                                   )
                                 ) +
                                 "\n                  "
@@ -67800,7 +67725,12 @@ var render = function() {
                 class: {
                   "cursor-not-allowed opacity-50": _vm.invalid == false
                 },
-                attrs: { type: "button", disabled: _vm.invalid == false },
+                attrs: {
+                  type: "button",
+                  "data-dismiss": "modal",
+                  "aria-label": "Close",
+                  disabled: _vm.invalid == false
+                },
                 on: { click: _vm.saveBtn }
               },
               [_vm._v("\n          SAVE\n        ")]

@@ -183,24 +183,6 @@
                       ></v-select>
                     </div>
                   </div>
-
-                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
-                    <label
-                      class="col-lg-3 control-label text-bold"
-                      style="text-align: right"
-                    >
-                      <h5>Date To :</h5>
-                    </label>
-                    <div class="col-lg-6">
-                      <input
-                        class="form-control"
-                        v-model="date2"
-                        type="date"
-                        name="dateTo"
-                        id="dateTo"
-                      />
-                    </div>
-                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-3 control-label text-thin"
@@ -379,13 +361,15 @@
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ data.conversion_qty }}
+                      {{ data.conversion_qty | numberFormat }}
                     </td>
                     <td
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
-                      {{ computeNet(data.nav_qty, data.unposted) }}
+                      {{
+                        computeNet(data.nav_qty, data.unposted) | numberFormat
+                      }}
                     </td>
 
                     <td
@@ -397,7 +381,7 @@
                           data.nav_qty,
                           data.unposted,
                           data.conversion_qty
-                        )
+                        ) | numberFormat
                       }}
                     </td>
                   </tr>

@@ -231,13 +231,13 @@
                     >
                       UOM
                     </th>
-                    <th
+                    <!-- <th
                       colspan="2"
                       class="text-center"
                       style="vertical-align: middle;"
                     >
                       Quantity
-                    </th>
+                    </th> -->
                     <th
                       rowspan="3"
                       class="text-center"
@@ -246,14 +246,14 @@
                       Net Nav Sys Count
                     </th>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <th class="text-center" style="vertical-align: middle;">
                       Nav Sys Count
                     </th>
                     <th class="text-center" style="vertical-align: middle;">
                       Unposted
                     </th>
-                  </tr>
+                  </tr> -->
                 </thead>
 
                 <tbody>
@@ -275,7 +275,7 @@
                     >
                       {{ data.uom }}
                     </td>
-                    <td
+                    <!-- <td
                       class="text-main text-normal text-center"
                       style="font-size: 1.1em"
                     >
@@ -286,7 +286,7 @@
                       style="font-size: 1.1em"
                     >
                       {{ data.unposted }}
-                    </td>
+                    </td> -->
 
                     <td
                       class="text-main text-normal text-center"

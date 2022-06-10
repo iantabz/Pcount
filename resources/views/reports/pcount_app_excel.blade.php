@@ -237,11 +237,7 @@
                 </th>
             </tr>
             @endif
-            {{-- @if($data['countType'] != 'null')
-            <tr>
-                <th>Count Type: {{$data['countType']}}</th>
-            </tr>
-            @endif --}}
+         
             <tr>
                 <th style="text-align: left; font-size: 12px;">
                     As of {{ $data['date']}}
@@ -254,7 +250,6 @@
                     Actual Count Date: {{ $data['date']}}
                 </th>
             </tr>
-
             @if($data['countType'] != 'null')
             <tr>
                 <th style="text-align: left; font-size: 12px;">
@@ -265,25 +260,25 @@
         </thead>
     </table>
 
-    @foreach ($audit as $auditor => $vendor)
+    {{-- @foreach ($audit as $auditor => $vendor)
 
 
-    @foreach ($vendor as $vendor_name => $categories)
+    @foreach ($vendor as $vendor_name => $categories) --}}
     {{-- <table>
         <tr>
             <th style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</th>
         </tr>
     </table> --}}
 
-    @foreach ($categories as $category => $items)
-    <table>
+    {{-- @foreach ($categories as $category => $items) --}}
+    {{-- <table>
         <tr>
             <th style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</th>
         </tr>
         <tr>
             <th style="text-align: left; font-size: 12px">Category: {{ $category }}</th>
         </tr>
-    </table>
+    </table> --}}
     @php
     $grandTotal = 0;
     $grandTotalConvQty = 0;
@@ -329,6 +324,12 @@
         </thead>
         <tbody>
 
+            @foreach ($audit as $auditor => $vendor)
+
+
+            @foreach ($vendor as $vendor_name => $categories)
+         @foreach ($categories as $category => $items)
+
             @if(!$data['data'])
             <tr>
                 <td colspan="5" style="text-align: center">No data available.</td>
@@ -372,7 +373,12 @@
                 {{-- <td style="text-align: center;">{{ $item['date_expiry'] }}</td> --}}
             </tr>
             @endforeach
-            <tr>
+            @endforeach
+            @endforeach
+            @endforeach
+            @endforeach
+            
+            {{-- <tr>
                 <td colspan="4"
                     style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
                     GRAND TOTAL >>>>
@@ -384,10 +390,10 @@
                 </td>
                 <td style="text-align:center; border-bottom-style: none; border-top-style: double;">
                     {{ number_format($grandTotalConvQty, 0)}}</td>
-            </tr>
+            </tr> --}}
         </tbody>
     </table>
-    @endforeach
+    {{-- @endforeach --}}
     {{-- {{dd($countStart, $countEnd, join(", ",array_unique($skus)))}} --}}
     <table class="body2">
         <thead style="">
@@ -396,7 +402,7 @@
                     Prepared by:
                 </th>
                 <th></th>
-                <th style="text-align: left; font-size: 12px;">
+                {{-- <th style="text-align: left; font-size: 12px;">
                     <span class="span-text">
                         Store Representative:
                     </span>
@@ -404,7 +410,7 @@
                 <th></th>
                 <th style="text-align: left; font-size: 12px;">
                     <span class="span-text">Verified by:</span>
-                </th>
+                </th> --}}
             </tr>
             <tr>
                 <th style="text-align: left; font-size: 12px;">
@@ -412,77 +418,52 @@
                     {{$data['user']}}
                 </th>
                 <th></th>
-                <th style="text-align: left; font-size: 12px;">
-                    {{-- <img src="data:image/png;base64,{{$item['app_user_sign']}}" class="img-tabz" /> --}}
-                    {{-- <img src="data:image/jpg;base64,{{$item['app_user_sign']}}" style="" /> --}}
-                    {{-- <img src="data:image/xml;base64,{{$item['app_user_sign']}}" class="img-tabz" /> --}}
-                    {{-- <img
-                        src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxnPgoJCQk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMi40LDE3LjRIMi4zQzIuMiwxNy40LDIsMTcuMywyLDE3LjFjLTAuNy0xLjUtMS4xLTMuMS0xLjItNC44VjEydi0wLjNDMC44LDEwLDEuMiw4LjQsMiw2LjkKCQkJCUMyLjQsNiwzLDUuMiwzLjYsNC40YzIuMi0yLjUsNS40LTQsOC43LTRjMi44LDAsNS40LDEsNy42MDEsMi45YzAsMC4yLDAuMSwwLjMsMC4xLDAuNGMwLDAuMSwwLDAuMy0wLjEsMC40bC0zLjIsMy4yCgkJCQljLTAuMiwwLjItMC41LDAuMi0wLjcsMEMxNC45LDYuNSwxMy42LDYsMTIuMiw2QzExLDYsOS43LDYuNCw4LjcsNy4xYy0xLDAuNy0xLjgsMS44LTIuMiwzYy0wLjIsMC41LTAuMywxLjEtMC4zLDEuNgoJCQkJYzAsMC4xLDAsMC4yLDAsMC4zczAsMC4yLDAsMC4yYzAsMC42LDAuMSwxLjEsMC4zLDEuNmMwLjEsMC4yLDAsMC40LTAuMiwwLjYwMWwtMy43LDIuOEMyLjYsMTcuMywyLjUsMTcuNCwyLjQsMTcuNHogTTEyLjIsMS41CgkJCQljLTMuMSwwLTYsMS4zLTcuOSwzLjZDMy43LDUuOCwzLjIsNi41LDIuOCw3LjNjLTAuNywxLjQtMSwyLjgtMS4xLDQuNFYxMnYwLjNjMCwxLjMsMC4zLDIuNjAxLDAuOCwzLjhMNS40LDEzLjkKCQkJCWMtMC4xLTAuNS0wLjItMS0wLjItMS41YzAtMC4xLDAtMC4yLDAtMC4zczAtMC4yLDAtMC4zYzAtMC43LDAuMS0xLjMsMC4zLTEuOUM2LDguNSw2LjgsNy4zLDgsNi40YzIuNC0xLjcsNS43LTEuOCw4LjEtMC4xCgkJCQlsMi41LTIuNUMxNi45LDIuMywxNC42LDEuNSwxMi4yLDEuNXoiLz4KCQk8L2c+CgkJPGc+CgkJCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xMi4yLDIzLjVjLTMuMywwLTYuNS0xLjQtOC43LTRjLTAuNy0wLjgtMS4yLTEuNi0xLjYtMi40Yy0wLjEtMC4xOTksMC0wLjUsMC4xLTAuNmwzLjctMi44CgkJCQlDNS44LDEzLjYsNiwxMy42LDYuMiwxMy42YzAuMiwwLDAuMywwLjIsMC4zLDAuMzAxYzAuNCwxLjE5OSwxLjEsMi4xOTksMi4yLDNjMC40LDAuMywwLjksMC42LDEuNCwwLjgKCQkJCWMwLjcsMC4zLDEuNCwwLjM5OSwyLjIsMC4zOTljMS4zLDAsMi41LTAuMywzLjQtMC44OTljMC44OTktMC42MDEsMS41LTEuNCwxLjg5OS0yLjRoLTUuM2MtMC4zLDAtMC41LTAuMi0wLjUtMC41VjEwCgkJCQljMC0wLjMsMC4yLTAuNSwwLjUtMC41aDEwLjNjMC4yLDAsMC40LDAuMiwwLjUsMC40YzAuMiwwLjcsMC4zMDEsMS41LDAuMzAxLDIuMWMwLDEuOS0wLjMwMSwzLjYtMSw1LjIKCQkJCWMtMC42MDEsMS4zLTEuNCwyLjUtMi41LDMuNWMtMS4yLDEuMS0yLjgwMSwyLTQuNCwyLjVDMTQuMywyMy40LDEzLjMsMjMuNSwxMi4yLDIzLjV6IE0zLDE3YzAuNCwwLjcsMC44LDEuMywxLjMsMS45CgkJCQljMiwyLjMsNC45LDMuNiw4LDMuNmMxLDAsMS45LTAuMSwyLjgtMC40YzEuNS0wLjM5OSwyLjktMS4xOTksNC0yLjE5OUMyMCwxOSwyMC44LDE4LDIxLjMsMTYuOGMwLjYwMS0xLjM5OSwxLTMsMS00LjgKCQkJCWMwLTAuNS0wLjEtMS0wLjItMS41SDEyLjd2My4zSDE4LjFjMC4yLDAsMC4zMDEsMC4xMDEsMC40LDAuMnMwLjEsMC4zLDAuMSwwLjRjLTAuMywxLjUtMS4xOTksMi44LTIuNSwzLjYKCQkJCUMxNSwxOC43LDEzLjcsMTksMTIuMiwxOWMtMC45LDAtMS43LTAuMi0yLjUtMC41Yy0wLjYtMC4yLTEuMS0wLjUtMS42LTAuOWMtMS0wLjY5OS0xLjgtMS42OTktMi4zLTIuOEwzLDE3eiIvPgoJCTwvZz4KCTwvZz4KCTxnPgoJCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik02LjEsMTAuNWMtMC4xLDAtMC4yLDAtMC4zLTAuMUwyLjEsNy41QzEuOCw3LjQsMS44LDcsMiw2LjhjMC4yLTAuMiwwLjUtMC4zLDAuNy0wLjFsMy43LDIuOAoJCQljMC4yLDAuMiwwLjMsMC41LDAuMSwwLjdDNi40LDEwLjQsNi4yLDEwLjUsNi4xLDEwLjV6Ii8+Cgk8L2c+Cgk8Zz4KCQk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMTkuNCwyMC44Yy0wLjEwMSwwLTAuMiwwLTAuMzAxLTAuMUwxNS42LDE4Yy0wLjE5OS0wLjItMC4zLTAuNS0wLjEtMC43czAuNS0wLjMsMC43LTAuMWwzLjUsMi43CgkJCWMwLjIsMC4xOTksMC4zLDAuNSwwLjEsMC42OTlDMTkuNywyMC43LDE5LjYsMjAuOCwxOS40LDIwLjh6Ii8+Cgk8L2c+Cgk8Zz4KCQk8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMTkuNSwxNC44aC01LjljLTAuMywwLTAuNS0wLjItMC41LTAuNXMwLjItMC41LDAuNS0wLjVoNS45YzAuMywwLDAuNSwwLjIsMC41LDAuNVMxOS44LDE0LjgsMTkuNSwxNC44eiIKCQkJLz4KCTwvZz4KPC9nPgo8L3N2Zz4="
-                        style="background-color:rgb(0, 0, 0); color:black;">
-                    --}}
-                    {{-- <br /> --}}
+                {{-- <th style="text-align: left; font-size: 12px;">
                     <span class="span-text">{{$emp}}</span>
                 </th>
                 <th></th>
                 <th style="text-align: left; font-size: 12px;">
-                    {{-- <img src="data:image/png;base64,{{$item['audit_user_sign']}}" class="img-tabz" />
-                    <br /> --}}
                     {{$auditor}}
-                </th>
+                </th> --}}
             </tr>
-            {{-- <tr>
-                <th style="text-align: left; font-size: 12px; border-top: 1px black solid;">
-                    (Signature over printed name)
-                </th>
-                <th></th>
-                <th style="text-align: left; font-size: 12px; border-top: 1px black solid;">
-                    (Signature over printed name)
-                </th>
-                <th></th>
-                <th style="text-align: left; font-size: 12px; border-top: 1px black solid;">
-                    (Signature over printed name)
-                </th>
-            </tr> --}}
             <tr>
                 <th style="text-align: left; font-size: 12px;">
                     Designation: {{$data['user_position']}}
                 </th>
                 <th></th>
-                <th style="text-align: left; font-size: 12px;">
+                {{-- <th style="text-align: left; font-size: 12px;">
                     Designation: {{$item['app_user_position']}}
                 </th>
                 <th></th>
                 <th style="text-align: left; font-size: 12px;">
                     Designation: {{$item['audit_position']}}
-                </th>
+                </th> --}}
             </tr>
             <tr>
-                {{-- {{dd(date("Y-m-d h:i A", strtotime($item['datetime_exported'])))}} --}}
-
                 <th style="text-align: left; font-size: 12px;">
-                    Date:
+                    Date: {{$data['runDate']}}
                 </th>
                 <th></th>
-                <th style="text-align: left; font-size: 12px;">
+                {{-- <th style="text-align: left; font-size: 12px;">
                     Date: {{date("Y-m-d", strtotime($item['datetime_exported']))}}
                 </th>
                 <th></th>
                 <th style="text-align: left; font-size: 12px;">
                     Date: {{date("Y-m-d", strtotime($item['datetime_exported']))}}
-                </th>
+                </th> --}}
             </tr>
             <tr>
                 <th style="text-align: left; font-size: 12px;">
-                    Time:
+                    Time: {{ $data['runTime']}}
                 </th>
                 <th></th>
-                <th style="text-align: left; font-size: 12px;">
+                {{-- <th style="text-align: left; font-size: 12px;">
                     Time: {{date("h:i A", strtotime($item['datetime_exported']))}}
                 </th>
                 <th></th>
                 <th style="text-align: left; font-size: 12px;">
                     Time: {{date("h:i A", strtotime($item['datetime_exported']))}}
-                </th>
+                </th> --}}
             </tr>
             <tr>
                 <th style="text-align: left; font-size: 12px;">
@@ -500,15 +481,15 @@
                     Count Time: {{$countTime}}
                 </th>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th style="text-align: left; font-size: 12px;">
                     SKU Total: {{join(", ",array_unique($skus))}}
                 </th>
-            </tr>
+            </tr> --}}
         </thead>
     </table>
-    @endforeach
-    @endforeach
+    {{-- @endforeach --}}
+    {{-- @endforeach --}}
     {{-- {{dd($timeStartCount, $timeEndCount, $timeDiff, $countTime)}} --}}
     {{-- {{dd($countStart->diff($countEnd))}} --}}
     {{-- {{dd($countStart, $countEnd, join(", ",array_unique($skus)))}} --}}
@@ -517,7 +498,7 @@
     <div class="page-break"></div>
     @endif --}}
 
-    @endforeach
+    {{-- @endforeach --}}
     {{-- {{dd(current($items))}} --}}
     {{-- {{dd($data)}} --}}
 </body>
