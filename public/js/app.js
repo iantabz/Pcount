@@ -6224,7 +6224,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         // this.export = []
         _this10.data = response[0].data;
         _this10.total_result = response[0].data.total;
-        _this10.notFoundItems = response[1].data.total;
+        _this10.notFoundItems = response[1].data.length;
         _this10["export"] = response[2].data;
       });
     }
@@ -17220,8 +17220,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     computeNet: function computeNet(navQty, Unposted) {
       var net = 0;
 
-      if (Unposted != '-') {
+      if (Unposted != '-' && navQty != '-') {
         net = parseFloat(navQty) + parseFloat(Unposted);
+      } else if (navQty == '-') {
+        net = parseFloat(Unposted);
       } else {
         net = parseFloat(navQty);
       }
@@ -17232,18 +17234,23 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var variance = 0,
           value = 0;
 
-      if (b != '-') {
+      if (b != '-' && a != '-') {
         value = parseFloat(a) + parseFloat(b);
-      } else {
+      } else if (a == '-') {
+        value = parseFloat(b);
+      } else if (b == '-') {
         value = parseFloat(a);
+      }
+
+      if (a == '-' && b == '-') {
+        variance = value + parseFloat(c);
       }
 
       if (a < 0) {
         variance = parseFloat(c) + value;
       } else {
         variance = parseFloat(c) - value;
-      } // console.log(variance)
-      //  const variance = parseFloat(a) - parseFloat(b)
+      } //  const variance = parseFloat(a) - parseFloat(b)
 
 
       return variance;
@@ -17895,6 +17902,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 
@@ -18010,8 +18019,10 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
     computeNet: function computeNet(navQty, Unposted) {
       var net = 0;
 
-      if (Unposted != '-') {
+      if (Unposted != '-' && navQty != '-') {
         net = parseFloat(navQty) + parseFloat(Unposted);
+      } else if (navQty == '-') {
+        net = parseFloat(Unposted);
       } else {
         net = parseFloat(navQty);
       }
@@ -18024,16 +18035,23 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
           tot_no_vat = 0,
           value = 0;
 
-      if (b != '-') {
+      if (b != '-' && a != '-') {
         value = parseFloat(a) + parseFloat(b);
-      } else {
+      } else if (a == '-' && b != '-') {
+        value = parseFloat(b);
+      } else if (b == '-' && a != '-') {
         value = parseFloat(a);
+      }
+
+      if (a == '-' && b == '-') {
+        value = '-';
+        variance = parseFloat(c);
       }
 
       if (a < 0) {
         variance = parseFloat(c) + value;
       } else {
-        variance = parseFloat(c) - value;
+        if (a != '-') variance = parseFloat(c) - value;
       }
 
       tot_no_vat = variance * parseFloat(cost);
@@ -66797,7 +66815,9 @@ var render = function() {
                             _vm._v(
                               "\n                    " +
                                 _vm._s(
-                                  _vm.computeNet(data.nav_qty, data.unposted)
+                                  _vm._f("numberFormat")(
+                                    _vm.computeNet(data.nav_qty, data.unposted)
+                                  )
                                 ) +
                                 "\n                  "
                             )
@@ -66814,12 +66834,14 @@ var render = function() {
                             _vm._v(
                               "\n                    " +
                                 _vm._s(
-                                  _vm.computeVariance(
-                                    data.nav_qty,
-                                    data.unposted,
-                                    data.conversion_qty,
-                                    data.cost_no_vat
-                                  ).variance
+                                  _vm._f("numberFormat")(
+                                    _vm.computeVariance(
+                                      data.nav_qty,
+                                      data.unposted,
+                                      data.conversion_qty,
+                                      data.cost_no_vat
+                                    ).variance
+                                  )
                                 ) +
                                 "\n                  "
                             )

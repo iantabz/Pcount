@@ -336,7 +336,9 @@
                       style="font-size: 1.1em"
                     >
                       <!-- {{ Math.trunc(data.nav_qty) }} -->
-                      {{ computeNet(data.nav_qty, data.unposted) }}
+                      {{
+                        computeNet(data.nav_qty, data.unposted) | numberFormat
+                      }}
                     </td>
                     <td
                       class="text-main text-normal text-center"
@@ -348,7 +350,7 @@
                           data.unposted,
                           data.conversion_qty,
                           data.cost_no_vat
-                        ).variance
+                        ).variance | numberFormat
                       }}
                     </td>
                     <td
@@ -513,8 +515,10 @@ export default {
   methods: {
     computeNet(navQty, Unposted) {
       let net = 0
-      if (Unposted != '-') {
+      if (Unposted != '-' && navQty != '-') {
         net = parseFloat(navQty) + parseFloat(Unposted)
+      } else if (navQty == '-') {
+        net = parseFloat(Unposted)
       } else {
         net = parseFloat(navQty)
       }
@@ -527,16 +531,23 @@ export default {
         tot_no_vat = 0,
         value = 0
 
-      if (b != '-') {
+      if (b != '-' && a != '-') {
         value = parseFloat(a) + parseFloat(b)
-      } else {
+      } else if (a == '-' && b != '-') {
+        value = parseFloat(b)
+      } else if (b == '-' && a != '-') {
         value = parseFloat(a)
+      }
+
+      if (a == '-' && b == '-') {
+        value = '-'
+        variance = parseFloat(c)
       }
 
       if (a < 0) {
         variance = parseFloat(c) + value
       } else {
-        variance = parseFloat(c) - value
+        if (a != '-') variance = parseFloat(c) - value
       }
 
       tot_no_vat = variance * parseFloat(cost)

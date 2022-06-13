@@ -139,7 +139,7 @@ class PhysicalCountController extends Controller
             ['department', 'LIKE', request()->dept],
             ['section', 'LIKE', request()->section]
         ])
-            ->whereBetween('datetime_scanned', [$date, $dateAsOf])->paginate(10);
+            ->whereBetween('datetime_scanned', [$date, $dateAsOf])->groupBy('barcode')->get();
     }
 
     public function generate()
@@ -623,7 +623,8 @@ class PhysicalCountController extends Controller
         datetime_exported,
         date_expiry,
         vendor_name, 
-        tbl_item_masterfile.group
+        tbl_item_masterfile.group,
+        location_id
         ')
             ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode');
 
@@ -643,34 +644,15 @@ class PhysicalCountController extends Controller
             $query->WHERE('tbl_app_countdata.section', 'LIKE', "%null%");
         }
 
-        $query = $query->whereBetween('datetime_saved', [$date, $dateAsOf])
+        $query = $query
+            ->where([['location_id', '=', 0], ['rack_desc', 'LIKE', "%SETUP BY BACKEND%"]])
+            ->whereBetween('datetime_saved', [$date, $dateAsOf])
             ->groupBy('barcode')
             ->orderBy('itemcode');
+        // dd($query->dd());
+        $query = $query->get()
+            ->toArray();
 
-        if (request()->has('forExport')) {
-            $data = $query->cursor()
-                ->groupBy(['vendor_name', 'group'])
-                ->all();
-
-            $query = array(
-                'company' => $company,
-                'business_unit' => $bu,
-                'department' => $dept,
-                'section' => $section,
-                'vendors' => $vendors,
-                'category' => $category,
-                'date' => $printDate,
-                'countType' => $countType,
-                'user' => auth()->user()->name,
-                'user_position' => auth()->user()->position,
-                'runDate'   => $runDate,
-                'runTime'    => $runTime,
-                'data' => $data
-            );
-        } else {
-            $query = $query->get()
-                ->toArray();
-        }
 
         // dd($query);
 

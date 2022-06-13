@@ -805,7 +805,7 @@ export default {
           // this.export = []
           this.data = response[0].data
           this.total_result = response[0].data.total
-          this.notFoundItems = response[1].data.total
+          this.notFoundItems = response[1].data.length
           this.export = response[2].data
         })
     }

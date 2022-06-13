@@ -583,7 +583,7 @@ class ReportsController extends Controller
             tbl_item_masterfile.group'
         )
             ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
-            ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
+            ->leftJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
             ->whereBetween('datetime_saved', [$date, $dateAsOf]);
 
         if ($bu != 'null') {
@@ -613,7 +613,7 @@ class ReportsController extends Controller
 
         // $result = $result->groupBy('barcode')->orderBy('itemcode')->get()->groupBy(['vendor_name', 'group']);
         // dd($result);
-        $x = $result->orderBy('itemcode')->groupByRaw('itemcode')->cursor();
+        $x = $result->groupByRaw('itemcode')->orderBy('itemcode')->cursor();
 
         // dd($x);
 
@@ -764,8 +764,8 @@ class ReportsController extends Controller
                 tbl_item_masterfile.group
         ')
             ->join('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
-            ->join('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
-            ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
+            ->leftjoin('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
+            ->whereBetween('datetime_saved', [$date, $dateAsOf]);
 
         // dd($result->groupBy('barcode')->get()->groupBy(['app_user', 'audit_user', 'vendor_name'])->toArray());
 
@@ -856,11 +856,12 @@ class ReportsController extends Controller
             );
         } else {
             $report = 'Summary';
-            $result = $result->groupBy('barcode')->orderBy('itemcode')->cursor();
+            $result = $result->groupBy('barcode')->orderBy('itemcode')->get();
             $arr = [];
 
-            foreach ($result as $items => $c) {
+            // foreach ($result as $items => $c) {
 
+            $result = $result->map(function ($c) use ($bu, $dept, $section) {
                 $query = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
                     ['itemcode', $c->itemcode],
                     ['business_unit', $bu],
@@ -887,9 +888,11 @@ class ReportsController extends Controller
                     $c->unposted = '-';
                 }
 
-                // return $c;
-                // });
-            }
+                return $c;
+            });
+
+            // });
+            // }
 
             $header = array(
                 'company'       => $company,

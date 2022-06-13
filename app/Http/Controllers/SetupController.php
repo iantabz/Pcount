@@ -547,7 +547,7 @@ class SetupController extends Controller
                 'rack_desc' => $rack_desc,
                 'empno' => $emp['emp_no'],
                 'datetime_scanned' => now(),
-                'datetime_saved' => now(),
+                'datetime_saved' => $date,
                 'datetime_exported' => now(),
                 'date_expiry' => '0000-00-00 00:00:00',
                 'user_signature' => 'null',

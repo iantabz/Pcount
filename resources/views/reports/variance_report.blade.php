@@ -248,6 +248,9 @@
     @foreach ($data['data'] as $vendor_name => $categories)
     @php
     --$countSize;
+    $grandTotal = 0;
+    $variance = 0;
+    $value = 0;
     @endphp
     <div>
         <h4 style="text-align: left; font-size: 12px">Vendor: {{ $vendor_name }}</h4>
@@ -293,30 +296,43 @@
             </tr>
         </thead>
         <tbody>
-            <?php  
-            $grandTotal = 0;
-            $variance = 0;
-            $value = 0;
-             ?>
+         
             @foreach ($items as $key => $item)
             {{-- {{dd($item)}} --}}
             @php
-              if($item['unposted'] != '-')
+              if($item['unposted'] != "-" && $item['nav_qty'] != "-")
             {
                 $value = $item['nav_qty'] + $item['unposted'];
             }
-            else {
+            else if ($item['nav_qty'] == '-' && $item['unposted'] != '-'){
+                $value = $item['unposted'];
+                $variance = $item['unposted'] + $item['total_conv_qty'];
+            }
+            else  if($item['unposted'] == '-' && $item['nav_qty'] != '-'){
                 $value = $item['nav_qty'];
+                $variance = $item['nav_qty'] + $item['total_conv_qty'];
+            } 
+
+            if($item['nav_qty'] == '-' && $item['unposted'] == '-'){
+                $value = '-';
+                $variance = $item['total_conv_qty'];
             }
 
-            if($item['nav_qty'] == '-') $variance = $item['total_conv_qty'];
 
-            else if($item['nav_qty'] < 0)
+            // if($item['itemcode'] == '1902') dd($item, $value, $variance);
+            // if(!is_numeric($value)) dd($item['itemcode']);
+            // if($value == '-'){
+            //     $variance = $item['total_conv_qty'];
+            // }
+            
+           
+            
+            if($item['nav_qty'] < 0)
             { 
-                $variance= $item['total_conv_qty'] + $value;
+                $value == is_numeric($value) ? $variance= $item['total_conv_qty'] + $value : $variance= $item['total_conv_qty'];
             } 
             else{
-                $variance= $item['total_conv_qty'] - $value; 
+                if($item['nav_qty'] != '-') $value == is_numeric($value) ? $variance= $item['total_conv_qty'] - $value : $variance= $item['total_conv_qty']; 
             } 
             @endphp 
                 <tr>
@@ -329,13 +345,14 @@
                 <td style="text-align: center;">{{ number_format($item['total_conv_qty'], 0) }}</td>
                 <td style="text-align: center;">
                     {{
-                        number_format($value, 0)
+                        $value == is_numeric($value) ? number_format($value, 0) : $value
                      }}
                 </td>
                 {{-- <td style="text-align: center;">{{  is_numeric($item['unposted']) ? number_format($item['unposted'], 0) : $item['unposted'] }}</td> --}}
                 <td style="text-align: center;">{{ number_format($variance, 0) }}
                 </td>
                 </tr>
+                {{-- {{dd(1)}} --}}
                 {{-- ?php
              $grandTotal += $variance;
             ?> --}}
@@ -352,7 +369,7 @@
         </tbody>
     </table>
     @endforeach
-    {{-- {{dd($data['data']);}} --}}
+    {{-- {{dd($data['data'] == 'MFI  RICE MILL');}} --}}
     {{-- @if (count($data['data']) == max($data['data']))
     <div class="page-break"></div>
     @endif --}}
@@ -402,22 +419,35 @@
             @foreach ($data['data'] as $key => $item)
             {{-- {{dd($item)}} --}}
             @php
-              if($item['unposted'] != '-')
+           if($item['unposted'] != "-" && $item['nav_qty'] != "-")
             {
                 $value = $item['nav_qty'] + $item['unposted'];
             }
-            else {
+            else if ($item['nav_qty'] == '-' && $item['unposted'] != '-'){
+                $value = $item['unposted'];
+                $variance = $item['unposted'] + $item['total_conv_qty'];
+                // if($item['itemcode'] == '1902') dd($variance);
+            }
+            else  if($item['unposted'] == '-' && $item['nav_qty'] != '-'){
                 $value = $item['nav_qty'];
+                $variance = $item['nav_qty'] + $item['total_conv_qty'];
+            } 
+
+            // if($item['itemcode'] == '1902') dd($item, $value, $variance);
+
+            if($item['nav_qty'] == '-' && $item['unposted'] == '-'){
+                $value = '-';
+                $variance = $item['total_conv_qty']; 
             }
 
-            if($item['nav_qty'] == '-') $variance = $item['total_conv_qty'];
-
-            else if($item['nav_qty'] < 0)
+            if($item['nav_qty'] < 0)
             { 
-                $variance= $item['total_conv_qty'] + $value;
+              $value == is_numeric($value) ? $variance= $item['total_conv_qty'] + $value : $variance= $item['total_conv_qty'];
+               
             } 
             else{
-                $variance= $item['total_conv_qty'] - $value; 
+                if($item['nav_qty'] != '-') $value == is_numeric($value) ? $variance= $item['total_conv_qty'] - $value : $variance= $item['total_conv_qty']; 
+                // if($item['itemcode'] == '1902') dd($item, $variance);
             } 
             @endphp 
                 <tr>
@@ -430,7 +460,7 @@
                 <td style="text-align: center;">{{ number_format($item['total_conv_qty'], 0) }}</td>
                 <td style="text-align: center;">
                     {{
-                        number_format($value, 0)
+                        $value == is_numeric($value) ? number_format($value, 0) : $value
                      }}
                 </td>
                 {{-- <td style="text-align: center;">{{  is_numeric($item['unposted']) ? number_format($item['unposted'], 0) : $item['unposted'] }}</td> --}}
@@ -517,7 +547,7 @@
     @endif
 
     {{-- {{dump( $vendor_name)}} --}}
-    {{-- {{$data['runDate']}} --}}
+    {{$data['runDate']}}
 
 
     {{-- {{dd($data['data'])}} --}}

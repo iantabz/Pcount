@@ -843,8 +843,10 @@ export default {
     },
     computeNet(navQty, Unposted) {
       let net = 0
-      if (Unposted != '-') {
+      if (Unposted != '-' && navQty != '-') {
         net = parseFloat(navQty) + parseFloat(Unposted)
+      } else if (navQty == '-') {
+        net = parseFloat(Unposted)
       } else {
         net = parseFloat(navQty)
       }
@@ -854,10 +856,16 @@ export default {
     computeVariance(a, b, c) {
       let variance = 0,
         value = 0
-      if (b != '-') {
+      if (b != '-' && a != '-') {
         value = parseFloat(a) + parseFloat(b)
-      } else {
+      } else if (a == '-') {
+        value = parseFloat(b)
+      } else if (b == '-') {
         value = parseFloat(a)
+      }
+
+      if (a == '-' && b == '-') {
+        variance = value + parseFloat(c)
       }
 
       if (a < 0) {
@@ -865,7 +873,6 @@ export default {
       } else {
         variance = parseFloat(c) - value
       }
-      // console.log(variance)
       //  const variance = parseFloat(a) - parseFloat(b)
       return variance
     },
