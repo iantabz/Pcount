@@ -271,7 +271,18 @@
                 <tbody>
                   <tr v-if="!data.data.length">
                     <td colspan="13" style="text-align: center;">
-                      No data available.
+                      <div
+                        class="sk-wave"
+                        v-if="isLoading"
+                        style="width: 100%; height: 50px; font-size: 30px; margin: 30px auto;"
+                      >
+                        <div class="sk-rect sk-rect1"></div>
+                        <div class="sk-rect sk-rect2"></div>
+                        <div class="sk-rect sk-rect3"></div>
+                        <div class="sk-rect sk-rect4"></div>
+                        <div class="sk-rect sk-rect5"></div>
+                      </div>
+                      <div v-else>No data available.</div>
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
@@ -284,14 +295,14 @@
                       {{ data.uom }}
                     </td>
                     <td class="text-main text-normal text-center">
-                      {{ data.qty }}
+                      {{ data.qty | numberFormat }}
                     </td>
                     <td class="text-main text-normal text-center">
                       <span v-if="data.nav_uom">{{ data.nav_uom }}</span>
                       <span v-else>{{ data.uom }}</span>
                     </td>
                     <td class="text-main text-normal text-center">
-                      {{ data.total_conv_qty }}
+                      {{ data.total_conv_qty | numberFormat }}
                     </td>
                     <td class="text-main text-thin">
                       {{ data.datetime_scanned }}
@@ -377,7 +388,8 @@ export default {
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
       notFoundItems: 0,
-      export: []
+      export: [],
+      isLoading: false
     }
   },
   components: {
@@ -797,17 +809,19 @@ export default {
         this.vendor &&
         this.category
       )
-        Promise.all([
-          this.getCountData(),
-          this.getNotFound(),
-          this.getExport()
-        ]).then(response => {
-          // this.export = []
-          this.data = response[0].data
-          this.total_result = response[0].data.total
-          this.notFoundItems = response[1].data.length
-          this.export = response[2].data
-        })
+        this.isLoading = true
+      Promise.all([
+        this.getCountData(),
+        this.getNotFound(),
+        this.getExport()
+      ]).then(response => {
+        // this.export = []
+        this.data = response[0].data
+        this.total_result = response[0].data.total
+        this.notFoundItems = response[1].data.length
+        this.export = response[2].data
+        this.isLoading = false
+      })
     }
   },
   mounted() {

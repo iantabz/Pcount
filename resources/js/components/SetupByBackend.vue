@@ -257,14 +257,14 @@
                 <button
                   class="btn btn-info btn-rounded mar-lft text-thin pull-right"
                   @click="showRackSetup = !showRackSetup"
-                >
-                  <!-- :disabled="
+                  :disabled="
                     !company ||
                       !business_unit ||
                       !department ||
                       !section ||
                       !countType
-                  " -->
+                  "
+                >
                   <i class="demo-pli-add-user-star icon-lg"></i> Add Items
                 </button>
               </div>
@@ -282,7 +282,18 @@
                 <tbody>
                   <tr v-if="!data.data.length">
                     <td colspan="7" style="text-align: center;">
-                      No data available.
+                      <div
+                        class="sk-wave"
+                        v-if="isLoading"
+                        style="width: 100%; height: 50px; font-size: 30px; margin: 30px auto;"
+                      >
+                        <div class="sk-rect sk-rect1"></div>
+                        <div class="sk-rect sk-rect2"></div>
+                        <div class="sk-rect sk-rect3"></div>
+                        <div class="sk-rect sk-rect4"></div>
+                        <div class="sk-rect sk-rect5"></div>
+                      </div>
+                      <div v-else>No data available.</div>
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
@@ -295,10 +306,10 @@
                       {{ data.uom }}
                     </td>
                     <td class="text-main text-normal text-center">
-                      {{ data.qty }}
+                      {{ data.qty | numberFormat }}
                     </td>
                     <td class="text-main text-normal text-center">
-                      {{ data.total_conv_qty }}
+                      {{ data.total_conv_qty | numberFormat }}
                     </td>
                   </tr>
                 </tbody>
@@ -365,7 +376,7 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
 import Modal from './modals/ItemSetup.vue'
-Vue.component('pagination', require('laravel-vue-pagination'))
+// Vue.component('pagination', require('laravel-vue-pagination'))
 Vue.component('v-select', vSelect)
 export default {
   data() {
@@ -403,7 +414,8 @@ export default {
       countTypes: ['ANNUAL', 'CYCLICAL'],
       notFoundItems: 0,
       export: [],
-      showRackSetup: false
+      showRackSetup: false,
+      isLoading: false
     }
   },
   components: {
@@ -813,14 +825,17 @@ export default {
         this.section &&
         this.vendor &&
         this.category
-      )
+      ) {
+        this.isLoading = true
         Promise.all([this.getCountData()]).then(response => {
           // this.export = []
           this.data.data = response[0].data
           this.total_result = response[0].data.total
           // this.notFoundItems = response[1].data.total
           this.export = response[0].data
+          this.isLoading = false
         })
+      }
     }
   },
   mounted() {

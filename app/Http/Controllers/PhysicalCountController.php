@@ -144,14 +144,9 @@ class PhysicalCountController extends Controller
 
     public function generate()
     {
-        // set_time_limit(0);
-        // ini_set('memory_limit', '-1');
-
         // dd(request()->all());
         $export = json_decode(base64_decode(request()->export), true);
-
         // dd($export);
-
         // $export = collect($export)->all();
         // dd($export);
         // dd($export);

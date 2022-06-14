@@ -259,7 +259,18 @@
                 <tbody>
                   <tr v-if="!data.data.length">
                     <td colspan="13" style="text-align: center;">
-                      No data available.
+                      <div
+                        class="sk-wave"
+                        v-if="isLoading"
+                        style="width: 100%; height: 50px; font-size: 30px; margin: 30px auto;"
+                      >
+                        <div class="sk-rect sk-rect1"></div>
+                        <div class="sk-rect sk-rect2"></div>
+                        <div class="sk-rect sk-rect3"></div>
+                        <div class="sk-rect sk-rect4"></div>
+                        <div class="sk-rect sk-rect5"></div>
+                      </div>
+                      <div v-else>No data available.</div>
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
@@ -364,7 +375,8 @@ export default {
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
       finalExport: [],
-      export: []
+      export: [],
+      isLoading: false
     }
   },
   components: {
@@ -611,11 +623,13 @@ export default {
         this.department
       }&section=${this.section}&page=`
       if (this.business_unit && this.department && this.section) {
+        this.isLoading = true
         axios.get(url).then(response => {
           this.data = response.data
           this.total_result = response.data.total
           this.finalExport = response.data
           this.exportcsv()
+          this.isLoading = false
         })
       }
     },

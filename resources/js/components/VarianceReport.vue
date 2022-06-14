@@ -341,7 +341,18 @@
                 <tbody>
                   <tr v-if="!data.data.length">
                     <td colspan="13" style="text-align: center;">
-                      No data available.
+                      <div
+                        class="sk-wave"
+                        v-if="isLoading"
+                        style="width: 100%; height: 50px; font-size: 30px; margin: 30px auto;"
+                      >
+                        <div class="sk-rect sk-rect1"></div>
+                        <div class="sk-rect sk-rect2"></div>
+                        <div class="sk-rect sk-rect3"></div>
+                        <div class="sk-rect sk-rect4"></div>
+                        <div class="sk-rect sk-rect5"></div>
+                      </div>
+                      <div v-else>No data available.</div>
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
@@ -422,7 +433,7 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
 
-Vue.component('pagination', require('laravel-vue-pagination'))
+// Vue.component('pagination', require('laravel-vue-pagination'))
 Vue.component('v-select', vSelect)
 export default {
   data() {
@@ -458,7 +469,8 @@ export default {
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
       finalExport: [],
-      export: []
+      export: [],
+      isLoading: false
     }
   },
   components: {
@@ -728,11 +740,13 @@ export default {
         this.vendor &&
         this.category
       ) {
+        this.isLoading = true
         axios.get(url).then(response => {
           this.data = response.data
           this.total_result = response.data.total
           this.finalExport = response.data
           this.exportcsv()
+          this.isLoading = false
         })
       }
     },
@@ -846,9 +860,9 @@ export default {
       if (Unposted != '-' && navQty != '-') {
         net = parseFloat(navQty) + parseFloat(Unposted)
       } else if (navQty == '-') {
-        net = parseFloat(Unposted)
+        net = isNaN(Unposted) ? '-' : parseFloat(Unposted)
       } else {
-        net = parseFloat(navQty)
+        net = isNaN(navQty) ? '-' : parseFloat(navQty)
       }
 
       return net
@@ -856,24 +870,29 @@ export default {
     computeVariance(a, b, c) {
       let variance = 0,
         value = 0
+
       if (b != '-' && a != '-') {
-        value = parseFloat(a) + parseFloat(b)
-      } else if (a == '-') {
-        value = parseFloat(b)
-      } else if (b == '-') {
-        value = parseFloat(a)
+        value = a + b
+      } else if (a == '-' && b != '-') {
+        value = b
+        variance = b + c
+      } else if (b == '-' && a != '-') {
+        value = a
+        variance = a + c
       }
 
       if (a == '-' && b == '-') {
-        variance = value + parseFloat(c)
+        value = '-'
+        variance = c
       }
 
       if (a < 0) {
-        variance = parseFloat(c) + value
+        value == isNaN(value) ? (variance = c + value) : (variance = c)
       } else {
-        variance = parseFloat(c) - value
+        if (a != '-')
+          value == isNaN(value) ? (variance = c - value) : (variance = c)
       }
-      //  const variance = parseFloat(a) - parseFloat(b)
+
       return variance
     },
     getFormattedDateToday() {

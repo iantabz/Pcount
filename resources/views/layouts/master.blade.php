@@ -48,6 +48,9 @@
   <!--Dropzone [ OPTIONAL ]-->
   <link href="plugins/dropzone/dropzone.min.css" rel="stylesheet">
 
+   <!--Spinkit [ OPTIONAL ]-->
+   <link href="plugins/spinkit/css/spinkit.min.css" rel="stylesheet">
+
   <!--Custom scheme [ OPTIONAL ]-->
   {{--
   <link href="css/themes/type-a/theme-navy.min.css" rel="stylesheet"> --}}

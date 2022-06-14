@@ -5643,6 +5643,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5687,7 +5698,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
       notFoundItems: 0,
-      "export": []
+      "export": [],
+      isLoading: false
     };
   },
   components: {
@@ -6220,12 +6232,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     getResults: function getResults() {
       var _this10 = this;
 
-      if (this.business_unit && this.department && this.section && this.vendor && this.category) Promise.all([this.getCountData(), this.getNotFound(), this.getExport()]).then(function (response) {
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.isLoading = true;
+      Promise.all([this.getCountData(), this.getNotFound(), this.getExport()]).then(function (response) {
         // this.export = []
         _this10.data = response[0].data;
         _this10.total_result = response[0].data.total;
         _this10.notFoundItems = response[1].data.length;
         _this10["export"] = response[2].data;
+        _this10.isLoading = false;
       });
     }
   },
@@ -7774,6 +7788,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7808,7 +7833,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       sectionList: [],
       section: null,
       notFoundItems: 0,
-      "export": []
+      "export": [],
+      isLoading: false
     };
   },
   components: {
@@ -8141,12 +8167,16 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     getResults: function getResults() {
       var _this9 = this;
 
-      if (this.business_unit && this.department && this.section) Promise.all([this.getData(), this.getExport()]).then(function (response) {
-        // this.export = []
-        _this9.data = response[0].data;
-        _this9.total_result = response[0].data.total;
-        _this9["export"] = response[1].data;
-      });
+      if (this.business_unit && this.department && this.section) {
+        this.isLoading = true;
+        Promise.all([this.getData(), this.getExport()]).then(function (response) {
+          // this.export = []
+          _this9.data = response[0].data;
+          _this9.total_result = response[0].data.total;
+          _this9["export"] = response[1].data;
+          _this9.isLoading = false;
+        });
+      }
     }
   },
   mounted: function mounted() {
@@ -10592,6 +10622,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -10635,7 +10676,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
       finalExport: [],
-      "export": []
+      "export": [],
+      isLoading: false
     };
   },
   components: {
@@ -10899,12 +10941,15 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var url = "/reports/nav_sys/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
       if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+        this.isLoading = true;
         axios.get(url).then(function (response) {
           _this3.data = response.data;
           _this3.total_result = response.data.total;
           _this3.finalExport = response.data;
 
           _this3.exportcsv();
+
+          _this3.isLoading = false;
         });
       }
     },
@@ -12263,6 +12308,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -12306,7 +12362,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
       finalExport: [],
-      "export": []
+      "export": [],
+      isLoading: false
     };
   },
   components: {
@@ -12564,12 +12621,15 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var url = "/reports/nav_sys/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
       if (this.business_unit && this.department && this.section) {
+        this.isLoading = true;
         axios.get(url).then(function (response) {
           _this3.data = response.data;
           _this3.total_result = response.data.total;
           _this3.finalExport = response.data;
 
           _this3.exportcsv();
+
+          _this3.isLoading = false;
         });
       }
     },
@@ -15040,6 +15100,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15047,8 +15118,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+ // Vue.component('pagination', require('laravel-vue-pagination'))
 
-vue__WEBPACK_IMPORTED_MODULE_7__.default.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBPACK_IMPORTED_MODULE_3___default()));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -15086,7 +15157,8 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       countTypes: ['ANNUAL', 'CYCLICAL'],
       notFoundItems: 0,
       "export": [],
-      showRackSetup: false
+      showRackSetup: false,
+      isLoading: false
     };
   },
   components: {
@@ -15610,13 +15682,17 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
     getResults: function getResults() {
       var _this10 = this;
 
-      if (this.business_unit && this.department && this.section && this.vendor && this.category) Promise.all([this.getCountData()]).then(function (response) {
-        // this.export = []
-        _this10.data.data = response[0].data;
-        _this10.total_result = response[0].data.total; // this.notFoundItems = response[1].data.total
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+        this.isLoading = true;
+        Promise.all([this.getCountData()]).then(function (response) {
+          // this.export = []
+          _this10.data.data = response[0].data;
+          _this10.total_result = response[0].data.total; // this.notFoundItems = response[1].data.total
 
-        _this10["export"] = response[0].data;
-      });
+          _this10["export"] = response[0].data;
+          _this10.isLoading = false;
+        });
+      }
     }
   },
   mounted: function mounted() {
@@ -16793,14 +16869,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 
 
+ // Vue.component('pagination', require('laravel-vue-pagination'))
 
-vue__WEBPACK_IMPORTED_MODULE_6__.default.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBPACK_IMPORTED_MODULE_3___default()));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -16836,7 +16923,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       countType: null,
       countTypes: ['ANNUAL', 'CYCLICAL'],
       finalExport: [],
-      "export": []
+      "export": [],
+      isLoading: false
     };
   },
   components: {
@@ -17099,12 +17187,15 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var url = "/reports/variance_report/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
       if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+        this.isLoading = true;
         axios.get(url).then(function (response) {
           _this3.data = response.data;
           _this3.total_result = response.data.total;
           _this3.finalExport = response.data;
 
           _this3.exportcsv();
+
+          _this3.isLoading = false;
         });
       }
     },
@@ -17223,9 +17314,9 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       if (Unposted != '-' && navQty != '-') {
         net = parseFloat(navQty) + parseFloat(Unposted);
       } else if (navQty == '-') {
-        net = parseFloat(Unposted);
+        net = isNaN(Unposted) ? '-' : parseFloat(Unposted);
       } else {
-        net = parseFloat(navQty);
+        net = isNaN(navQty) ? '-' : parseFloat(navQty);
       }
 
       return net;
@@ -17235,23 +17326,25 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           value = 0;
 
       if (b != '-' && a != '-') {
-        value = parseFloat(a) + parseFloat(b);
-      } else if (a == '-') {
-        value = parseFloat(b);
-      } else if (b == '-') {
-        value = parseFloat(a);
+        value = a + b;
+      } else if (a == '-' && b != '-') {
+        value = b;
+        variance = b + c;
+      } else if (b == '-' && a != '-') {
+        value = a;
+        variance = a + c;
       }
 
       if (a == '-' && b == '-') {
-        variance = value + parseFloat(c);
+        value = '-';
+        variance = c;
       }
 
       if (a < 0) {
-        variance = parseFloat(c) + value;
+        value == isNaN(value) ? variance = c + value : variance = c;
       } else {
-        variance = parseFloat(c) - value;
-      } //  const variance = parseFloat(a) - parseFloat(b)
-
+        if (a != '-') value == isNaN(value) ? variance = c - value : variance = c;
+      }
 
       return variance;
     },
@@ -17904,6 +17997,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -17946,7 +18050,8 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       section: null,
       sectionList: [],
       countType: null,
-      countTypes: ['ANNUAL', 'CYCLICAL']
+      countTypes: ['ANNUAL', 'CYCLICAL'],
+      isLoading: false
     };
   },
   components: {
@@ -18155,9 +18260,11 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       var url = "/reports/variance_report_cost/getResultVarianceCost/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
       if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+        this.isLoading = true;
         axios__WEBPACK_IMPORTED_MODULE_1___default().get(url + page).then(function (response) {
           _this2.data = response.data;
           _this2.total_result = response.data.total;
+          _this2.isLoading = false;
         });
       }
     },
@@ -56163,9 +56270,41 @@ var render = function() {
                                 attrs: { colspan: "13" }
                               },
                               [
-                                _vm._v(
-                                  "\n                    No data available.\n                  "
-                                )
+                                _vm.isLoading
+                                  ? _c(
+                                      "div",
+                                      {
+                                        staticClass: "sk-wave",
+                                        staticStyle: {
+                                          width: "100%",
+                                          height: "50px",
+                                          "font-size": "30px",
+                                          margin: "30px auto"
+                                        }
+                                      },
+                                      [
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect1"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect2"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect3"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect4"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect5"
+                                        })
+                                      ]
+                                    )
+                                  : _c("div", [_vm._v("No data available.")])
                               ]
                             )
                           ])
@@ -56211,7 +56350,7 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n                    " +
-                                  _vm._s(data.qty) +
+                                  _vm._s(_vm._f("numberFormat")(data.qty)) +
                                   "\n                  "
                               )
                             ]
@@ -56237,7 +56376,9 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n                    " +
-                                  _vm._s(data.total_conv_qty) +
+                                  _vm._s(
+                                    _vm._f("numberFormat")(data.total_conv_qty)
+                                  ) +
                                   "\n                  "
                               )
                             ]
@@ -57779,9 +57920,41 @@ var render = function() {
                                 attrs: { colspan: "13" }
                               },
                               [
-                                _vm._v(
-                                  "\n                    No data available.\n                  "
-                                )
+                                _vm.isLoading
+                                  ? _c(
+                                      "div",
+                                      {
+                                        staticClass: "sk-wave",
+                                        staticStyle: {
+                                          width: "100%",
+                                          height: "50px",
+                                          "font-size": "30px",
+                                          margin: "30px auto"
+                                        }
+                                      },
+                                      [
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect1"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect2"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect3"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect4"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect5"
+                                        })
+                                      ]
+                                    )
+                                  : _c("div", [_vm._v("No data available.")])
                               ]
                             )
                           ])
@@ -60592,9 +60765,41 @@ var render = function() {
                               attrs: { colspan: "13" }
                             },
                             [
-                              _vm._v(
-                                "\n                    No data available.\n                  "
-                              )
+                              _vm.isLoading
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "sk-wave",
+                                      staticStyle: {
+                                        width: "100%",
+                                        height: "50px",
+                                        "font-size": "30px",
+                                        margin: "30px auto"
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect1"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect2"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect3"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect4"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect5"
+                                      })
+                                    ]
+                                  )
+                                : _c("div", [_vm._v("No data available.")])
                             ]
                           )
                         ])
@@ -61759,9 +61964,41 @@ var render = function() {
                               attrs: { colspan: "13" }
                             },
                             [
-                              _vm._v(
-                                "\n                    No data available.\n                  "
-                              )
+                              _vm.isLoading
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "sk-wave",
+                                      staticStyle: {
+                                        width: "100%",
+                                        height: "50px",
+                                        "font-size": "30px",
+                                        margin: "30px auto"
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect1"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect2"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect3"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect4"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect5"
+                                      })
+                                    ]
+                                  )
+                                : _c("div", [_vm._v("No data available.")])
                             ]
                           )
                         ])
@@ -64192,6 +64429,14 @@ var render = function() {
                     {
                       staticClass:
                         "btn btn-info btn-rounded mar-lft text-thin pull-right",
+                      attrs: {
+                        disabled:
+                          !_vm.company ||
+                          !_vm.business_unit ||
+                          !_vm.department ||
+                          !_vm.section ||
+                          !_vm.countType
+                      },
                       on: {
                         click: function($event) {
                           _vm.showRackSetup = !_vm.showRackSetup
@@ -64228,9 +64473,41 @@ var render = function() {
                                   attrs: { colspan: "7" }
                                 },
                                 [
-                                  _vm._v(
-                                    "\n                    No data available.\n                  "
-                                  )
+                                  _vm.isLoading
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass: "sk-wave",
+                                          staticStyle: {
+                                            width: "100%",
+                                            height: "50px",
+                                            "font-size": "30px",
+                                            margin: "30px auto"
+                                          }
+                                        },
+                                        [
+                                          _c("div", {
+                                            staticClass: "sk-rect sk-rect1"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("div", {
+                                            staticClass: "sk-rect sk-rect2"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("div", {
+                                            staticClass: "sk-rect sk-rect3"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("div", {
+                                            staticClass: "sk-rect sk-rect4"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("div", {
+                                            staticClass: "sk-rect sk-rect5"
+                                          })
+                                        ]
+                                      )
+                                    : _c("div", [_vm._v("No data available.")])
                                 ]
                               )
                             ])
@@ -64276,7 +64553,7 @@ var render = function() {
                               [
                                 _vm._v(
                                   "\n                    " +
-                                    _vm._s(data.qty) +
+                                    _vm._s(_vm._f("numberFormat")(data.qty)) +
                                     "\n                  "
                                 )
                               ]
@@ -64290,7 +64567,11 @@ var render = function() {
                               [
                                 _vm._v(
                                   "\n                    " +
-                                    _vm._s(data.total_conv_qty) +
+                                    _vm._s(
+                                      _vm._f("numberFormat")(
+                                        data.total_conv_qty
+                                      )
+                                    ) +
                                     "\n                  "
                                 )
                               ]
@@ -65836,9 +66117,41 @@ var render = function() {
                               attrs: { colspan: "13" }
                             },
                             [
-                              _vm._v(
-                                "\n                    No data available.\n                  "
-                              )
+                              _vm.isLoading
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "sk-wave",
+                                      staticStyle: {
+                                        width: "100%",
+                                        height: "50px",
+                                        "font-size": "30px",
+                                        margin: "30px auto"
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect1"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect2"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect3"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect4"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect5"
+                                      })
+                                    ]
+                                  )
+                                : _c("div", [_vm._v("No data available.")])
                             ]
                           )
                         ])
@@ -66705,9 +67018,41 @@ var render = function() {
                               attrs: { colspan: "13" }
                             },
                             [
-                              _vm._v(
-                                "\n                    No data available.\n                  "
-                              )
+                              _vm.isLoading
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "sk-wave",
+                                      staticStyle: {
+                                        width: "100%",
+                                        height: "50px",
+                                        "font-size": "30px",
+                                        margin: "30px auto"
+                                      }
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect1"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect2"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect3"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect4"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "sk-rect sk-rect5"
+                                      })
+                                    ]
+                                  )
+                                : _c("div", [_vm._v("No data available.")])
                             ]
                           )
                         ])
