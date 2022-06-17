@@ -4,10 +4,12 @@
     {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
     {{-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> --}}
     <title>  
-        @if(!$data['report'] == 'NetNavSys')
+        @if($data['reportType'] == 'NetNavSys')
         Inventory Valuation Report (Navision)
-        @else
+        @elseif($data['reportType'] == 'NegativeNetNavSys')
         Negative Inventory Balance (Navision)
+        @elseif($data['reportType'] == 'NotInCount')
+        Inventory Valuation No Actual Count
         @endif
     </title>
     <style>
@@ -248,10 +250,13 @@
                 </div>
                 <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
-                        @if(!$data['report'] == 'NetNavSys')
+                        {{-- {{dd($data['reportType'])}} --}}
+                        @if($data['reportType'] == 'NetNavSys')
                         Inventory Valuation Report (Navision)
-                        @else
+                        @elseif($data['reportType'] == 'NegativeNetNavSys')
                         Negative Inventory Balance (Navision)
+                        @elseif($data['reportType'] == 'NotInCount')
+                        Inventory Valuation No Actual Count
                         @endif
                     </div>
                 </div>

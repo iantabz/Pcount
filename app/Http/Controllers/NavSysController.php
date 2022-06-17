@@ -15,7 +15,7 @@ class NavSysController extends Controller
 {
     public function NetNavSys()
     {
-        // dd(request()->all());
+        // dd(request()->type);
         $reportType = request()->type;
 
         if ($reportType != 'NotInCount') {
@@ -180,6 +180,7 @@ class NavSysController extends Controller
                 'runDate'       => $runDate,
                 'runTime'       => $runTime,
                 'report'        => $reportType,
+                'reportType'    => $reportType,
                 'data'          => $arr
             );
         } else {
@@ -312,6 +313,7 @@ class NavSysController extends Controller
                 'runDate'       => $runDate,
                 'runTime'       => $runTime,
                 'report'        => $report,
+                'reportType'    => $reportType,
                 'data'          => $result
             );
         }
@@ -476,6 +478,7 @@ class NavSysController extends Controller
             'runDate'       => $runDate,
             'runTime'       => $runTime,
             'report'        => $report,
+            'reportType'    => $reportType,
             'data'          => $result
         );
 
@@ -502,7 +505,7 @@ class NavSysController extends Controller
 
         $key = implode('-', [$section, $bu, $dept, $date]);
 
-        return Cache::remember($key, now()->addMinutes(5), function () use ($date, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
+        return Cache::remember($key, now()->addMinutes(60), function () use ($date, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
             $result = TblAppCountdata::selectRaw('
             tbl_app_countdata.itemcode, 
             tbl_app_countdata.barcode,

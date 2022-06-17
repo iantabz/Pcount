@@ -183,11 +183,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Inventory Balance No Actual Count (Navision)',
+      name: 'Inventory Balance No Actual Count',
       path: '/not_in_count',
       component: NotInCount,
       meta: {
-        name: 'Inventory Balance No Actual Count (Navision)'
+        name: 'Inventory Balance No Actual Count'
       }
     },
     {

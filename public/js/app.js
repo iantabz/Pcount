@@ -19855,11 +19855,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
       name: 'Inventory Valuation Report (Navision)'
     }
   }, {
-    name: 'Inventory Balance No Actual Count (Navision)',
+    name: 'Inventory Balance No Actual Count',
     path: '/not_in_count',
     component: _components_NotInCount_vue__WEBPACK_IMPORTED_MODULE_19__.default,
     meta: {
-      name: 'Inventory Balance No Actual Count (Navision)'
+      name: 'Inventory Balance No Actual Count'
     }
   }, {
     name: 'Count Setup by Backend',

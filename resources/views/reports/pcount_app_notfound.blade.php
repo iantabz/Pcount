@@ -320,7 +320,7 @@
     $startCount = null;
     @endphp
     {{-- {{dd($data)}} --}}
-
+    @foreach ($data['data'] as $emp => $audit)
     <header>
         <div style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
@@ -355,7 +355,7 @@
         </div>
     </header>
 
-    @foreach ($data['data'] as $emp => $audit)
+    
     @php
     --$countSize
     @endphp
@@ -593,9 +593,9 @@
     {{-- {{dd($countStart->diff($countEnd))}} --}}
     {{-- {{dd($countStart, $countEnd, join(", ",array_unique($skus)))}} --}}
 
-    {{-- @if (count($data['data']) > 1)
+    @if (count($data['data']) > 1)
     <div class="page-break"></div>
-    @endif --}}
+    @endif
 
     @endforeach
     {{-- {{dd(current($items))}} --}}
