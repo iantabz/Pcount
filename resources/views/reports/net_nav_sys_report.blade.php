@@ -243,10 +243,10 @@
                         - {{$data['section']}}
                         @endif
                     </h4>
-                    <h4>As of {{ $data['date']}}</h4>
+                    {{-- <h4>As of {{ $data['date']}}</h4> --}}
                     <h4>Batch Date: {{ $data['date']}}</h4>
-                    <h4>Actual Count Date: {{ $data['date']}}</h4>
-                    <h4>Count Type: Annual</h4>
+                    {{-- <h4>Actual Count Date: {{ $data['date']}}</h4> --}}
+                    {{-- <h4>Count Type: Annual</h4> --}}
                 </div>
                 <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">

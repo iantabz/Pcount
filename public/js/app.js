@@ -14124,7 +14124,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-Dropzone.options.navUpload = {
+Dropzone.options.unpostedUpload = {
   paramName: 'file',
   // The name that will be used to transfer the file
   url: '/uploading/unposted/importUnposted',
@@ -19785,11 +19785,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
       name: 'Item Department'
     }
   }, {
-    name: 'Upload Inventory Balance from Nav',
+    name: 'Upload Inventory Valuation from Nav',
     path: '/nav_upload',
     component: _components_NavUpload_vue__WEBPACK_IMPORTED_MODULE_4__.default,
     meta: {
-      name: 'Upload Inventory Balance from Nav'
+      name: 'Upload Inventory Valuation from Nav'
     }
   }, {
     name: 'POS Unposted',
@@ -57285,7 +57285,7 @@ var render = function() {
                   { staticClass: "text-main text-normal text-2x mar-no" },
                   [
                     _vm._v(
-                      "\n              Welcome back, " +
+                      "\n              Welcome " +
                         _vm._s(_vm.user.name) +
                         "!\n            "
                     )
@@ -63377,7 +63377,7 @@ var render = function() {
             "form",
             {
               staticClass: "dropzone",
-              attrs: { id: "navUpload", enctype: "multipart/form-data" }
+              attrs: { id: "unpostedUpload", enctype: "multipart/form-data" }
             },
             [
               _c("input", {

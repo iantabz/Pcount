@@ -216,7 +216,7 @@
               </div> -->
             </div>
           </div>
-          <form id="navUpload" class="dropzone" enctype="multipart/form-data">
+          <form id="unpostedUpload" class="dropzone" enctype="multipart/form-data">
             <input id="_token" type="hidden" name="_token" />
 
             <input type="hidden" :value="business_unit" name="business_unit" />
@@ -252,7 +252,7 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import { debounce } from 'lodash'
 
-Dropzone.options.navUpload = {
+Dropzone.options.unpostedUpload = {
   paramName: 'file', // The name that will be used to transfer the file
   url: '/uploading/unposted/importUnposted',
   // url: '/uploading/masterfiles/importItemMasterfile',

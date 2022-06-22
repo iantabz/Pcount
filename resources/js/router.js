@@ -103,11 +103,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Upload Inventory Balance from Nav',
+      name: 'Upload Inventory Valuation from Nav',
       path: '/nav_upload',
       component: NavUpload,
       meta: {
-        name: 'Upload Inventory Balance from Nav'
+        name: 'Upload Inventory Valuation from Nav'
       }
     },
     {

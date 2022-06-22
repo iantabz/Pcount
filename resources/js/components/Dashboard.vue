@@ -10,7 +10,7 @@
                 INVENTORY COUNT CONSOLIDATION SYSTEM
               </h3>
               <h3 class="text-main text-normal text-2x mar-no">
-                Welcome back, {{ user.name }}!
+                Welcome {{ user.name }}!
               </h3>
               <h5 class="text-uppercase text-muted text-normal">
                 {{ date | DashboardTime }}
