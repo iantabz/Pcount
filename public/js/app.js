@@ -5654,6 +5654,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5708,21 +5739,19 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
   },
   watch: {
     date: function date() {
-      if (this.business_unit && this.department && this.section) {
-        this.getResults();
-      }
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
     date2: function date2() {
       this.getResults();
     },
     business_unit: function business_unit() {
-      this.getResults();
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
     department: function department() {
-      this.getResults();
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
     section: function section() {
-      this.getResults();
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
     vendor: function vendor(newValue) {
       // let value = []
@@ -5742,7 +5771,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           this.filteredvendorList = this.vendorList.filter(function (categ) {
             return categ.vendor_name === res.vendor_name;
           });
-          this.getResults();
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
         } else {
           this.filteredvendorList = this.vendorList.filter(function (categ) {
             return categ.vendor_name !== 'ALL VENDORS';
@@ -5752,7 +5781,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             value.push("'" + element.vendor_name + "'");
           });
           this.forPrintVendor = value.join(' , ');
-          this.getResults();
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
         }
       } else {
         this.filteredvendorList = this.vendorList;
@@ -5776,7 +5805,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           this.filteredCategoryList = this.categoryList.filter(function (categ) {
             return categ.category === res.category;
           });
-          this.getResults();
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
         } else {
           this.filteredCategoryList = this.categoryList.filter(function (categ) {
             return categ.category !== 'ALL CATEGORIES';
@@ -5786,7 +5815,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             value.push("'" + element.category + "'");
           });
           this.forPrintCategory = value.join(' , ');
-          this.getResults();
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
         }
       } else {
         this.filteredCategoryList = this.categoryList;
@@ -5923,7 +5952,11 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
 
                 _context2.next = 7;
                 return axios.post("/reports/appdata/generate", {
-                  "export": btoa(JSON.stringify(_this2["export"]))
+                  // export: btoa(JSON.stringify(this.export)),
+                  bu: _this2.business_unit,
+                  dept: _this2.department,
+                  section: _this2.section,
+                  date: btoa(_this2.date)
                 }, {
                   responseType: 'blob'
                 });
@@ -13398,21 +13431,18 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
   },
   watch: {
     date: function date() {
-      if (this.business_unit && this.department && this.section) {
-        this.getResults();
-      }
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
-    date2: function date2() {
-      this.getResults();
+    date2: function date2() {// this.getResults()
     },
     business_unit: function business_unit() {
-      this.getResults();
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
     department: function department() {
-      this.getResults();
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
     section: function section() {
-      this.getResults();
+      if (this.business_unit && this.department && this.section && this.vendor && this.category) this.getResults();
     },
     vendor: function vendor(newValue) {
       // let value = []
@@ -13433,7 +13463,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           this.filteredvendorList = this.vendorList.filter(function (categ) {
             return categ.vendor_name === res.vendor_name;
           });
-          this.getResults();
+
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+            this.getResults();
+          }
         } else {
           this.filteredvendorList = this.vendorList.filter(function (categ) {
             return categ.vendor_name !== 'ALL VENDORS';
@@ -13443,7 +13476,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             value.push("'" + element.vendor_name + "'");
           });
           this.forPrintVendor = value.join(' , ');
-          this.getResults();
+
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+            this.getResults();
+          }
         }
       } else {
         this.filteredvendorList = this.vendorList;
@@ -13467,7 +13503,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
           this.filteredcategoryList = this.categoryList.filter(function (categ) {
             return categ.category === res.category;
           });
-          this.getResults();
+
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+            this.getResults();
+          }
         } else {
           this.filteredcategoryList = this.categoryList.filter(function (categ) {
             return categ.category !== 'ALL CATEGORIES';
@@ -13477,7 +13516,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             value.push("'" + element.category + "'");
           });
           this.forPrintCategory = value.join(' , ');
-          this.getResults();
+
+          if (this.business_unit && this.department && this.section && this.vendor && this.category) {
+            this.getResults();
+          }
         }
       } else {
         this.filteredcategoryList = this.categoryList;
@@ -13583,7 +13625,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
                 _context2.next = 7;
-                return axios.get("/reports/pcount_cost/generatePcountCost?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section), {
+                return axios.get("/reports/pcount_cost/generatePcountCost?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&company=").concat(_this2.company, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section), {
                   responseType: 'blob'
                 });
 
@@ -14477,6 +14519,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -56212,41 +56272,82 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-info btn-rounded pull-right text-thin mar-lft",
-                    attrs: { disabled: !_vm.data.data.length },
-                    on: {
-                      click: function($event) {
-                        return _vm.generateBtn($event)
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                    _vm._v("  Generate PDF\n              ")
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-info btn-rounded pull-right text-thin",
-                    attrs: { disabled: !_vm.data.data.length },
-                    on: {
-                      click: function($event) {
-                        return _vm.generateBtnEXCEL($event, "CountData")
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                    _vm._v("  Generate Excel\n              ")
-                  ]
-                )
+                _c("div", { staticClass: "btn-group pull-right" }, [
+                  _c("div", { staticClass: "dropdown" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-info btn-rounded text-thin mar-lft dropdown-toggle",
+                        attrs: {
+                          disabled:
+                            !_vm.notFoundItems || _vm.notFoundItems == 0,
+                          "data-toggle": "dropdown",
+                          type: "button",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                        _vm._v(
+                          "  Generate\n                    Report\n                    "
+                        ),
+                        _c("i", { staticClass: "dropdown-caret" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      { staticClass: "dropdown-menu dropdown-menu-right" },
+                      [
+                        _c("li", { staticClass: "dropdown-header" }, [
+                          _vm._v("Actual Count (APP)")
+                        ]),
+                        _vm._v(" "),
+                        _c("li", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "javscript:;" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.generateBtnEXCEL(
+                                    $event,
+                                    "CountData"
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        Generate Excel\n                      "
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("li", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "javscript:;" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.generateBtn($event)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        Generate PDF\n                      "
+                              )
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -63681,7 +63782,9 @@ var render = function() {
                           )
                         ],
                         1
-                      )
+                      ),
+                      _vm._v(" "),
+                      _vm._m(2)
                     ]
                   ),
                   _vm._v(" "),
@@ -63693,10 +63796,10 @@ var render = function() {
                       attrs: { id: "datatable" }
                     },
                     [
-                      _vm._m(2),
+                      _vm._m(3),
                       _vm._v(" "),
                       !_vm.data.data.length
-                        ? _c("tbody", [_vm._m(3)])
+                        ? _c("tbody", [_vm._m(4)])
                         : _vm._e(),
                       _vm._v(" "),
                       _vm._l(_vm.data.data, function(data, index) {
@@ -63778,7 +63881,8 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("td", { staticClass: "text-center" }, [
                                   _c("span", {
-                                    staticClass: "badge badge-icon badge-fw",
+                                    staticClass:
+                                      "badge badge-icon badge-fw animate-ping",
                                     class: {
                                       "badge-success": racks.rackGroup.every(
                                         function(rack) {
@@ -63852,6 +63956,31 @@ var staticRenderFns = [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
         _vm._v("\n                      Count Date :\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("code", [
+        _c("small", { staticClass: "text-bold" }, [
+          _vm._v("\n                      Legend:\n                      "),
+          _c("span", { staticClass: "text-main" }, [_vm._v(" Success")]),
+          _vm._v(" "),
+          _c("span", {
+            staticClass:
+              "badge badge-icon badge-fw animate-bounce badge-success"
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-main" }, [_vm._v(" Pending")]),
+          _vm._v(" "),
+          _c("span", {
+            staticClass:
+              "badge badge-icon badge-fw animate-bounce badge-warning"
+          })
+        ])
       ])
     ])
   },

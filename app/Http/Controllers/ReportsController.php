@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use \PDF;
-use App\Exports\ConsolidatedReportExport;
-use App\Exports\PcountAppCountCost;
-use App\Models\BusinessUnit;
-use App\Models\TblAppCountdata;
-use App\Models\TblNavCountdata;
-use App\Models\TblUnposted;
 use Carbon\Carbon;
 use Dompdf\Options;
+use App\Models\TblUnposted;
+use App\Models\BusinessUnit;
 use Illuminate\Http\Request;
+use App\Models\TblAppCountdata;
+use App\Models\TblNavCountdata;
 use Illuminate\Support\Facades\DB;
+use App\Exports\PcountAppCountCost;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Cache;
+use App\Exports\ConsolidatedReportExport;
 
 class ReportsController extends Controller
 {
@@ -1145,61 +1146,151 @@ class ReportsController extends Controller
         $category = request()->category;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
+        $company = request()->company;
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
+        $countType = request()->countType;
 
-        $query = TblAppCountdata::selectRaw('
+
+        $key = implode('-', [$bu, $dept, $section, $date, 'CountDataCost']);
+
+        $result = TblAppCountdata::selectRaw('
         tbl_app_countdata.itemcode, 
-        tbl_app_countdata.barcode,
+        tbl_app_countdata.barcode, 
         tbl_app_countdata.description, 
         tbl_item_masterfile.extended_desc,
         tbl_app_countdata.uom, 
         tbl_nav_countdata.uom as nav_uom,
-        SUM(tbl_app_countdata.qty) as qty,
+        SUM(tbl_app_countdata.qty) as total_qty,
         SUM(tbl_app_countdata.conversion_qty) as total_conv_qty,
-        rack_desc, 
+        rack_desc,
         empno,
         datetime_scanned,
         datetime_saved,
+        datetime_exported,
+        tbl_nav_countdata.cost_vat as cost_vat,
         tbl_nav_countdata.cost_no_vat as cost_novat,
-        tbl_nav_countdata.cost_vat as cost_vat')
+        tbl_app_user.name AS app_user,
+        tbl_app_user.position AS app_user_position,
+        tbl_app_countdata.user_signature as app_user_sign,
+        tbl_app_audit.name AS audit_user,
+        tbl_app_audit.position AS audit_position,
+        tbl_app_countdata.audit_signature AS audit_user_sign,
+        vendor_name, 
+        tbl_item_masterfile.group
+        ')
             ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode')
-            ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode');
+            ->LEFTJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', '=', 'tbl_app_countdata.itemcode')
+            ->Join('tbl_app_user', 'tbl_app_user.location_id', 'tbl_app_countdata.location_id')
+            ->Join('tbl_app_audit', 'tbl_app_audit.location_id', 'tbl_app_countdata.location_id')
+            ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
         // dd(1);
 
         if ($bu != 'null') {
-            $query->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
+            $result->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
         }
 
         if ($dept != 'null') {
-            $query->WHERE('tbl_app_countdata.department', 'LIKE', "%$dept%");
+            $result->WHERE('tbl_app_countdata.department', 'LIKE', "%$dept%");
         }
 
         if ($section != 'null') {
-            $query->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
+            $result->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
         }
         if ($vendors) {
             $vendors = explode(' , ', $vendors);
             $vendors = str_replace("'", "", $vendors);
-            $query = $query->whereIn('vendor_name', $vendors);
+            $result = $result->whereIn('vendor_name', $vendors);
         }
         if ($category) {
             $category = explode(" , ", $category);
             $category = str_replace("'", "", $category);
-            $query = $query->whereIn('group', $category);
+            $result = $result->whereIn('group', $category);
         }
 
-        return $query->whereBetween('datetime_saved', [$date, $dateAsOf])
-            ->groupBy('barcode')
-            ->orderBy('itemcode')
-            ->paginate(10);
+        $result = $result->groupBy('barcode')
+            ->orderBy('itemcode');
+
+        // if (request()->has('forExport')) {
+        Cache::remember($key, now()->addMinutes(15), function () use (
+            $date,
+            $dateAsOf,
+            $bu,
+            $dept,
+            $section,
+            $vendors,
+            $category,
+            $company,
+            $printDate,
+            $countType,
+            $runDate,
+            $runTime,
+            $result
+        ) {
+            $result = $result->get()->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])->toArray();
+
+            $header = array(
+                'company' => $company,
+                'business_unit' => $bu,
+                'department' => $dept,
+                'section' => $section,
+                'vendors' => $vendors,
+                'category' => $category,
+                'date' => $printDate,
+                'user' => auth()->user()->name,
+                'user_position' => auth()->user()->position,
+                'runDate'   => $runDate,
+                'runTime'    => $runTime,
+                'data' => $result
+            );
+            // dd($header);
+            return $header;
+        });
+        // }
+        return $result->paginate(10);
     }
 
     public function generatePcountCost()
     {
+        // dd(request()->all());
         set_time_limit(0);
         ini_set('memory_limit', '-1');
 
-        $pdf = PDF::loadView('reports.pcount_cost', ['data' => $this->dataPcountCost()]);
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $key = implode('-', [$bu, $dept, $section, $date, 'CountDataCost']);
+        $data = Cache::get($key);
+
+        $data['data'] = collect($data['data'])->map(function ($trans) {
+            // dd($trans->all());
+
+            $res = array_map(function ($x) {
+                return array_map(function ($y) {
+                    return array_map(function ($z) {
+                        $newArr = [];
+                        foreach ($z as $index => $xyz) {
+                            if ($index === 0) {
+                                $res = TblAppCountdata::where('itemcode', $xyz['itemcode'])->first();
+                                $xyz['user_signature'] = $res->user_signature;
+                                $xyz['audit_signature'] = $res->audit_signature;
+                                $newArr[] = $xyz;
+                            } else {
+                                $newArr[] = $xyz;
+                            }
+                        }
+                        return $newArr;
+                    }, $y);
+                }, $x);
+            }, $trans);
+
+            return $res;
+        })->all();
+
+        $pdf = PDF::loadView('reports.pcount_cost', ['data' => $data]);
         return $pdf->setPaper('legal', 'landscape')->download('PCountCost.pdf');
     }
 

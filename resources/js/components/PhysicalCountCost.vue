@@ -377,8 +377,8 @@ export default {
       category: null,
       forPrintVendor: [],
       forPrintCategory: [],
-       countType: null,
-      countTypes: ['ANNUAL', 'CYCLICAL'],
+      countType: null,
+      countTypes: ['ANNUAL', 'CYCLICAL']
     }
   },
   components: {
@@ -387,21 +387,47 @@ export default {
   },
   watch: {
     date() {
-      if (this.business_unit && this.department && this.section) {
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
         this.getResults()
-      }
     },
     date2() {
-      this.getResults()
+      // this.getResults()
     },
     business_unit() {
-      this.getResults()
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
+        this.getResults()
     },
     department() {
-      this.getResults()
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
+        this.getResults()
     },
     section() {
-      this.getResults()
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
+        this.getResults()
     },
     vendor(newValue) {
       // let value = []
@@ -421,7 +447,15 @@ export default {
             categ => categ.vendor_name === res.vendor_name
           )
 
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          ) {
+            this.getResults()
+          }
         } else {
           this.filteredvendorList = this.vendorList.filter(
             categ => categ.vendor_name !== 'ALL VENDORS'
@@ -432,7 +466,15 @@ export default {
             value.push("'" + element.vendor_name + "'")
           })
           this.forPrintVendor = value.join(' , ')
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          ) {
+            this.getResults()
+          }
         }
       } else {
         this.filteredvendorList = this.vendorList
@@ -455,7 +497,15 @@ export default {
             categ => categ.category === res.category
           )
 
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          ) {
+            this.getResults()
+          }
         } else {
           this.filteredcategoryList = this.categoryList.filter(
             categ => categ.category !== 'ALL CATEGORIES'
@@ -466,7 +516,15 @@ export default {
             value.push("'" + element.category + "'")
           })
           this.forPrintCategory = value.join(' , ')
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          ) {
+            this.getResults()
+          }
         }
       } else {
         this.filteredcategoryList = this.categoryList
@@ -566,9 +624,9 @@ export default {
           this.date
         )}&date2=${btoa(this.date2)}&vendors=${btoa(
           this.forPrintVendor
-        )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
-          this.department
-        }&section=${this.section}`,
+        )}&category=${this.forPrintCategory}&company=${this.company}&bu=${
+          this.business_unit
+        }&dept=${this.department}&section=${this.section}`,
         {
           responseType: 'blob'
         }

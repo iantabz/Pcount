@@ -59,6 +59,24 @@
                       Setup
                     </router-link>
                   </div>
+                  <div class="row">
+                    <code>
+                      <small class="text-bold">
+                        Legend:
+                        <span class="text-main"> Success</span>
+
+                        <span
+                          class="badge badge-icon badge-fw animate-bounce badge-success"
+                        ></span>
+
+                        <span class="text-main"> Pending</span>
+
+                        <span
+                          class="badge badge-icon badge-fw animate-bounce badge-warning"
+                        ></span>
+                      </small>
+                    </code>
+                  </div>
                 </div>
                 <table
                   class="table table-condensed table-vcenter table-hover"
@@ -116,7 +134,7 @@
 
                       <td class="text-center">
                         <span
-                          class="badge badge-icon badge-fw"
+                          class="badge badge-icon badge-fw animate-ping"
                           :class="{
                             'badge-success': racks.rackGroup.every(
                               rack => rack.done == 'true'

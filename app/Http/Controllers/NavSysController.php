@@ -44,7 +44,7 @@ class NavSysController extends Controller
         //     ->whereBetween('datetime_saved', [$date, $dateAsOf])
         //     ->orderBy('itemcode');
 
-        return Cache::remember('tabz', now()->addMinutes(60), function () {
+        return Cache::remember('tabz', now()->addMinutes(15), function () {
             $company = auth()->user()->company;
             $section = request()->section;
             $vendors = base64_decode(request()->vendors);
@@ -517,7 +517,7 @@ class NavSysController extends Controller
 
         // dd(Cache::get($key));
 
-        return Cache::remember($key, now()->addMinutes(60), function () use ($date, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
+        return Cache::remember($key, now()->addMinutes(15), function () use ($date, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
             $result = TblNavCountdata::selectRaw('
             itemcode, 
             description as extended_desc,

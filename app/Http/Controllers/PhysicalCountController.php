@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\CountByBackend;
 use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\TblAppNfitem;
 use App\Exports\ItemsNotFound;
+use App\Exports\CountByBackend;
 use App\Models\TblAppCountdata;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 use App\Exports\PcountAppCountData;
 use App\Exports\PcountDamageExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Cache;
 use Facade\Ignition\QueryRecorder\Query;
 
 class PhysicalCountController extends Controller
@@ -32,6 +33,9 @@ class PhysicalCountController extends Controller
         $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
         $runDate = Carbon::parse(now())->toFormattedDateString();
         $runTime =  Carbon::parse(now())->format('h:i A');
+
+        $key = implode('-', [$bu, $dept, $section, $date, 'CountData']);
+
 
         $query = TblAppCountdata::selectRaw('
         tbl_app_countdata.id,
@@ -93,31 +97,50 @@ class PhysicalCountController extends Controller
             ->orderBy('itemcode');
 
         if (request()->has('forExport')) {
-            $data = $query->cursor()
-                ->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
-                ->all();
+            return Cache::remember($key, now()->addMinutes(15), function () use (
+                $date,
+                $dateAsOf,
+                $bu,
+                $dept,
+                $section,
+                $vendors,
+                $category,
+                $company,
+                $printDate,
+                $countType,
+                $runDate,
+                $runTime,
+                $query
+            ) {
 
-            $query = array(
-                'company' => $company,
-                'business_unit' => $bu,
-                'department' => $dept,
-                'section' => $section,
-                'vendors' => $vendors,
-                'category' => $category,
-                'date' => $printDate,
-                'countType' => $countType,
-                'user' => auth()->user()->name,
-                'user_position' => auth()->user()->position,
-                'runDate'   => $runDate,
-                'runTime'    => $runTime,
-                'data' => $data
-            );
-        } else {
-            $query = $query->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
-                ->paginate(10);
+                $data = $query->get()
+                    ->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
+                    ->toArray();
+                // dd($data);
+
+                $query = array(
+                    'company' => $company,
+                    'business_unit' => $bu,
+                    'department' => $dept,
+                    'section' => $section,
+                    'vendors' => $vendors,
+                    'category' => $category,
+                    'date' => $printDate,
+                    'countType' => $countType,
+                    'user' => auth()->user()->name,
+                    'user_position' => auth()->user()->position,
+                    'runDate'   => $runDate,
+                    'runTime'    => $runTime,
+                    'data' => $data
+                );
+                return $query;
+            });
         }
 
-        return $query;
+
+        return  $query->groupBy(['app_user', 'audit_user', 'vendor_name', 'group'])
+            ->paginate(10);
+        // return $query;
 
         // return $query->whereBetween('datetime_saved', [$date, $dateAsOf])
         //     ->groupBy('barcode')
@@ -145,15 +168,23 @@ class PhysicalCountController extends Controller
     public function generate()
     {
         // dd(request()->all());
-        $export = json_decode(base64_decode(request()->export), true);
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $key = implode('-', [$bu, $dept, $section, $date, 'CountData']);
+        $data = Cache::get($key);
+
+        // dd($data);
+
+        // $export = json_decode(base64_decode(request()->export), true);
         // dd($export);
         // $export = collect($export)->all();
-        // dd($export);
-        // dd($export);
 
         // dd(collect($export['data'])->flatten());
+        $data['data'] = collect($data['data'])->map(function ($trans) {
+            // dd($trans->all());
 
-        $export['data'] = collect($export['data'])->map(function ($trans) {
             $res = array_map(function ($x) {
                 return array_map(function ($y) {
                     return array_map(function ($z) {
@@ -176,10 +207,10 @@ class PhysicalCountController extends Controller
             return $res;
         })->all();
 
-        // dd($export);
+        // dd($data);
 
 
-        $pdf = PDF::loadView('reports.pcount_app', ['data' => $export]);
+        $pdf = PDF::loadView('reports.pcount_app', ['data' => $data]);
         return $pdf->setPaper('legal', 'landscape')->download('PCount From App.pdf');
     }
 

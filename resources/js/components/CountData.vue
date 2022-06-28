@@ -239,7 +239,7 @@
                     </ul>
                   </div>
                 </div>
-                <button
+                <!-- <button
                   class="btn btn-info btn-rounded pull-right text-thin mar-lft"
                   :disabled="!data.data.length"
                   @click="generateBtn($event)"
@@ -253,7 +253,38 @@
                   @click="generateBtnEXCEL($event, 'CountData')"
                 >
                   <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Excel
-                </button>
+                </button> -->
+                <div class="btn-group pull-right">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-info btn-rounded text-thin mar-lft dropdown-toggle"
+                      :disabled="!notFoundItems || notFoundItems == 0"
+                      data-toggle="dropdown"
+                      type="button"
+                      aria-expanded="false"
+                    >
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
+                      Report
+                      <i class="dropdown-caret"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" style="">
+                      <li class="dropdown-header">Actual Count (APP)</li>
+                      <li>
+                        <a
+                          href="javscript:;"
+                          @click="generateBtnEXCEL($event, 'CountData')"
+                        >
+                          Generate Excel
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javscript:;" @click="generateBtn($event)">
+                          Generate PDF
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <table class="table table-striped table-vcenter" id="data-table">
                 <thead>
@@ -398,21 +429,47 @@ export default {
   },
   watch: {
     date() {
-      if (this.business_unit && this.department && this.section) {
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
         this.getResults()
-      }
     },
     date2() {
       this.getResults()
     },
     business_unit() {
-      this.getResults()
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
+        this.getResults()
     },
     department() {
-      this.getResults()
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
+        this.getResults()
     },
     section() {
-      this.getResults()
+      if (
+        this.business_unit &&
+        this.department &&
+        this.section &&
+        this.vendor &&
+        this.category
+      )
+        this.getResults()
     },
     vendor(newValue) {
       // let value = []
@@ -431,7 +488,14 @@ export default {
             categ => categ.vendor_name === res.vendor_name
           )
 
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          )
+            this.getResults()
         } else {
           this.filteredvendorList = this.vendorList.filter(
             categ => categ.vendor_name !== 'ALL VENDORS'
@@ -442,7 +506,14 @@ export default {
             value.push("'" + element.vendor_name + "'")
           })
           this.forPrintVendor = value.join(' , ')
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          )
+            this.getResults()
         }
       } else {
         this.filteredvendorList = this.vendorList
@@ -465,7 +536,14 @@ export default {
             categ => categ.category === res.category
           )
 
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          )
+            this.getResults()
         } else {
           this.filteredCategoryList = this.categoryList.filter(
             categ => categ.category !== 'ALL CATEGORIES'
@@ -476,7 +554,14 @@ export default {
             value.push("'" + element.category + "'")
           })
           this.forPrintCategory = value.join(' , ')
-          this.getResults()
+          if (
+            this.business_unit &&
+            this.department &&
+            this.section &&
+            this.vendor &&
+            this.category
+          )
+            this.getResults()
         }
       } else {
         this.filteredCategoryList = this.categoryList
@@ -603,7 +688,11 @@ export default {
       const { headers, data } = await axios.post(
         `/reports/appdata/generate`,
         {
-          export: btoa(JSON.stringify(this.export))
+          // export: btoa(JSON.stringify(this.export)),
+          bu: this.business_unit,
+          dept: this.department,
+          section: this.section,
+          date: btoa(this.date)
         },
         {
           responseType: 'blob'

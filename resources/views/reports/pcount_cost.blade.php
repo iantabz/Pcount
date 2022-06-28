@@ -477,6 +477,7 @@
             </tr>
         </thead>
     </table>
+    <div class="page-break"></div>
     @endforeach
     @endforeach
     @if (count($data['data']) > 1)
