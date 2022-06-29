@@ -15,14 +15,22 @@ class NavSysController extends Controller
 {
     public function NetNavSys()
     {
-        // dd(request()->type);
+        // dd(request()->all());
         $reportType = request()->type;
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $section = request()->section;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
 
         if ($reportType != 'NotInCount') {
             $pdf = PDF::loadView('reports.net_nav_sys_report', ['data' => $this->varianceReportData()]);
             return $pdf->setPaper('legal', 'landscape')->download('Nav Sys Var Report.pdf');
         } else {
-            $pdf = PDF::loadView('reports.net_nav_sys_report', ['data' => $this->NotInCountData()]);
+            $key = implode('-', [$bu, $dept, $section, $date, 'NotInCount']);
+            $data = Cache::get($key);
+            // dd($data);
+
+            $pdf = PDF::loadView('reports.net_nav_sys_report', ['data' => $data]);
             return $pdf->setPaper('legal', 'landscape')->download('Not In Count Report.pdf');
         }
     }
@@ -499,11 +507,11 @@ class NavSysController extends Controller
         $category = request()->category;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
-        $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
+        $date2 = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateString();
         $bu = request()->bu;
         $dept = request()->dept;
 
-
+        // dd($date2);
         // $result = TblAppCountdata::selectRaw('
         // tbl_app_countdata.itemcode, 
         // tbl_app_countdata.barcode,
@@ -513,17 +521,17 @@ class NavSysController extends Controller
         //     ->JOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
         //     ->whereBetween('datetime_saved', [$date, $dateAsOf])->orderBy('itemcode');
 
-        $key = implode('-', [$section, $bu, $dept, $date, 'r']);
+        // $key = implode('-', [$section, $bu, $dept, $date, 'r']);
+        $key = implode('-', [$bu, $dept, $section, $date2, 'NetNavSys']);
+        // dd(Cache::get($key), $key);
 
-        // dd(Cache::get($key));
-
-        return Cache::remember($key, now()->addMinutes(15), function () use ($date, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
+        return Cache::remember($key, now()->addMinutes(15), function () use ($date, $date2, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
             $result = TblNavCountdata::selectRaw('
             itemcode, 
             description as extended_desc,
             uom
             ')
-                ->where('date', $date)->orderBy('itemcode');
+                ->where('date', $date2)->orderBy('itemcode');
 
             // dd($result->get());
 
@@ -553,25 +561,25 @@ class NavSysController extends Controller
             // }
 
             // dd($result->groupByRaw('itemcode')->first());
-
+            // dd($result->get());
             $x = $result->groupByRaw('itemcode')->get();
             // dd($x);
 
-            $query = $x->map(function ($c) use ($bu, $dept, $section) {
+            $query = $x->map(function ($c) use ($bu, $dept, $section, $date2) {
                 // dd($c->itemcode);
                 $x = TblNavCountdata::selectRaw("cost_vat, cost_no_vat, amt, SUM(qty) as nav_qty")->where([
                     ['itemcode', $c->itemcode],
                     ['business_unit', $bu],
                     ['department', $dept],
                     ['section', $section]
-                ])->groupBy('itemcode');
+                ])->where('date', $date2);
 
-                $y = TblUnposted::selectRaw("cost_no_vat, tot_cost_no_vat, SUM(qty) as unposted")->where([
+                $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
                     ['itemcode', $c->itemcode],
                     ['business_unit', $bu],
                     ['department', $dept],
                     ['section', $section]
-                ])->groupBy('itemcode');
+                ])->where('date', $date2);
 
                 // dd($x->get());
                 if ($x->exists()) {
@@ -622,5 +630,193 @@ class NavSysController extends Controller
 
 
 
+    }
+
+    public function getNotinCount()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+
+        $company = auth()->user()->company;
+        $section = request()->section;
+        $vendors = base64_decode(request()->vendors);
+        $category = request()->category;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $date2 = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
+        $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
+        $reportType = request()->type;
+
+        // $result = TblNavCountdata::selectRaw('
+        //         tbl_nav_countdata.itemcode, 
+        //         tbl_item_masterfile.extended_desc,
+        //         tbl_nav_countdata.uom, 
+        //         vendor_name,
+        //         tbl_item_masterfile.group
+        // ')
+        //     ->join('tbl_item_masterfile', 'tbl_item_masterfile.item_code', 'tbl_nav_countdata.itemcode')
+        //     ->where('date', $date)
+        //     ->orderBy('itemcode');
+
+        // $result = TblNavCountdata::doesnthave('NotInCount')
+        //     ->selectRaw('
+        //         itemcode, 
+        //         description as extended_desc,
+        //         uom
+        //     ');
+        $key = implode('-', [$bu, $dept, $section, $date2, 'NotInCount']);
+        // dd($key);
+
+        $result = TblNavCountdata::selectRaw('
+                itemcode, 
+                description as extended_desc,
+                uom
+            ')->where('date', $date2);
+
+        // dd($result->limit(50)->orderBy('itemcode')->get());
+
+        if ($bu != 'null')
+            $result->WHERE('business_unit',  'LIKE', "%$bu%");
+
+        if ($dept != 'null')
+            $result->WHERE('department', 'LIKE', "%$dept%");
+
+        if ($section != 'null')
+            $result->WHERE('section', 'LIKE', "%$section%");
+
+
+        $result =  $result->orderBy('itemcode')
+            ->whereNotIn('itemcode', function ($query) use ($bu, $dept, $section, $date, $dateAsOf) {
+                $query->select(DB::raw('itemcode'))
+                    ->from('tbl_app_countdata')
+                    ->where('tbl_app_countdata.itemcode', '=', 'itemcode')
+                    ->whereBetween('datetime_saved', [$date, $dateAsOf]);
+
+                if ($bu != 'null')
+                    $query->WHERE('business_unit',  'LIKE', "%$bu%");
+
+                if ($dept != 'null')
+                    $query->WHERE('department', 'LIKE', "%$dept%");
+
+                if ($section != 'null')
+                    $query->WHERE('section', 'LIKE', "%$section%");
+            });
+
+        // dd($result->get());
+
+        // dd($result->limit(5)->get());
+
+        $result = $vendors != null ? $result->get()
+            : $result->limit(1500)->get()->all();
+
+        $report = 'All';
+        $result = collect($result)->map(function ($c) use ($bu, $dept, $section, $reportType, $date2) {
+            // dd($c->itemcode);
+            $x = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
+                ['itemcode', $c->itemcode],
+                ['business_unit', $bu],
+                ['department', $dept],
+                ['section', $section],
+                ['date', $date2]
+            ]);
+
+            // dd($x->get());
+
+
+            $y = TblUnposted::selectRaw("itemcode, SUM(qty) as unposted")->where([
+                ['itemcode', $c->itemcode],
+                ['business_unit', $bu],
+                ['department', $dept],
+                ['section', $section],
+                ['date', $date2]
+            ]);
+            // dd($y);
+
+            $queryResult = $x->exists();
+            $navQty = $queryResult ? $x->first()->nav_qty : '-';
+            $c->nav_qty = $navQty;
+
+            // $yResult = $y->exists();
+            $unposted = $y->first()->unposted == null ? 0 : $y->first()->unposted;
+            $c->unposted = $unposted;
+
+            if ($reportType == 'Variance') {
+                $temp1 = $navQty === '-' ? 0 : $navQty;
+                $temp2 = $unposted === '-' ? 0 : $unposted;
+
+                $res = $temp1 + $temp2;
+
+                if ($res < 0) {
+                    return $c;
+                }
+                return [];
+            }
+
+            return $c;
+        })->filter(function ($ar) {
+            // dump($ar);
+            return $ar;
+        });
+        // dd(1);
+
+        // $arr = $result->filter(function ($a) {
+        //     dd($a);
+        //     foreach ($a as $key => $b) {
+        //         $res[] = !$b->isEmpty();
+        //     };
+
+        //     return in_array(true, $res);
+        // })->map(function ($b) {
+        //     // dump($b);
+        //     return collect($b)->filter(function ($c) {
+        //         return !$c->isEmpty();
+        //     });
+        // })->all();
+
+        // dd($result);
+        return Cache::remember($key, now()->addMinutes(15), function () use (
+            $date,
+            $date2,
+            $dateAsOf,
+            $bu,
+            $dept,
+            $section,
+            $vendors,
+            $category,
+            $reportType,
+            $company,
+            $printDate,
+            $runDate,
+            $runTime,
+            $report,
+            $result
+        ) {
+            $header = array(
+                'company'       => $company,
+                'business_unit' => $bu,
+                'department'    => $dept,
+                'section'       => $section,
+                'vendors'       => $vendors,
+                'category'      => $category,
+                'date'          => $printDate,
+                'user'          => auth()->user()->name,
+                'userBu'        => auth()->user()->business_unit,
+                'userDept'      => auth()->user()->department,
+                'userSection'   => auth()->user()->section,
+                'user_position' => auth()->user()->position,
+                'runDate'       => $runDate,
+                'runTime'       => $runTime,
+                'report'        => $report,
+                'reportType'    => $reportType,
+                'data'          => $result
+            );
+            return $header;
+        });
+        $data['data'] = $result;
+        return $data;
     }
 }

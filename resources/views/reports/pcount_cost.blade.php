@@ -342,24 +342,31 @@
                     style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
                     GRAND TOTAL >>>>
                 </td>
-                <td style="text-align:center; border-bottom-style: none; border-top-style: double;">
+                <td style="text-align:center; border-bottom-style: none; border-top-style: solid;">
                     {{ number_format($grandTotalQty, 0)}}</td>
                 <td colspan="" style="text-align:center; border-bottom-style: none;">
 
                 </td>
-                <td colspan="" style="text-align:center; border-bottom-style: none; border-top-style: double;">
+                <td colspan="" style="text-align:center; border-bottom-style: none; border-top-style: solid;">
                     {{number_format($grandTotalNavQty, 0)}}
                 </td>
                 <td colspan="3"
                     style="font-weight: bold; text-align: right; font-size: 12px; border-bottom-style: none;">
 
                 </td>
-                <td style="text-align:right; border-bottom-style: none; border-top-style: double;">
+                <td style="text-align:right; border-bottom-style: none; border-top-style: solid;">
                     {{ number_format($grandTotal, 2)}}</td>
             </tr>
         </tbody>
     </table>
     @endforeach
+  
+    <div class="page-break"></div>
+    @endforeach
+    @endforeach
+    @if (count($data['data']) > 1)
+    <div class="page-break"></div>
+    @endif
     <table class="body2">
         <thead style="">
             <tr>
@@ -477,13 +484,8 @@
             </tr>
         </thead>
     </table>
-    <div class="page-break"></div>
     @endforeach
-    @endforeach
-    @if (count($data['data']) > 1)
-    <div class="page-break"></div>
-    @endif
-    @endforeach
+    
 </body>
 {{-- {{dd($data)}} --}}
 <script type="text/php">

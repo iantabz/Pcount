@@ -634,48 +634,57 @@ class PhysicalCountController extends Controller
         $runDate = Carbon::parse(now())->toFormattedDateString();
         $runTime =  Carbon::parse(now())->format('h:i A');
 
-        $query = TblAppCountdata::selectRaw('
-        tbl_app_countdata.itemcode, 
-        tbl_app_countdata.barcode, 
-        tbl_app_countdata.uom, 
-        tbl_app_countdata.description, 
-        tbl_item_masterfile.extended_desc,
-        SUM(tbl_app_countdata.qty) as qty,
-        SUM(tbl_app_countdata.conversion_qty) as total_conv_qty,
-        tbl_app_countdata.rack_desc,
-        tbl_app_countdata.empno,
-        datetime_scanned,
-        datetime_saved,
-        datetime_exported,
-        date_expiry,
-        vendor_name, 
-        tbl_item_masterfile.group,
-        location_id
-        ')
-            ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode');
+        // $query = TblAppCountdata::selectRaw('
+        // tbl_app_countdata.itemcode, 
+        // tbl_app_countdata.barcode, 
+        // tbl_app_countdata.uom, 
+        // tbl_app_countdata.description, 
+        // tbl_item_masterfile.extended_desc,
+        // SUM(tbl_app_countdata.qty) as qty,
+        // SUM(tbl_app_countdata.conversion_qty) as total_conv_qty,
+        // tbl_app_countdata.rack_desc,
+        // tbl_app_countdata.empno,
+        // datetime_scanned,
+        // datetime_saved,
+        // datetime_exported,
+        // date_expiry,
+        // vendor_name, 
+        // tbl_item_masterfile.group,
+        // location_id
+        // ')
+        //     ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', '=', 'tbl_app_countdata.barcode');
+
+        $query = TblAppNfitem::selectRaw('
+            itemcode,
+            barcode, 
+            description,
+            uom, 
+            qty,
+            nav_qty
+        ');
 
         // dd($query->get());
 
         if ($bu != 'null')
-            $query->WHERE('tbl_app_countdata.business_unit',  'LIKE', "%$bu%");
+            $query->WHERE('business_unit',  'LIKE', "%$bu%");
 
 
         if ($dept != 'null')
-            $query->WHERE('tbl_app_countdata.department', 'LIKE', "%$dept%");
+            $query->WHERE('department', 'LIKE', "%$dept%");
 
 
         if ($section != 'null') {
-            $query->WHERE('tbl_app_countdata.section', 'LIKE', "%$section%");
+            $query->WHERE('section', 'LIKE', "%$section%");
         } else {
-            $query->WHERE('tbl_app_countdata.section', 'LIKE', "%null%");
+            $query->WHERE('section', 'LIKE', "%null%");
         }
 
-        $query = $query
-            ->where([['location_id', '=', 0], ['rack_desc', 'LIKE', "%SETUP BY BACKEND%"]])
-            ->whereBetween('datetime_saved', [$date, $dateAsOf])
-            ->groupBy('barcode')
-            ->orderBy('itemcode');
-        // dd($query->dd());
+        // $query = $query
+        //     ->where([['location_id', '=', 0], ['rack_desc', 'LIKE', "%SETUP BY BACKEND%"]])
+        //     ->whereBetween('datetime_saved', [$date, $dateAsOf])
+        //     ->groupBy('barcode')
+        //     ->orderBy('itemcode');
+        $query = $query->whereBetween('datetime_scanned', [$date, $dateAsOf]);
         $query = $query->get()
             ->toArray();
 

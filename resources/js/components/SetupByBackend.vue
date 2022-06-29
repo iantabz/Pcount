@@ -209,7 +209,7 @@
                   <div class="dropdown">
                     <button
                       class="btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle"
-                      :disabled="!data.data.length"
+                      :disabled="!data.data.length || data.data.length"
                       data-toggle="dropdown"
                       type="button"
                       aria-expanded="false"
@@ -257,26 +257,26 @@
                 <button
                   class="btn btn-info btn-rounded mar-lft text-thin pull-right"
                   @click="showRackSetup = !showRackSetup"
-                  :disabled="
+                >
+                  <!-- :disabled="
                     !company ||
                       !business_unit ||
                       !department ||
                       !section ||
                       !countType
-                  "
-                >
+                  " -->
                   <i class="demo-pli-add-user-star icon-lg"></i> Add Items
                 </button>
               </div>
               <table class="table table-striped table-vcenter" id="data-table">
                 <thead>
                   <tr>
-                    <th>Item Code</th>
-                    <th>Barcode</th>
+                    <th>Item Code / Barcode</th>
                     <th>Description</th>
                     <th>Uom</th>
                     <th>Qty</th>
-                    <th>Conv. Qty</th>
+                    <th>Nav Qty</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -297,10 +297,9 @@
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
-                    <td class="text-main text-thin">{{ data.itemcode }}</td>
                     <td class="text-main text-thin">{{ data.barcode }}</td>
                     <td class="text-main text-thin">
-                      {{ data.extended_desc }}
+                      {{ data.description.toUpperCase() }}
                     </td>
                     <td class="text-main text-normal text-center">
                       {{ data.uom }}
@@ -309,7 +308,15 @@
                       {{ data.qty | numberFormat }}
                     </td>
                     <td class="text-main text-normal text-center">
-                      {{ data.total_conv_qty | numberFormat }}
+                      {{ data.nav_qty ? data.nav_qty : '-' | numberFormat }}
+                    </td>
+                    <td class="text-main text-normal text-center">
+                      <button
+                        class="btn btn-xs text-white font-medium bg-red-500 focus:outline-none border-red-500"
+                        @click="editNavQty(data)"
+                      >
+                        <i class="demo-pli-pen-5"></i>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -352,6 +359,7 @@
       :department="department"
       :section="section"
       :date="date"
+      :editItem="editItem"
       class="modal fade"
       id="rack-setup"
       role="dialog"
@@ -415,7 +423,8 @@ export default {
       notFoundItems: 0,
       export: [],
       showRackSetup: false,
-      isLoading: false
+      isLoading: false,
+      editItem: null
     }
   },
   components: {
@@ -500,6 +509,10 @@ export default {
     }
   },
   methods: {
+    editNavQty(data) {
+      this.editItem = data
+      this.showRackSetup = !this.showRackSetup
+    },
     saveSuccess(value) {
       console.log(value)
       this.showRackSetup = value

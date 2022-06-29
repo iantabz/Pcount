@@ -479,17 +479,33 @@
                     GRAND TOTAL >>>>
                 </td>
 
-                <td style="text-align:center; border-bottom-style: none; border-top-style: double;">
+                <td style="text-align:center; border-bottom-style: none; border-top-style: solid;">
                     {{ number_format($grandTotal, 0)}}</td>
                 <td style="text-align:center; border-bottom-style: none;">
                 </td>
-                <td style="text-align:center; border-bottom-style: none; border-top-style: double;">
+                <td style="text-align:center; border-bottom-style: none; border-top-style: solid;">
                     {{ number_format($grandTotalConvQty, 0)}}</td>
             </tr>
         </tbody>
     </table>
     @endforeach
     {{-- {{dd($countStart, $countEnd, join(", ",array_unique($skus)))}} --}}
+  
+    <div class="page-break"></div>
+
+    @endforeach
+    {{-- {{dd($timeStartCount, $timeEndCount, $timeDiff, $countTime)}} --}}
+    {{-- {{dd($countStart->diff($countEnd))}} --}}
+    {{-- {{dd($countStart, $countEnd, join(", ",array_unique($skus)))}} --}}
+
+    {{-- @if (count($data['data']) > 1)
+    <div class="page-break"></div>
+    @endif --}}
+
+    @endforeach
+    @if($loop->last == false)
+    <div class="page-break"></div>
+    @endif
     <table class="body2">
         <thead style="">
             <tr>
@@ -609,22 +625,8 @@
             </tr>
         </thead>
     </table>
-    <div class="page-break"></div>
-
     @endforeach
-    {{-- {{dd($timeStartCount, $timeEndCount, $timeDiff, $countTime)}} --}}
-    {{-- {{dd($countStart->diff($countEnd))}} --}}
-    {{-- {{dd($countStart, $countEnd, join(", ",array_unique($skus)))}} --}}
-
-    {{-- @if (count($data['data']) > 1)
-    <div class="page-break"></div>
-    @endif --}}
-
-    @endforeach
-    @if($loop->last == false)
-    <div class="page-break"></div>
-    @endif
-    @endforeach
+    
     {{-- {{dd(current($items))}} --}}
     {{-- {{dd($data)}} --}}
 </body>

@@ -103,6 +103,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('not_in_count')->group(function () {
             Route::get('/generate', [NavSysController::class, 'NetNavSys']);
+            Route::get('/getNotinCount', [NavSysController::class, 'getNotinCount']);
         });
         Route::prefix('variance_report')->group(function () {
             Route::get('/getResults', [ReportsController::class, 'getResultsVariance']);

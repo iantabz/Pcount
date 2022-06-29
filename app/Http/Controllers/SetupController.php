@@ -510,7 +510,7 @@ class SetupController extends Controller
         // dd(auth()->user());
 
         foreach ($items as $item) {
-            // dd($item);
+            dd($item);
             // $test = [
             //     'itemcode' => $item['item_code'],
             //     'barcode' => $item['barcode'],

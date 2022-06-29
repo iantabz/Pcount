@@ -5,7 +5,14 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="mdlTitle">Add Items</h5>
+          <h3
+            class="panel-heading bord-btm text-thin"
+            id="mdlTitle"
+            style="font-size: 20px;"
+          >
+            <i class="demo-pli-printer icon-lg"></i>
+            {{ editItem == null ? 'Add Item(s)' : 'Edit Item' }}
+          </h3>
           <button
             type="button"
             class="close"
@@ -20,62 +27,67 @@
           <form class="form-horizontal" @submit.prevent>
             <div class="panel-body">
               <div class="row" style="padding: 10px 15px 15px 10px">
-                <label
-                  class="col-md-3 control-label text-thin"
-                  style="text-align: right"
-                >
-                  <h5>Item :</h5>
-                </label>
-                <div class="col-md-6">
-                  <v-select
-                    id="demo-oi-definput"
-                    v-model.trim="item"
-                    :filterable="false"
-                    @search="retrieveCategory"
-                    label="item"
-                    :options="categoryList"
-                    placeholder="Search Item using Item Code / Barcode"
-                    ><template slot="no-options">
-                      <strong>Search Item using Item Code / Barcode</strong>
-                    </template>
-                    <template slot="option" slot-scope="option">
-                      <em style="margin: 0">
-                        {{
-                          `${option.item_code + ' ' + option.extended_desc} `
-                        }}
-                      </em>
-                      <br />
-                      <em>{{ option.uom }} - {{ option.barcode }}</em>
-                    </template>
-                    <template slot="selected-option" slot-scope="option">{{
-                      `${option.item_code +
-                        ' ' +
-                        option.extended_desc +
-                        ' (' +
-                        option.uom +
-                        ') '}`
-                    }}</template>
-                  </v-select>
+                <div v-if="editItem == null">
+                  <label
+                    class="col-md-3 control-label text-thin"
+                    style="text-align: right"
+                  >
+                    <h5>Item :</h5>
+                  </label>
+                  <div class="col-md-6">
+                    <v-select
+                      id="demo-oi-definput"
+                      v-model.trim="item"
+                      :filterable="false"
+                      @search="retrieveCategory"
+                      label="item"
+                      :options="categoryList"
+                      placeholder="Search Item using Item Code / Barcode"
+                      ><template slot="no-options">
+                        <strong>Search Item using Item Code / Barcode</strong>
+                      </template>
+                      <template slot="option" slot-scope="option">
+                        <em style="margin: 0">
+                          {{
+                            `${option.item_code + ' ' + option.extended_desc} `
+                          }}
+                        </em>
+                        <br />
+                        <em>{{ option.uom }} - {{ option.barcode }}</em>
+                      </template>
+                      <template slot="selected-option" slot-scope="option">{{
+                        `${option.item_code +
+                          ' ' +
+                          option.extended_desc +
+                          ' (' +
+                          option.uom +
+                          ') '}`
+                      }}</template>
+                    </v-select>
+                  </div>
                 </div>
               </div>
             </div>
           </form>
           <table class="table table-striped table-vcenter table-hover">
             <thead>
-              <th class="text-main" style="width: 15%">
+              <th class="text-main" style="width: 10%">
                 Item Code
               </th>
-              <th class="text-main" style="width: 15%">
+              <th class="text-main" style="width: 10%">
                 Barcode
               </th>
-              <th class="text-main" style="45%">
-                Extended Description
+              <th class="text-main" style="width:45%">
+                Description
               </th>
-              <th class="text-main" style="10%">
+              <th class="text-main" style="width: auto">
                 Uom
               </th>
-              <th class="text-main" style="15%">Qty</th>
-              <th class="text-main" style="10%">Action</th>
+              <th class="text-main" style="width: 15%">Qty</th>
+              <th class="text-main" style="width: 15%" v-if="editItem != null">
+                Nav Qty
+              </th>
+              <th class="text-main" style="width: auto">Action</th>
             </thead>
             <tbody>
               <tr v-if="!itemList.length">
@@ -84,16 +96,24 @@
                 </td>
               </tr>
               <tr v-for="(data, index) in itemList" :key="index">
-                <td class="text-main text-thin" style="width: 15%">
-                  {{ data.item_code }}
+                <td class="text-main text-thin" style="width: 10%">
+                  {{
+                    data.item_code
+                      ? data.item_code
+                      : data.itemcode
+                      ? data.itemcode
+                      : '-'
+                  }}
                 </td>
-                <td class="text-main text-thin" style="width: 15%">
-                  {{ data.barcode }}
+                <td class="text-main text-thin" style="width: 10%">
+                  {{ data.barcode ? data.barcode : '-' }}
                 </td>
                 <td class="text-main text-normal italic" style="width: 45%">
-                  {{ data.extended_desc }}
+                  {{
+                    data.extended_desc ? data.extended_desc : data.description
+                  }}
                 </td>
-                <td class="text-main text-normal italic" style="width: 10%">
+                <td class="text-main text-normal italic" style="width: auto">
                   {{ data.uom }}
                 </td>
                 <td class="text-main text-normal" style="width: 15%">
@@ -106,11 +126,33 @@
                     v-model.number="qty[index]"
                     @keypress="isNumber($event)"
                     ref="handcarry"
+                    v-if="editItem == null"
+                  />
+                  <span v-else>{{ data.qty }}</span>
+                </td>
+                <td
+                  class="text-main text-normal"
+                  style="width: 15%"
+                  v-if="editItem != null"
+                >
+                  <input
+                    class="form-control font-medium text-xl"
+                    type="number"
+                    min="1"
+                    autocomplete="off"
+                    placeholder="Input Qty"
+                    v-model.number="navQty[index]"
+                    @keypress="isNumber($event)"
+                    ref="handcarry"
                   />
                 </td>
-                <td class="text-main text-normal" style="width: 10%">
+                <td class="text-main text-normal" style="width: auto">
                   <button
                     class="btn btn-xs pull-right text-white font-medium bg-red-500 focus:outline-none border-red-500"
+                    :disabled="editItem != null"
+                    :class="{
+                      'cursor-not-allowed opacity-50': editItem != null
+                    }"
                     @click="removeBtn(index)"
                   >
                     <span aria-hidden="true">×</span>
@@ -164,7 +206,8 @@ export default {
     'department',
     'section',
     'date',
-    'showRackSetup'
+    'showRackSetup',
+    'editItem'
   ],
   data() {
     return {
@@ -183,7 +226,8 @@ export default {
       forPrintItems: [],
       item: null,
       message: null,
-      qty: []
+      qty: [],
+      navQty: []
     }
   },
   watch: {
@@ -197,6 +241,7 @@ export default {
           if (!exists) {
             this.itemList.push(newValue)
             this.qty.push(newValue)
+            this.navQty.push(newValue)
           }
 
           this.item = null
@@ -205,20 +250,29 @@ export default {
     },
     showRackSetup() {
       if (this.showRackSetup == true) {
-        this.getCategory()
+        // console.log(this.editItem)
         // this.$nextTick(() => this.$refs.rackname.focus())
       }
+    },
+    editItem() {
+      if (this.editItem) this.itemList.push(this.editItem)
     }
   },
   computed: {
     invalid() {
       // console.log(this.date)
-      if (this.qty.length != 0) {
+      if (this.qty.length != 0 && this.editItem == null) {
         let result = this.qty.every(function(e) {
           return e > 0
         })
 
-        return result
+        if (result) return result
+      }
+      if (this.navQty != 0 && this.editItem != null) {
+        let result = this.navQty.every(function(e) {
+          return e > 0
+        })
+        if (result) return result
       }
       return false
     }
@@ -227,7 +281,10 @@ export default {
     saveBtn() {
       // console.log(this.date)
       Object.entries(this.itemList).forEach(([test, value], index) => {
+        console.log(value, 1)
         value.qty = this.qty[test]
+        value.navQty = this.navQty[test]
+        console.log(value, 2)
       })
 
       const xdata = btoa(JSON.stringify(this.itemList))
@@ -247,6 +304,7 @@ export default {
             this.forPrintItems = []
             this.item = null
             this.qty = []
+            this.navQty = []
           } else {
             console.log('wtf')
           }
@@ -255,6 +313,7 @@ export default {
     removeBtn: function(index) {
       this.itemList.splice(index, 1)
       this.qty.splice(index, 1)
+      this.navQty.splice(index, 1)
     },
     isNumber: function(evt) {
       evt = evt ? evt : window.event
@@ -310,7 +369,9 @@ export default {
       })
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.editItem)
+  }
 }
 </script>
 

@@ -12651,16 +12651,14 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var _this3 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      var url = "/reports/nav_sys/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+      var url = "/reports/not_in_count/getNotinCount/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&type=NotInCount&page=");
 
       if (this.business_unit && this.department && this.section) {
         this.isLoading = true;
         axios.get(url).then(function (response) {
           _this3.data = response.data;
           _this3.total_result = response.data.total;
-          _this3.finalExport = response.data;
-
-          _this3.exportcsv();
+          _this3.finalExport = response.data; // this.exportcsv()
 
           _this3.isLoading = false;
         });
@@ -15171,6 +15169,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15218,7 +15224,8 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       notFoundItems: 0,
       "export": [],
       showRackSetup: false,
-      isLoading: false
+      isLoading: false,
+      editItem: null
     };
   },
   components: {
@@ -15305,6 +15312,10 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
     }
   },
   methods: {
+    editNavQty: function editNavQty(data) {
+      this.editItem = data;
+      this.showRackSetup = !this.showRackSetup;
+    },
     saveSuccess: function saveSuccess(value) {
       console.log(value);
       this.showRackSetup = value;
@@ -18898,6 +18909,48 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -18905,7 +18958,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBPACK_IMPORTED_MODULE_2___default()));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['company', 'business_unit', 'department', 'section', 'date', 'showRackSetup'],
+  props: ['company', 'business_unit', 'department', 'section', 'date', 'showRackSetup', 'editItem'],
   data: function data() {
     return {
       data: [],
@@ -18923,7 +18976,8 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       forPrintItems: [],
       item: null,
       message: null,
-      qty: []
+      qty: [],
+      navQty: []
     };
   },
   watch: {
@@ -18937,6 +18991,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
           if (!exists) {
             this.itemList.push(newValue);
             this.qty.push(newValue);
+            this.navQty.push(newValue);
           }
 
           this.item = null;
@@ -18944,19 +18999,30 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       }
     },
     showRackSetup: function showRackSetup() {
-      if (this.showRackSetup == true) {
-        this.getCategory(); // this.$nextTick(() => this.$refs.rackname.focus())
+      if (this.showRackSetup == true) {// console.log(this.editItem)
+        // this.$nextTick(() => this.$refs.rackname.focus())
       }
+    },
+    editItem: function editItem() {
+      if (this.editItem) this.itemList.push(this.editItem);
     }
   },
   computed: {
     invalid: function invalid() {
       // console.log(this.date)
-      if (this.qty.length != 0) {
+      if (this.qty.length != 0 && this.editItem == null) {
         var result = this.qty.every(function (e) {
           return e > 0;
         });
-        return result;
+        if (result) return result;
+      }
+
+      if (this.navQty != 0 && this.editItem != null) {
+        var _result = this.navQty.every(function (e) {
+          return e > 0;
+        });
+
+        if (_result) return _result;
       }
 
       return false;
@@ -18972,7 +19038,10 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
             test = _ref2[0],
             value = _ref2[1];
 
+        console.log(value, 1);
         value.qty = _this.qty[test];
+        value.navQty = _this.navQty[test];
+        console.log(value, 2);
       });
       var xdata = btoa(JSON.stringify(this.itemList));
       axios.get("/setup/countBackendSetup/postCount/?date=".concat(btoa(this.date), "&data=").concat(xdata, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section)).then(function (response, status) {
@@ -18983,6 +19052,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
           _this.forPrintItems = [];
           _this.item = null;
           _this.qty = [];
+          _this.navQty = [];
         } else {
           console.log('wtf');
         }
@@ -18991,6 +19061,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
     removeBtn: function removeBtn(index) {
       this.itemList.splice(index, 1);
       this.qty.splice(index, 1);
+      this.navQty.splice(index, 1);
     },
     isNumber: function isNumber(evt) {
       evt = evt ? evt : window.event;
@@ -19060,7 +19131,9 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       });
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    console.log(this.editItem);
+  }
 });
 
 /***/ }),
@@ -62162,10 +62235,12 @@ var render = function() {
                             _vm._v(
                               "\n                    " +
                                 _vm._s(
-                                  _vm.computeVariance(
-                                    data.nav_qty,
-                                    data.unposted,
-                                    data.conversion_qty
+                                  _vm._f("numberFormat")(
+                                    _vm.computeVariance(
+                                      data.nav_qty,
+                                      data.unposted,
+                                      data.conversion_qty
+                                    )
                                   )
                                 ) +
                                 "\n                  "
@@ -64488,7 +64563,8 @@ var render = function() {
                           staticClass:
                             "btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle",
                           attrs: {
-                            disabled: !_vm.data.data.length,
+                            disabled:
+                              !_vm.data.data.length || _vm.data.data.length,
                             "data-toggle": "dropdown",
                             type: "button",
                             "aria-expanded": "false"
@@ -64558,14 +64634,6 @@ var render = function() {
                     {
                       staticClass:
                         "btn btn-info btn-rounded mar-lft text-thin pull-right",
-                      attrs: {
-                        disabled:
-                          !_vm.company ||
-                          !_vm.business_unit ||
-                          !_vm.department ||
-                          !_vm.section ||
-                          !_vm.countType
-                      },
                       on: {
                         click: function($event) {
                           _vm.showRackSetup = !_vm.showRackSetup
@@ -64645,17 +64713,13 @@ var render = function() {
                         _vm._l(_vm.data.data, function(data, index) {
                           return _c("tr", { key: index }, [
                             _c("td", { staticClass: "text-main text-thin" }, [
-                              _vm._v(_vm._s(data.itemcode))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-main text-thin" }, [
                               _vm._v(_vm._s(data.barcode))
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-main text-thin" }, [
                               _vm._v(
                                 "\n                    " +
-                                  _vm._s(data.extended_desc) +
+                                  _vm._s(data.description.toUpperCase()) +
                                   "\n                  "
                               )
                             ]),
@@ -64698,10 +64762,32 @@ var render = function() {
                                   "\n                    " +
                                     _vm._s(
                                       _vm._f("numberFormat")(
-                                        data.total_conv_qty
+                                        data.nav_qty ? data.nav_qty : "-"
                                       )
                                     ) +
                                     "\n                  "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "text-main text-normal text-center"
+                              },
+                              [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-xs text-white font-medium bg-red-500 focus:outline-none border-red-500",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editNavQty(data)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "demo-pli-pen-5" })]
                                 )
                               ]
                             )
@@ -64736,6 +64822,7 @@ var render = function() {
           department: _vm.department,
           section: _vm.section,
           date: _vm.date,
+          editItem: _vm.editItem,
           id: "rack-setup",
           role: "dialog",
           "aria-labelledby": "myModalLabel",
@@ -64909,9 +64996,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Item Code")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Barcode")]),
+        _c("th", [_vm._v("Item Code / Barcode")]),
         _vm._v(" "),
         _c("th", [_vm._v("Description")]),
         _vm._v(" "),
@@ -64919,7 +65004,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Qty")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Conv. Qty")])
+        _c("th", [_vm._v("Nav Qty")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
       ])
     ])
   },
@@ -67876,9 +67963,20 @@ var render = function() {
         _c("div", { staticClass: "modal-content" }, [
           _c("div", { staticClass: "modal-header" }, [
             _c(
-              "h5",
-              { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
-              [_vm._v("Add Items")]
+              "h3",
+              {
+                staticClass: "panel-heading bord-btm text-thin",
+                staticStyle: { "font-size": "20px" },
+                attrs: { id: "mdlTitle" }
+              },
+              [
+                _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                _vm._v(
+                  "\n          " +
+                    _vm._s(_vm.editItem == null ? "Add Item(s)" : "Edit Item") +
+                    "\n        "
+                )
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -67920,100 +68018,113 @@ var render = function() {
                       staticStyle: { padding: "10px 15px 15px 10px" }
                     },
                     [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md-6" },
-                        [
-                          _c(
-                            "v-select",
-                            {
-                              attrs: {
-                                id: "demo-oi-definput",
-                                filterable: false,
-                                label: "item",
-                                options: _vm.categoryList,
-                                placeholder:
-                                  "Search Item using Item Code / Barcode"
-                              },
-                              on: { search: _vm.retrieveCategory },
-                              scopedSlots: _vm._u([
-                                {
-                                  key: "option",
-                                  fn: function(option) {
-                                    return [
-                                      _c(
-                                        "em",
-                                        { staticStyle: { margin: "0" } },
-                                        [
-                                          _vm._v(
-                                            "\n                      " +
-                                              _vm._s(
-                                                option.item_code +
-                                                  " " +
-                                                  option.extended_desc +
-                                                  " "
-                                              ) +
-                                              "\n                    "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("br"),
-                                      _vm._v(" "),
-                                      _c("em", [
+                      _vm.editItem == null
+                        ? _c("div", [
+                            _vm._m(0),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "col-md-6" },
+                              [
+                                _c(
+                                  "v-select",
+                                  {
+                                    attrs: {
+                                      id: "demo-oi-definput",
+                                      filterable: false,
+                                      label: "item",
+                                      options: _vm.categoryList,
+                                      placeholder:
+                                        "Search Item using Item Code / Barcode"
+                                    },
+                                    on: { search: _vm.retrieveCategory },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "option",
+                                          fn: function(option) {
+                                            return [
+                                              _c(
+                                                "em",
+                                                {
+                                                  staticStyle: { margin: "0" }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                        " +
+                                                      _vm._s(
+                                                        option.item_code +
+                                                          " " +
+                                                          option.extended_desc +
+                                                          " "
+                                                      ) +
+                                                      "\n                      "
+                                                  )
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c("br"),
+                                              _vm._v(" "),
+                                              _c("em", [
+                                                _vm._v(
+                                                  _vm._s(option.uom) +
+                                                    " - " +
+                                                    _vm._s(option.barcode)
+                                                )
+                                              ])
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          key: "selected-option",
+                                          fn: function(option) {
+                                            return [
+                                              _vm._v(
+                                                _vm._s(
+                                                  "" +
+                                                    (option.item_code +
+                                                      " " +
+                                                      option.extended_desc +
+                                                      " (" +
+                                                      option.uom +
+                                                      ") ")
+                                                )
+                                              )
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      null,
+                                      false,
+                                      710242905
+                                    ),
+                                    model: {
+                                      value: _vm.item,
+                                      callback: function($$v) {
+                                        _vm.item =
+                                          typeof $$v === "string"
+                                            ? $$v.trim()
+                                            : $$v
+                                      },
+                                      expression: "item"
+                                    }
+                                  },
+                                  [
+                                    _c("template", { slot: "no-options" }, [
+                                      _c("strong", [
                                         _vm._v(
-                                          _vm._s(option.uom) +
-                                            " - " +
-                                            _vm._s(option.barcode)
+                                          "Search Item using Item Code / Barcode"
                                         )
                                       ])
-                                    ]
-                                  }
-                                },
-                                {
-                                  key: "selected-option",
-                                  fn: function(option) {
-                                    return [
-                                      _vm._v(
-                                        _vm._s(
-                                          "" +
-                                            (option.item_code +
-                                              " " +
-                                              option.extended_desc +
-                                              " (" +
-                                              option.uom +
-                                              ") ")
-                                        )
-                                      )
-                                    ]
-                                  }
-                                }
-                              ]),
-                              model: {
-                                value: _vm.item,
-                                callback: function($$v) {
-                                  _vm.item =
-                                    typeof $$v === "string" ? $$v.trim() : $$v
-                                },
-                                expression: "item"
-                              }
-                            },
-                            [
-                              _c("template", { slot: "no-options" }, [
-                                _c("strong", [
-                                  _vm._v(
-                                    "Search Item using Item Code / Barcode"
-                                  )
-                                ])
-                              ])
-                            ],
-                            2
-                          )
-                        ],
-                        1
-                      )
+                                    ])
+                                  ],
+                                  2
+                                )
+                              ],
+                              1
+                            )
+                          ])
+                        : _vm._e()
                     ]
                   )
                 ])
@@ -68024,7 +68135,60 @@ var render = function() {
               "table",
               { staticClass: "table table-striped table-vcenter table-hover" },
               [
-                _vm._m(1),
+                _c("thead", [
+                  _c(
+                    "th",
+                    { staticClass: "text-main", staticStyle: { width: "10%" } },
+                    [_vm._v("\n              Item Code\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    { staticClass: "text-main", staticStyle: { width: "10%" } },
+                    [_vm._v("\n              Barcode\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    { staticClass: "text-main", staticStyle: { width: "45%" } },
+                    [_vm._v("\n              Description\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    {
+                      staticClass: "text-main",
+                      staticStyle: { width: "auto" }
+                    },
+                    [_vm._v("\n              Uom\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    { staticClass: "text-main", staticStyle: { width: "15%" } },
+                    [_vm._v("Qty")]
+                  ),
+                  _vm._v(" "),
+                  _vm.editItem != null
+                    ? _c(
+                        "th",
+                        {
+                          staticClass: "text-main",
+                          staticStyle: { width: "15%" }
+                        },
+                        [_vm._v("\n              Nav Qty\n            ")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    {
+                      staticClass: "text-main",
+                      staticStyle: { width: "auto" }
+                    },
+                    [_vm._v("Action")]
+                  )
+                ]),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -68052,12 +68216,18 @@ var render = function() {
                           "td",
                           {
                             staticClass: "text-main text-thin",
-                            staticStyle: { width: "15%" }
+                            staticStyle: { width: "10%" }
                           },
                           [
                             _vm._v(
                               "\n                " +
-                                _vm._s(data.item_code) +
+                                _vm._s(
+                                  data.item_code
+                                    ? data.item_code
+                                    : data.itemcode
+                                    ? data.itemcode
+                                    : "-"
+                                ) +
                                 "\n              "
                             )
                           ]
@@ -68067,12 +68237,12 @@ var render = function() {
                           "td",
                           {
                             staticClass: "text-main text-thin",
-                            staticStyle: { width: "15%" }
+                            staticStyle: { width: "10%" }
                           },
                           [
                             _vm._v(
                               "\n                " +
-                                _vm._s(data.barcode) +
+                                _vm._s(data.barcode ? data.barcode : "-") +
                                 "\n              "
                             )
                           ]
@@ -68087,7 +68257,11 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                " +
-                                _vm._s(data.extended_desc) +
+                                _vm._s(
+                                  data.extended_desc
+                                    ? data.extended_desc
+                                    : data.description
+                                ) +
                                 "\n              "
                             )
                           ]
@@ -68097,7 +68271,7 @@ var render = function() {
                           "td",
                           {
                             staticClass: "text-main text-normal italic",
-                            staticStyle: { width: "10%" }
+                            staticStyle: { width: "auto" }
                           },
                           [
                             _vm._v(
@@ -68115,53 +68289,108 @@ var render = function() {
                             staticStyle: { width: "15%" }
                           },
                           [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model.number",
-                                  value: _vm.qty[index],
-                                  expression: "qty[index]",
-                                  modifiers: { number: true }
-                                }
-                              ],
-                              ref: "handcarry",
-                              refInFor: true,
-                              staticClass: "form-control font-medium text-xl",
-                              attrs: {
-                                type: "number",
-                                min: "1",
-                                autocomplete: "off",
-                                placeholder: "Input Qty"
-                              },
-                              domProps: { value: _vm.qty[index] },
-                              on: {
-                                keypress: function($event) {
-                                  return _vm.isNumber($event)
-                                },
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                            _vm.editItem == null
+                              ? _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model.number",
+                                      value: _vm.qty[index],
+                                      expression: "qty[index]",
+                                      modifiers: { number: true }
+                                    }
+                                  ],
+                                  ref: "handcarry",
+                                  refInFor: true,
+                                  staticClass:
+                                    "form-control font-medium text-xl",
+                                  attrs: {
+                                    type: "number",
+                                    min: "1",
+                                    autocomplete: "off",
+                                    placeholder: "Input Qty"
+                                  },
+                                  domProps: { value: _vm.qty[index] },
+                                  on: {
+                                    keypress: function($event) {
+                                      return _vm.isNumber($event)
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.qty,
+                                        index,
+                                        _vm._n($event.target.value)
+                                      )
+                                    },
+                                    blur: function($event) {
+                                      return _vm.$forceUpdate()
+                                    }
                                   }
-                                  _vm.$set(
-                                    _vm.qty,
-                                    index,
-                                    _vm._n($event.target.value)
-                                  )
-                                },
-                                blur: function($event) {
-                                  return _vm.$forceUpdate()
-                                }
-                              }
-                            })
+                                })
+                              : _c("span", [_vm._v(_vm._s(data.qty))])
                           ]
                         ),
+                        _vm._v(" "),
+                        _vm.editItem != null
+                          ? _c(
+                              "td",
+                              {
+                                staticClass: "text-main text-normal",
+                                staticStyle: { width: "15%" }
+                              },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model.number",
+                                      value: _vm.navQty[index],
+                                      expression: "navQty[index]",
+                                      modifiers: { number: true }
+                                    }
+                                  ],
+                                  ref: "handcarry",
+                                  refInFor: true,
+                                  staticClass:
+                                    "form-control font-medium text-xl",
+                                  attrs: {
+                                    type: "number",
+                                    min: "1",
+                                    autocomplete: "off",
+                                    placeholder: "Input Qty"
+                                  },
+                                  domProps: { value: _vm.navQty[index] },
+                                  on: {
+                                    keypress: function($event) {
+                                      return _vm.isNumber($event)
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.navQty,
+                                        index,
+                                        _vm._n($event.target.value)
+                                      )
+                                    },
+                                    blur: function($event) {
+                                      return _vm.$forceUpdate()
+                                    }
+                                  }
+                                })
+                              ]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "td",
                           {
                             staticClass: "text-main text-normal",
-                            staticStyle: { width: "10%" }
+                            staticStyle: { width: "auto" }
                           },
                           [
                             _c(
@@ -68169,6 +68398,11 @@ var render = function() {
                               {
                                 staticClass:
                                   "btn btn-xs pull-right text-white font-medium bg-red-500 focus:outline-none border-red-500",
+                                class: {
+                                  "cursor-not-allowed opacity-50":
+                                    _vm.editItem != null
+                                },
+                                attrs: { disabled: _vm.editItem != null },
                                 on: {
                                   click: function($event) {
                                     return _vm.removeBtn(index)
@@ -68250,34 +68484,6 @@ var staticRenderFns = [
       },
       [_c("h5", [_vm._v("Item :")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("th", { staticClass: "text-main", staticStyle: { width: "15%" } }, [
-        _vm._v("\n              Item Code\n            ")
-      ]),
-      _vm._v(" "),
-      _c("th", { staticClass: "text-main", staticStyle: { width: "15%" } }, [
-        _vm._v("\n              Barcode\n            ")
-      ]),
-      _vm._v(" "),
-      _c("th", { staticClass: "text-main", staticStyle: {} }, [
-        _vm._v("\n              Extended Description\n            ")
-      ]),
-      _vm._v(" "),
-      _c("th", { staticClass: "text-main", staticStyle: {} }, [
-        _vm._v("\n              Uom\n            ")
-      ]),
-      _vm._v(" "),
-      _c("th", { staticClass: "text-main", staticStyle: {} }, [_vm._v("Qty")]),
-      _vm._v(" "),
-      _c("th", { staticClass: "text-main", staticStyle: {} }, [
-        _vm._v("Action")
-      ])
-    ])
   }
 ]
 render._withStripped = true

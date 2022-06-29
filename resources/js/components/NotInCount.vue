@@ -308,7 +308,7 @@
                           data.nav_qty,
                           data.unposted,
                           data.conversion_qty
-                        )
+                        ) | numberFormat
                       }}
                     </td>
                   </tr>
@@ -615,20 +615,20 @@ export default {
       })
     },
     getResults(page = 1) {
-      let url = `/reports/nav_sys/getResults/?date=${btoa(
+      let url = `/reports/not_in_count/getNotinCount/?date=${btoa(
         this.date
       )}&date2=${btoa(this.date2)}&vendors=${btoa(
         this.forPrintVendor
       )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
         this.department
-      }&section=${this.section}&page=`
+      }&section=${this.section}&type=NotInCount&page=`
       if (this.business_unit && this.department && this.section) {
         this.isLoading = true
         axios.get(url).then(response => {
           this.data = response.data
           this.total_result = response.data.total
           this.finalExport = response.data
-          this.exportcsv()
+          // this.exportcsv()
           this.isLoading = false
         })
       }
