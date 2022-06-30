@@ -647,7 +647,7 @@ export default {
         this.forPrintVendor
       )}&category=${this.forPrintCategory}&bu=${this.business_unit}&dept=${
         this.department
-      }&section=${this.section}&page=`
+      }&section=${this.section}&type=NetNavSys&page=`
       if (
         this.business_unit &&
         this.department &&

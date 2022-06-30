@@ -11005,7 +11005,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var _this3 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      var url = "/reports/nav_sys/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
+      var url = "/reports/nav_sys/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&type=NetNavSys&page=");
 
       if (this.business_unit && this.department && this.section && this.vendor && this.category) {
         this.isLoading = true;
@@ -15211,6 +15211,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15363,7 +15382,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var thisButton, oldHTML, pass, report, _yield$axios$post, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title, fileType;
+        var thisButton, oldHTML, pass, report, _yield$axios$get, headers, data, contentDisposition, _contentDisposition$s, _contentDisposition$s2, attachment, file, _file$split, _file$split2, key, fileName, url, link, section, title, fileType;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -15381,32 +15400,34 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                   willClose: function willClose() {}
                 }).then(function (result) {
                   if (result.isConfirmed) {}
-                });
+                }); // document.location.href = `/reports/appdata/generate`
+
                 thisButton = e.target;
                 oldHTML = thisButton.innerHTML;
                 pass = null, report = null;
 
-                if (reportType == 'PDF') {
-                  pass = '/reports/backend/generateBackendCount';
-                  report = '&report=PDF';
-                } else if (reportType == 'Excel') {
-                  pass = '/reports/backend/generateBackendCount';
+                if (reportType == 'CountData') {
                   report = '&report=Excel';
+                  pass = '/reports/appdata/generateAppDataExcel';
+                } else if (reportType == 'NotFound Excel') {
+                  pass = '/reports/appdata/generateNotFound';
+                  report = '&report=Excel';
+                } else if (reportType == 'NotFound PDF') {
+                  pass = '/reports/appdata/generateNotFound';
+                  report = '&report=PDF';
                 }
 
                 thisButton.disabled = true;
                 thisButton.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...';
                 _context.next = 9;
-                return axios.post(pass + "?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType) + report, {
-                  "export": btoa(JSON.stringify(_this["export"]))
-                }, {
+                return axios.get(pass + "?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&countType=").concat(_this.countType) + report, {
                   responseType: 'blob'
                 });
 
               case 9:
-                _yield$axios$post = _context.sent;
-                headers = _yield$axios$post.headers;
-                data = _yield$axios$post.data;
+                _yield$axios$get = _context.sent;
+                headers = _yield$axios$get.headers;
+                data = _yield$axios$get.data;
                 // return console.log(headers)
                 contentDisposition = headers['content-disposition'];
                 _contentDisposition$s = contentDisposition.split(' '), _contentDisposition$s2 = _slicedToArray(_contentDisposition$s, 2), attachment = _contentDisposition$s2[0], file = _contentDisposition$s2[1];
@@ -15417,9 +15438,12 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 section = null; // console.log(fileName)
 
                 _this.section ? section = '-' + _this.section : section = '';
-                title = 'Count Added By Backend', fileType = '.xlsx';
+                title = 'Actual Count (APP)', fileType = '.xlsx';
 
-                if (reportType == 'PDF') {
+                if (reportType == 'NotFound Excel') {
+                  title = 'Items Not Found from Actual Count (APP)';
+                } else if (reportType == 'NotFound PDF') {
+                  title = 'Items Not Found from Actual Count (APP)';
                   fileType = '.pdf';
                 }
 
@@ -15450,7 +15474,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var thisButton, oldHTML, _yield$axios$post2, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link, section;
+        var thisButton, oldHTML, _yield$axios$post, headers, data, contentDisposition, _contentDisposition$s3, _contentDisposition$s4, attachment, file, _file$split3, _file$split4, key, fileName, url, link, section;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
@@ -15482,9 +15506,9 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 });
 
               case 7:
-                _yield$axios$post2 = _context2.sent;
-                headers = _yield$axios$post2.headers;
-                data = _yield$axios$post2.data;
+                _yield$axios$post = _context2.sent;
+                headers = _yield$axios$post.headers;
+                data = _yield$axios$post.data;
                 // return console.log(headers)
                 contentDisposition = headers['content-disposition'];
                 _contentDisposition$s3 = contentDisposition.split(' '), _contentDisposition$s4 = _slicedToArray(_contentDisposition$s3, 2), attachment = _contentDisposition$s4[0], file = _contentDisposition$s4[1];
@@ -15789,11 +15813,11 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
 
       if (this.business_unit && this.department && this.section && this.vendor && this.category) {
         this.isLoading = true;
-        Promise.all([this.getCountData()]).then(function (response) {
+        Promise.all([this.getCountData(), this.getNotFound()]).then(function (response) {
           // this.export = []
           _this10.data.data = response[0].data;
-          _this10.total_result = response[0].data.total; // this.notFoundItems = response[1].data.total
-
+          _this10.total_result = response[0].data.total;
+          _this10.notFoundItems = response[1].data.length;
           _this10["export"] = response[0].data;
           _this10.isLoading = false;
         });
@@ -64614,7 +64638,7 @@ var render = function() {
                         "button",
                         {
                           staticClass:
-                            "btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle",
+                            "btn btn-info btn-rounded text-thin mar-lft dropdown-toggle",
                           attrs: {
                             disabled:
                               !_vm.data.data.length || _vm.data.data.length,
@@ -64667,6 +64691,88 @@ var render = function() {
                                 on: {
                                   click: function($event) {
                                     return _vm.generateBtnEXCEL($event, "PDF")
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Generate PDF\n                      "
+                                )
+                              ]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "btn-group pull-right" }, [
+                    _c("div", { staticClass: "dropdown" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle",
+                          attrs: {
+                            disabled:
+                              !_vm.notFoundItems || _vm.notFoundItems == 0,
+                            "data-toggle": "dropdown",
+                            type: "button",
+                            "aria-expanded": "false"
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                          _vm._v(
+                            "  Items Not\n                    Found (" +
+                              _vm._s(_vm.notFoundItems) +
+                              ")\n                    "
+                          ),
+                          _c("i", { staticClass: "dropdown-caret" })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        { staticClass: "dropdown-menu dropdown-menu-right" },
+                        [
+                          _c("li", { staticClass: "dropdown-header" }, [
+                            _vm._v("Items Not Found")
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "javscript:;" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.generateBtnEXCEL(
+                                      $event,
+                                      "NotFound Excel"
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Generate Excel\n                      "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "javscript:;" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.generateBtnEXCEL(
+                                      $event,
+                                      "NotFound PDF"
+                                    )
                                   }
                                 }
                               },

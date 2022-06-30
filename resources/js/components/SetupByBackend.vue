@@ -208,7 +208,7 @@
                 <div class="btn-group pull-right">
                   <div class="dropdown">
                     <button
-                      class="btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle"
+                      class="btn btn-info btn-rounded text-thin mar-lft dropdown-toggle"
                       :disabled="!data.data.length || data.data.length"
                       data-toggle="dropdown"
                       type="button"
@@ -239,21 +239,40 @@
                     </ul>
                   </div>
                 </div>
-                <!-- <button
-                  class="btn btn-info btn-rounded pull-right text-thin mar-lft"
-                  :disabled="!data.data.length"
-                  @click="generateBtn($event)"
-                >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate PDF
-                </button>
-
-                <button
-                  class="btn btn-info btn-rounded pull-right text-thin"
-                  :disabled="!data.data.length"
-                  @click="generateBtnEXCEL($event, 'CountData')"
-                >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Excel
-                </button> -->
+                <div class="btn-group pull-right">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-danger btn-rounded text-thin mar-lft dropdown-toggle"
+                      :disabled="!notFoundItems || notFoundItems == 0"
+                      data-toggle="dropdown"
+                      type="button"
+                      aria-expanded="false"
+                    >
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Items Not
+                      Found ({{ notFoundItems }})
+                      <i class="dropdown-caret"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" style="">
+                      <li class="dropdown-header">Items Not Found</li>
+                      <li>
+                        <a
+                          href="javscript:;"
+                          @click="generateBtnEXCEL($event, 'NotFound Excel')"
+                        >
+                          Generate Excel
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="javscript:;"
+                          @click="generateBtnEXCEL($event, 'NotFound PDF')"
+                        >
+                          Generate PDF
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <button
                   class="btn btn-info btn-rounded mar-lft text-thin pull-right"
                   @click="showRackSetup = !showRackSetup"
@@ -537,23 +556,26 @@ export default {
         if (result.isConfirmed) {
         }
       })
+      // document.location.href = `/reports/appdata/generate`
       const thisButton = e.target
       const oldHTML = thisButton.innerHTML
 
       let pass = null,
         report = null
-      if (reportType == 'PDF') {
-        pass = '/reports/backend/generateBackendCount'
-        report = '&report=PDF'
-      } else if (reportType == 'Excel') {
-        pass = '/reports/backend/generateBackendCount'
+      if (reportType == 'CountData') {
         report = '&report=Excel'
+        pass = '/reports/appdata/generateAppDataExcel'
+      } else if (reportType == 'NotFound Excel') {
+        pass = '/reports/appdata/generateNotFound'
+        report = '&report=Excel'
+      } else if (reportType == 'NotFound PDF') {
+        pass = '/reports/appdata/generateNotFound'
+        report = '&report=PDF'
       }
-
       thisButton.disabled = true
       thisButton.innerHTML =
         '<i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...'
-      const { headers, data } = await axios.post(
+      const { headers, data } = await axios.get(
         pass +
           `?date=${btoa(this.date)}&date2=${btoa(this.date2)}&vendors=${btoa(
             this.forPrintVendor
@@ -562,13 +584,9 @@ export default {
           }&section=${this.section}&countType=${this.countType}` +
           report,
         {
-          export: btoa(JSON.stringify(this.export))
-        },
-        {
           responseType: 'blob'
         }
       )
-
       // return console.log(headers)
       const { 'content-disposition': contentDisposition } = headers
       const [attachment, file] = contentDisposition.split(' ')
@@ -581,9 +599,12 @@ export default {
       // console.log(fileName)
       this.section ? (section = '-' + this.section) : (section = '')
 
-      let title = 'Count Added By Backend',
+      let title = 'Actual Count (APP)',
         fileType = '.xlsx'
-      if (reportType == 'PDF') {
+      if (reportType == 'NotFound Excel') {
+        title = 'Items Not Found from Actual Count (APP)'
+      } else if (reportType == 'NotFound PDF') {
+        title = 'Items Not Found from Actual Count (APP)'
         fileType = '.pdf'
       }
       link.setAttribute(
@@ -840,14 +861,16 @@ export default {
         this.category
       ) {
         this.isLoading = true
-        Promise.all([this.getCountData()]).then(response => {
-          // this.export = []
-          this.data.data = response[0].data
-          this.total_result = response[0].data.total
-          // this.notFoundItems = response[1].data.total
-          this.export = response[0].data
-          this.isLoading = false
-        })
+        Promise.all([this.getCountData(), this.getNotFound()]).then(
+          response => {
+            // this.export = []
+            this.data.data = response[0].data
+            this.total_result = response[0].data.total
+            this.notFoundItems = response[1].data.length
+            this.export = response[0].data
+            this.isLoading = false
+          }
+        )
       }
     }
   },

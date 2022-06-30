@@ -499,6 +499,7 @@ class PhysicalCountController extends Controller
         // dd($type);
         session(['data' => $this->itemsNotFoundData($type)]);
         $data = session()->get('data');
+        // dd($data);
         $pdf = PDF::loadView('reports.pcount_app_notfound', ['data' => $data]);
 
         // return $type == "ExcelReport" ? Excel::download(new ItemsNotFound, 'invoices.xlsx') : (new ItemsNotFound)->download('invoices.pdf',);

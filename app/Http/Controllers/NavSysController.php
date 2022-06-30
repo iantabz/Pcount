@@ -562,7 +562,7 @@ class NavSysController extends Controller
 
             // dd($result->groupByRaw('itemcode')->first());
             // dd($result->get());
-            $x = $result->groupByRaw('itemcode')->get();
+            $x = $result->groupByRaw('itemcode')->limit(1500)->get();
             // dd($x);
 
             $query = $x->map(function ($c) use ($bu, $dept, $section, $date2) {
@@ -571,34 +571,42 @@ class NavSysController extends Controller
                     ['itemcode', $c->itemcode],
                     ['business_unit', $bu],
                     ['department', $dept],
-                    ['section', $section]
-                ])->where('date', $date2);
+                    ['section', $section],
+                    ['date', $date2]
+                ]);
 
                 $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
                     ['itemcode', $c->itemcode],
                     ['business_unit', $bu],
                     ['department', $dept],
-                    ['section', $section]
-                ])->where('date', $date2);
+                    ['section', $section],
+                    ['date', $date2]
+                ]);
 
                 // dd($x->get());
-                if ($x->exists()) {
-                    $c->nav_qty = $x->first()->nav_qty;
-                    $c->cost_vat = $x->first()->cost_vat;
-                    $c->cost_no_vat = $x->first()->cost_no_vat;
-                    $c->amt = $x->first()->amt;
-                } else {
-                    $c->nav_qty = '-';
-                    $c->cost_vat = '-';
-                    $c->cost_no_vat = '-';
-                    $c->amt = '-';
-                }
 
-                if ($y->exists()) {
-                    $c->unposted = $y->first()->unposted;
-                } else {
-                    $c->unposted = '-';
-                }
+                // if ($x->exists()) {
+                //     $c->nav_qty = $x->first()->nav_qty;
+                //     $c->cost_vat = $x->first()->cost_vat;
+                //     $c->cost_no_vat = $x->first()->cost_no_vat;
+                //     $c->amt = $x->first()->amt;
+                // } else {
+                //     $c->nav_qty = '-';
+                //     $c->cost_vat = '-';
+                //     $c->cost_no_vat = '-';
+                //     $c->amt = '-';
+                // }
+
+                $nav = $x->first()->nav_qty == null ? 0 : $x->first()->nav_qty;
+                $c->nav_qty = $nav;
+                $unposted = $y->first()->unposted == null ? 0 : $y->first()->unposted;
+                $c->unposted = $unposted;
+
+                // if ($y->exists()) {
+                //     $c->unposted = $y->first()->unposted;
+                // } else {
+                //     $c->unposted = '-';
+                // }
 
                 return $c;
             });
