@@ -8,7 +8,7 @@
           <h3
             class="panel-heading bord-btm text-thin"
             id="mdlTitle"
-            style="font-size: 20px;"
+            style="font-size: 20px; padding: 5px 15px 15px 15px;"
           >
             <i class="demo-pli-printer icon-lg"></i>
             {{ editItem == null ? 'Add Item(s)' : 'Edit Item' }}
@@ -128,7 +128,7 @@
                     ref="handcarry"
                     v-if="editItem == null"
                   />
-                  <span v-else>{{ data.qty }}</span>
+                  <span class="ml-12" v-else>{{ data.qty }}</span>
                 </td>
                 <td
                   class="text-main text-normal"

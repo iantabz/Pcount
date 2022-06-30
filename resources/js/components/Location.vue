@@ -335,7 +335,13 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="mdlTitle">App user information</h5>
+            <h5
+              class="modal-title bord-btm text-thin"
+              id="mdlTitle"
+              style="padding: 5px 15px 15px 15px; font-size: 20px;"
+            >
+              <i class="demo-pli-male"></i> App User Information
+            </h5>
             <button
               type="button"
               class="close"
@@ -684,7 +690,7 @@ export default {
       audit: [],
       categoryList: [],
       filteredCategoryList: [],
-      category: null,
+      category: [],
       vendorList: [],
       vendor: null,
       locationForm: new Form({
@@ -989,15 +995,40 @@ export default {
         position
       }
 
-      if (data.nav_count.byCategory === 'True')
-        test = data.nav_count.categoryName.replaceAll("'", '').split(' , ')
+      this.filteredCategoryList = this.categoryList.filter(
+        categ => categ.category !== 'ALL CATEGORIES'
+      )
+      let value = []
 
-      const comp = null
-      test.forEach((element, index) => {
-        comp = this.categoryList.filter(sm => sm.category == element)
-      })
+      // newValue.forEach((element, index) => {
+      //   value.push("'" + element.category + "'")
+      // })
+      // this.forPrintCategory = value.join(' , ')
+      this.category = []
+      if (data.nav_count.byCategory === 'True') {
+        test = data.nav_count.categoryName.replaceAll("'", '').split(' , ')
+        // this.category = test
+        // const comp = null
+        // console.log(test)
+        test.forEach((element, index) => {
+          const comp = this.categoryList.find(sm => sm.category === element)
+          console.log(comp)
+          this.category.push(comp)
+        })
+      } else {
+        // console.log(test2)
+        test = this.categoryList.find(sm => sm.category === 'ALL CATEGORIES')
+
+        const test2 = this.categoryList.filter(
+          categ => categ.category === test.category
+        )
+        // console.log(test2)
+        this.category = test2
+        this.filteredCategoryList = test2
+      }
+
       // this.category = arr
-      console.log(comp)
+      // console.log(test)
 
       this.company = data.company
       this.business_unit = data.business_unit

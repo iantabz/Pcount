@@ -5,7 +5,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="mdlTitle">Rack setup</h5>
+          <h5
+            class="modal-title bord-btm text-thin"
+            id="mdlTitle"
+            style="padding: 5px 15px 15px 15px; font-size: 20px;"
+          >
+            <i class="demo-pli-map-2 icon-lg"></i> Rack setup
+          </h5>
           <button
             type="button"
             class="close"

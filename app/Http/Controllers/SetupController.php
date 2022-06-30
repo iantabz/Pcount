@@ -337,12 +337,12 @@ class SetupController extends Controller
             } else if ($ifAppUserExists) {
                 return response()->json(['message' => 'Inventory Clerk already exists!'], 406);
             } else if ($ifAppAuditExists) {
-                return response()->json(['message' => 'IAD Audit already exists!'], 406);
+                return response()->json(['message' => 'Audit already exists!'], 406);
             }
         }
 
         // dd(request()->all());
-        DB::transaction(function () use ($validated, $section, $dept) {
+        DB::transaction(function () use ($validated, $section, $dept, $category, $vendor) {
             TblLocation::where('location_id', request()->location_id)->update([
                 'company' => $validated['company'],
                 'business_unit' => $validated['business_unit'],
@@ -366,6 +366,13 @@ class SetupController extends Controller
                 'emp_pin' => $validated['selectedAudit']['emp_pin'],
                 'name' => $validated['selectedAudit']['name'],
                 'position' => $validated['selectedAudit']['position']
+            ]);
+
+            TblNavCount::where('location_id', request()->location_id)->update([
+                'byCategory' =>  $category === 'null' ? 'False' : 'True',
+                'categoryName' => $category,
+                'byVendor' => $vendor === 'null' ? 'False' : 'True',
+                'vendorName' => $vendor
             ]);
         });
 

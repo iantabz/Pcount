@@ -63,13 +63,13 @@
                     <code>
                       <small class="text-bold">
                         Legend:
-                        <span class="text-main"> Success</span>
+                        <span class="text-main"> Completed</span>
 
                         <span
                           class="badge badge-icon badge-fw animate-bounce badge-success"
                         ></span>
 
-                        <span class="text-main"> Pending</span>
+                        <span class="text-main"> On-going</span>
 
                         <span
                           class="badge badge-icon badge-fw animate-bounce badge-warning"

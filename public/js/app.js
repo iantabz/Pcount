@@ -8249,8 +8249,6 @@ var _methods;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
-
 
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -8269,6 +8267,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8954,7 +8958,7 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
       audit: [],
       categoryList: [],
       filteredCategoryList: [],
-      category: null,
+      category: [],
       vendorList: [],
       vendor: null,
       locationForm: new vform__WEBPACK_IMPORTED_MODULE_7__.default({
@@ -9266,15 +9270,45 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.component('v-select', (vue_select__WEBP
         name: name,
         position: position
       };
-      if (data.nav_count.byCategory === 'True') test = data.nav_count.categoryName.replaceAll("'", '').split(' , ');
-      var comp = null;
-      test.forEach(function (element, index) {
-        _this3.categoryList.filter(function (sm) {
-          return sm.category == element;
-        }), _readOnlyError("comp");
-      }); // this.category = arr
+      this.filteredCategoryList = this.categoryList.filter(function (categ) {
+        return categ.category !== 'ALL CATEGORIES';
+      });
+      var value = []; // newValue.forEach((element, index) => {
+      //   value.push("'" + element.category + "'")
+      // })
+      // this.forPrintCategory = value.join(' , ')
 
-      console.log(comp);
+      this.category = [];
+
+      if (data.nav_count.byCategory === 'True') {
+        test = data.nav_count.categoryName.replaceAll("'", '').split(' , '); // this.category = test
+        // const comp = null
+        // console.log(test)
+
+        test.forEach(function (element, index) {
+          var comp = _this3.categoryList.find(function (sm) {
+            return sm.category === element;
+          });
+
+          console.log(comp);
+
+          _this3.category.push(comp);
+        });
+      } else {
+        // console.log(test2)
+        test = this.categoryList.find(function (sm) {
+          return sm.category === 'ALL CATEGORIES';
+        });
+        var test2 = this.categoryList.filter(function (categ) {
+          return categ.category === test.category;
+        }); // console.log(test2)
+
+        this.category = test2;
+        this.filteredCategoryList = test2;
+      } // this.category = arr
+      // console.log(test)
+
+
       this.company = data.company;
       this.business_unit = data.business_unit;
       this.department = data.department;
@@ -19150,6 +19184,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.es.js");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -59002,11 +59042,7 @@ var render = function() {
             [
               _c("div", { staticClass: "modal-content" }, [
                 _c("div", { staticClass: "modal-header" }, [
-                  _c(
-                    "h5",
-                    { staticClass: "modal-title", attrs: { id: "mdlTitle" } },
-                    [_vm._v("App user information")]
-                  ),
+                  _vm._m(11),
                   _vm._v(" "),
                   _c(
                     "button",
@@ -59108,7 +59144,7 @@ var render = function() {
                                 })
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(11)
+                            _vm._m(12)
                           ],
                           1
                         )
@@ -59204,7 +59240,7 @@ var render = function() {
                                   })
                                 : _vm._e(),
                               _vm._v(" "),
-                              _vm._m(12)
+                              _vm._m(13)
                             ],
                             1
                           )
@@ -59616,6 +59652,23 @@ var staticRenderFns = [
         _c("th", { staticClass: "text-main text-center" }, [_vm._v("Action")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "h5",
+      {
+        staticClass: "modal-title bord-btm text-thin",
+        staticStyle: { padding: "5px 15px 15px 15px", "font-size": "20px" },
+        attrs: { id: "mdlTitle" }
+      },
+      [
+        _c("i", { staticClass: "demo-pli-male" }),
+        _vm._v(" App User Information\n          ")
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -64042,14 +64095,14 @@ var staticRenderFns = [
       _c("code", [
         _c("small", { staticClass: "text-bold" }, [
           _vm._v("\n                      Legend:\n                      "),
-          _c("span", { staticClass: "text-main" }, [_vm._v(" Success")]),
+          _c("span", { staticClass: "text-main" }, [_vm._v(" Completed")]),
           _vm._v(" "),
           _c("span", {
             staticClass:
               "badge badge-icon badge-fw animate-bounce badge-success"
           }),
           _vm._v(" "),
-          _c("span", { staticClass: "text-main" }, [_vm._v(" Pending")]),
+          _c("span", { staticClass: "text-main" }, [_vm._v(" On-going")]),
           _vm._v(" "),
           _c("span", {
             staticClass:
@@ -67966,7 +68019,10 @@ var render = function() {
               "h3",
               {
                 staticClass: "panel-heading bord-btm text-thin",
-                staticStyle: { "font-size": "20px" },
+                staticStyle: {
+                  "font-size": "20px",
+                  padding: "5px 15px 15px 15px"
+                },
                 attrs: { id: "mdlTitle" }
               },
               [
@@ -68330,7 +68386,9 @@ var render = function() {
                                     }
                                   }
                                 })
-                              : _c("span", [_vm._v(_vm._s(data.qty))])
+                              : _c("span", { staticClass: "ml-12" }, [
+                                  _vm._v(_vm._s(data.qty))
+                                ])
                           ]
                         ),
                         _vm._v(" "),
@@ -68512,9 +68570,7 @@ var render = function() {
     _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
       _c("div", { staticClass: "modal-content" }, [
         _c("div", { staticClass: "modal-header" }, [
-          _c("h5", { staticClass: "modal-title", attrs: { id: "mdlTitle" } }, [
-            _vm._v("Rack setup")
-          ]),
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "button",
@@ -68644,7 +68700,7 @@ var render = function() {
               "table",
               { staticClass: "table table-striped table-vcenter table-hover" },
               [
-                _vm._m(0),
+                _vm._m(1),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -68742,6 +68798,23 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "h5",
+      {
+        staticClass: "modal-title bord-btm text-thin",
+        staticStyle: { padding: "5px 15px 15px 15px", "font-size": "20px" },
+        attrs: { id: "mdlTitle" }
+      },
+      [
+        _c("i", { staticClass: "demo-pli-map-2 icon-lg" }),
+        _vm._v(" Rack setup\n        ")
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
