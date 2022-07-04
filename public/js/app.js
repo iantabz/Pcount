@@ -15230,6 +15230,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -19007,8 +19019,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
 
 
 
@@ -19071,8 +19081,12 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       if (this.qty.length != 0 && this.editItem == null) {
         var result = this.qty.every(function (e) {
           return e > 0;
+        }),
+            result2 = this.navQty.every(function (e) {
+          return e > 0;
         });
-        if (result) return result;
+        console.log(result, result2);
+        if (result && result2) return result;
       }
 
       if (this.navQty != 0 && this.editItem != null) {
@@ -19137,6 +19151,11 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('v-select', (vue_select__WEBP
       this.rack_name = null;
       this.message = null;
       this.rack.reset();
+      this.itemList = [];
+      this.forPrintItems = [];
+      this.item = null;
+      this.qty = [];
+      this.navQty = [];
       this.$emit('closeMdl', false);
     },
     retrieveCategory: function retrieveCategory(search, loading) {
@@ -64871,8 +64890,33 @@ var render = function() {
                         _vm._v(" "),
                         _vm._l(_vm.data.data, function(data, index) {
                           return _c("tr", { key: index }, [
+                            _c(
+                              "td",
+                              {
+                                staticClass: "text-main text-thin",
+                                staticStyle: { width: "10%" }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                    " +
+                                    _vm._s(
+                                      data.item_code
+                                        ? data.item_code
+                                        : data.itemcode
+                                        ? data.itemcode
+                                        : "-"
+                                    ) +
+                                    "\n                  "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
                             _c("td", { staticClass: "text-main text-thin" }, [
-                              _vm._v(_vm._s(data.barcode))
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(data.barcode ? data.barcode : "-") +
+                                  "\n                  "
+                              )
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-main text-thin" }, [
@@ -65155,7 +65199,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Item Code / Barcode")]),
+        _c("th", [_vm._v("Item Code")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Barcode")]),
         _vm._v(" "),
         _c("th", [_vm._v("Description")]),
         _vm._v(" "),
@@ -68297,60 +68343,7 @@ var render = function() {
               "table",
               { staticClass: "table table-striped table-vcenter table-hover" },
               [
-                _c("thead", [
-                  _c(
-                    "th",
-                    { staticClass: "text-main", staticStyle: { width: "10%" } },
-                    [_vm._v("\n              Item Code\n            ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    { staticClass: "text-main", staticStyle: { width: "10%" } },
-                    [_vm._v("\n              Barcode\n            ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    { staticClass: "text-main", staticStyle: { width: "45%" } },
-                    [_vm._v("\n              Description\n            ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    {
-                      staticClass: "text-main",
-                      staticStyle: { width: "auto" }
-                    },
-                    [_vm._v("\n              Uom\n            ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    { staticClass: "text-main", staticStyle: { width: "15%" } },
-                    [_vm._v("Qty")]
-                  ),
-                  _vm._v(" "),
-                  _vm.editItem != null
-                    ? _c(
-                        "th",
-                        {
-                          staticClass: "text-main",
-                          staticStyle: { width: "15%" }
-                        },
-                        [_vm._v("\n              Nav Qty\n            ")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    {
-                      staticClass: "text-main",
-                      staticStyle: { width: "auto" }
-                    },
-                    [_vm._v("Action")]
-                  )
-                ]),
+                _vm._m(1),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -68498,57 +68491,54 @@ var render = function() {
                           ]
                         ),
                         _vm._v(" "),
-                        _vm.editItem != null
-                          ? _c(
-                              "td",
-                              {
-                                staticClass: "text-main text-normal",
-                                staticStyle: { width: "15%" }
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-main text-normal",
+                            staticStyle: { width: "15%" }
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model.number",
+                                  value: _vm.navQty[index],
+                                  expression: "navQty[index]",
+                                  modifiers: { number: true }
+                                }
+                              ],
+                              ref: "handcarry",
+                              refInFor: true,
+                              staticClass: "form-control font-medium text-xl",
+                              attrs: {
+                                type: "number",
+                                min: "1",
+                                autocomplete: "off",
+                                placeholder: "Input Qty"
                               },
-                              [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model.number",
-                                      value: _vm.navQty[index],
-                                      expression: "navQty[index]",
-                                      modifiers: { number: true }
-                                    }
-                                  ],
-                                  ref: "handcarry",
-                                  refInFor: true,
-                                  staticClass:
-                                    "form-control font-medium text-xl",
-                                  attrs: {
-                                    type: "number",
-                                    min: "1",
-                                    autocomplete: "off",
-                                    placeholder: "Input Qty"
-                                  },
-                                  domProps: { value: _vm.navQty[index] },
-                                  on: {
-                                    keypress: function($event) {
-                                      return _vm.isNumber($event)
-                                    },
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.navQty,
-                                        index,
-                                        _vm._n($event.target.value)
-                                      )
-                                    },
-                                    blur: function($event) {
-                                      return _vm.$forceUpdate()
-                                    }
+                              domProps: { value: _vm.navQty[index] },
+                              on: {
+                                keypress: function($event) {
+                                  return _vm.isNumber($event)
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
                                   }
-                                })
-                              ]
-                            )
-                          : _vm._e(),
+                                  _vm.$set(
+                                    _vm.navQty,
+                                    index,
+                                    _vm._n($event.target.value)
+                                  )
+                                },
+                                blur: function($event) {
+                                  return _vm.$forceUpdate()
+                                }
+                              }
+                            })
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "td",
@@ -68648,6 +68638,40 @@ var staticRenderFns = [
       },
       [_c("h5", [_vm._v("Item :")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { staticClass: "text-main", staticStyle: { width: "10%" } }, [
+        _vm._v("\n              Item Code\n            ")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-main", staticStyle: { width: "10%" } }, [
+        _vm._v("\n              Barcode\n            ")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-main", staticStyle: { width: "45%" } }, [
+        _vm._v("\n              Description\n            ")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-main", staticStyle: { width: "auto" } }, [
+        _vm._v("\n              Uom\n            ")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-main", staticStyle: { width: "15%" } }, [
+        _vm._v("Qty")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-main", staticStyle: { width: "15%" } }, [
+        _vm._v("\n              Nav Qty\n            ")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-main", staticStyle: { width: "auto" } }, [
+        _vm._v("Action")
+      ])
+    ])
   }
 ]
 render._withStripped = true

@@ -290,7 +290,8 @@
               <table class="table table-striped table-vcenter" id="data-table">
                 <thead>
                   <tr>
-                    <th>Item Code / Barcode</th>
+                    <th>Item Code</th>
+                    <th>Barcode</th>
                     <th>Description</th>
                     <th>Uom</th>
                     <th>Qty</th>
@@ -316,7 +317,18 @@
                     </td>
                   </tr>
                   <tr v-for="(data, index) in data.data" :key="index">
-                    <td class="text-main text-thin">{{ data.barcode }}</td>
+                    <td class="text-main text-thin" style="width: 10%">
+                      {{
+                        data.item_code
+                          ? data.item_code
+                          : data.itemcode
+                          ? data.itemcode
+                          : '-'
+                      }}
+                    </td>
+                    <td class="text-main text-thin">
+                      {{ data.barcode ? data.barcode : '-' }}
+                    </td>
                     <td class="text-main text-thin">
                       {{ data.description.toUpperCase() }}
                     </td>

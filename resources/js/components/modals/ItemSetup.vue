@@ -84,7 +84,8 @@
                 Uom
               </th>
               <th class="text-main" style="width: 15%">Qty</th>
-              <th class="text-main" style="width: 15%" v-if="editItem != null">
+              <th class="text-main" style="width: 15%">
+                <!-- v-if="editItem != null" -->
                 Nav Qty
               </th>
               <th class="text-main" style="width: auto">Action</th>
@@ -130,11 +131,8 @@
                   />
                   <span class="ml-12" v-else>{{ data.qty }}</span>
                 </td>
-                <td
-                  class="text-main text-normal"
-                  style="width: 15%"
-                  v-if="editItem != null"
-                >
+                <td class="text-main text-normal" style="width: 15%">
+                  <!-- v-if="editItem != null" -->
                   <input
                     class="form-control font-medium text-xl"
                     type="number"
@@ -263,10 +261,13 @@ export default {
       // console.log(this.date)
       if (this.qty.length != 0 && this.editItem == null) {
         let result = this.qty.every(function(e) {
-          return e > 0
-        })
-
-        if (result) return result
+            return e > 0
+          }),
+          result2 = this.navQty.every(function(e) {
+            return e > 0
+          })
+        console.log(result, result2)
+        if (result && result2) return result
       }
       if (this.navQty != 0 && this.editItem != null) {
         let result = this.navQty.every(function(e) {
@@ -334,6 +335,11 @@ export default {
       this.rack_name = null
       this.message = null
       this.rack.reset()
+      this.itemList = []
+      this.forPrintItems = []
+      this.item = null
+      this.qty = []
+      this.navQty = []
       this.$emit('closeMdl', false)
     },
     retrieveCategory(search, loading) {
