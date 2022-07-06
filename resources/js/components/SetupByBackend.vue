@@ -276,14 +276,14 @@
                 <button
                   class="btn btn-info btn-rounded mar-lft text-thin pull-right"
                   @click="showRackSetup = !showRackSetup"
-                >
-                  <!-- :disabled="
+                  :disabled="
                     !company ||
                       !business_unit ||
                       !department ||
                       !section ||
                       !countType
-                  " -->
+                  "
+                >
                   <i class="demo-pli-add-user-star icon-lg"></i> Add Items
                 </button>
               </div>
@@ -551,6 +551,7 @@ export default {
     },
     status(value) {
       // console.log(value)
+      this.editItem = null
       this.showRackSetup = value
     },
     async generateBtnEXCEL(e, reportType) {

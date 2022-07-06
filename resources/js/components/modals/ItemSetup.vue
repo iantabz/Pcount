@@ -80,7 +80,7 @@
               <th class="text-main" style="width:45%">
                 Description
               </th>
-              <th class="text-main" style="width: auto">
+              <th class="text-main" style="width: 5%">
                 Uom
               </th>
               <th class="text-main" style="width: 15%">Qty</th>
@@ -88,7 +88,7 @@
                 <!-- v-if="editItem != null" -->
                 Nav Qty
               </th>
-              <th class="text-main" style="width: auto">Action</th>
+              <th class="text-main" style="width: 5%">Action</th>
             </thead>
             <tbody>
               <tr v-if="!itemList.length">
@@ -114,7 +114,7 @@
                     data.extended_desc ? data.extended_desc : data.description
                   }}
                 </td>
-                <td class="text-main text-normal italic" style="width: auto">
+                <td class="text-main text-normal italic" style="width: 5%">
                   {{ data.uom }}
                 </td>
                 <td class="text-main text-normal" style="width: 15%">
@@ -144,7 +144,7 @@
                     ref="handcarry"
                   />
                 </td>
-                <td class="text-main text-normal" style="width: auto">
+                <td class="text-main text-normal" style="width: 5%">
                   <button
                     class="btn btn-xs pull-right text-white font-medium bg-red-500 focus:outline-none border-red-500"
                     :disabled="editItem != null"

@@ -15388,6 +15388,7 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
     },
     status: function status(value) {
       // console.log(value)
+      this.editItem = null;
       this.showRackSetup = value;
     },
     generateBtnEXCEL: function generateBtnEXCEL(e, reportType) {
@@ -64812,6 +64813,14 @@ var render = function() {
                     {
                       staticClass:
                         "btn btn-info btn-rounded mar-lft text-thin pull-right",
+                      attrs: {
+                        disabled:
+                          !_vm.company ||
+                          !_vm.business_unit ||
+                          !_vm.department ||
+                          !_vm.section ||
+                          !_vm.countType
+                      },
                       on: {
                         click: function($event) {
                           _vm.showRackSetup = !_vm.showRackSetup
@@ -68426,7 +68435,7 @@ var render = function() {
                           "td",
                           {
                             staticClass: "text-main text-normal italic",
-                            staticStyle: { width: "auto" }
+                            staticStyle: { width: "5%" }
                           },
                           [
                             _vm._v(
@@ -68544,7 +68553,7 @@ var render = function() {
                           "td",
                           {
                             staticClass: "text-main text-normal",
-                            staticStyle: { width: "auto" }
+                            staticStyle: { width: "5%" }
                           },
                           [
                             _c(
@@ -68656,7 +68665,7 @@ var staticRenderFns = [
         _vm._v("\n              Description\n            ")
       ]),
       _vm._v(" "),
-      _c("th", { staticClass: "text-main", staticStyle: { width: "auto" } }, [
+      _c("th", { staticClass: "text-main", staticStyle: { width: "5%" } }, [
         _vm._v("\n              Uom\n            ")
       ]),
       _vm._v(" "),
@@ -68668,7 +68677,7 @@ var staticRenderFns = [
         _vm._v("\n              Nav Qty\n            ")
       ]),
       _vm._v(" "),
-      _c("th", { staticClass: "text-main", staticStyle: { width: "auto" } }, [
+      _c("th", { staticClass: "text-main", staticStyle: { width: "5%" } }, [
         _vm._v("Action")
       ])
     ])
