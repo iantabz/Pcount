@@ -6,7 +6,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h3
-            class="panel-heading bord-btm text-thin"
+            class="panel-heading bord-btm text-thin animate-pulse"
             id="mdlTitle"
             style="font-size: 20px; padding: 5px 15px 15px 15px;"
           >

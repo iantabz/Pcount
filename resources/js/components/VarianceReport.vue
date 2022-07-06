@@ -871,25 +871,34 @@ export default {
       let variance = 0,
         value = 0
 
+      // if (b != '-' && a != '-') {
+      //   value = a + b
+      // } else if (a == '-' && b != '-') {
+      //   value = b
+      //   variance = b + c
+      // } else if (b == '-' && a != '-') {
+      //   value = a
+      //   variance = a + c
+      // }
+
+      // if (a == '-' && b == '-') {
+      //   value = '-'
+      //   variance = c
+      // }
       if (b != '-' && a != '-') {
-        value = a + b
-      } else if (a == '-' && b != '-') {
-        value = b
-        variance = b + c
-      } else if (b == '-' && a != '-') {
-        value = a
-        variance = a + c
+        value = parseFloat(a) + parseFloat(b)
+      } else if (a == '-') {
+        value = isNaN(b) ? '-' : parseFloat(b)
+      } else {
+        value = isNaN(a) ? '-' : parseFloat(a)
       }
 
-      if (a == '-' && b == '-') {
-        value = '-'
-        variance = c
-      }
+      console.log(value)
 
-      if (a < 0) {
+      if (value < 0) {
         value == isNaN(value) ? (variance = c + value) : (variance = c)
       } else {
-        if (a != '-')
+        if (value != '-')
           value == isNaN(value) ? (variance = c - value) : (variance = c)
       }
 

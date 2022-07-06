@@ -17465,27 +17465,34 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
     },
     computeVariance: function computeVariance(a, b, c) {
       var variance = 0,
-          value = 0;
+          value = 0; // if (b != '-' && a != '-') {
+      //   value = a + b
+      // } else if (a == '-' && b != '-') {
+      //   value = b
+      //   variance = b + c
+      // } else if (b == '-' && a != '-') {
+      //   value = a
+      //   variance = a + c
+      // }
+      // if (a == '-' && b == '-') {
+      //   value = '-'
+      //   variance = c
+      // }
 
       if (b != '-' && a != '-') {
-        value = a + b;
-      } else if (a == '-' && b != '-') {
-        value = b;
-        variance = b + c;
-      } else if (b == '-' && a != '-') {
-        value = a;
-        variance = a + c;
+        value = parseFloat(a) + parseFloat(b);
+      } else if (a == '-') {
+        value = isNaN(b) ? '-' : parseFloat(b);
+      } else {
+        value = isNaN(a) ? '-' : parseFloat(a);
       }
 
-      if (a == '-' && b == '-') {
-        value = '-';
-        variance = c;
-      }
+      console.log(value);
 
-      if (a < 0) {
+      if (value < 0) {
         value == isNaN(value) ? variance = c + value : variance = c;
       } else {
-        if (a != '-') value == isNaN(value) ? variance = c - value : variance = c;
+        if (value != '-') value == isNaN(value) ? variance = c - value : variance = c;
       }
 
       return variance;
@@ -68179,7 +68186,7 @@ var render = function() {
             _c(
               "h3",
               {
-                staticClass: "panel-heading bord-btm text-thin",
+                staticClass: "panel-heading bord-btm text-thin animate-pulse",
                 staticStyle: {
                   "font-size": "20px",
                   padding: "5px 15px 15px 15px"

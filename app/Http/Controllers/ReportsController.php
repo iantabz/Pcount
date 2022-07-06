@@ -557,7 +557,7 @@ class ReportsController extends Controller
         $category = request()->category;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
         $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
-        $date2 = Carbon::parse(base64_decode(request()->date2))->endOfDay()->toDateTimeString();
+        $date2 = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateString();
         $bu = request()->bu;
         $dept = request()->dept;
 
@@ -618,40 +618,46 @@ class ReportsController extends Controller
 
         // dd($x);
 
-        $query = $x->map(function ($c) use ($bu, $dept, $section) {
+        $query = $x->map(function ($c) use ($bu, $dept, $section, $date2) {
             // dd($c->itemcode);
-            $x = TblNavCountdata::selectRaw("cost_vat, cost_no_vat, amt, SUM(qty) as nav_qty")->where([
+            $x = TblNavCountdata::selectRaw("SUM(qty) as nav_qty")->where([
                 ['itemcode', $c->itemcode],
                 ['business_unit', $bu],
                 ['department', $dept],
-                ['section', $section]
-            ])->groupBy('itemcode');
+                ['section', $section],
+                ['date', $date2]
+            ]);
 
-            $y = TblUnposted::selectRaw("cost_no_vat, tot_cost_no_vat, SUM(qty) as unposted")->where([
+            $y = TblUnposted::selectRaw("SUM(qty) as unposted")->where([
                 ['itemcode', $c->itemcode],
                 ['business_unit', $bu],
                 ['department', $dept],
-                ['section', $section]
-            ])->groupBy('itemcode');
+                ['section', $section],
+                ['date', $date2]
+            ]);
 
-            // dd($y->get());
-            if ($x->exists()) {
-                $c->nav_qty = $x->first()->nav_qty;
-                $c->cost_vat = $x->first()->cost_vat;
-                $c->cost_no_vat = $x->first()->cost_no_vat;
-                $c->amt = $x->first()->amt;
-            } else {
-                $c->nav_qty = '-';
-                $c->cost_vat = '-';
-                $c->cost_no_vat = '-';
-                $c->amt = '-';
-            }
+            // dd($x->get());
+            // if ($x->exists()) {
+            //     $c->nav_qty = $x->first()->nav_qty;
+            //     $c->cost_vat = $x->first()->cost_vat;
+            //     $c->cost_no_vat = $x->first()->cost_no_vat;
+            //     $c->amt = $x->first()->amt;
+            // } else {
+            //     $c->nav_qty = '-';
+            //     $c->cost_vat = '-';
+            //     $c->cost_no_vat = '-';
+            //     $c->amt = '-';
+            // }
 
-            if ($y->exists()) {
-                $c->unposted = $y->first()->unposted;
-            } else {
-                $c->unposted = '-';
-            }
+            // if ($y->exists()) {
+            //     $c->unposted = $y->first()->unposted;
+            // } else {
+            //     $c->unposted = '-';
+            // }
+            $nav = $x->first()->nav_qty == null ? '-' : $x->first()->nav_qty;
+            $c->nav_qty = $nav;
+            $unposted = $y->first()->unposted == null ? '-' : $y->first()->unposted;
+            $c->unposted = $unposted;
 
             return $c;
         });
