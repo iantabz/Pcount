@@ -10948,13 +10948,13 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 pass = null, title = null;
 
                 if (type == 'Negative NetNavSys') {
-                  title = 'Negative Inventory Balance (Navision)';
+                  title = 'Sum of Items with Negative Inventory Balance';
                   pass = "/reports/nav_sys/NetNavSys?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=NegativeNetNavSys");
                 } else if (type == 'NetNavSys') {
-                  title = 'Inventory Valuation Report (Navision)';
+                  title = 'Inventory Balance per Navision';
                   pass = "/reports/nav_sys/NetNavSys?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=NetNavSys");
                 } else if (type == 'No Actual Count') {
-                  title = 'Nav Inventory Balance No Actual Count';
+                  title = 'Negative Variance Report';
                   pass = "/reports/not_in_count/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=NotInCount");
                 }
 
@@ -12634,7 +12634,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 pass = null, title = null;
 
                 if (type == 'No Actual Count') {
-                  title = 'Inventory Balance No Actual Count';
+                  title = 'Negative Variance Report';
                   pass = "/reports/not_in_count/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=NotInCount");
                 }
 
@@ -17269,10 +17269,10 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 pass = null, title = null;
 
                 if (type == 'Variance') {
-                  title = 'Variance Report';
+                  title = 'Consolidated Variance Report';
                   pass = "/reports/variance_report/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section);
                 } else if (type == 'Summary') {
-                  title = 'Variance Report Summary';
+                  title = 'Consolidated Variance Report Summary';
                   pass = "/reports/variance_report/generate?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=Summary");
                 } else {
                   title = 'Net Nav Sys';
@@ -18356,10 +18356,10 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.component('v-select', (vue_select__WEBP
                 pass = null, title = null;
 
                 if (reportType == 'Variance') {
-                  title = 'Variance Report w/ Cost';
+                  title = 'Consolidated Variance Report w/ Cost';
                   pass = "/reports/variance_report_cost/generateVarianceReportCost?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section);
                 } else if (reportType == 'Summary') {
-                  title = 'Variance Report w/ Cost Summary';
+                  title = 'Consolidated Variance Report w/ Cost Summary';
                   pass = "/reports/variance_report_cost/generateVarianceReportCost?date=".concat(btoa(_this.date), "&date2=").concat(btoa(_this.date2), "&vendors=").concat(btoa(_this.forPrintVendor), "&category=").concat(_this.forPrintCategory, "&bu=").concat(_this.business_unit, "&dept=").concat(_this.department, "&section=").concat(_this.section, "&type=Summary");
                 }
 
@@ -20044,18 +20044,18 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
       name: 'Consolidate Report w/ Cost'
     }
   }, {
-    name: 'Variance Report with Cost',
+    name: 'Consolidated Variance Report with Cost',
     path: '/variance_report_cost',
     component: _components_VarianceReportCost_vue__WEBPACK_IMPORTED_MODULE_6__.default,
     meta: {
-      name: 'Variance Report with Cost'
+      name: 'Consolidated Variance Report with Cost'
     }
   }, {
-    name: 'Variance Report',
+    name: 'Consolidated Variance Report',
     path: '/variance_report',
     component: _components_VarianceReport_vue__WEBPACK_IMPORTED_MODULE_7__.default,
     meta: {
-      name: 'Variance Report'
+      name: 'Consolidated Variance Report'
     }
   }, {
     name: 'Consolidated Report',
@@ -20065,11 +20065,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
       name: 'Consolidated Report'
     }
   }, {
-    name: 'Actual Count (APP) with Cost',
-    path: '/physical_count_cost',
+    name: 'Inventory Valuation per Navision',
+    path: '/inventory_valuation',
     component: _components_PhysicalCountCost_vue__WEBPACK_IMPORTED_MODULE_12__.default,
     meta: {
-      name: 'Actual Count (APP) with Cost'
+      name: 'Inventory Valuation per Navision'
     }
   }, {
     name: 'Rack Area Monitoring',
@@ -20086,18 +20086,18 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
       name: 'Inventory Valuation From Navision w/ Variances'
     }
   }, {
-    name: 'Inventory Valuation Report (Navision)',
-    path: '/inventory_valuation',
+    name: 'Inventory Balance per Navision',
+    path: '/inventory_balance',
     component: _components_NavSys_vue__WEBPACK_IMPORTED_MODULE_18__.default,
     meta: {
-      name: 'Inventory Valuation Report (Navision)'
+      name: 'Inventory Balance per Navision'
     }
   }, {
-    name: 'Inventory Balance No Actual Count',
+    name: 'Negative Variance Report',
     path: '/not_in_count',
     component: _components_NotInCount_vue__WEBPACK_IMPORTED_MODULE_19__.default,
     meta: {
-      name: 'Inventory Balance No Actual Count'
+      name: 'Negative Variance Report'
     }
   }, {
     name: 'Count Setup by Backend',
@@ -61015,7 +61015,7 @@ var render = function() {
                     [
                       _c("i", { staticClass: "demo-pli-printer icon-lg" }),
                       _vm._v(
-                        "  Generate\n                Negative Inventory Balance Report\n              "
+                        "  Generate Sum of\n                Items with Negative Inventory Balance\n              "
                       )
                     ]
                   ),
@@ -62234,7 +62234,7 @@ var render = function() {
                     [
                       _c("i", { staticClass: "demo-pli-printer icon-lg" }),
                       _vm._v(
-                        "  Generate\n                Inventory Balance No Actual Count\n              "
+                        "  Generate\n                Negative Variance Report\n              "
                       )
                     ]
                   )

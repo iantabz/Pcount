@@ -196,7 +196,7 @@
                   @click="generateBtn($event, 'No Actual Count')"
                 >
                   <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                  Inventory Balance No Actual Count
+                  Negative Variance Report
                 </button>
                 <!-- <button
                   class="btn btn-danger btn-rounded pull-right text-thin"
@@ -567,7 +567,7 @@ export default {
       let pass = null,
         title = null
       if (type == 'No Actual Count') {
-        title = 'Inventory Balance No Actual Count'
+        title = 'Negative Variance Report'
         pass = `/reports/not_in_count/generate?date=${btoa(
           this.date
         )}&date2=${btoa(this.date2)}&vendors=${btoa(

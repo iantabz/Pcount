@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> @if($data['report'] =='Variance')
-        VARIANCE REPORT 
+        CONSOLIDATED VARIANCE REPORT 
         @else
-        VARIANCE SUMMARY REPORT
+        CONSOLIDATED VARIANCE SUMMARY REPORT
         @endif</title>
     <style media="screen">
         body {

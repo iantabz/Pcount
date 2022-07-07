@@ -968,20 +968,20 @@
                         {{-- <router-link tag="li" to="/damage_count">
                           <a href="javascript:;">Actual Count (APP) for <span class="text-bold">Damages</span></a>
                         </router-link> --}}
-                        <router-link tag="li" to="/physical_count_cost">
-                          <a href="javascript:;">Actual Count (APP) with Cost</a>
-                        </router-link>
                         <router-link tag="li" to="/inventory_valuation">
-                          <a href="javascript:;">Inventory Valuation Report (Navision)</a>
+                          <a href="javascript:;">Inventory Valuation per Navision</a>
+                        </router-link>
+                        <router-link tag="li" to="/inventory_balance">
+                          <a href="javascript:;">Inventory Balance per Navision</a>
                         </router-link>
                         <router-link tag="li" to="/not_in_count">
-                          <a href="javascript:;">Inventory Balance No Actual Count (Navision)</a>
+                          <a href="javascript:;">Negative Variance Report</a>
                         </router-link>
                         <router-link tag="li" to="/variance_report">
-                          <a href="javascript:;">Variance Report</a>
+                          <a href="javascript:;">Consolidated Variance Report</a>
                         </router-link>
                         <router-link tag="li" to="/variance_report_cost">
-                          <a href="javascript:;">Variance Report /w Cost</a>
+                          <a href="javascript:;">Consolidated Variance Report /w Cost</a>
                         </router-link>
                         <router-link tag="li" to="/consolidate_report">
                           <a href="javascript:;">Consolidated Reports</a>

@@ -586,7 +586,7 @@ export default {
         title = null
 
       if (reportType == 'Variance') {
-        title = 'Variance Report w/ Cost'
+        title = 'Consolidated Variance Report w/ Cost'
 
         pass = `/reports/variance_report_cost/generateVarianceReportCost?date=${btoa(
           this.date
@@ -596,7 +596,7 @@ export default {
           this.department
         }&section=${this.section}`
       } else if (reportType == 'Summary') {
-        title = 'Variance Report w/ Cost Summary'
+        title = 'Consolidated Variance Report w/ Cost Summary'
         pass = `/reports/variance_report_cost/generateVarianceReportCost?date=${btoa(
           this.date
         )}&date2=${btoa(this.date2)}&vendors=${btoa(

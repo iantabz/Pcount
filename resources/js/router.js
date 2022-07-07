@@ -127,19 +127,19 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Variance Report with Cost',
+      name: 'Consolidated Variance Report with Cost',
       path: '/variance_report_cost',
       component: VarianceReportCost,
       meta: {
-        name: 'Variance Report with Cost'
+        name: 'Consolidated Variance Report with Cost'
       }
     },
     {
-      name: 'Variance Report',
+      name: 'Consolidated Variance Report',
       path: '/variance_report',
       component: VarianceReport,
       meta: {
-        name: 'Variance Report'
+        name: 'Consolidated Variance Report'
       }
     },
     {
@@ -151,11 +151,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Actual Count (APP) with Cost',
-      path: '/physical_count_cost',
+      name: 'Inventory Valuation per Navision',
+      path: '/inventory_valuation',
       component: PhysicalCountCost,
       meta: {
-        name: 'Actual Count (APP) with Cost'
+        name: 'Inventory Valuation per Navision'
       }
     },
     {
@@ -175,19 +175,19 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Inventory Valuation Report (Navision)',
-      path: '/inventory_valuation',
+      name: 'Inventory Balance per Navision',
+      path: '/inventory_balance',
       component: NavSys,
       meta: {
-        name: 'Inventory Valuation Report (Navision)'
+        name: 'Inventory Balance per Navision'
       }
     },
     {
-      name: 'Inventory Balance No Actual Count',
+      name: 'Negative Variance Report',
       path: '/not_in_count',
       component: NotInCount,
       meta: {
-        name: 'Inventory Balance No Actual Count'
+        name: 'Negative Variance Report'
       }
     },
     {

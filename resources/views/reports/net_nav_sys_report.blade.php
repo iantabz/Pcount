@@ -5,11 +5,11 @@
     {{-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> --}}
     <title>  
         @if($data['reportType'] == 'NetNavSys')
-        Inventory Valuation Report (Navision)
+        Inventory Balance per Navision
         @elseif($data['reportType'] == 'NegativeNetNavSys')
-        Negative Inventory Balance (Navision)
+        Sum of Items with Negative Inventory Balance
         @elseif($data['reportType'] == 'NotInCount')
-        Inventory Valuation No Actual Count
+        Negative Variance Report
         @endif
     </title>
     <style>
