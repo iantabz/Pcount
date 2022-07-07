@@ -17365,6 +17365,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
             invtyPostGroup = '',
             nav_qty = 0,
             app_qty = 0,
+            unposted = 0,
             invQty = 0,
             unitAmt = 0,
             unitCost = 0,
@@ -17386,22 +17387,36 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
         test.forEach(function (result) {
           itemCode = result.itemcode;
           desc = result.extended_desc;
-          app_qty = parseFloat(result.app_qty);
-          nav_qty = parseFloat(result.nav_qty);
+          app_qty = parseInt(result.conversion_qty);
+          nav_qty = isNaN(result.nav_qty) ? 0 : parseInt(result.nav_qty);
+          unposted = isNaN(result.unposted) ? 0 : parseInt(result.unposted); // if (unposted != '-' && nav_qty != '-') {
+          //   value = nav_qty + unposted
+          // } else if (nav_qty == '-' && unposted != '-') {
+          //   value = isNaN(unposted) ? 0 : parseFloat(unposted)
+          // } else {
+          //   value = isNaN(nav_qty) ? 0 : parseFloat(nav_qty)
+          // }
 
-          if (result.unposted != '-') {
-            value = nav_qty + parseFloat(result.unposted);
-          } else {
-            value = nav_qty;
-          }
+          value = nav_qty + unposted;
 
-          if (result.nav_qty < 0) {
+          if (value < 0) {
             variance = app_qty + value;
             entryType = 'Negative Adjmt.';
           } else {
-            variance = app_qty - value;
+            variance = value + app_qty;
             entryType = 'Positive Adjmt.';
           }
+
+          console.log(result, nav_qty, unposted, app_qty, value, variance); // if (b != '-' && a != '-') {
+          //   value = parseFloat(a) + parseFloat(b)
+          // } else if (a == '-') {
+          //   value = isNaN(b) ? 0 : parseFloat(b)
+          // } else {
+          //   value = isNaN(a) ? 0 : parseFloat(a)
+          // }
+          // value < 0
+          //   ? (variance = parseFloat(c) + value)
+          //   : (variance = value + parseFloat(c))
 
           uom = result.uom;
           lineNo += 10000;
@@ -17478,23 +17493,22 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       //   value = '-'
       //   variance = c
       // }
+      //  if (a < 0) {
+      //   value == isNaN(value) ? (variance = c + value) : (variance = c)
+      // } else {
+      //   if (a != '-')
+      //     value == isNaN(value) ? (variance = c - value) : (variance = c)
+      // }
 
       if (b != '-' && a != '-') {
         value = parseFloat(a) + parseFloat(b);
       } else if (a == '-') {
-        value = isNaN(b) ? '-' : parseFloat(b);
+        value = isNaN(b) ? 0 : parseFloat(b);
       } else {
-        value = isNaN(a) ? '-' : parseFloat(a);
+        value = isNaN(a) ? 0 : parseFloat(a);
       }
 
-      console.log(value);
-
-      if (value < 0) {
-        value == isNaN(value) ? variance = c + value : variance = c;
-      } else {
-        if (value != '-') value == isNaN(value) ? variance = c - value : variance = c;
-      }
-
+      value < 0 ? variance = parseFloat(c) + value : variance = value + parseFloat(c);
       return variance;
     },
     getFormattedDateToday: function getFormattedDateToday() {
