@@ -254,8 +254,8 @@ import { debounce } from 'lodash'
 
 Dropzone.options.navUpload = {
   paramName: 'file', // The name that will be used to transfer the file
-  url: '/uploading/nav_upload/navPcount',
-  // url: '/uploading/masterfiles/importItemMasterfile',
+  // url: '/uploading/nav_upload/navPcount',
+  url: '/uploading/masterfiles/importItemMasterfile',
   timeout: 100000000,
   init: function() {
     this.on('addedfile', function(file) {

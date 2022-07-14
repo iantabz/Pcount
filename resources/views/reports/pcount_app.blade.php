@@ -625,6 +625,7 @@
             </tr>
         </thead>
     </table>
+    <div class="page-break"></div>
     @endforeach
     
     {{-- {{dd(current($items))}} --}}

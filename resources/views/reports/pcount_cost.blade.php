@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Actual Count (APP) with Cost</title>
+    <title>Inventory Valuation per Navision</title>
     <style>
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
@@ -230,7 +230,7 @@
                 </div>
                 <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
-                        ACTUAL COUNT (APP) w/ COST
+                        INVENTORY VALUATION PER NAVISION
                     </div>
                 </div>
                 <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>

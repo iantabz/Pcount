@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Actual Count (APP) with Cost</title>
+    <title>Inventory Valuation per Navision</title>
     <style media="screen">
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
@@ -211,7 +211,7 @@
             </tr>
             <tr>
                 <th style="text-align: left; font-size: 12px;">
-                    Actual Count (APP) with Cost
+                   Inventory Valuation per Navision
                 </th>
             </tr>
             @if($data['business_unit'] != 'null')

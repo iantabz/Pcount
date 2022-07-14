@@ -15,6 +15,7 @@ class TblLocation extends Model
 
     public function app_users()
     {
+        // dd(request()->all());
         return $this->hasOne(TblAppUser::class, 'location_id', 'location_id');
     }
 

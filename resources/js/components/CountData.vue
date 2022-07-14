@@ -258,7 +258,7 @@
                   <div class="dropdown">
                     <button
                       class="btn btn-info btn-rounded text-thin mar-lft dropdown-toggle"
-                      :disabled="!notFoundItems || notFoundItems == 0"
+                      :disabled="!data.data.length"
                       data-toggle="dropdown"
                       type="button"
                       aria-expanded="false"

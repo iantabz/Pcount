@@ -11639,8 +11639,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 Dropzone.options.navUpload = {
   paramName: 'file',
   // The name that will be used to transfer the file
-  url: '/uploading/nav_upload/navPcount',
-  // url: '/uploading/masterfiles/importItemMasterfile',
+  // url: '/uploading/nav_upload/navPcount',
+  url: '/uploading/masterfiles/importItemMasterfile',
   timeout: 100000000,
   init: function init() {
     this.on('addedfile', function (file) {
@@ -13673,7 +13673,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 link = document.createElement('a');
                 link.href = url; // console.log(fileName)
 
-                link.setAttribute('download', "Actual Count (APP) with Cost as of ".concat(_this2.date, ".pdf"));
+                link.setAttribute('download', "Inventory Valuation per Navision as of ".concat(_this2.date, ".pdf"));
                 console.log(link);
                 document.body.appendChild(link);
                 link.click();
@@ -56458,8 +56458,7 @@ var render = function() {
                         staticClass:
                           "btn btn-info btn-rounded text-thin mar-lft dropdown-toggle",
                         attrs: {
-                          disabled:
-                            !_vm.notFoundItems || _vm.notFoundItems == 0,
+                          disabled: !_vm.data.data.length,
                           "data-toggle": "dropdown",
                           type: "button",
                           "aria-expanded": "false"

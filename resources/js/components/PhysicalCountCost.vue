@@ -642,7 +642,7 @@ export default {
       // console.log(fileName)
       link.setAttribute(
         'download',
-        `Actual Count (APP) with Cost as of ${this.date}.pdf`
+        `Inventory Valuation per Navision as of ${this.date}.pdf`
       )
       console.log(link)
       document.body.appendChild(link)

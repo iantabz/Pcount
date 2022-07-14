@@ -35,8 +35,7 @@ class ImportItemMasterfile implements ToCollection, WithHeadingRow, WithChunkRea
 
             // dd(trim($row[3]));
 
-            //FOR SUPERMARKET
-            TblItemMasterfile::create([
+            $values = [
                 'item_code' => trim($row[0]),
                 'uom' => trim($row[1]),
                 'conversion_qty' => trim($row[2]),
@@ -49,7 +48,10 @@ class ImportItemMasterfile implements ToCollection, WithHeadingRow, WithChunkRea
                 'section' => trim($row[10]),
                 'group' => trim($row[12]),
                 'category' => trim($row[14])
-            ]);
+            ];
+
+            //FOR SUPERMARKET
+            TblItemMasterfile::firstOrCreate($values, $values);
 
             //FOR MEDPLUS
             // TblItemMasterfileMedPlus::create([
