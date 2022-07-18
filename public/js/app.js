@@ -57733,7 +57733,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "router-link",
-                            { attrs: { to: "/physical_count_cost" } },
+                            { attrs: { to: "/inventory_valuation" } },
                             [
                               _c(
                                 "a",
@@ -57746,7 +57746,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    " Actual\n                          Count (APP) w/ Cost\n                      "
+                                    " Inventory\n                        Valuation per Navision\n                      "
                                   )
                                 ]
                               )
@@ -57822,7 +57822,7 @@ var render = function() {
                         [
                           _c(
                             "router-link",
-                            { attrs: { to: "/inventory_valuation" } },
+                            { attrs: { to: "/inventory_balance" } },
                             [
                               _c(
                                 "a",
@@ -57835,7 +57835,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    "\n                          Inventory Valuation Report (Navision)\n                      "
+                                    "\n                          Inventory Balance per Navision\n                      "
                                   )
                                 ]
                               )

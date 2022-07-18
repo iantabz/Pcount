@@ -81,12 +81,12 @@
                           &nbsp; Actual Count (APP)
                         </a>
                       </router-link>
-                      <router-link to="/physical_count_cost">
+                      <router-link to="/inventory_valuation">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
-                          ><i class="pci-chevron chevron-right"></i> Actual
-                          &nbsp; Count (APP) w/ Cost
+                          ><i class="pci-chevron chevron-right"></i> Inventory
+                          Valuation per Navision
                         </a>
                       </router-link>
                       <router-link to="/variance_report">
@@ -117,12 +117,12 @@
                       &nbsp;
                     </h4>
                     <div class="list-group bg-trans mar-no">
-                      <router-link to="/inventory_valuation">
+                      <router-link to="/inventory_balance">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i>
-                          &nbsp; Inventory Valuation Report (Navision)
+                          &nbsp; Inventory Balance per Navision
                         </a>
                       </router-link>
                     </div>
