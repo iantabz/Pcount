@@ -252,11 +252,12 @@
                     <div class="title1" style="text-align: center;">
                         {{-- {{dd($data['reportType'])}} --}}
                         @if($data['reportType'] == 'NetNavSys')
-                        Inventory Valuation Report (Navision)
+                        Inventory Balance per Navision
                         @elseif($data['reportType'] == 'NegativeNetNavSys')
                         Negative Inventory Balance (Navision)
                         @elseif($data['reportType'] == 'NotInCount')
-                        Inventory Valuation No Actual Count
+                        {{-- Inventory Valuation No Actual Count --}}
+                        Negative Variance Report
                         @endif
                     </div>
                 </div>

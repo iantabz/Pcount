@@ -195,8 +195,7 @@
                   :disabled="!data.data.length"
                   @click="generateBtn($event, 'NetNavSys')"
                 >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate
-                  Inventory Valuation Report
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate PDF
                 </button>
                 <button
                   :disabled="!data.data.length"

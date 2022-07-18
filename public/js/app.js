@@ -10699,7 +10699,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -60993,9 +60992,7 @@ var render = function() {
                     },
                     [
                       _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                      _vm._v(
-                        "  Generate\n                Inventory Valuation Report\n              "
-                      )
+                      _vm._v("  Generate PDF\n              ")
                     ]
                   ),
                   _vm._v(" "),
