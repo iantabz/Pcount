@@ -13605,7 +13605,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 section = null; // console.log(fileName)
 
                 _this.section ? section = '-' + _this.section : section = '';
-                link.setAttribute('download', "Actual Count (APP) with Cost as of ".concat(_this.date, " ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx")); // console.log(link)
+                link.setAttribute('download', "Inventory Valuation per Navision as of ".concat(_this.date, " ").concat(_this.business_unit, " ").concat(_this.department).concat(section, ".xlsx")); // console.log(link)
 
                 document.body.appendChild(link);
                 link.click();
@@ -13672,7 +13672,7 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 link = document.createElement('a');
                 link.href = url; // console.log(fileName)
 
-                link.setAttribute('download', "Inventory Valuation per Navision as of ".concat(_this2.date, ".pdf"));
+                link.setAttribute('download', "Inventory Valuation per Navision as of ".concat(_this2.date, " ").concat(_this2.business_unit, " ").concat(_this2.department).concat(section, ".pdf"));
                 console.log(link);
                 document.body.appendChild(link);
                 link.click();

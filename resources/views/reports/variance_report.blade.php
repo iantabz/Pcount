@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html> --}}
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    {{-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> --}}
     <title> @if($data['report'] =='Variance')
         CONSOLIDATED VARIANCE REPORT 
         @else
@@ -202,9 +202,9 @@
 
 <body>
     <header>
-        <div class="container" style="max-width: 100%">
+        <div style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
-                <div class=""
+                <div
                     style="text-align: left; width: 400px; flex-basis: 0; flex-grow: 1; float: left; margin-bottom: 10px;">
                     <h4>INVENTORY COUNT CONSOLIDATION SYSTEM </h4>
                     @if($data['business_unit'] != 'null')
@@ -223,16 +223,16 @@
                     <h4>Actual Count Date: {{ $data['date']}}</h4>
                     <h4>Count Type: Annual</h4>
                 </div>
-                <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
+                <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
                         @if($data['report'] =='Variance')
-                        VARIANCE REPORT 
+                        CONSOLIDATED VARIANCE REPORT 
                         @else
-                        VARIANCE SUMMARY REPORT 
+                        CONSOLIDATED VARIANCE SUMMARY REPORT 
                         @endif
                     </div>
                 </div>
-                <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
+                <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
             </div>
         </div>
 

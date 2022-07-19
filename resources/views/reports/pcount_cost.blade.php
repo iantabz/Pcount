@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html> --}}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
+    {{-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> --}}
     <title>Inventory Valuation per Navision</title>
     <style>
         body {
@@ -207,9 +207,9 @@
     @foreach ($vendor as $vendor_name => $categories)
 
     <header>
-        <div class="container" style="max-width: 100%">
+        <div style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
-                <div class=""
+                <div
                     style="text-align: left; width: 400px; flex-basis: 0; flex-grow: 1; float: left; margin-bottom: 10px;">
                     <h4>INVENTORY COUNT CONSOLIDATION SYSTEM </h4>
                     @if($data['business_unit'] != 'null')
@@ -228,12 +228,12 @@
                     <h4>Actual Count Date: {{ $data['date']}}</h4>
                     <h4>Count Type: Annual</h4>
                 </div>
-                <div class="" style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
+                <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
                         INVENTORY VALUATION PER NAVISION
                     </div>
                 </div>
-                <div class="" style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
+                <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>
             </div>
         </div>
     </header>
@@ -259,42 +259,42 @@
     <table class="body1">
         <thead>
             <tr>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Item Code
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Barcode
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Description
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Uom
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Count
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Smallest SKU
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Conv. Qty
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Rack
                 </th>
-                <th colspan="2" class="text-center" style="vertical-align: middle;">
+                <th colspan="2" style="vertical-align: middle; text-align: center;">
                     Cost
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Total
                 </th>
             </tr>
             <tr>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     w/ VAT
                 </th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     w/o VAT
                 </th>
             </tr>

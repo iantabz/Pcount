@@ -584,7 +584,7 @@ class ReportsController extends Controller
             tbl_item_masterfile.group'
         )
             ->JOIN('tbl_item_masterfile', 'tbl_item_masterfile.barcode', 'tbl_app_countdata.barcode')
-            ->leftJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
+            // ->leftJOIN('tbl_nav_countdata', 'tbl_nav_countdata.itemcode', 'tbl_app_countdata.itemcode')
             ->whereBetween('datetime_saved', [$date, $dateAsOf]);
 
         if ($bu != 'null') {

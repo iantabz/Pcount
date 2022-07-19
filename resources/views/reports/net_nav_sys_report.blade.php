@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    {{-- <meta charset="UTF-8"> --}}
     {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
     {{-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> --}}
     <title>  
@@ -227,7 +227,7 @@
 
 <body>
     <header>
-        <div class="container">
+        <div style="max-width: 100%">
             <div class="row" style="flex-wrap: wrap;">
                 <div
                     style="text-align: left; width: 400px; flex-basis: 0; flex-grow: 1; float: left; margin-bottom: 10px;">
@@ -254,9 +254,8 @@
                         @if($data['reportType'] == 'NetNavSys')
                         Inventory Balance per Navision
                         @elseif($data['reportType'] == 'NegativeNetNavSys')
-                        Negative Inventory Balance (Navision)
+                        Sum of Items with Negative Inventory Balance
                         @elseif($data['reportType'] == 'NotInCount')
-                        {{-- Inventory Valuation No Actual Count --}}
                         Negative Variance Report
                         @endif
                     </div>

@@ -52,20 +52,38 @@ class NavSysController extends Controller
         //     ->whereBetween('datetime_saved', [$date, $dateAsOf])
         //     ->orderBy('itemcode');
 
-        return Cache::remember('tabz', now()->addMinutes(15), function () {
-            $company = auth()->user()->company;
-            $section = request()->section;
-            $vendors = base64_decode(request()->vendors);
-            $category = request()->category;
-            $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
-            $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
-            $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
-            $bu = request()->bu;
-            $dept = request()->dept;
-            $runDate = Carbon::parse(now())->toFormattedDateString();
-            $runTime =  Carbon::parse(now())->format('h:i A');
-            $reportType = request()->type;
+        // dd(request()->all());
 
+
+
+        $company = auth()->user()->company;
+        $section = request()->section;
+        $vendors = base64_decode(request()->vendors);
+        $category = request()->category;
+        $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
+        $dateAsOf = Carbon::parse(base64_decode(request()->date))->endOfDay()->toDateTimeString();
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $bu = request()->bu;
+        $dept = request()->dept;
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
+        $reportType = request()->type;
+
+        $key = implode('-', [$bu, $dept, $section, $date, $reportType]);
+        return Cache::remember($key, now()->addMinutes(15), function () use (
+            $company,
+            $section,
+            $vendors,
+            $category,
+            $date,
+            $dateAsOf,
+            $printDate,
+            $bu,
+            $dept,
+            $runDate,
+            $runTime,
+            $reportType
+        ) {
             $result = TblNavCountdata::selectRaw('
             tbl_nav_countdata.itemcode, 
             tbl_nav_countdata.description as extended_desc,
