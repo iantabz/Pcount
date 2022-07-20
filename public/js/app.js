@@ -11006,18 +11006,20 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var url = "/reports/nav_sys/getResults/?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&type=NetNavSys&page=");
 
-      if (this.business_unit && this.department && this.section && this.vendor && this.category) {
-        this.isLoading = true;
-        axios.get(url).then(function (response) {
-          _this3.data = response.data;
-          _this3.total_result = response.data.total;
-          _this3.finalExport = response.data;
+      if (this.business_unit && this.department && this.section // && this.vendor &&
+      // this.category
+      ) {
+          this.isLoading = true;
+          axios.get(url).then(function (response) {
+            _this3.data = response.data;
+            _this3.total_result = response.data.total;
+            _this3.finalExport = response.data;
 
-          _this3.exportcsv();
+            _this3.exportcsv();
 
-          _this3.isLoading = false;
-        });
-      }
+            _this3.isLoading = false;
+          });
+        }
     },
     exportcsv: function exportcsv() {
       var _this4 = this;
@@ -60747,76 +60749,11 @@ var render = function() {
                     _c(
                       "div",
                       {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(3),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-6" },
-                          [
-                            _c(
-                              "v-select",
-                              {
-                                attrs: {
-                                  filterable: false,
-                                  label: "vendor_name",
-                                  options: _vm.filteredvendorList,
-                                  placeholder: "Search for Vendor Name",
-                                  multiple: ""
-                                },
-                                on: { search: _vm.retrieveVendor },
-                                scopedSlots: _vm._u([
-                                  {
-                                    key: "option",
-                                    fn: function(option) {
-                                      return [
-                                        _vm._v(_vm._s("" + option.vendor_name))
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    key: "selected-option",
-                                    fn: function(option) {
-                                      return [
-                                        _vm._v(_vm._s("" + option.vendor_name))
-                                      ]
-                                    }
-                                  }
-                                ]),
-                                model: {
-                                  value: _vm.vendor,
-                                  callback: function($$v) {
-                                    _vm.vendor = $$v
-                                  },
-                                  expression: "vendor"
-                                }
-                              },
-                              [
-                                _c("template", { slot: "no-options" }, [
-                                  _c("strong", [
-                                    _vm._v("Search for Vendor Name")
-                                  ])
-                                ])
-                              ],
-                              2
-                            )
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
                         staticClass: "row pad-all",
                         staticStyle: { "padding-left": "10px" }
                       },
                       [
-                        _vm._m(4),
+                        _vm._m(3),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("input", {
@@ -60861,9 +60798,9 @@ var render = function() {
                     staticClass: "col-md-6 table-toolbar-right form-horizontal"
                   },
                   [
-                    _vm._m(5),
+                    _vm._m(4),
                     _vm._v(" "),
-                    _vm._m(6),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -60872,7 +60809,7 @@ var render = function() {
                         staticStyle: { padding: "10px 15px 15px 10px" }
                       },
                       [
-                        _vm._m(7),
+                        _vm._m(6),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -60902,71 +60839,7 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row",
-                        staticStyle: { padding: "10px 15px 15px 10px" }
-                      },
-                      [
-                        _vm._m(8),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-6" },
-                          [
-                            _c(
-                              "v-select",
-                              {
-                                attrs: {
-                                  filterable: false,
-                                  label: "category",
-                                  options: _vm.filteredcategoryList,
-                                  placeholder: "Search for Category",
-                                  multiple: ""
-                                },
-                                on: { search: _vm.retrieveCategory },
-                                scopedSlots: _vm._u([
-                                  {
-                                    key: "option",
-                                    fn: function(option) {
-                                      return [
-                                        _vm._v(_vm._s("" + option.category))
-                                      ]
-                                    }
-                                  },
-                                  {
-                                    key: "selected-option",
-                                    fn: function(option) {
-                                      return [
-                                        _vm._v(_vm._s("" + option.category))
-                                      ]
-                                    }
-                                  }
-                                ]),
-                                model: {
-                                  value: _vm.category,
-                                  callback: function($$v) {
-                                    _vm.category =
-                                      typeof $$v === "string" ? $$v.trim() : $$v
-                                  },
-                                  expression: "category"
-                                }
-                              },
-                              [
-                                _c("template", { slot: "no-options" }, [
-                                  _c("strong", [_vm._v("Search for Category")])
-                                ])
-                              ],
-                              2
-                            )
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm._m(9)
+                    _vm._m(7)
                   ]
                 )
               ]),
@@ -61039,7 +60912,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("table", { staticClass: "table table-striped" }, [
-                _vm._m(10),
+                _vm._m(8),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -61263,19 +61136,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 control-label text-thin",
-        staticStyle: { "text-align": "right" }
-      },
-      [_c("h5", [_vm._v("Vendor Name :")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("label", { staticClass: "col-lg-3 control-label text-thin" }, [
       _c("h5", [
         _c("i", { staticClass: "icon-lg demo-pli-calendar-4 icon-fw" }),
@@ -61326,19 +61186,6 @@ var staticRenderFns = [
         staticStyle: { "text-align": "right" }
       },
       [_c("h5", [_vm._v("Section :")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 control-label text-thin",
-        staticStyle: { "text-align": "right" }
-      },
-      [_c("h5", [_vm._v("By Dept :")])]
     )
   },
   function() {

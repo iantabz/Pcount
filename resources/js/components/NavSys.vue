@@ -73,7 +73,7 @@
                       </v-select>
                     </div>
                   </div>
-                  <div class="row" style="padding: 10px 15px 15px 10px">
+                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-3 control-label text-thin"
                       style="text-align: right"
@@ -100,7 +100,7 @@
                         }}</template>
                       </v-select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row pad-all" style="padding-left: 10px;">
                     <label class="col-lg-3 control-label text-thin">
                       <h5>
@@ -153,7 +153,7 @@
                     </div>
                   </div>
 
-                  <div class="row" style="padding: 10px 15px 15px 10px">
+                  <!-- <div class="row" style="padding: 10px 15px 15px 10px">
                     <label
                       class="col-md-3 control-label text-thin"
                       style="text-align: right"
@@ -180,7 +180,7 @@
                         }}</template>
                       </v-select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row" style="padding: 10px 15px 15px 10px">
                     <label class="col-md-3 control-label text-thin">
                       <h5></h5>
@@ -650,9 +650,9 @@ export default {
       if (
         this.business_unit &&
         this.department &&
-        this.section &&
-        this.vendor &&
-        this.category
+        this.section
+        // && this.vendor &&
+        // this.category
       ) {
         this.isLoading = true
         axios.get(url).then(response => {

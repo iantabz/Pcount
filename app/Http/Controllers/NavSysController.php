@@ -17,13 +17,65 @@ class NavSysController extends Controller
     {
         // dd(request()->all());
         $reportType = request()->type;
+        $company = auth()->user()->company;
         $bu = request()->bu;
         $dept = request()->dept;
         $section = request()->section;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateString();
+        $printDate = Carbon::parse(base64_decode(request()->date))->toFormattedDateString();
+        $runDate = Carbon::parse(now())->toFormattedDateString();
+        $runTime =  Carbon::parse(now())->format('h:i A');
+        // dd($reportType, $date);
 
         if ($reportType != 'NotInCount') {
-            $pdf = PDF::loadView('reports.net_nav_sys_report', ['data' => $this->varianceReportData()]);
+            // $pdf = PDF::loadView('reports.net_nav_sys_report', ['data' => $this->varianceReportData()]);
+            // return $pdf->setPaper('legal', 'landscape')->download('Nav Sys Var Report.pdf');
+
+            $key = implode('-', [$bu, $dept, $section, $date, 'NetNavSys']);
+            $data = Cache::get($key);
+            // dd(21);
+            // dd($data);
+
+
+            $data = collect($data['data'])->map(function ($trans) use ($reportType) {
+                // dd($trans);
+
+                // $trans->nav_qty = $trans->nav_qty;
+                // $trans->unposted = $unposted;
+
+                if ($reportType == 'NegativeNetNavSys') {
+                    $sum = $trans->nav_qty + $trans->unposted;
+                    if ($sum < 0) return $trans;
+                    return [];
+                }
+                // dd($sum);
+                return $trans;
+            })->filter(function ($trans) {
+                return !empty($trans);
+            });
+
+
+            // dd(1, $data);
+            // dd(1);
+            $header = array(
+                'company'       => $company,
+                'business_unit' => $bu,
+                'department'    => $dept,
+                'section'       => $section,
+                'date'          => $printDate,
+                'user'          => auth()->user()->name,
+                'userBu'        => auth()->user()->business_unit,
+                'userDept'      => auth()->user()->department,
+                'userSection'   => auth()->user()->section,
+                'user_position' => auth()->user()->position,
+                'runDate'       => $runDate,
+                'runTime'       => $runTime,
+                'report'        => 'All',
+                'reportType'    => $reportType,
+                'data'          => $data
+            );
+
+            $pdf = PDF::loadView('reports.net_nav_sys_report', ['data' => $header]);
             return $pdf->setPaper('legal', 'landscape')->download('Nav Sys Var Report.pdf');
         } else {
             $key = implode('-', [$bu, $dept, $section, $date, 'NotInCount']);
@@ -633,7 +685,7 @@ class NavSysController extends Controller
             // dd($result->whereBetween('date', [$date, $dateAsOf])
             //     ->groupByRaw('tbl_nav_countdata.itemcode')
             //     ->orderBy('itemcode')->limit(5)->get());
-            $data['data'] = $query;
+            $data['data'] = $query->all();
 
             return $data;
         });

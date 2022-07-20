@@ -408,7 +408,7 @@
                 $value = 0;
                 ?>
                 @foreach ($data['data'] as $key => $item)
-                {{-- {{dd($item)}} --}}
+                {{-- {{dd($data)}} --}}
                 @php
                 if($item['unposted'] != '-')
                 {
