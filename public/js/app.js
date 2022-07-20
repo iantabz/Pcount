@@ -10699,6 +10699,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -10949,6 +10986,9 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
                 if (type == 'Negative NetNavSys') {
                   title = 'Sum of Items with Negative Inventory Balance';
                   pass = "/reports/nav_sys/NetNavSys?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=NegativeNetNavSys");
+                } else if (type == 'Positive NetNavSys') {
+                  title = 'Sum of Items with Positive Inventory Balance';
+                  pass = "/reports/nav_sys/NetNavSys?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=PositiveNetNavSys");
                 } else if (type == 'NetNavSys') {
                   title = 'Inventory Balance per Navision';
                   pass = "/reports/nav_sys/NetNavSys?date=".concat(btoa(_this2.date), "&date2=").concat(btoa(_this2.date2), "&vendors=").concat(btoa(_this2.forPrintVendor), "&category=").concat(_this2.forPrintCategory, "&bu=").concat(_this2.business_unit, "&dept=").concat(_this2.department, "&section=").concat(_this2.section, "&type=NetNavSys");
@@ -60865,29 +60905,88 @@ var render = function() {
                     },
                     [
                       _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                      _vm._v("  Generate PDF\n              ")
+                      _vm._v("  Generate PDF Report\n              ")
                     ]
                   ),
                   _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-info btn-rounded pull-right text-thin mar-lft",
-                      attrs: { disabled: !_vm.data.data.length },
-                      on: {
-                        click: function($event) {
-                          return _vm.generateBtn($event, "Negative NetNavSys")
-                        }
-                      }
-                    },
-                    [
-                      _c("i", { staticClass: "demo-pli-printer icon-lg" }),
-                      _vm._v(
-                        "  Generate Sum of\n                Items with Negative Inventory Balance\n              "
+                  _c("div", { staticClass: "btn-group pull-right" }, [
+                    _c("div", { staticClass: "dropdown" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-info btn-rounded text-thin mar-lft dropdown-toggle",
+                          attrs: {
+                            disabled: !_vm.data.data.length,
+                            "data-toggle": "dropdown",
+                            type: "button",
+                            "aria-expanded": "false"
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "demo-pli-printer icon-lg" }),
+                          _vm._v(
+                            "  Sum of\n                    Items Reports\n                    "
+                          ),
+                          _c("i", { staticClass: "dropdown-caret" })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        { staticClass: "dropdown-menu dropdown-menu-right" },
+                        [
+                          _c("li", { staticClass: "dropdown-header" }, [
+                            _vm._v("SUM OF ITEMS REPORT")
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "javscript:;" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.generateBtn(
+                                      $event,
+                                      "Negative NetNavSys"
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        With Negative Inventory Balance\n                      "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("li", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "javscript:;" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.generateBtn(
+                                      $event,
+                                      "Positive NetNavSys"
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        With Positive Inventory Balance\n                      "
+                                )
+                              ]
+                            )
+                          ])
+                        ]
                       )
-                    ]
-                  ),
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c(
                     "button",

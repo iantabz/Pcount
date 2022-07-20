@@ -40,14 +40,19 @@ class NavSysController extends Controller
             $data = collect($data['data'])->map(function ($trans) use ($reportType) {
                 // dd($trans);
 
-                // $trans->nav_qty = $trans->nav_qty;
-                // $trans->unposted = $unposted;
 
+
+                $sum = $trans->nav_qty + $trans->unposted;
                 if ($reportType == 'NegativeNetNavSys') {
-                    $sum = $trans->nav_qty + $trans->unposted;
                     if ($sum < 0) return $trans;
                     return [];
                 }
+
+                if ($reportType == 'PositiveNetNavSys') {
+                    if ($sum > 0) return $trans;
+                    return [];
+                }
+
                 // dd($sum);
                 return $trans;
             })->filter(function ($trans) {
@@ -595,7 +600,7 @@ class NavSysController extends Controller
         $key = implode('-', [$bu, $dept, $section, $date2, 'NetNavSys']);
         // dd(Cache::get($key), $key);
 
-        return Cache::remember($key, now()->addMinutes(15), function () use ($date, $date2, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
+        return Cache::remember($key, now()->addMinutes(30), function () use ($date, $date2, $dateAsOf, $bu, $dept, $section, $vendors, $category) {
             $result = TblNavCountdata::selectRaw('
             itemcode, 
             description as extended_desc,
@@ -632,7 +637,7 @@ class NavSysController extends Controller
 
             // dd($result->groupByRaw('itemcode')->first());
             // dd($result->get());
-            $x = $result->groupByRaw('itemcode')->limit(1500)->get();
+            $x = $result->groupByRaw('itemcode')->limit(3000)->get();
             // dd($x);
 
             $query = $x->map(function ($c) use ($bu, $dept, $section, $date2) {

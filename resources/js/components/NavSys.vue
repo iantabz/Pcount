@@ -195,16 +195,53 @@
                   :disabled="!data.data.length"
                   @click="generateBtn($event, 'NetNavSys')"
                 >
-                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate PDF
+                  <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate PDF Report
                 </button>
-                <button
+
+                <div class="btn-group pull-right">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-info btn-rounded text-thin mar-lft dropdown-toggle"
+                      :disabled="!data.data.length"
+                      data-toggle="dropdown"
+                      type="button"
+                      aria-expanded="false"
+                    >
+                      <i class="demo-pli-printer icon-lg"></i>&nbsp; Sum of
+                      Items Reports
+                      <i class="dropdown-caret"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" style="">
+                      <li class="dropdown-header">SUM OF ITEMS REPORT</li>
+                      <li>
+                        <a
+                          href="javscript:;"
+                          @click="generateBtn($event, 'Negative NetNavSys')"
+                        >
+                          With Negative Inventory Balance
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="javscript:;"
+                          @click="generateBtn($event, 'Positive NetNavSys')"
+                        >
+                          With Positive Inventory Balance
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- <button
                   :disabled="!data.data.length"
                   class="btn btn-info btn-rounded pull-right text-thin mar-lft"
                   @click="generateBtn($event, 'Negative NetNavSys')"
                 >
                   <i class="demo-pli-printer icon-lg"></i>&nbsp; Generate Sum of
                   Items with Negative Inventory Balance
-                </button>
+                </button> -->
+
                 <button
                   class="btn btn-danger btn-rounded pull-right text-thin"
                   :disabled="!data.data.length"
@@ -582,7 +619,19 @@ export default {
         }&bu=${this.business_unit}&dept=${this.department}&section=${
           this.section
         }&type=NegativeNetNavSys`
-      } else if (type == 'NetNavSys') {
+      } 
+      else if(type =='Positive NetNavSys')
+      {
+        title = 'Sum of Items with Positive Inventory Balance'
+        pass = `/reports/nav_sys/NetNavSys?date=${btoa(this.date)}&date2=${btoa(
+          this.date2
+        )}&vendors=${btoa(this.forPrintVendor)}&category=${
+          this.forPrintCategory
+        }&bu=${this.business_unit}&dept=${this.department}&section=${
+          this.section
+        }&type=PositiveNetNavSys`
+      }
+       else if (type == 'NetNavSys') {
         title = 'Inventory Balance per Navision'
         pass = `/reports/nav_sys/NetNavSys?date=${btoa(this.date)}&date2=${btoa(
           this.date2

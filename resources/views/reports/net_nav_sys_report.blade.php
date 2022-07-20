@@ -1,4 +1,4 @@
-<html lang="en">
+<html>
 <head>
     {{-- <meta charset="UTF-8"> --}}
     {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
@@ -8,6 +8,8 @@
         Inventory Balance per Navision
         @elseif($data['reportType'] == 'NegativeNetNavSys')
         Sum of Items with Negative Inventory Balance
+        @elseif($data['reportType'] == 'PositiveNetNavSys')
+        Sum of Items with Positive Inventory Balance
         @elseif($data['reportType'] == 'NotInCount')
         Negative Variance Report
         @endif
@@ -255,6 +257,8 @@
                         Inventory Balance per Navision
                         @elseif($data['reportType'] == 'NegativeNetNavSys')
                         Sum of Items with Negative Inventory Balance
+                        @elseif($data['reportType'] == 'PositiveNetNavSys')
+                        Sum of Items with Positive Inventory Balance
                         @elseif($data['reportType'] == 'NotInCount')
                         Negative Variance Report
                         @endif
@@ -286,30 +290,30 @@
     <table class="body1">
         <thead>
             <tr>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Item Code
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Barcode
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Description
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     Uom
                 </th>
-                <th colspan="2" class="text-center" style="vertical-align: middle;">
+                <th colspan="2" style="vertical-align: middle; text-align: center;">
                     Quantity
                 </th>
-                <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">
                     NET NAV SYS COUNT
                 </th>
 
             </tr>
             <tr>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     NAV SYS COUNT</th>
-                <th class="text-center" style="vertical-align: middle;">
+                <th style="vertical-align: middle; text-align: center;">
                     UNPOSTED</th>
             </tr>
         </thead>
@@ -377,27 +381,27 @@
         <table class="body1">
             <thead>
                 <tr>
-                    <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    <th rowspan="2" style="vertical-align: middle; text-align: center;">
                         Item Code
                     </th>
-                    <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    <th rowspan="2" style="vertical-align: middle; text-align: center;">
                         Description
                     </th>
-                    <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    <th rowspan="2" style="vertical-align: middle; text-align: center;">
                         Uom
                     </th>
-                    <th colspan="2" class="text-center" style="vertical-align: middle;">
+                    <th colspan="2" style="vertical-align: middle; text-align: center;">
                         Quantity
                     </th>
-                    <th rowspan="2" class="text-center" style="vertical-align: middle;">
+                    <th rowspan="2" style="vertical-align: middle; text-align: center;">
                         NET NAV SYS COUNT
                     </th>
 
                 </tr>
                 <tr>
-                    <th class="text-center" style="vertical-align: middle;">
+                    <th style="vertical-align: middle; text-align: center;">
                         NAV SYS COUNT</th>
-                    <th class="text-center" style="vertical-align: middle;">
+                    <th style="vertical-align: middle; text-align: center;">
                         UNPOSTED</th>
                 </tr>
             </thead>
