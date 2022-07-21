@@ -13453,6 +13453,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -13495,7 +13506,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       forPrintVendor: [],
       forPrintCategory: [],
       countType: null,
-      countTypes: ['ANNUAL', 'CYCLICAL']
+      countTypes: ['ANNUAL', 'CYCLICAL'],
+      isLoading: false
     };
   },
   components: {
@@ -13848,9 +13860,11 @@ vue__WEBPACK_IMPORTED_MODULE_6__.default.component('v-select', (vue_select__WEBP
       url = "/reports/pcount_cost/getResultPcountCost?date=".concat(btoa(this.date), "&date2=").concat(btoa(this.date2), "&vendors=").concat(btoa(this.forPrintVendor), "&category=").concat(this.forPrintCategory, "&bu=").concat(this.business_unit, "&dept=").concat(this.department, "&section=").concat(this.section, "&page=");
 
       if (this.business_unit && this.department && this.section) {
+        this.isLoading = true;
         axios.get(url + page).then(function (response) {
           _this6.data = response.data;
           _this6.total_result = response.data.total;
+          _this6.isLoading = false;
         });
       }
     },
@@ -62992,9 +63006,41 @@ var render = function() {
                                 attrs: { colspan: "13" }
                               },
                               [
-                                _vm._v(
-                                  "\n                    No data available.\n                  "
-                                )
+                                _vm.isLoading
+                                  ? _c(
+                                      "div",
+                                      {
+                                        staticClass: "sk-wave",
+                                        staticStyle: {
+                                          width: "100%",
+                                          height: "50px",
+                                          "font-size": "30px",
+                                          margin: "30px auto"
+                                        }
+                                      },
+                                      [
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect1"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect2"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect3"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect4"
+                                        }),
+                                        _vm._v(" "),
+                                        _c("div", {
+                                          staticClass: "sk-rect sk-rect5"
+                                        })
+                                      ]
+                                    )
+                                  : _c("div", [_vm._v("No data available.")])
                               ]
                             )
                           ])
