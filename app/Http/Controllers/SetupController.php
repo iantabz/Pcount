@@ -337,7 +337,7 @@ class SetupController extends Controller
             } else if ($ifAppUserExists) {
                 return response()->json(['message' => 'Inventory Clerk already exists!'], 406);
             } else if ($ifAppAuditExists) {
-                return response()->json(['message' => 'Audit already exists!'], 406);
+                return response()->json(['message' => 'Auditor already exists!'], 406);
             }
         }
 

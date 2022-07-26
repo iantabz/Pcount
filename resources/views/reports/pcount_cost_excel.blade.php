@@ -211,7 +211,7 @@
             </tr>
             <tr>
                 <th style="text-align: left; font-size: 12px;">
-                   Inventory Valuation per Navision
+                   Inventory Valuation per Actual Count
                 </th>
             </tr>
             @if($data['business_unit'] != 'null')

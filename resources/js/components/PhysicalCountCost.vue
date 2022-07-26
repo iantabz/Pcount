@@ -592,7 +592,7 @@ export default {
 
       link.setAttribute(
         'download',
-        `Inventory Valuation per Navision as of ${this.date} ${this.business_unit} ${this.department}${section}.xlsx`
+        `Inventory Valuation per Actual Count as of ${this.date} ${this.business_unit} ${this.department}${section}.xlsx`
       )
       // console.log(link)
       document.body.appendChild(link)
@@ -654,7 +654,7 @@ export default {
       // console.log(fileName)
       link.setAttribute(
         'download',
-        `Inventory Valuation per Navision as of ${this.date} ${this.business_unit} ${this.department}${section}.pdf`
+        `Inventory Valuation per Actual Count as of ${this.date} ${this.business_unit} ${this.department}${this.section}.pdf`
       )
       console.log(link)
       document.body.appendChild(link)

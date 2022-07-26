@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Location Data</title>
+    <title>List of Inventory Count Teams</title>
     <style media="screen">
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
@@ -207,7 +207,7 @@
         <thead>
             <tr>
                 <th style="text-align: center; font-size: 12px; font-weight: bold;" colspan="5">
-                    INVENTORY COUNT CONSOLIDATION SYSTEM
+                    LIST OF INVENTORY COUNT TEAM ASSIGNMENTS
                 </th>
             </tr>
 

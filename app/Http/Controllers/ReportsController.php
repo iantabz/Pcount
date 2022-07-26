@@ -1157,9 +1157,9 @@ class ReportsController extends Controller
         $runDate = Carbon::parse(now())->toFormattedDateString();
         $runTime =  Carbon::parse(now())->format('h:i A');
         $countType = request()->countType;
+        $keyDate = Carbon::parse(base64_decode(request()->date))->toDateString();
 
-
-        $key = implode('-', [$bu, $dept, $section, $date, 'CountDataCost']);
+        $key = implode('-', [$bu, $dept, $section, $keyDate, 'CountDataCost']);
 
         $result = TblAppCountdata::selectRaw('
         tbl_app_countdata.itemcode, 
@@ -1268,7 +1268,8 @@ class ReportsController extends Controller
         $dept = request()->dept;
         $section = request()->section;
         $date = Carbon::parse(base64_decode(request()->date))->startOfDay()->toDateTimeString();
-        $key = implode('-', [$bu, $dept, $section, $date, 'CountDataCost']);
+        $keyDate = Carbon::parse(base64_decode(request()->date))->toDateString();
+        $key = implode('-', [$bu, $dept, $section, $keyDate, 'CountDataCost']);
         $data = Cache::get($key);
 
         $data['data'] = collect($data['data'])->map(function ($trans) {

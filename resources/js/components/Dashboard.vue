@@ -86,7 +86,7 @@
                           href="javascript:;"
                           class="list-group-item panel-title"
                           ><i class="pci-chevron chevron-right"></i> Inventory
-                          Valuation per Navision
+                          Valuation per Actual Count
                         </a>
                       </router-link>
                       <router-link to="/variance_report">
