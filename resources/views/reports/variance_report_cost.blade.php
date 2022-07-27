@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge"> --}}
     <title> @if($data['report'] =='Variance')
-        VARIANCE REPORT w/ COST
+        CONSOLIDATED VARIANCE REPORT w/ COST
         @else
-        SUMMARY VARIANCE REPORT w/ COST
+        CONSOLIDATED SUMMARY VARIANCE REPORT w/ COST
         @endif</title>
     <style media="screen">
         body {
@@ -225,7 +225,7 @@
                 </div>
                 <div style="width: 1000px; flex-basis: 0; flex-grow: 1; margin-left: 110px;">
                     <div class="title1" style="text-align: center;">
-                        VARIANCE REPORT w/ COST
+                        CONSOLIDATED VARIANCE REPORT w/ COST
                     </div>
                 </div>
                 <div style="max-width: 100%; flex-basis: 0; flex-grow: 1;"></div>

@@ -93,16 +93,16 @@
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
-                          ><i class="pci-chevron chevron-right"></i> Variance
-                          &nbsp; Report</a
+                          ><i class="pci-chevron chevron-right"></i>Consolidated
+                          Variance &nbsp; Report</a
                         >
                       </router-link>
                       <router-link to="/variance_report_cost">
                         <a
                           href="javascript:;"
                           class="list-group-item panel-title"
-                          ><i class="pci-chevron chevron-right"></i> Variance
-                          &nbsp; Report w/ Cost</a
+                          ><i class="pci-chevron chevron-right"></i>Consolidated
+                          Variance &nbsp; Report w/ Cost</a
                         >
                       </router-link>
                     </div>

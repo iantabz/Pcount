@@ -151,11 +151,11 @@ const router = new VueRouter({
       }
     },
     {
-      name: 'Inventory Valuation per Navision',
+      name: 'Inventory Valuation per Actual Count',
       path: '/inventory_valuation',
       component: PhysicalCountCost,
       meta: {
-        name: 'Inventory Valuation per Navision'
+        name: 'Inventory Valuation per Actual Count'
       }
     },
     {

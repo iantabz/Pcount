@@ -20120,11 +20120,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
       name: 'Consolidated Report'
     }
   }, {
-    name: 'Inventory Valuation per Navision',
+    name: 'Inventory Valuation per Actual Count',
     path: '/inventory_valuation',
     component: _components_PhysicalCountCost_vue__WEBPACK_IMPORTED_MODULE_12__.default,
     meta: {
-      name: 'Inventory Valuation per Navision'
+      name: 'Inventory Valuation per Actual Count'
     }
   }, {
     name: 'Rack Area Monitoring',
@@ -57824,7 +57824,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    " Variance\n                          Report"
+                                    "Consolidated\n                        Variance   Report"
                                   )
                                 ]
                               )
@@ -57846,7 +57846,7 @@ var render = function() {
                                     staticClass: "pci-chevron chevron-right"
                                   }),
                                   _vm._v(
-                                    " Variance\n                          Report w/ Cost"
+                                    "Consolidated\n                        Variance   Report w/ Cost"
                                   )
                                 ]
                               )
